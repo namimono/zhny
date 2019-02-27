@@ -1,0 +1,70 @@
+server:
+  servlet:
+    context-path: /
+  port: 8080
+  tomcat:
+    max-threads: 300
+    max-http-post-size: 10240000
+  max-http-header-size: 10240000
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    platform: mysql
+    url: jdbc:mysql://127.0.0.1:3306/springboot?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT1FROMDUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    filters: stat,wall,log4j
+#    logSlowSql: true
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+  servlet:
+      multipart:
+        max-file-size: 100Mb
+        max-request-size: 1000Mb
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  freemarker:
+    charset: UTF-8
+    suffix: .html
+    template-loader-path: classpath:/templates/
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        max-idle: 50
+        max-active: 1000
+        min-idle: 5
+        max-wait: -1
+    database: 0
+    password: ''
+    timeout: 3600
+  security:
+    user:
+      name: admin
+      password: admin
+
+mybatis:
+#  mapper-locations: classpath:mapper/*.xml
+  config-location: classpath:mybatis-config.xml
+
+jwt:
+  header: Authorization
+  secret: mySecret
+  expiration: 604800
+  tokenHead: "Bearer "
+
