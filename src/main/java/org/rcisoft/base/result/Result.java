@@ -51,6 +51,18 @@ public class Result {
 
     /**
      * 返回值
+     * 返回成功的情况
+     * 适用于查询
+     * @param data
+     * @return
+     */
+    public static Result result(Object data) {
+        return new Result(ResultCode.SUCCESS.code, MessageConstant.MESSAGE_ALERT_SUCCESS.msg, data);
+    }
+
+    /**
+     * 返回值
+     * 适用于增删改
      * @param operate 增删改的操作结果，大于0时，返回成功，小于0时，返回失败
      * @param data 结果集
      * @return
@@ -64,6 +76,7 @@ public class Result {
 
     /**
      * 返回值
+     * 适用于增删改
      * @param operate 增删改的操作结果，大于0时，返回成功，小于0时，返回失败
      * @param success 成功的提示信息
      * @param error 失败的提示信息
