@@ -26,6 +26,7 @@ public class BusDevice {
 	@Id
 	private String id;
 
+
 	/**
 	 * 设备名称
 	 */
