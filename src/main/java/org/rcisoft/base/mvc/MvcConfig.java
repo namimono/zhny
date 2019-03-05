@@ -137,17 +137,6 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         return converter;
     }
 
-    @Bean
-    public Converter<String, Date> o2() {
-        return s -> {
-            try {
-                return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(s);
-            } catch (Exception e) {
-                return null;
-            }
-        };
-    }
-
     @Override
     public void configureMessageConverters(
             List<HttpMessageConverter<?>> converters) {
