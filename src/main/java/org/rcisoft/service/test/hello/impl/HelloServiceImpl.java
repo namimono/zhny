@@ -1,10 +1,10 @@
-package org.rcisoft.service.hello.impl;
+package org.rcisoft.service.test.hello.impl;
 
 import com.github.pagehelper.PageInfo;
 import org.rcisoft.base.result.PageUtil;
-import org.rcisoft.dao.user.SysUserDao;
+import org.rcisoft.dao.test.auth.SysUserDao;
 import org.rcisoft.entity.SysUser;
-import org.rcisoft.service.hello.HelloService;
+import org.rcisoft.service.test.hello.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;

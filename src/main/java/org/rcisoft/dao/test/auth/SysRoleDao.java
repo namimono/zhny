@@ -1,4 +1,4 @@
-package org.rcisoft.dao.role;
+package org.rcisoft.dao.test.auth;
 
 import org.rcisoft.entity.SysRole;
 import org.springframework.stereotype.Repository;

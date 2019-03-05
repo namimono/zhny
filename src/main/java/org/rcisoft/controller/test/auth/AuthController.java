@@ -1,8 +1,8 @@
-package org.rcisoft.controller.auth;
+package org.rcisoft.controller.test.auth;
 
 import org.rcisoft.base.result.Result;
 import org.rcisoft.entity.SysUser;
-import org.rcisoft.service.auth.AuthService;
+import org.rcisoft.service.test.auth.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.AuthenticationException;

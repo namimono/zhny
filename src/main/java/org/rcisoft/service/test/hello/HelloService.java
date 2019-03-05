@@ -1,4 +1,4 @@
-package org.rcisoft.service.hello;
+package org.rcisoft.service.test.hello;
 
 import com.github.pagehelper.PageInfo;
 import org.rcisoft.entity.SysUser;

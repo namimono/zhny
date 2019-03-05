@@ -1,7 +1,7 @@
-package org.rcisoft.controller.hello;
+package org.rcisoft.controller.test.hello;
 
 import org.rcisoft.base.result.Result;
-import org.rcisoft.service.hello.HelloService;
+import org.rcisoft.service.test.hello.HelloService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

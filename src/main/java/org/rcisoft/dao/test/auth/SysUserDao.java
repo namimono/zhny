@@ -1,4 +1,4 @@
-package org.rcisoft.dao.user;
+package org.rcisoft.dao.test.auth;
 
 import org.rcisoft.entity.SysUser;
 import org.apache.ibatis.annotations.Param;

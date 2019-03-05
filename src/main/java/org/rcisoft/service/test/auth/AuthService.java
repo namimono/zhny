@@ -1,4 +1,4 @@
-package org.rcisoft.service.auth;
+package org.rcisoft.service.test.auth;
 
 import org.rcisoft.entity.SysUser;
 
