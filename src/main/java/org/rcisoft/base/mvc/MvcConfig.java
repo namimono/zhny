@@ -1,27 +1,38 @@
 package org.rcisoft.base.mvc;
 
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.base.result.ResultCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +41,9 @@ import java.util.List;
 @Configuration
 @Slf4j
 public class MvcConfig extends WebMvcConfigurationSupport {
+
+    @Autowired
+    private RequestMappingHandlerAdapter handlerAdapter;
 
     @Value("${spring.profiles.active}")
     private String env;//当前激活的配置文件
@@ -112,17 +126,58 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         return converter;
     }
 
+
+    @Bean
+    public MappingJackson2HttpMessageConverter jackson2HttpMessageConverter() {
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        converter.setObjectMapper(mapper);
+        return converter;
+    }
+
+    @Bean
+    public Converter<String, Date> o2() {
+        return s -> {
+            try {
+                return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(s);
+            } catch (Exception e) {
+                return null;
+            }
+        };
+    }
+
     @Override
     public void configureMessageConverters(
             List<HttpMessageConverter<?>> converters) {
         super.configureMessageConverters(converters);
         converters.add(responseBodyConverter());
+        //将我们定义的时间格式转换器添加到转换器列表中,
+        //这样jackson格式化时候但凡遇到Date类型就会转换成我们定义的格式
+        converters.add(jackson2HttpMessageConverter());
     }
 
     @Override
     public void configureContentNegotiation(
             ContentNegotiationConfigurer configurer) {
         configurer.favorPathExtension(false);
+    }
+
+    /**
+     * 增加字符串转日期的功能
+     */
+    @PostConstruct
+    public void initEditableAvlidation() {
+
+        ConfigurableWebBindingInitializer initializer = (ConfigurableWebBindingInitializer)handlerAdapter.getWebBindingInitializer();
+        if(initializer.getConversionService()!=null) {
+            GenericConversionService genericConversionService = (GenericConversionService)initializer.getConversionService();
+
+            genericConversionService.addConverter(new DateConverterConfig());
+
+        }
+
     }
 
 }
