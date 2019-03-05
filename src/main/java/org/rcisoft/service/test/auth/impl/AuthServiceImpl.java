@@ -1,6 +1,6 @@
 package org.rcisoft.service.test.auth.impl;
 
-import org.rcisoft.dao.test.auth.SysUserDao;
+import org.rcisoft.dao.test.auth.SysUserDao2;
 import org.rcisoft.base.jwt.JwtTokenUtil;
 import org.rcisoft.entity.SysUser;
 import org.rcisoft.service.test.auth.AuthService;
@@ -25,7 +25,7 @@ public class AuthServiceImpl implements AuthService {
     private AuthenticationManager authenticationManager;
     private UserDetailsService userDetailsService;
     private JwtTokenUtil jwtTokenUtil;
-    private SysUserDao sysUserDao;
+    private SysUserDao2 sysUserDao2;
 
     @Value("${jwt.tokenHead}")
     private String tokenHead;
@@ -35,17 +35,17 @@ public class AuthServiceImpl implements AuthService {
             AuthenticationManager authenticationManager,
             UserDetailsService userDetailsService,
             JwtTokenUtil jwtTokenUtil,
-            SysUserDao sysUserDao) {
+            SysUserDao2 sysUserDao2) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.jwtTokenUtil = jwtTokenUtil;
-        this.sysUserDao = sysUserDao;
+        this.sysUserDao2 = sysUserDao2;
     }
 
     @Transactional
     @Override
     public Integer register(SysUser sysUser) {
-        if(sysUserDao.selectOne(sysUser)!=null) {
+        if(sysUserDao2.selectOne(sysUser)!=null) {
             return null;
         }
         sysUser.setId(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -54,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
         sysUser.setPassword(encoder.encode(rawPassword));
         sysUser.setLastPasswordResetDate(new Date());
 //        userToAdd.setRoles(asList("ROLE_USER"));
-        return sysUserDao.insert(sysUser);
+        return sysUserDao2.insert(sysUser);
     }
 
     @Override

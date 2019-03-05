@@ -1,6 +1,7 @@
 package org.rcisoft.service.projMaintenance;
 
 import com.github.pagehelper.PageInfo;
+import org.rcisoft.entity.BusProject;
 import org.rcisoft.entity.SysUser;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public interface ProjConfigService {
     /**
      * 设置项目配置信息
      */
-    int setProjConfig(Map<String,Object> map);
+    int setProjConfig(BusProject busProject);
 
     /**
      * 获取省份信息及其ID
@@ -48,4 +49,24 @@ public interface ProjConfigService {
      * 获取线上团队信息
      */
     List<Map<String,Object>> queryOnTeamInfo();
+
+    /**
+     * 获取巡查员信息
+     */
+    List<Map<String,Object>> queryInspectorInfo();
+
+    /**
+     * 获取建筑类型信息
+     */
+    List<Map<String,Object>> queryBuildingInfo();
+
+    /**
+     * 获取建筑分区(气候分区)信息
+     */
+    List<Map<String,Object>> queryBuildZoneInfo();
+
+    /**
+     * 获取业主信息
+     */
+    List<Map<String,Object>> queryOwnerInfo();
 }

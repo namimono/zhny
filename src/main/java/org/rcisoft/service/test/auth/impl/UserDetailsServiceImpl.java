@@ -1,7 +1,7 @@
 package org.rcisoft.service.test.auth.impl;
 
 import org.rcisoft.dao.test.auth.SysRoleDao;
-import org.rcisoft.dao.test.auth.SysUserDao;
+import org.rcisoft.dao.test.auth.SysUserDao2;
 import org.rcisoft.entity.SysRole;
 import org.rcisoft.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +19,13 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private SysUserDao sysUserDao;
+    private SysUserDao2 sysUserDao2;
     @Autowired
     private SysRoleDao sysRoleDao;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        SysUser sysUser = sysUserDao.selectByName(s);
+        SysUser sysUser = sysUserDao2.selectByName(s);
         if (sysUser == null) {
             throw new UsernameNotFoundException("用户名不存在");
         }

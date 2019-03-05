@@ -11,7 +11,7 @@ import tk.mybatis.mapper.common.Mapper;
  * Created by JiChao on 2018/6/5.
  */
 @Repository
-public interface SysUserDao extends Mapper<SysUser> {
+public interface SysUserDao2 extends Mapper<SysUser> {
 
     @Select("<script>select * from sys_user where username=#{username}</script>")
     @ResultType(SysUser.class)
