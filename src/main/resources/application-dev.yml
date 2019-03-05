@@ -68,3 +68,8 @@ jwt:
   expiration: 604800
   tokenHead: "Bearer "
 
+
+#  省略debug Console中的大量 CONDITIONS EVALUATION REPORT 日志信息
+logging:
+  level:
+    org.springframework.boot.autoconfigure: ERROR
