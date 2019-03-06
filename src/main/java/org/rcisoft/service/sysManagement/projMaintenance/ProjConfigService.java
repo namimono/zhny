@@ -1,9 +1,6 @@
-package org.rcisoft.service.projMaintenance;
+package org.rcisoft.service.sysManagement.projMaintenance;
 
-import com.github.pagehelper.PageInfo;
 import org.rcisoft.entity.BusProject;
-import org.rcisoft.entity.SysUser;
-
 import java.util.List;
 import java.util.Map;
 
@@ -17,18 +14,15 @@ public interface ProjConfigService {
      */
     List<Map<String,Object>> queryAllInfo();
 
-//    /**
-//     * 设置项目配置信息
-//     */
-//    int setProjConfig(String name,String province_id,String code,String city_id,String building_local,
-//                      String online_team_id,String equipment_age,String inspect_ids,String building_id,String building_area,
-//                      String building_coordinate,String offline_team_id,String building_name,String save_sign,String building_zone_id,
-//                      String building_age,String user_id,String phones,String type,String id,String create_time);
+    /**
+     * 新增项目配置信息
+     */
+    String addProjConfig(BusProject busProject);
 
     /**
-     * 设置项目配置信息
+     * 修改项目配置信息
      */
-    int setProjConfig(BusProject busProject);
+    int updateProjConfig(BusProject busProject);
 
     /**
      * 获取省份信息及其ID

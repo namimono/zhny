@@ -4,7 +4,7 @@ import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.dao.*;
 import org.rcisoft.dao.sysManagement.projMaintenance.ProjConfigDao;
 import org.rcisoft.entity.BusProject;
-import org.rcisoft.service.projMaintenance.ProjConfigService;
+import org.rcisoft.service.sysManagement.projMaintenance.ProjConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     @Autowired
     private ProjConfigDao projConfigDao;
     @Autowired
-    private BusProjectDao busProject;
+    private BusProjectDao busProjectDao;
     @Autowired
     private SysProvinceDao sysProvinceDao;
     @Autowired
@@ -46,28 +46,37 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      * 查询全部项目表信息
      */
     public List<Map<String,Object>> queryAllInfo(){
-        return busProject.queryAllInfo();
+        return busProjectDao.queryAllInfo();
     }
 
     /**
-     * 设置项目配置信息
+     * 新增项目配置信息
      */
-    public int setProjConfig(BusProject busProject){
+    public String addProjConfig(BusProject busProject){
+
+//        SimpleDateFormat abc = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        SimpleDateFormat fmt = new SimpleDateFormat("yyyy");
+//
+//        try {
+//            busProject.setCreateTime(abc.parse(abc.format(new Date())));
+//            busProject.setBuildingAge(sdf.parse(sdf.format(busProject.getBuildingAge())));
+//            busProject.setEquipmentAge(fmt.parse(fmt.format(busProject.getEquipmentAge())));
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        projConfigDao.setProjConfig(busProject)
 
         busProject.setId(UuidUtil.create32());
+        busProjectDao.insertSelective(busProject);
+        return busProject.getId();
+    }
 
-        SimpleDateFormat abc = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy");
-
-        try {
-            busProject.setCreateTime(abc.parse(abc.format(new Date())));
-            busProject.setBuildingAge(sdf.parse(sdf.format(busProject.getBuildingAge())));
-            busProject.setEquipmentAge(fmt.parse(fmt.format(busProject.getEquipmentAge())));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return projConfigDao.setProjConfig(busProject);
+    /**
+     * 修改项目配置信息
+     */
+    public int updateProjConfig(BusProject busProject){
+        return busProjectDao.updateByPrimaryKeySelective(busProject);
     }
 
     /**

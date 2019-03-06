@@ -4,11 +4,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.entity.BusProject;
-import org.rcisoft.service.projMaintenance.ProjConfigService;
+import org.rcisoft.service.sysManagement.projMaintenance.ProjConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 /**
  * Create by 土豆儿
@@ -29,10 +27,16 @@ public class ProjConfigController {
         return Result.result(1, projConfigServiceImpl.queryAllInfo());
     }
 
-    @ApiOperation(value="设置项目配置信息", notes="设置项目配置信息")
-    @PostMapping("/setProjConfig")
-    public Result setProjConfig(@RequestBody BusProject busProject){
-        return Result.result(1, projConfigServiceImpl.setProjConfig(busProject));
+    @ApiOperation(value="修改项目配置信息", notes="修改项目配置信息")
+    @PostMapping("/updateProjConfig")
+    public Result updateProjConfig(@RequestBody BusProject busProject){
+        return Result.result(1, projConfigServiceImpl.updateProjConfig(busProject));
+    }
+
+    @ApiOperation(value="新增项目配置信息", notes="新增项目配置信息")
+    @PostMapping("/addProjConfig")
+    public Result addProjConfig(@RequestBody BusProject busProject){
+        return Result.result(1, projConfigServiceImpl.addProjConfig(busProject));
     }
 
     @ApiOperation(value="获取省份信息及其ID", notes="获取省份信息及其ID")

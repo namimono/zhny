@@ -1,9 +1,6 @@
 package org.rcisoft.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -100,7 +97,7 @@ public class BusProject {
 	 * 建筑年代
 	 */
 	@Column(name = "building_age" )
-	@JsonFormat(pattern="yyyy-MM-dd")
+	//@JsonFormat(pattern="yyyy-MM-dd")
 	private Date buildingAge;
 
 	/**
@@ -108,14 +105,14 @@ public class BusProject {
 	 */
    	@Column(name = "create_time" )
 	//@JSONField(format="yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	//@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date createTime;
 
 	/**
 	 * 设备年代
 	 */
    	@Column(name = "equipment_age" )
-	@JsonFormat(pattern="yyyy")
+	//@JsonFormat(pattern="yyyy")
 	private Date equipmentAge;
 
 	/**

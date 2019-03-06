@@ -1,4 +1,7 @@
-package org.rcisoft.service.projMaintenance;
+package org.rcisoft.service.sysManagement.projMaintenance;
+
+import org.rcisoft.entity.EnergyPrice;
+import org.rcisoft.entity.EnergyStandard;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +14,12 @@ import java.util.Map;
 public interface BasicDataService {
 
     /**
-     *获取水电气24小时单价信息
+     *新增水电气24小时单价信息
      */
-    List<Map<String,Object>> queryPerHourPrice();
+    int addPerHourPrice(List<EnergyPrice> list);
+
+    /**
+     * 新增能源标准
+     */
+    int addEnergyStandard(List<EnergyStandard> list);
 }
