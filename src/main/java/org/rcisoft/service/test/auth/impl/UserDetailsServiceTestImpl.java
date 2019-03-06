@@ -16,7 +16,7 @@ import java.util.List;
  * Created by JiChao on 2018/6/5.
  */
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceTestImpl implements UserDetailsService {
 
     @Autowired
     private SysUserDao2 sysUserDao2;

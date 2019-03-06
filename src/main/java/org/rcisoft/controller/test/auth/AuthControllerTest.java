@@ -2,7 +2,7 @@ package org.rcisoft.controller.test.auth;
 
 import org.rcisoft.base.result.Result;
 import org.rcisoft.entity.SysUser;
-import org.rcisoft.service.test.auth.AuthService;
+import org.rcisoft.service.test.auth.AuthServiceTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.AuthenticationException;
@@ -13,12 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("auth")
-public class AuthController {
+public class AuthControllerTest {
     @Value("${jwt.header}")
     private String tokenHeader;
 
     @Autowired
-    private AuthService authService;
+    private AuthServiceTest authService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String createAuthenticationToken(String username, String password) throws AuthenticationException{
