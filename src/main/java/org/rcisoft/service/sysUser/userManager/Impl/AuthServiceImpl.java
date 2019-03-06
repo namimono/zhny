@@ -1,7 +1,7 @@
 package org.rcisoft.service.sysUser.userManager.Impl;
 
 import org.rcisoft.base.jwt.JwtTokenUtil;
-import org.rcisoft.dao.sysUser.userManager.SysUserDao;
+import org.rcisoft.dao.SysUserDao;
 import org.rcisoft.entity.SysUser;
 import org.rcisoft.service.sysUser.userManager.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;

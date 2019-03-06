@@ -1,6 +1,6 @@
 package org.rcisoft.service.sysUser.userManager.Impl;
 
-import org.rcisoft.dao.sysUser.userManager.SysUserDao;
+import org.rcisoft.dao.SysUserDao;
 import org.rcisoft.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
