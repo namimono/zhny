@@ -1,4 +1,4 @@
-package org.rcisoft.dao.sysManagement.projMaintenance;
+package org.rcisoft.dao;
 
 import org.rcisoft.entity.BusDevice;
 import org.springframework.stereotype.Repository;
