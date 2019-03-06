@@ -105,4 +105,10 @@ public class BusDevice {
    	@Column(name = "create_time" )
 	private Date createTime;
 
+	/**
+	 * 设备参数库添加数据的方式，0：手动（默认），1：自动
+	 */
+	@Column(name = "auto_type" )
+	private Integer autoType;
+
 }

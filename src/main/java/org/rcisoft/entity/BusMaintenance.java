@@ -32,6 +32,12 @@ public class BusMaintenance {
 	private String deviceId;
 
 	/**
+	 * 子系统id
+	 */
+	@Column(name = "system_id" )
+	private String systemId;
+
+	/**
 	 * 负责人
 	 */
    	@Column(name = "principal" )

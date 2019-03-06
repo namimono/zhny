@@ -52,7 +52,8 @@ public class AuthServiceImpl implements AuthService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         final String rawPassword = sysUser.getPassword();
         sysUser.setPassword(encoder.encode(rawPassword));
-        sysUser.setLastPasswordResetDate(new Date());
+        sysUser.setCreateTime(new Date());
+        sysUser.setUpdateTime(new Date());
 //        userToAdd.setRoles(asList("ROLE_USER"));
         return sysUserDao2.insert(sysUser);
     }
@@ -75,7 +76,7 @@ public class AuthServiceImpl implements AuthService {
         String username = jwtTokenUtil.getUsernameFromToken(token);
 //        JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
         SysUser user = (SysUser) userDetailsService.loadUserByUsername(username);
-        if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())){
+        if (jwtTokenUtil.canTokenBeRefreshed(token, user.getUpdateTime())){
             return jwtTokenUtil.refreshToken(token);
         }
         return null;

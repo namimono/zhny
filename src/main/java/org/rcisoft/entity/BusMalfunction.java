@@ -38,6 +38,12 @@ public class BusMalfunction {
 	private String projectId;
 
 	/**
+	 * 子系统id
+	 */
+	@Column(name = "system_id" )
+	private String systemId;
+
+	/**
 	 * 创建时间（故障时间）
 	 */
    	@Column(name = "create_time" )

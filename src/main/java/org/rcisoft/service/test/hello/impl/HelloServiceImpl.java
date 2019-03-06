@@ -29,7 +29,7 @@ public class HelloServiceImpl implements HelloService {
     public PageInfo<SysUser> selectUserForPage() {
         Example example = new Example(SysUser.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andIsNotNull("lastPasswordResetDate");
+        criteria.andIsNotNull("updateTime");
         List<SysUser> list = sysUserDao2.selectByExample(example);
         return PageUtil.pageResult(list);
     }

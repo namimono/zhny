@@ -31,8 +31,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         System.out.println("s:"+s);
         System.out.println("username:"+sysUser.getUsername()+";password:"+sysUser.getPassword());
-        List<SysRole> sysRoles = sysRoleDao.selectAll();
-        sysUser.setRoles(sysRoles);
+        // 不需要查询角色
+//        List<SysRole> sysRoles = sysRoleDao.selectAll();
+//        sysUser.setRoles(sysRoles);
 //        return JwtUserFactory.create(sysUser);
         return sysUser;
     }
