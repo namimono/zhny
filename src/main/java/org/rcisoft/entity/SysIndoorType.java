@@ -13,8 +13,8 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table ( name ="bus_param_fixed" )
-public class BusParamFixed {
+@Table ( name ="sys_indoor_type" )
+public class SysIndoorType {
 
 
 	/**
@@ -31,33 +31,15 @@ public class BusParamFixed {
 	private String name;
 
 	/**
-	 * 参数编码
+	 * 类型，1：室内，2：室外
 	 */
-   	@Column(name = "coding" )
-	private String coding;
+   	@Column(name = "type" )
+	private Integer type;
 
 	/**
-	 * 单位
+	 * 类型相同时的排序字段
 	 */
-   	@Column(name = "unit" )
-	private String unit;
-
-	/**
-	 * 项目id
-	 */
-   	@Column(name = "project_id" )
-	private String projectId;
-
-	/**
-	 * 设备id
-	 */
-   	@Column(name = "device_id" )
-	private String deviceId;
-
-	/**
-	 * 系统id
-	 */
-   	@Column(name = "system_id" )
-	private String systemId;
+   	@Column(name = "sequence" )
+	private Integer sequence;
 
 }

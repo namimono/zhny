@@ -34,7 +34,7 @@ public class BusMaintenance {
 	/**
 	 * 子系统id
 	 */
-	@Column(name = "system_id" )
+   	@Column(name = "system_id" )
 	private String systemId;
 
 	/**

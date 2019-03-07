@@ -13,8 +13,8 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table ( name ="sys_system" )
-public class SysSystem {
+@Table ( name ="mid_indoor_param_first" )
+public class MidIndoorParamFirst {
 
 
 	/**
@@ -25,13 +25,19 @@ public class SysSystem {
 	private String id;
 
 	/**
-	 * 系统类型名称
+	 * 室内环境id
 	 */
-   	@Column(name = "name" )
-	private String name;
+   	@Column(name = "indoor_id" )
+	private String indoorId;
 
 	/**
-	 * 排序字段
+	 * 一级参数id
+	 */
+   	@Column(name = "param_first_id" )
+	private String paramFirstId;
+
+	/**
+	 * 室内环境id相同时，排序字段
 	 */
    	@Column(name = "sequence" )
 	private Integer sequence;

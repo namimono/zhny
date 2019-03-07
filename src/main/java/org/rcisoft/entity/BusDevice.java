@@ -26,7 +26,6 @@ public class BusDevice {
 	@Id
 	private String id;
 
-
 	/**
 	 * 设备名称
 	 */
@@ -106,9 +105,9 @@ public class BusDevice {
 	private Date createTime;
 
 	/**
-	 * 设备参数库添加数据的方式，0：手动（默认），1：自动
+	 * 设备参数库添加数据的方式，0：手动，1：自动
 	 */
-	@Column(name = "auto_type" )
+   	@Column(name = "auto_type" )
 	private Integer autoType;
 
 }

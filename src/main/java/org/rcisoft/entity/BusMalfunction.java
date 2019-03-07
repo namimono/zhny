@@ -40,7 +40,7 @@ public class BusMalfunction {
 	/**
 	 * 子系统id
 	 */
-	@Column(name = "system_id" )
+   	@Column(name = "system_id" )
 	private String systemId;
 
 	/**

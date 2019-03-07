@@ -30,6 +30,7 @@ public class DataConfigServiceImpl implements DataConfigService {
     /**
      * 查询系统类型信息
      */
+    @Override
     public List<Map<String,Object>> querySysSystemInfo(){
         return sysSystemDao.querySysSystemInfo();
     }
@@ -37,6 +38,7 @@ public class DataConfigServiceImpl implements DataConfigService {
     /**
      * 查询一级参数信息
      */
+    @Override
     public List<Map<String,Object>> queryParamFirstInfo(BusParamFirst busParamFirst){
         return busParamFirstDao.queryParamFirstInfo(busParamFirst);
     }
@@ -44,6 +46,7 @@ public class DataConfigServiceImpl implements DataConfigService {
     /**
      * 新增一级参数信息
      */
+    @Override
     public String addParamFirstInfo(BusParamFirst busParamFirst){
         busParamFirst.setId(UuidUtil.create32());
         busParamFirstDao.insert(busParamFirst);

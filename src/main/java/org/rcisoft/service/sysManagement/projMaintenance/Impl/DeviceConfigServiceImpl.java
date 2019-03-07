@@ -20,6 +20,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     /**
      * 新增设备配置信息
      */
+    @Override
     public int addDeviceConfigInfo(BusDevice busDevice){
         busDevice.setId(UuidUtil.create32());
         return busDeviceDao.insertSelective(busDevice);

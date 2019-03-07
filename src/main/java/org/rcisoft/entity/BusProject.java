@@ -1,16 +1,15 @@
 package org.rcisoft.entity;
 
-import javax.persistence.*;
-
-import com.alibaba.fastjson.annotation.JSONField;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -97,22 +96,18 @@ public class BusProject {
 	 * 建筑年代
 	 */
 	@Column(name = "building_age" )
-	//@JsonFormat(pattern="yyyy-MM-dd")
 	private Date buildingAge;
 
 	/**
 	 * 项目创建时间
 	 */
    	@Column(name = "create_time" )
-	//@JSONField(format="yyyy-MM-dd HH:mm:ss")
-	//@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date createTime;
 
 	/**
 	 * 设备年代
 	 */
    	@Column(name = "equipment_age" )
-	//@JsonFormat(pattern="yyyy")
 	private Date equipmentAge;
 
 	/**

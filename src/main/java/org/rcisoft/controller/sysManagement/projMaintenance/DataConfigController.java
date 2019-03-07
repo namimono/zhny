@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamSecond;
-import org.rcisoft.entity.EnergyPrice;
 import org.rcisoft.service.sysManagement.projMaintenance.DataConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

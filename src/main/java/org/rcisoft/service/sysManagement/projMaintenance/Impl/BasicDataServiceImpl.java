@@ -29,6 +29,7 @@ public class BasicDataServiceImpl implements BasicDataService {
     /**
      *获取水电气24小时单价信息
      */
+    @Override
     public int addPerHourPrice(List<EnergyPrice> list){
 //        Map<String,List<String>> mapList = new HashMap<>();
 //        List<Map<String,String>> listMap = new ArrayList<>();
@@ -49,6 +50,7 @@ public class BasicDataServiceImpl implements BasicDataService {
     /**
      * 新增能源标准
      */
+    @Override
     public int addEnergyStandard(List<EnergyStandard> list){
         int sum = 0;
         for(EnergyStandard energyStandard : list){
