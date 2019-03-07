@@ -30,4 +30,10 @@ public class SysSystem {
    	@Column(name = "name" )
 	private String name;
 
+	/**
+	 * 排序字段
+	 */
+	@Column(name = "sequence" )
+	private Integer sequence;
+
 }
