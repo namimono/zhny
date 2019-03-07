@@ -114,6 +114,22 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         }
     }
 
+
+    /**
+     * 配置跨域
+     * @param registry
+     */
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+//                .allowCredentials(true)
+                .allowedMethods("GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE")
+                .allowedHeaders("Authorization", "Origin", "X-Requested-With", "X-File-Name", "Content-Type", "Accept")
+//                .maxAge(3600)
+        ;
+    }
+
     /**
      * 解决乱码
      * @return
