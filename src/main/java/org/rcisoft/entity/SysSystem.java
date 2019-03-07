@@ -33,7 +33,7 @@ public class SysSystem {
 	/**
 	 * 排序字段
 	 */
-   	@Column(name = "sequence" )
+	@Column(name = "sequence" )
 	private Integer sequence;
 
 }
