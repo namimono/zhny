@@ -3,6 +3,8 @@ package org.rcisoft.controller.sysManagement.projMaintenance;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
+import org.rcisoft.entity.BusBuilding;
+import org.rcisoft.entity.BusBuildingZone;
 import org.rcisoft.entity.BusProject;
 import org.rcisoft.service.sysManagement.projMaintenance.ProjConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,5 +93,41 @@ public class ProjConfigController {
     @GetMapping("/queryOwnerInfo")
     public Result queryOwnerInfo(){
         return Result.result(1, projConfigServiceImpl.queryOwnerInfo());
+    }
+
+    @ApiOperation(value="新增建筑类型", notes="新增建筑类型")
+    @PostMapping("/insertBuildType")
+    public Result insertBuildType(@RequestBody BusBuilding busBuilding){
+        return Result.result(1, projConfigServiceImpl.insertBuildType(busBuilding));
+    }
+
+    @ApiOperation(value="修改建筑类型", notes="修改建筑类型")
+    @PutMapping("/updateBuildType")
+    public Result updateBuildType(@RequestBody BusBuilding busBuilding){
+        return Result.result(1, projConfigServiceImpl.updateBuildType(busBuilding));
+    }
+
+    @ApiOperation(value="删除建筑类型", notes="删除建筑类型")
+    @DeleteMapping("/deleteBuildType")
+    public Result deleteBuildType(@RequestBody BusBuilding busBuilding){
+        return Result.result(1, projConfigServiceImpl.deleteBuildType(busBuilding));
+    }
+
+    @ApiOperation(value="新增建筑分区(气候分区)", notes="新增建筑分区(气候分区)")
+    @DeleteMapping("/insertBuildZone")
+    public Result insertBuildZone(@RequestBody BusBuildingZone busBuildingZone){
+        return Result.result(1, projConfigServiceImpl.insertBuildZone(busBuildingZone));
+    }
+
+    @ApiOperation(value="修改建筑分区(气候分区)", notes="修改建筑分区(气候分区)")
+    @PutMapping("/updateBuildZone")
+    public Result updateBuildZone(@RequestBody BusBuildingZone busBuildingZone){
+        return Result.result(1, projConfigServiceImpl.updateBuildZone(busBuildingZone));
+    }
+
+    @ApiOperation(value="删除建筑分区(气候分区)", notes="删除建筑分区(气候分区)")
+    @DeleteMapping("/deleteBuildZone")
+    public Result deleteBuildZone(@RequestBody BusBuildingZone busBuildingZone){
+        return Result.result(1, projConfigServiceImpl.deleteBuildZone(busBuildingZone));
     }
 }

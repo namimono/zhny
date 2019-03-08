@@ -1,5 +1,7 @@
 package org.rcisoft.service.sysManagement.projMaintenance;
 
+import org.rcisoft.entity.BusBuilding;
+import org.rcisoft.entity.BusBuildingZone;
 import org.rcisoft.entity.BusProject;
 import org.rcisoft.vo.sysManagement.projMaintenance.ProjectBriefInfo;
 
@@ -31,10 +33,10 @@ public interface ProjConfigService {
      */
     List<Map<String,Object>> queryProvinceInfo();
 
-//    /**
-//     * 根据省份ID获取
-//     */
-//    List<Map<String,Object>> queryCityInfo(String provinceId);
+    /**
+     * 根据省份ID获取
+     */
+    List<Map<String,Object>> queryCityInfo(String provinceId);
 
     /**
      * 获取线下团队信息
@@ -70,4 +72,34 @@ public interface ProjConfigService {
      * 查询项目简要信息
      */
     List<Map<String,Object>> queryBriefInfo();
+
+    /**
+     * 新增建筑类型
+     */
+    int insertBuildType(BusBuilding busBuilding);
+
+    /**
+     * 修改建筑类型
+     */
+    int updateBuildType(BusBuilding busBuilding);
+
+    /**
+     * 删除建筑类型
+     */
+    int deleteBuildType(BusBuilding busBuilding);
+
+    /**
+     * 新增建筑分区(气候分区)
+     */
+    int insertBuildZone(BusBuildingZone busBuildingZone);
+
+    /**
+     * 修改建筑分区(气候分区)
+     */
+    int updateBuildZone(BusBuildingZone busBuildingZone);
+
+    /**
+     * 删除建筑分区(气候分区)
+     */
+    int deleteBuildZone(BusBuildingZone busBuildingZone);
 }

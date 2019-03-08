@@ -3,6 +3,8 @@ package org.rcisoft.service.sysManagement.projMaintenance.Impl;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.dao.*;
 import org.rcisoft.dao.sysManagement.projMaintenance.ProjConfigDao;
+import org.rcisoft.entity.BusBuilding;
+import org.rcisoft.entity.BusBuildingZone;
 import org.rcisoft.entity.BusProject;
 import org.rcisoft.service.sysManagement.projMaintenance.ProjConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,13 +92,13 @@ public class ProjConfigServiceImpl implements ProjConfigService {
         return sysProvinceDao.queryProvinceInfo();
     }
 
-//    /**
-//     * 根据省份ID获取城市信息及其code
-//     */
-//    @Override
-//    public List<Map<String,Object>> queryCityInfo(String provinceId){
-//        return sysCityDao.queryCityInfo(provinceId);
-//    }
+    /**
+     * 根据省份ID获取城市信息及其code
+     */
+    @Override
+    public List<Map<String,Object>> queryCityInfo(String provinceId){
+        return sysCityDao.queryCityInfo(provinceId);
+    }
 
     /**
      * 获取线下团队信息
@@ -152,5 +154,53 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     @Override
     public List<Map<String,Object>> queryBriefInfo(){
         return busProjectDao.queryBriefInfo();
+    }
+
+    /**
+     * 新增建筑类型
+     */
+    @Override
+    public int insertBuildType(BusBuilding busBuilding){
+        return busBuildingDao.insert(busBuilding);
+    }
+
+    /**
+     * 修改建筑类型
+     */
+    @Override
+    public int updateBuildType(BusBuilding busBuilding){
+        return busBuildingDao.updateByPrimaryKey(busBuilding);
+    }
+
+    /**
+     * 删除建筑类型
+     */
+    @Override
+    public int deleteBuildType(BusBuilding busBuilding){
+        return busBuildingDao.deleteByPrimaryKey(busBuilding);
+    }
+
+    /**
+     * 新增建筑分区(气候分区)
+     */
+    @Override
+    public int insertBuildZone(BusBuildingZone busBuildingZone){
+        return busBuildingZoneDao.insert(busBuildingZone);
+    }
+
+    /**
+     * 修改建筑分区(气候分区)
+     */
+    @Override
+    public int updateBuildZone(BusBuildingZone busBuildingZone){
+        return busBuildingZoneDao.updateByPrimaryKey(busBuildingZone);
+    }
+
+    /**
+     * 删除建筑分区(气候分区)
+     */
+    @Override
+    public int deleteBuildZone(BusBuildingZone busBuildingZone){
+        return busBuildingZoneDao.deleteByPrimaryKey(busBuildingZone);
     }
 }
