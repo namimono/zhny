@@ -23,4 +23,13 @@ public interface SysCityDao extends Mapper<SysCity> {
     @Select("SELECT * FROM sys_city WHERE province_id = #{provinceId};")
     @ResultType(SysCity.class)
     List<Map<String,Object>> queryCityInfo(@Param("provinceId") String provinceId);
+
+    /**
+     * 根据城市名称查询城市信息
+     * @param name
+     */
+    @Select("SELECT * FROM sys_city WHERE name=#{name};")
+    @ResultType(SysCity.class)
+    SysCity queryCityInfoByName(@Param("name") String name);
+
 }
