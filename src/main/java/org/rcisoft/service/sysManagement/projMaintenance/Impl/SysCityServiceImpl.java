@@ -40,13 +40,11 @@ public class SysCityServiceImpl implements SysCityService {
         resultMap.put("fs","");
         try{
             String cityName = StringUtils.isEmpty(city)?null:StringUtils.substring(city,0,city.length());
-            System.out.print("********************"+cityName+"*********************");
             if(cityName == null) return  resultMap;
             SysCity sysCity = new SysCity();
             sysCity = sysCityDao.queryCityInfoByName(cityName);
             String code = sysCity.getCoding();
             JSONObject weatherJson = this.getWeatherMessage(code);
-            System.out.println(weatherJson);
             //湿度
             String sd = (String)weatherJson.get("SD");
             //温度

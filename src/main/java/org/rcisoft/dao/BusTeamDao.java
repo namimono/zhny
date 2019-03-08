@@ -28,4 +28,18 @@ public interface BusTeamDao extends Mapper<BusTeam> {
      */
     @Select("SELECT * FROM bus_team WHERE type = '1';")
     List<Map<String,Object>> queryOnTeamInfo();
+
+    /**
+     * 获取所有线上团队信息及团队负责人信息
+     * @return
+     */
+    @Select("SELECT * FROM bus_team as bt right JOIN sys_principal as sp on bt.principal_id = sp.id where bt.type = 1")
+    List<Map<String,Object>> queryAllOnTeamInfo();
+
+    /**
+     * 获取所有线下团队信息及团队负责人信息
+     * @return
+     */
+    @Select("SELECT * FROM bus_team as bt right JOIN sys_principal as sp on bt.principal_id = sp.id where bt.type = 2")
+    List<Map<String,Object>> queryAllOutTeamInfo();
 }

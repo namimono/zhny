@@ -203,4 +203,19 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     public int deleteBuildZone(BusBuildingZone busBuildingZone){
         return busBuildingZoneDao.deleteByPrimaryKey(busBuildingZone);
     }
+
+    /**
+     * 获取所有线上团队信息和团队负责人信息
+     */
+    @Override
+    public List<Map<String, Object>> queryAllOnTeamInfo() {
+        return busTeamDao.queryAllOnTeamInfo();
+    }
+    /**
+     * 获取所有线上团队信息和团队负责人信息
+     */
+    @Override
+    public List<Map<String, Object>> queryAllOutTeamInfo() {
+        return busTeamDao.queryAllOutTeamInfo();
+    }
 }

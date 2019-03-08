@@ -102,4 +102,13 @@ public interface ProjConfigService {
      * 删除建筑分区(气候分区)
      */
     int deleteBuildZone(BusBuildingZone busBuildingZone);
+
+    /**
+     * 获取所有线上团队信息及团队负责人信息
+     */
+    List<Map<String,Object>> queryAllOnTeamInfo();
+    /**
+     * 获取所有线下团队信息及团队负责人信息
+     */
+    List<Map<String,Object>> queryAllOutTeamInfo();
 }

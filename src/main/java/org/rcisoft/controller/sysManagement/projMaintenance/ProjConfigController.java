@@ -130,4 +130,16 @@ public class ProjConfigController {
     public Result deleteBuildZone(@RequestBody BusBuildingZone busBuildingZone){
         return Result.result(1, projConfigServiceImpl.deleteBuildZone(busBuildingZone));
     }
+
+    @ApiOperation(value="获取线上团队及其负责人信息", notes="获取线上团队及其负责人信息")
+    @RequestMapping(value = "/queryAllOnTeamInfo",method = RequestMethod.GET)
+    public Result queryAllOnTeamInfo(){
+        return Result.result(1, projConfigServiceImpl.queryAllOnTeamInfo());
+    }
+
+    @ApiOperation(value="获取线下团队及其负责人信息", notes="获取线下团队及其负责人信息")
+    @RequestMapping(value = "/queryAllOutTeamInfo",method = RequestMethod.GET)
+    public Result queryAllOutTeamInfo(){
+        return Result.result(1, projConfigServiceImpl.queryAllOutTeamInfo());
+    }
 }
