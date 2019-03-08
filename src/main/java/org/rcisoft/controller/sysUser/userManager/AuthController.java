@@ -30,17 +30,17 @@ public class AuthController {
 
     @ApiOperation(value = "用户登录",notes = "用户登录")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String createAuthenticationToken(String username,String password)throws AuthenticationException{
+    public Result createAuthenticationToken(String username,String password)throws AuthenticationException{
         final String token = authService.login(username,password);
-        return token;
+        return Result.result(1,token);
     }
 
     @ApiOperation(value = "用户登录刷新",notes = "用户登录刷新")
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String refreshAuthenticationToken(HttpServletRequest request)throws AuthenticationException{
+    public Result refreshAuthenticationToken(HttpServletRequest request)throws AuthenticationException{
         String token = request.getHeader(tokenHeader);
         String refreshedToken = authService.refresh(token);
-        return refreshedToken;
+        return Result.result(1,refreshedToken);
     }
 
     @ApiOperation(value = "添加用户",notes = "添加用户")
