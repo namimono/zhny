@@ -6,6 +6,7 @@ import org.rcisoft.base.result.Result;
 import org.rcisoft.entity.BusBuilding;
 import org.rcisoft.entity.BusBuildingZone;
 import org.rcisoft.entity.BusProject;
+import org.rcisoft.service.ProjManagement.TeamMaintenance.ProjectConfigService;
 import org.rcisoft.service.sysManagement.projMaintenance.ProjConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProjConfigController {
 
     @Autowired
-    private ProjConfigService projConfigServiceImpl;
+    private ProjectConfigService projConfigServiceImpl;
 
 
 
