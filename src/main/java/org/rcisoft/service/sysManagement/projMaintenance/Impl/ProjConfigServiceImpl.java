@@ -45,6 +45,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     /**
      * 查询全部项目表信息
      */
+    @Override
     public List<Map<String,Object>> queryAllInfo(){
         return busProjectDao.queryAllInfo();
     }
@@ -52,6 +53,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     /**
      * 新增项目配置信息
      */
+    @Override
     public String addProjConfig(BusProject busProject){
 
 //        SimpleDateFormat abc = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -75,27 +77,31 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     /**
      * 修改项目配置信息
      */
+    @Override
     public int updateProjConfig(BusProject busProject){
         return busProjectDao.updateByPrimaryKeySelective(busProject);
     }
 
     /**
-     * 获取省份信息及其ID
+     * 获取省份、城市及其code信息
      */
+    @Override
     public List<Map<String,Object>> queryProvinceInfo(){
         return sysProvinceDao.queryProvinceInfo();
     }
 
-    /**
-     * 根据省份ID获取城市信息及其code
-     */
-    public List<Map<String,Object>> queryCityInfo(String provinceId){
-        return sysCityDao.queryCityInfo(provinceId);
-    }
+//    /**
+//     * 根据省份ID获取城市信息及其code
+//     */
+//    @Override
+//    public List<Map<String,Object>> queryCityInfo(String provinceId){
+//        return sysCityDao.queryCityInfo(provinceId);
+//    }
 
     /**
      * 获取线下团队信息
      */
+    @Override
     public List<Map<String,Object>> queryOutTeamInfo(){
         return busTeamDao.queryOutTeamInfo();
     }
@@ -103,6 +109,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     /**
      * 获取线上团队信息
      */
+    @Override
     public List<Map<String,Object>> queryOnTeamInfo(){
         return busTeamDao.queryOnTeamInfo();
     }
@@ -110,6 +117,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     /**
      * 获取巡查员信息
      */
+    @Override
     public List<Map<String,Object>> queryInspectorInfo(){
         return sysInspectorDao.queryInspectorInfo();
     }
@@ -117,6 +125,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     /**
      * 获取建筑类型信息
      */
+    @Override
     public List<Map<String,Object>> queryBuildingInfo(){
         return busBuildingDao.queryBuildingInfo();
     }
@@ -124,6 +133,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     /**
      * 获取建筑分区(气候分区)信息
      */
+    @Override
     public List<Map<String,Object>> queryBuildZoneInfo(){
         return busBuildingZoneDao.queryBuildZoneInfo();
     }
@@ -131,7 +141,16 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     /**
      * 获取业主信息
      */
+    @Override
     public List<Map<String,Object>> queryOwnerInfo(){
         return sysUserDao.queryOwnerInfo();
+    }
+
+    /**
+     * 查询项目简要信息
+     */
+    @Override
+    public List<Map<String,Object>> queryBriefInfo(){
+        return busProjectDao.queryBriefInfo();
     }
 }

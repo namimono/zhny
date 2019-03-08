@@ -23,6 +23,7 @@ public interface SysUserDao extends Mapper<SysUser> {
     @Select("SELECT * FROM sys_user WHERE type = '3';")
     @ResultType(SysUser.class)
     List<Map<String,Object>> queryOwnerInfo();
+
     /**
      * 根据用户名查询信息
      * Create by Minghui Xu

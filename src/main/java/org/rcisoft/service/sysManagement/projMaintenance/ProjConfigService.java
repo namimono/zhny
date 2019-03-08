@@ -1,6 +1,8 @@
 package org.rcisoft.service.sysManagement.projMaintenance;
 
 import org.rcisoft.entity.BusProject;
+import org.rcisoft.vo.sysManagement.projMaintenance.ProjectBriefInfo;
+
 import java.util.List;
 import java.util.Map;
 
@@ -25,14 +27,14 @@ public interface ProjConfigService {
     int updateProjConfig(BusProject busProject);
 
     /**
-     * 获取省份信息及其ID
+     * 获取省份、城市及其code信息
      */
     List<Map<String,Object>> queryProvinceInfo();
 
-    /**
-     * 根据省份ID获取城市信息及其code
-     */
-    List<Map<String,Object>> queryCityInfo(String provinceId);
+//    /**
+//     * 根据省份ID获取
+//     */
+//    List<Map<String,Object>> queryCityInfo(String provinceId);
 
     /**
      * 获取线下团队信息
@@ -63,4 +65,9 @@ public interface ProjConfigService {
      * 获取业主信息
      */
     List<Map<String,Object>> queryOwnerInfo();
+
+    /**
+     * 查询项目简要信息
+     */
+    List<Map<String,Object>> queryBriefInfo();
 }

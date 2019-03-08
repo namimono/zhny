@@ -3,6 +3,7 @@ package org.rcisoft.dao;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.entity.BusProject;
+import org.rcisoft.vo.sysManagement.projMaintenance.ProjectBriefInfo;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -22,4 +23,13 @@ public interface BusProjectDao extends Mapper<BusProject> {
     @Select("SELECT * FROM bus_project;")
     @ResultType(BusProject.class)
     List<Map<String,Object>> queryAllInfo();
+
+    /**
+     * 查询项目简要信息
+     */
+    @Select("SELECT a.id,a.name,a.building_local,a.building_area,b.username,c.`name` AS 'buildTypeName' \n" +
+            "FROM bus_project a,sys_user b,bus_building c \n" +
+            "WHERE a.user_id = b.id AND a.building_id = c.id;")
+    @ResultType(ProjectBriefInfo.class)
+    List<Map<String,Object>> queryBriefInfo();
 }

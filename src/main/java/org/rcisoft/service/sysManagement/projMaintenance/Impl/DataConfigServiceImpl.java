@@ -56,6 +56,7 @@ public class DataConfigServiceImpl implements DataConfigService {
     /**
      * 修改一级参数信息
      */
+    @Override
     public int updateParamFirstInfo(BusParamFirst busParamFirst){
         return busParamFirstDao.updateByPrimaryKeySelective(busParamFirst);
     }
@@ -63,6 +64,7 @@ public class DataConfigServiceImpl implements DataConfigService {
     /**
      * 查询二级参数信息
      */
+    @Override
     public List<Map<String,Object>> queryParamSecondInfo(BusParamSecond busParamSecond){
         return busParamSecondDao.queryParamSecondInfo(busParamSecond);
     }
@@ -70,6 +72,7 @@ public class DataConfigServiceImpl implements DataConfigService {
     /**
      * 新增二级参数信息
      */
+    @Override
     public int addParamSecondInfo(List<BusParamSecond> list){
         int sum = 0;
         for(BusParamSecond busParamSecond : list){
@@ -83,6 +86,7 @@ public class DataConfigServiceImpl implements DataConfigService {
     /**
      * 修改二级参数信息
      */
+    @Override
     public int updateParamSecondInfo(List<BusParamSecond> list){
         int sum = 0;
         for(BusParamSecond busParamSecond : list){

@@ -27,6 +27,12 @@ public class ProjConfigController {
         return Result.result(1, projConfigServiceImpl.queryAllInfo());
     }
 
+    @ApiOperation(value="获取项目简要信息", notes="获取项目简要信息")
+    @GetMapping("/queryBriefInfo")
+    public Result queryBriefInfo(){
+        return Result.result(1, projConfigServiceImpl.queryBriefInfo());
+    }
+
     @ApiOperation(value="修改项目配置信息", notes="修改项目配置信息")
     @PostMapping("/updateProjConfig")
     public Result updateProjConfig(@RequestBody BusProject busProject){
