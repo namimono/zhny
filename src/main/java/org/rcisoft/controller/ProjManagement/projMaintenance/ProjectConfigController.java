@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "项目编辑-项目配置")
 @RestController
 @RequestMapping("projectConfig")
-public class ProjConfigController {
+public class ProjectConfigController {
 
     @Autowired
     private ProjectConfigService projConfigServiceImpl;

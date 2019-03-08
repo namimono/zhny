@@ -25,5 +25,5 @@ public interface SysProvinceDao extends Mapper<SysProvince> {
             "FROM sys_province a,sys_city b\n" +
             "WHERE a.id = b.province_id;")
     @ResultType(PositionInfo.class)
-    List<Map<String,Object>> queryProvinceInfo();
+    List<PositionInfo> queryProvinceInfo();
 }
