@@ -14,7 +14,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class LocalInfo {
+public class PositionInfo {
 
     /**
      * 省份ID
