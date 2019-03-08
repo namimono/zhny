@@ -59,6 +59,12 @@ public class ProjConfigController {
         return Result.result(1, projConfigServiceImpl.queryCityInfo(provinceId));
     }
 
+    @ApiOperation(value="处理省份、城市及其code信息的格式", notes="处理省份、城市及其code信息的格式")
+    @GetMapping("/processingFormat")
+    public Result processingFormat(){
+        return Result.result(1, projConfigServiceImpl.processingFormat());
+    }
+
     @ApiOperation(value="获取线下团队信息", notes="获取线下团队信息")
     @GetMapping("/queryOutTeamInfo")
     public Result queryOutTeamInfo(){
@@ -129,23 +135,5 @@ public class ProjConfigController {
     @DeleteMapping("/deleteBuildZone")
     public Result deleteBuildZone(@RequestBody BusBuildingZone busBuildingZone){
         return Result.result(1, projConfigServiceImpl.deleteBuildZone(busBuildingZone));
-    }
-
-    @ApiOperation(value="获取线上团队及其负责人信息", notes="获取线上团队及其负责人信息")
-    @RequestMapping(value = "/queryAllOnTeamInfo",method = RequestMethod.GET)
-    public Result queryAllOnTeamInfo(){
-        return Result.result(1, projConfigServiceImpl.queryAllOnTeamInfo());
-    }
-
-    @ApiOperation(value="获取线下团队及其负责人信息", notes="获取线下团队及其负责人信息")
-    @RequestMapping(value = "/queryAllOutTeamInfo",method = RequestMethod.GET)
-    public Result queryAllOutTeamInfo(){
-        return Result.result(1, projConfigServiceImpl.queryAllOutTeamInfo());
-    }
-
-    @ApiOperation(value = "获取所有关于项目的信息",notes = "获取所有关于项目的信息")
-    @RequestMapping(value = "/queryAllProjInfo",method = RequestMethod.GET)
-    public Result queryAllProjInfo(){
-        return  Result.result(1,projConfigServiceImpl.queryAllProjInfo());
     }
 }
