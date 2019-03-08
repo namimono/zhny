@@ -111,4 +111,9 @@ public interface ProjConfigService {
      * 获取所有线下团队信息及团队负责人信息
      */
     List<Map<String,Object>> queryAllOutTeamInfo();
+
+    /**
+     * 获取关于项目的所有信息
+     */
+    List<Map<String,Object>> queryAllProjInfo();
 }

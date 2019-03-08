@@ -218,4 +218,12 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     public List<Map<String, Object>> queryAllOutTeamInfo() {
         return busTeamDao.queryAllOutTeamInfo();
     }
+
+    /**
+     * 获取关于项目的所有信息
+     */
+    @Override
+    public List<Map<String, Object>> queryAllProjInfo() {
+        return busProjectDao.queryAllProjInfo();
+    }
 }

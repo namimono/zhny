@@ -32,4 +32,12 @@ public interface BusProjectDao extends Mapper<BusProject> {
             "WHERE a.user_id = b.id AND a.building_id = c.id;")
     @ResultType(ProjectBriefInfo.class)
     List<Map<String,Object>> queryBriefInfo();
+
+    /**
+     *  查询关于项目的所有信息
+     */
+    @Select("select * from bus_project as bp right join bus_project_saving as bps on bp.id = bps.project_id")
+    List<Map<String,Object>> queryAllProjInfo();
+
+
 }

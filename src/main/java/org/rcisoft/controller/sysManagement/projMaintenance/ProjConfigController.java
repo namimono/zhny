@@ -142,4 +142,10 @@ public class ProjConfigController {
     public Result queryAllOutTeamInfo(){
         return Result.result(1, projConfigServiceImpl.queryAllOutTeamInfo());
     }
+
+    @ApiOperation(value = "获取所有关于项目的信息",notes = "获取所有关于项目的信息")
+    @RequestMapping(value = "/queryAllProjInfo",method = RequestMethod.GET)
+    public Result queryAllProjInfo(){
+        return  Result.result(1,projConfigServiceImpl.queryAllProjInfo());
+    }
 }
