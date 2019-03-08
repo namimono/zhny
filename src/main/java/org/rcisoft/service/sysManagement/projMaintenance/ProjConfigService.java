@@ -3,6 +3,7 @@ package org.rcisoft.service.sysManagement.projMaintenance;
 import org.rcisoft.entity.BusBuilding;
 import org.rcisoft.entity.BusBuildingZone;
 import org.rcisoft.entity.BusProject;
+import org.rcisoft.vo.sysManagement.projMaintenance.PositionInfo;
 import org.rcisoft.vo.sysManagement.projMaintenance.ProjectBriefInfo;
 
 import java.util.List;
@@ -31,7 +32,12 @@ public interface ProjConfigService {
     /**
      * 获取省份、城市及其code信息
      */
-    List<Map<String,Object>> queryProvinceInfo();
+    List<PositionInfo> queryProvinceInfo();
+
+    /**
+     * 处理省份、城市及其code信息的格式为List<Map<string,List<Map<string,string>>>>
+     */
+    List<Map<String,Object>> processingFormat();
 
     /**
      * 根据省份ID获取
@@ -102,18 +108,4 @@ public interface ProjConfigService {
      * 删除建筑分区(气候分区)
      */
     int deleteBuildZone(BusBuildingZone busBuildingZone);
-
-    /**
-     * 获取所有线上团队信息及团队负责人信息
-     */
-    List<Map<String,Object>> queryAllOnTeamInfo();
-    /**
-     * 获取所有线下团队信息及团队负责人信息
-     */
-    List<Map<String,Object>> queryAllOutTeamInfo();
-
-    /**
-     * 获取关于项目的所有信息
-     */
-    List<Map<String,Object>> queryAllProjInfo();
 }

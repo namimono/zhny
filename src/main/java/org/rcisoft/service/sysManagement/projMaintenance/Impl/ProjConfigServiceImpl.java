@@ -7,14 +7,13 @@ import org.rcisoft.entity.BusBuilding;
 import org.rcisoft.entity.BusBuildingZone;
 import org.rcisoft.entity.BusProject;
 import org.rcisoft.service.sysManagement.projMaintenance.ProjConfigService;
+import org.rcisoft.vo.sysManagement.projMaintenance.PositionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Create by 土豆儿
@@ -88,8 +87,50 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      * 获取省份、城市及其code信息
      */
     @Override
-    public List<Map<String,Object>> queryProvinceInfo(){
+    public List<PositionInfo> queryProvinceInfo(){
         return sysProvinceDao.queryProvinceInfo();
+    }
+
+    /**
+     * 处理省份、城市及其code信息的格式
+     */
+    @Override
+    public List<Map<String,Object>> processingFormat(){
+        List<Map<String,Object>> data = new ArrayList<>();
+        List<PositionInfo> positionInfoList = sysProvinceDao.queryProvinceInfo();
+        Map<String,List<PositionInfo>> resultMap = new HashMap<>(16);
+        /*
+        将所有位置信息数据通过省份ID分为34组，存于resultMap中
+         */
+        for(PositionInfo positionInfo : positionInfoList){
+            if (resultMap.containsKey(positionInfo.getProId())){
+                resultMap.get(positionInfo.getProId()).add(positionInfo);
+            }else {
+                List<PositionInfo> list = new ArrayList<>();
+                list.add(positionInfo);
+                resultMap.put(positionInfo.getProId(),list);
+            }
+        }
+        Map<String,List<PositionInfo>> resultMap1 = resultMap;
+        /*
+        对每组数据进行进一步格式处理
+         */
+        for(String key : resultMap.keySet()){
+            Map<String,Object> proMap = new HashMap<>(16);
+            proMap.put("proId",resultMap.get(key).get(0).getProId());
+            proMap.put("proName",resultMap.get(key).get(0).getProName());
+            List<Map<String,String>> cityList = new ArrayList<>();
+            for(PositionInfo positionInfo : resultMap.get(key)){
+                Map<String,String> cityMap = new HashMap<>(16);
+                cityMap.put("cityId",positionInfo.getCityId());
+                cityMap.put("cityName",positionInfo.getCityName());
+                cityMap.put("coding",positionInfo.getCoding());
+                cityList.add(cityMap);
+            }
+            proMap.put("city",cityList);
+            data.add(proMap);
+        }
+        return data;
     }
 
     /**
@@ -202,28 +243,5 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     @Override
     public int deleteBuildZone(BusBuildingZone busBuildingZone){
         return busBuildingZoneDao.deleteByPrimaryKey(busBuildingZone);
-    }
-
-    /**
-     * 获取所有线上团队信息和团队负责人信息
-     */
-    @Override
-    public List<Map<String, Object>> queryAllOnTeamInfo() {
-        return busTeamDao.queryAllOnTeamInfo();
-    }
-    /**
-     * 获取所有线上团队信息和团队负责人信息
-     */
-    @Override
-    public List<Map<String, Object>> queryAllOutTeamInfo() {
-        return busTeamDao.queryAllOutTeamInfo();
-    }
-
-    /**
-     * 获取关于项目的所有信息
-     */
-    @Override
-    public List<Map<String, Object>> queryAllProjInfo() {
-        return busProjectDao.queryAllProjInfo();
     }
 }
