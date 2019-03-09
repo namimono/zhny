@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * Time：2019/3/4 14:54
  **/
 
-@Api(tags = "项目编辑-项目配置")
+@Api(tags = "系统管理")
 @RestController
 @RequestMapping("projectConfig")
 public class ProjectConfigController {
