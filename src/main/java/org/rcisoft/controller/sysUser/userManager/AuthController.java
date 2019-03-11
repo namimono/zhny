@@ -1,5 +1,6 @@
 package org.rcisoft.controller.sysUser.userManager;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.entity.SysUser;
@@ -12,12 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @Author Minghui Xu
  * @Description:
  * @Date: Created in 16:36 2019/3/6
  */
+@Api(tags = "用户管理")
 @RestController
 @RequestMapping("user")
 public class AuthController {
@@ -48,6 +51,16 @@ public class AuthController {
     public Result register(SysUser addedUser)throws AuthenticationException{
         Integer result = authService.register(addedUser);
         return Result.result(result,result);
+    }
+
+    @ApiOperation(value = "菜单查询",notes = "菜单查询")
+    @RequestMapping(value = "/menu",method = RequestMethod.POST)
+    public Result userMenu(HttpServletRequest request){
+        String token = request.getHeader(tokenHeader);
+        System.out.println(token);
+        Map<String,Object> map = authService.userMenu(token);
+        return Result.result(1,map);
+
     }
 
 }

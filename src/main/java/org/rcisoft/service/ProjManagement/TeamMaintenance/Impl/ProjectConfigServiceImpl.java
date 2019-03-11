@@ -15,16 +15,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Create by 土豆儿
- * Time：2019/3/4 14:39
+ * Create by MingHui Xu
  **/
 
 @Service
 //@Transactional(readOnly = true,propagation = Propagation.NOT_SUPPORTED)
 public class ProjectConfigServiceImpl implements ProjectConfigService {
 
-    @Autowired
-    private ProjConfigDao projConfigDao;
     @Autowired
     private BusTeamDao busTeamDao;
     @Autowired

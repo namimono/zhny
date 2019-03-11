@@ -42,4 +42,14 @@ public interface SysUserDao extends Mapper<SysUser> {
     @Select("<script>select count(1) from sys_user</script>")
     @ResultType(SysUser.class)
     Integer selectUserCount();
+
+    /**
+     * 根据用户名查询菜单详情
+     * Create by Minghui Xu
+     * @param username
+     * @return
+     */
+    @Select("<script>select su.id,sm.url,sm.name from sys_user su , sys_user_role_mid surm , sys_role_menu_mid srmm , sys_menu sm" +
+            " where su.id = surm.user_id and surm.role_id = srmm.role_id and srmm.menu_id = sm.id and su.username = #{username} </script>")
+    Map<String,Object> userMenu(@Param("username") String username);
 }

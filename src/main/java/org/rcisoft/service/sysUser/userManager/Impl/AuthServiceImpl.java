@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -79,5 +81,14 @@ public class AuthServiceImpl implements AuthService {
             return jwtTokenUtil.refreshToken(token);
         }
         return null;
+    }
+
+    @Override
+    public Map<String, Object> userMenu(String oldToken) {
+        final String token = oldToken.substring(tokenHead.length());
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        Map<String,Object> map = new HashMap<>();
+        map = sysUserDao.userMenu(username);
+        return map;
     }
 }
