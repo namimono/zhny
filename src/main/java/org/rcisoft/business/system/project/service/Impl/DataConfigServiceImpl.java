@@ -1,4 +1,4 @@
-package org.rcisoft.service.sysManagement.projMaintenance.Impl;
+package org.rcisoft.business.system.project.service.Impl;
 
 import com.github.pagehelper.PageInfo;
 import org.rcisoft.base.result.PageUtil;
@@ -8,8 +8,9 @@ import org.rcisoft.dao.BusParamSecondDao;
 import org.rcisoft.dao.SysSystemDao;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamSecond;
-import org.rcisoft.service.sysManagement.projMaintenance.DataConfigService;
-import org.rcisoft.vo.sysManagement.projMaintenance.ParamFirstAndSecond;
+import org.rcisoft.business.system.project.service.DataConfigService;
+import org.rcisoft.business.system.project.entity.ParamFirstAndSecond;
+import org.rcisoft.entity.SysSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class DataConfigServiceImpl implements DataConfigService {
      * 查询系统类型信息
      */
     @Override
-    public List<Map<String,Object>> querySysSystemInfo(){
+    public List<SysSystem> querySysSystemInfo(){
         return sysSystemDao.querySysSystemInfo();
     }
 
@@ -42,7 +43,7 @@ public class DataConfigServiceImpl implements DataConfigService {
      * 查询一级参数信息
      */
     @Override
-    public List<Map<String,Object>> queryParamFirstInfo(BusParamFirst busParamFirst){
+    public List<BusParamFirst> queryParamFirstInfo(BusParamFirst busParamFirst){
         return busParamFirstDao.queryParamFirstInfo(busParamFirst);
     }
 
@@ -68,7 +69,7 @@ public class DataConfigServiceImpl implements DataConfigService {
      * 查询二级参数信息
      */
     @Override
-    public List<Map<String,Object>> queryParamSecondInfo(BusParamSecond busParamSecond){
+    public List<BusParamSecond> queryParamSecondInfo(BusParamSecond busParamSecond){
         return busParamSecondDao.queryParamSecondInfo(busParamSecond);
     }
 

@@ -1,8 +1,13 @@
-package org.rcisoft.service.sysManagement.projMaintenance;
+package org.rcisoft.business.system.project.service;
 
 import org.rcisoft.entity.EnergyPrice;
 import org.rcisoft.entity.EnergyStandard;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -21,4 +26,15 @@ public interface BasicDataService {
      * 新增能源标准
      */
     int addEnergyStandard(List<EnergyStandard> list);
+
+    /**
+     * 上传基准碳排放量模板
+     */
+    String upload(MultipartFile file);
+
+    /**
+     * 下载基准碳排放量模板
+     */
+    String downloadFile(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException;
+
 }

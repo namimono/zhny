@@ -1,18 +1,15 @@
-package org.rcisoft.service.sysManagement.projMaintenance.Impl;
+package org.rcisoft.business.system.project.service.Impl;
 
 import org.rcisoft.base.util.UuidUtil;
+import org.rcisoft.business.system.project.entity.ProjectBriefInfo;
 import org.rcisoft.dao.*;
-import org.rcisoft.dao.sysManagement.projMaintenance.ProjConfigDao;
-import org.rcisoft.entity.BusBuilding;
-import org.rcisoft.entity.BusBuildingZone;
-import org.rcisoft.entity.BusProject;
-import org.rcisoft.service.sysManagement.projMaintenance.ProjConfigService;
-import org.rcisoft.vo.sysManagement.projMaintenance.PositionInfo;
+import org.rcisoft.business.system.project.dao.ProjConfigDao;
+import org.rcisoft.entity.*;
+import org.rcisoft.business.system.project.service.ProjConfigService;
+import org.rcisoft.business.system.project.entity.PositionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -21,7 +18,6 @@ import java.util.*;
  **/
 
 @Service
-//@Transactional(readOnly = true,propagation = Propagation.NOT_SUPPORTED)
 public class ProjConfigServiceImpl implements ProjConfigService {
 
     @Autowired
@@ -47,7 +43,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      * 查询全部项目表信息
      */
     @Override
-    public List<Map<String,Object>> queryAllInfo(){
+    public List<BusProject> queryAllInfo(){
         return busProjectDao.queryAllInfo();
     }
 
@@ -133,19 +129,19 @@ public class ProjConfigServiceImpl implements ProjConfigService {
         return data;
     }
 
-    /**
-     * 根据省份ID获取城市信息及其code
-     */
-    @Override
-    public List<Map<String,Object>> queryCityInfo(String provinceId){
-        return sysCityDao.queryCityInfo(provinceId);
-    }
+//    /**
+//     * 根据省份ID获取城市信息及其code
+//     */
+//    @Override
+//    public List<Map<String,Object>> queryCityInfo(String provinceId){
+//        return sysCityDao.queryCityInfo(provinceId);
+//    }
 
     /**
      * 获取线下团队信息
      */
     @Override
-    public List<Map<String,Object>> queryOutTeamInfo(){
+    public List<BusTeam> queryOutTeamInfo(){
         return busTeamDao.queryOutTeamInfo();
     }
 
@@ -153,7 +149,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      * 获取线上团队信息
      */
     @Override
-    public List<Map<String,Object>> queryOnTeamInfo(){
+    public List<BusTeam> queryOnTeamInfo(){
         return busTeamDao.queryOnTeamInfo();
     }
 
@@ -161,7 +157,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      * 获取巡查员信息
      */
     @Override
-    public List<Map<String,Object>> queryInspectorInfo(){
+    public List<SysInspector> queryInspectorInfo(){
         return sysInspectorDao.queryInspectorInfo();
     }
 
@@ -169,7 +165,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      * 获取建筑类型信息
      */
     @Override
-    public List<Map<String,Object>> queryBuildingInfo(){
+    public List<BusBuilding> queryBuildingInfo(){
         return busBuildingDao.queryBuildingInfo();
     }
 
@@ -177,7 +173,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      * 获取建筑分区(气候分区)信息
      */
     @Override
-    public List<Map<String,Object>> queryBuildZoneInfo(){
+    public List<BusBuildingZone> queryBuildZoneInfo(){
         return busBuildingZoneDao.queryBuildZoneInfo();
     }
 
@@ -185,7 +181,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      * 获取业主信息
      */
     @Override
-    public List<Map<String,Object>> queryOwnerInfo(){
+    public List<SysUser> queryOwnerInfo(){
         return sysUserDao.queryOwnerInfo();
     }
 
@@ -193,7 +189,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      * 查询项目简要信息
      */
     @Override
-    public List<Map<String,Object>> queryBriefInfo(){
+    public List<ProjectBriefInfo> queryBriefInfo(){
         return busProjectDao.queryBriefInfo();
     }
 

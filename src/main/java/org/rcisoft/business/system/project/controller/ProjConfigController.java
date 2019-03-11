@@ -1,4 +1,4 @@
-package org.rcisoft.controller.sysManagement.projMaintenance;
+package org.rcisoft.business.system.project.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -6,7 +6,7 @@ import org.rcisoft.base.result.Result;
 import org.rcisoft.entity.BusBuilding;
 import org.rcisoft.entity.BusBuildingZone;
 import org.rcisoft.entity.BusProject;
-import org.rcisoft.service.sysManagement.projMaintenance.ProjConfigService;
+import org.rcisoft.business.system.project.service.ProjConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,11 +53,11 @@ public class ProjConfigController {
         return Result.result(1, projConfigServiceImpl.queryProvinceInfo());
     }
 
-    @ApiOperation(value="根据省份ID获取城市信息及其code", notes="根据省份ID获取城市信息及其code")
-    @GetMapping("/queryCityInfo")
-    public Result queryCityInfo(@RequestParam("provinceId") String provinceId){
-        return Result.result(1, projConfigServiceImpl.queryCityInfo(provinceId));
-    }
+//    @ApiOperation(value="根据省份ID获取城市信息及其code", notes="根据省份ID获取城市信息及其code")
+//    @GetMapping("/queryCityInfo")
+//    public Result queryCityInfo(@RequestParam("provinceId") String provinceId){
+//        return Result.result(1, projConfigServiceImpl.queryCityInfo(provinceId));
+//    }
 
     @ApiOperation(value="处理省份、城市及其code信息的格式", notes="处理省份、城市及其code信息的格式")
     @GetMapping("/processingFormat")

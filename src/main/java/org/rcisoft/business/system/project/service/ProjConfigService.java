@@ -1,10 +1,8 @@
-package org.rcisoft.service.sysManagement.projMaintenance;
+package org.rcisoft.business.system.project.service;
 
-import org.rcisoft.entity.BusBuilding;
-import org.rcisoft.entity.BusBuildingZone;
-import org.rcisoft.entity.BusProject;
-import org.rcisoft.vo.sysManagement.projMaintenance.PositionInfo;
-import org.rcisoft.vo.sysManagement.projMaintenance.ProjectBriefInfo;
+import org.rcisoft.business.system.project.entity.ProjectBriefInfo;
+import org.rcisoft.entity.*;
+import org.rcisoft.business.system.project.entity.PositionInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -17,7 +15,7 @@ public interface ProjConfigService {
     /**
      * 查询全部项目表信息
      */
-    List<Map<String,Object>> queryAllInfo();
+    List<BusProject> queryAllInfo();
 
     /**
      * 新增项目配置信息
@@ -38,46 +36,46 @@ public interface ProjConfigService {
      * 处理省份、城市及其code信息的格式为List<Map<string,List<Map<string,string>>>>
      */
     List<Map<String,Object>> processingFormat();
-
-    /**
-     * 根据省份ID获取
-     */
-    List<Map<String,Object>> queryCityInfo(String provinceId);
+//
+//    /**
+//     * 根据省份ID获取
+//     */
+//    List<Map<String,Object>> queryCityInfo(String provinceId);
 
     /**
      * 获取线下团队信息
      */
-    List<Map<String,Object>> queryOutTeamInfo();
+    List<BusTeam> queryOutTeamInfo();
 
     /**
      * 获取线上团队信息
      */
-    List<Map<String,Object>> queryOnTeamInfo();
+    List<BusTeam> queryOnTeamInfo();
 
     /**
      * 获取巡查员信息
      */
-    List<Map<String,Object>> queryInspectorInfo();
+    List<SysInspector> queryInspectorInfo();
 
     /**
      * 获取建筑类型信息
      */
-    List<Map<String,Object>> queryBuildingInfo();
+    List<BusBuilding> queryBuildingInfo();
 
     /**
      * 获取建筑分区(气候分区)信息
      */
-    List<Map<String,Object>> queryBuildZoneInfo();
+    List<BusBuildingZone> queryBuildZoneInfo();
 
     /**
      * 获取业主信息
      */
-    List<Map<String,Object>> queryOwnerInfo();
+    List<SysUser> queryOwnerInfo();
 
     /**
      * 查询项目简要信息
      */
-    List<Map<String,Object>> queryBriefInfo();
+    List<ProjectBriefInfo> queryBriefInfo();
 
     /**
      * 新增建筑类型

@@ -1,9 +1,10 @@
-package org.rcisoft.service.sysManagement.projMaintenance;
+package org.rcisoft.business.system.project.service;
 
 import com.github.pagehelper.PageInfo;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamSecond;
-import org.rcisoft.vo.sysManagement.projMaintenance.ParamFirstAndSecond;
+import org.rcisoft.business.system.project.entity.ParamFirstAndSecond;
+import org.rcisoft.entity.SysSystem;
 
 import java.util.List;
 import java.util.Map;
@@ -18,12 +19,12 @@ public interface DataConfigService {
     /**
      * 查询系统类型信息
      */
-    List<Map<String,Object>> querySysSystemInfo();
+    List<SysSystem> querySysSystemInfo();
 
     /**
      * 查询一级参数信息
      */
-    List<Map<String,Object>> queryParamFirstInfo(BusParamFirst busParamFirst);
+    List<BusParamFirst> queryParamFirstInfo(BusParamFirst busParamFirst);
 
     /**
      * 新增一级参数信息
@@ -38,7 +39,7 @@ public interface DataConfigService {
     /**
      * 查询二级参数信息
      */
-    List<Map<String,Object>> queryParamSecondInfo(BusParamSecond busParamSecond);
+    List<BusParamSecond> queryParamSecondInfo(BusParamSecond busParamSecond);
 
     /**
      * 新增二级参数信息

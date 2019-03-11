@@ -1,17 +1,14 @@
-package org.rcisoft.controller.sysManagement.projMaintenance;
+package org.rcisoft.business.system.project.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.rcisoft.base.result.Result;
-import org.rcisoft.service.sysManagement.projMaintenance.SysCityService;
+import org.rcisoft.business.system.project.service.SysCityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Author Minghui Xu

@@ -21,5 +21,5 @@ public interface SysInspectorDao extends Mapper<SysInspector> {
      */
     @Select("SELECT * FROM sys_inspector;")
     @ResultType(SysInspector.class)
-    List<Map<String,Object>> queryInspectorInfo();
+    List<SysInspector> queryInspectorInfo();
 }

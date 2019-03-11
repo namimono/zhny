@@ -1,9 +1,9 @@
-package org.rcisoft.service.sysManagement.projMaintenance.Impl;
+package org.rcisoft.business.system.project.service.Impl;
 
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.dao.BusDeviceDao;
 import org.rcisoft.entity.BusDevice;
-import org.rcisoft.service.sysManagement.projMaintenance.DeviceConfigService;
+import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
      * 根据系统类型查询设备信息
      */
     @Override
-    public List<Map<String,String>> queryDeviceInfo(BusDevice busDevice){
+    public List<BusDevice> queryDeviceInfo(BusDevice busDevice){
         return busDeviceDao.queryDeviceInfo(busDevice);
     }
 

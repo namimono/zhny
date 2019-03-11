@@ -1,4 +1,4 @@
-package org.rcisoft.vo.sysManagement.projMaintenance;
+package org.rcisoft.business.system.project.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

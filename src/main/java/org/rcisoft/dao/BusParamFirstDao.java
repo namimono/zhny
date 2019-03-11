@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.entity.BusParamFirst;
-import org.rcisoft.vo.sysManagement.projMaintenance.ParamFirstAndSecond;
+import org.rcisoft.business.system.project.entity.ParamFirstAndSecond;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -22,7 +22,7 @@ public interface BusParamFirstDao extends Mapper<BusParamFirst> {
      * 查询一级参数信息
      */
     @Select("SELECT * FROM bus_param_first WHERE project_id = #{projectId};")
-    List<Map<String,Object>> queryParamFirstInfo(BusParamFirst busParamFirst);
+    List<BusParamFirst> queryParamFirstInfo(BusParamFirst busParamFirst);
 
     /**
      * 数据配置联表查询一级、二级参数信息

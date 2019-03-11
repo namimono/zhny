@@ -22,5 +22,5 @@ public interface BusBuildingDao extends Mapper<BusBuilding> {
      */
     @Select("SELECT * FROM bus_building;")
     @ResultType(BusProject.class)
-    List<Map<String,Object>> queryBuildingInfo();
+    List<BusBuilding> queryBuildingInfo();
 }

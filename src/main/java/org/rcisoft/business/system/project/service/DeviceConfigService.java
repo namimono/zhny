@@ -1,4 +1,4 @@
-package org.rcisoft.service.sysManagement.projMaintenance;
+package org.rcisoft.business.system.project.service;
 
 import org.rcisoft.entity.BusDevice;
 
@@ -20,5 +20,5 @@ public interface DeviceConfigService {
     /**
      * 根据系统类型查询设备信息
      */
-    List<Map<String,String>> queryDeviceInfo(BusDevice busDevice);
+    List<BusDevice> queryDeviceInfo(BusDevice busDevice);
 }

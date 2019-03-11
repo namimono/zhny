@@ -1,13 +1,12 @@
-package org.rcisoft.controller.sysManagement.projMaintenance;
+package org.rcisoft.business.system.project.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.aop.PageAop;
-import org.rcisoft.base.result.PageUtil;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamSecond;
-import org.rcisoft.service.sysManagement.projMaintenance.DataConfigService;
+import org.rcisoft.business.system.project.service.DataConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +27,7 @@ public class DataConfigController extends PageAop {
     @ApiOperation(value="查询系统类型信息", notes="查询系统类型信息")
     @GetMapping("/querySysSystemInfo")
     public Result querySysSystemInfo(){
-        return Result.result(1, dataConfigServiceImpl.querySysSystemInfo());
+        return Result.result(dataConfigServiceImpl.querySysSystemInfo());
     }
 
     @ApiOperation(value="查询一级参数信息", notes="查询一级参数信息")

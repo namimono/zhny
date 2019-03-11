@@ -21,5 +21,5 @@ public interface BusBuildingZoneDao extends Mapper<BusBuildingZone>{
      */
     @Select("SELECT * FROM bus_building_zone;")
     @ResultType(BusBuildingZone.class)
-    List<Map<String,Object>> queryBuildZoneInfo();
+    List<BusBuildingZone> queryBuildZoneInfo();
 }

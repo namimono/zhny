@@ -24,5 +24,5 @@ public interface BusParamSecondDao extends Mapper<BusParamSecond> {
             "project_id = #{projectId} \n" +
             "AND \n" +
             "system_id = #{systemId};")
-    List<Map<String,Object>> queryParamSecondInfo(BusParamSecond busParamSecond);
+    List<BusParamSecond> queryParamSecondInfo(BusParamSecond busParamSecond);
 }

@@ -19,5 +19,5 @@ public interface BusDeviceDao extends Mapper<BusDevice> {
      * 根据系统类型查询设备信息
      */
     @Select("SELECT * FROM bus_device where system_id = #{systemId}")
-    List<Map<String,String>> queryDeviceInfo(BusDevice busDevice);
+    List<BusDevice> queryDeviceInfo(BusDevice busDevice);
 }

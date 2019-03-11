@@ -19,5 +19,5 @@ public interface SysSystemDao extends Mapper<SysSystem> {
      * 查询系统类型信息
      */
     @Select("SELECT * FROM sys_system;")
-    List<Map<String,Object>> querySysSystemInfo();
+    List<SysSystem> querySysSystemInfo();
 }

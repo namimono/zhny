@@ -1,4 +1,4 @@
-package org.rcisoft.service.sysManagement.projMaintenance;
+package org.rcisoft.business.system.project.service;
 
 import org.rcisoft.entity.SysCity;
 

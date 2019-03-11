@@ -1,4 +1,4 @@
-package org.rcisoft.dao.sysManagement.projMaintenance;
+package org.rcisoft.business.system.project.dao;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
