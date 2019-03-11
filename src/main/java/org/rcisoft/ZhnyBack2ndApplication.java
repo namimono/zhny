@@ -19,7 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableScheduling
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 @ComponentScan(basePackages={"org.rcisoft"})
-@MapperScan(basePackages = {"org.rcisoft.dao"})
+@MapperScan(basePackages = {"org.rcisoft.**.dao"})
 public class ZhnyBack2ndApplication extends SpringBootServletInitializer {
 
 	@Override

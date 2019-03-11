@@ -25,7 +25,7 @@ public class PageAop {
      * @return
      * @throws Throwable
      */
-    @Around("execution(* org.rcisoft.service..*.impl.*ServiceImpl.*ForPage(..))")
+    @Around("execution(* org.rcisoft.business..*.service.impl.*ServiceImpl.*ForPage(..))")
     public PageInfo<T> selectEntityForPage(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         try {
 //            System.out.println("AOP Aronud before...");
