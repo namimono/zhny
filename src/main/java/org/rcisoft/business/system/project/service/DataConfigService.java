@@ -1,5 +1,6 @@
 package org.rcisoft.service.sysManagement.projMaintenance;
 
+import com.github.pagehelper.PageInfo;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamSecond;
 import org.rcisoft.vo.sysManagement.projMaintenance.ParamFirstAndSecond;
@@ -52,5 +53,5 @@ public interface DataConfigService {
     /**
      * 数据配置联表查询一级、二级参数信息
      */
-    List<ParamFirstAndSecond> queryDataParam(String projectId);
+    PageInfo<ParamFirstAndSecond> queryDataParamForPage(String projectId);
 }

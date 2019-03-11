@@ -2,6 +2,8 @@ package org.rcisoft.controller.sysManagement.projMaintenance;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.rcisoft.base.aop.PageAop;
+import org.rcisoft.base.result.PageUtil;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamSecond;
@@ -18,7 +20,7 @@ import java.util.List;
 @Api(tags = "项目编辑-数据配置")
 @RestController
 @RequestMapping("dataConfig")
-public class DataConfigController {
+public class DataConfigController extends PageAop {
 
     @Autowired
     private DataConfigService dataConfigServiceImpl;
@@ -66,8 +68,8 @@ public class DataConfigController {
     }
 
     @ApiOperation(value="数据配置联表同时查询一级、二级参数信息", notes="数据配置联表同时查询一级、二级参数信息")
-    @GetMapping("/queryDataParam")
-    public Result queryDataParam(@RequestParam("projectId") String projectId){
-        return Result.result(1, dataConfigServiceImpl.queryDataParam(projectId));
+    @GetMapping("/queryDataParamForPage")
+    public Result queryDataParamForPage(@RequestParam("projectId") String projectId){
+        return Result.result(dataConfigServiceImpl.queryDataParamForPage(projectId));
     }
 }

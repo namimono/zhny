@@ -1,5 +1,7 @@
 package org.rcisoft.service.sysManagement.projMaintenance.Impl;
 
+import com.github.pagehelper.PageInfo;
+import org.rcisoft.base.result.PageUtil;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.dao.BusParamFirstDao;
 import org.rcisoft.dao.BusParamSecondDao;
@@ -102,7 +104,7 @@ public class DataConfigServiceImpl implements DataConfigService {
      * 数据配置联表查询一级、二级参数信息
      */
     @Override
-    public List<ParamFirstAndSecond> queryDataParam(String projectId){
-        return busParamFirstDao.queryDataParam(projectId);
+    public PageInfo<ParamFirstAndSecond> queryDataParamForPage(String projectId){
+        return PageUtil.pageResult(busParamFirstDao.queryDataParam(projectId));
     }
 }
