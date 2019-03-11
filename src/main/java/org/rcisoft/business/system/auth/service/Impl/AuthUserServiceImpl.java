@@ -1,9 +1,11 @@
-package org.rcisoft.service.sysUser.userManager.Impl;
+package org.rcisoft.business.system.auth.service.Impl;
 
 import org.rcisoft.base.jwt.JwtTokenUtil;
+import org.rcisoft.business.system.auth.service.AuthService;
+import org.rcisoft.business.system.roleuser.dao.SysUserMenuDao;
 import org.rcisoft.dao.SysUserDao;
+import org.rcisoft.entity.SysMenu;
 import org.rcisoft.entity.SysUser;
-import org.rcisoft.service.sysUser.userManager.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,10 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @Author Minghui Xu
@@ -27,30 +26,30 @@ import java.util.UUID;
  * @Date: Created in 16:08 2019/3/6
  */
 @Service
-public class AuthServiceImpl implements AuthService {
+public class AuthUserServiceImpl implements AuthService {
     private AuthenticationManager authenticationManager;
     private UserDetailsService userDetailsService;
     private JwtTokenUtil jwtTokenUtil;
-    private SysUserDao sysUserDao;
+    private SysUserMenuDao sysUserMenuDao;
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
     @Autowired
-    public AuthServiceImpl(
+    public AuthUserServiceImpl(
             AuthenticationManager authenticationManager,
             UserDetailsService userDetailsService,
             JwtTokenUtil jwtTokenUtil,
-            SysUserDao sysUserDao
+            SysUserMenuDao sysUserMenuDao
     ){
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.jwtTokenUtil = jwtTokenUtil;
-        this.sysUserDao = sysUserDao;
+        this.sysUserMenuDao = sysUserMenuDao;
     }
     @Transactional
     @Override
     public Integer register(SysUser sysUser) {
-        if(sysUserDao.selectOne(sysUser) != null){
+        if(sysUserMenuDao.selectOne(sysUser) != null){
             return null;
         }
         sysUser.setId(UUID.randomUUID().toString().replaceAll("-",""));
@@ -59,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
         sysUser.setPassword(encoder.encode(rawPassword));
         sysUser.setCreateTime(new Date());
         sysUser.setUpdateTime(new Date());
-        return sysUserDao.insert(sysUser);
+        return sysUserMenuDao.insert(sysUser);
     }
 
     @Override
@@ -84,11 +83,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Map<String, Object> userMenu(String oldToken) {
+    public List<SysMenu> userMenu(String oldToken) {
         final String token = oldToken.substring(tokenHead.length());
         String username = jwtTokenUtil.getUsernameFromToken(token);
-        Map<String,Object> map = new HashMap<>();
-        map = sysUserDao.userMenu(username);
-        return map;
+        List<SysMenu> list = sysUserMenuDao.userMenu(username);
+        return list;
     }
 }

@@ -1,10 +1,12 @@
-package org.rcisoft.controller.sysUser.userManager;
+package org.rcisoft.business.system.auth.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
+import org.rcisoft.business.system.auth.service.AuthService;
+import org.rcisoft.business.system.auth.service.Impl.AuthUserServiceImpl;
+import org.rcisoft.entity.SysMenu;
 import org.rcisoft.entity.SysUser;
-import org.rcisoft.service.sysUser.userManager.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,13 +25,13 @@ import java.util.Map;
  */
 @Api(tags = "用户管理")
 @RestController
-@RequestMapping("user")
-public class AuthController {
+@RequestMapping("authUser")
+public class AuthUserController {
     @Value("${jwt.header}")
     private String tokenHeader;
 
     @Autowired
-    private AuthService authService;
+    private AuthUserServiceImpl authService;
 
 
     @ApiOperation(value = "用户登录",notes = "用户登录")
@@ -53,14 +56,5 @@ public class AuthController {
         return Result.result(result,result);
     }
 
-    @ApiOperation(value = "菜单查询",notes = "菜单查询")
-    @RequestMapping(value = "/menu",method = RequestMethod.POST)
-    public Result userMenu(HttpServletRequest request){
-        String token = request.getHeader(tokenHeader);
-        System.out.println(token);
-        Map<String,Object> map = authService.userMenu(token);
-        return Result.result(1,map);
-
-    }
 
 }

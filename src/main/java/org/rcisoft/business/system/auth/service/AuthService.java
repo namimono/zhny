@@ -1,8 +1,10 @@
-package org.rcisoft.service.sysUser.userManager;
+package org.rcisoft.business.system.auth.service;
 
 import org.apache.ibatis.annotations.Param;
+import org.rcisoft.entity.SysMenu;
 import org.rcisoft.entity.SysUser;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,5 +16,5 @@ public interface AuthService {
     Integer register(SysUser userToAdd);
     String login(String username,String password);
     String refresh(String oldToken);
-    Map<String,Object> userMenu(String oldtoken);
+    List<SysMenu> userMenu(String oldtoken);
 }

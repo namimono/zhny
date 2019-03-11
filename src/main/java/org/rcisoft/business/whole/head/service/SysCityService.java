@@ -1,5 +1,6 @@
-package org.rcisoft.business.system.project.service;
+package org.rcisoft.business.whole.head.service;
 
+import org.rcisoft.entity.BusTemperature;
 import org.rcisoft.entity.SysCity;
 
 import java.util.Map;
@@ -15,5 +16,5 @@ public interface SysCityService {
      * @param name
      * @return
      */
-    Map<String,Object> queryCityByName(String city);
+    BusTemperature queryCityByName(String city);
 }

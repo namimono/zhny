@@ -1,4 +1,4 @@
-package org.rcisoft.service.sysUser.userManager.Impl;
+package org.rcisoft.business.system.auth.service.Impl;
 
 import org.rcisoft.dao.SysUserDao;
 import org.rcisoft.entity.SysUser;
@@ -27,8 +27,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if(sysUser == null){
             throw new UsernameNotFoundException("用户名不存在");
         }
-        System.out.println("s:"+s);
-        System.out.println("username:"+sysUser.getUsername()+";password:"+sysUser.getPassword());
         return sysUser;
     }
 }

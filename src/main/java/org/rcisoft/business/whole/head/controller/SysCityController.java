@@ -1,14 +1,16 @@
-package org.rcisoft.business.system.project.controller;
+package org.rcisoft.business.whole.head.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
-import org.rcisoft.business.system.project.service.SysCityService;
+import org.rcisoft.business.whole.head.service.SysCityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * @Author Minghui Xu
@@ -25,6 +27,7 @@ public class SysCityController {
     @ApiOperation(value = "获取城市天气",notes = "获取城市天气")
     @RequestMapping(value = "/weatherInfo",method = RequestMethod.POST)
     public Result weather(@RequestParam String city){
+        System.out.println(city);
         return Result.result(1,sysCityService.queryCityByName(city));
     }
 }

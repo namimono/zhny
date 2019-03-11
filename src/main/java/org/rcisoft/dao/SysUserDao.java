@@ -3,6 +3,7 @@ package org.rcisoft.dao;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
+import org.rcisoft.entity.SysMenu;
 import org.rcisoft.entity.SysUser;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
@@ -43,13 +44,5 @@ public interface SysUserDao extends Mapper<SysUser> {
     @ResultType(SysUser.class)
     Integer selectUserCount();
 
-    /**
-     * 根据用户名查询菜单详情
-     * Create by Minghui Xu
-     * @param username
-     * @return
-     */
-    @Select("<script>select su.id,sm.url,sm.name from sys_user su , sys_user_role_mid surm , sys_role_menu_mid srmm , sys_menu sm" +
-            " where su.id = surm.user_id and surm.role_id = srmm.role_id and srmm.menu_id = sm.id and su.username = #{username} </script>")
-    Map<String,Object> userMenu(@Param("username") String username);
+
 }
