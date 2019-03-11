@@ -1,5 +1,6 @@
 package org.rcisoft.business.system.project.service;
 
+import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.entity.BusDevice;
 
 import java.util.List;
@@ -21,4 +22,9 @@ public interface DeviceConfigService {
      * 根据系统类型查询设备信息
      */
     List<BusDevice> queryDeviceInfo(BusDevice busDevice);
+
+    /**
+     * 查询设备简要信息
+     */
+    List<DeviceBriefInfo> queryDeviceBriefInfo(BusDevice busDevice);
 }

@@ -26,13 +26,13 @@ public class ProjConfigController {
     @ApiOperation(value="获取全部项目表信息", notes="获取全部项目表信息")
     @GetMapping("/queryAllInfo")
     public Result queryAllInfo(){
-        return Result.result(1, projConfigServiceImpl.queryAllInfo());
+        return Result.result(projConfigServiceImpl.queryAllInfo());
     }
 
     @ApiOperation(value="获取项目简要信息", notes="获取项目简要信息")
     @GetMapping("/queryBriefInfo")
     public Result queryBriefInfo(){
-        return Result.result(1, projConfigServiceImpl.queryBriefInfo());
+        return Result.result(projConfigServiceImpl.queryBriefInfo());
     }
 
     @ApiOperation(value="修改项目配置信息", notes="修改项目配置信息")
@@ -50,7 +50,7 @@ public class ProjConfigController {
     @ApiOperation(value="获取省份信息及其ID", notes="获取省份信息及其ID")
     @GetMapping("/queryProvinceInfo")
     public Result queryProvinceInfo(){
-        return Result.result(1, projConfigServiceImpl.queryProvinceInfo());
+        return Result.result(projConfigServiceImpl.queryProvinceInfo());
     }
 
 //    @ApiOperation(value="根据省份ID获取城市信息及其code", notes="根据省份ID获取城市信息及其code")
@@ -62,43 +62,43 @@ public class ProjConfigController {
     @ApiOperation(value="处理省份、城市及其code信息的格式", notes="处理省份、城市及其code信息的格式")
     @GetMapping("/processingFormat")
     public Result processingFormat(){
-        return Result.result(1, projConfigServiceImpl.processingFormat());
+        return Result.result(projConfigServiceImpl.processingFormat());
     }
 
     @ApiOperation(value="获取线下团队信息", notes="获取线下团队信息")
     @GetMapping("/queryOutTeamInfo")
     public Result queryOutTeamInfo(){
-        return Result.result(1, projConfigServiceImpl.queryOutTeamInfo());
+        return Result.result(projConfigServiceImpl.queryOutTeamInfo());
     }
 
     @ApiOperation(value="获取线上团队信息", notes="获取线上团队信息")
     @GetMapping("/queryOnTeamInfo")
     public Result queryOnTeamInfo(){
-        return Result.result(1, projConfigServiceImpl.queryOnTeamInfo());
+        return Result.result(projConfigServiceImpl.queryOnTeamInfo());
     }
 
     @ApiOperation(value="获取巡查员信息", notes="获取巡查员信息")
     @GetMapping("/queryInspectorInfo")
     public Result queryInspectorInfo(){
-        return Result.result(1, projConfigServiceImpl.queryInspectorInfo());
+        return Result.result(projConfigServiceImpl.queryInspectorInfo());
     }
 
     @ApiOperation(value="获取建筑类型信息", notes="获取建筑类型信息")
     @GetMapping("/queryBuildingInfo")
     public Result queryBuildingInfo(){
-        return Result.result(1, projConfigServiceImpl.queryBuildingInfo());
+        return Result.result(projConfigServiceImpl.queryBuildingInfo());
     }
 
     @ApiOperation(value="获取建筑分区(气候分区)信息", notes="获取建筑分区(气候分区)信息")
     @GetMapping("/queryBuildZoneInfo")
     public Result queryBuildZoneInfo(){
-        return Result.result(1, projConfigServiceImpl.queryBuildZoneInfo());
+        return Result.result(projConfigServiceImpl.queryBuildZoneInfo());
     }
 
     @ApiOperation(value="获取业主信息", notes="获取业主信息")
     @GetMapping("/queryOwnerInfo")
     public Result queryOwnerInfo(){
-        return Result.result(1, projConfigServiceImpl.queryOwnerInfo());
+        return Result.result(projConfigServiceImpl.queryOwnerInfo());
     }
 
     @ApiOperation(value="新增建筑类型", notes="新增建筑类型")

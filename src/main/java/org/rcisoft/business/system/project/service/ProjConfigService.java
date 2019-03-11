@@ -15,7 +15,7 @@ public interface ProjConfigService {
     /**
      * 查询全部项目表信息
      */
-    List<BusProject> queryAllInfo();
+    List<Map<String,Object>> queryAllInfo();
 
     /**
      * 新增项目配置信息

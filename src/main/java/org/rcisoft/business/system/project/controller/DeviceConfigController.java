@@ -28,4 +28,10 @@ public class DeviceConfigController {
     public Result addDeviceConfigInfo(@RequestBody BusDevice busDevice){
         return Result.result(1, deviceConfigServiceImpl.addDeviceConfigInfo(busDevice));
     }
+
+    @ApiOperation(value="查询设备简要信息", notes="查询设备简要信息")
+    @PostMapping("/queryDeviceBriefInfo")
+    public Result queryDeviceBriefInfo(@RequestBody BusDevice busDevice){
+        return Result.result(deviceConfigServiceImpl.queryDeviceBriefInfo(busDevice));
+    }
 }

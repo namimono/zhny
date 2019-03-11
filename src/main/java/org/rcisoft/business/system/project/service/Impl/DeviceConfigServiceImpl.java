@@ -1,6 +1,7 @@
 package org.rcisoft.business.system.project.service.Impl;
 
 import org.rcisoft.base.util.UuidUtil;
+import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.dao.BusDeviceDao;
 import org.rcisoft.entity.BusDevice;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
@@ -35,6 +36,14 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     @Override
     public List<BusDevice> queryDeviceInfo(BusDevice busDevice){
         return busDeviceDao.queryDeviceInfo(busDevice);
+    }
+
+    /**
+     * 查询设备简要信息
+     */
+    @Override
+    public List<DeviceBriefInfo> queryDeviceBriefInfo(BusDevice busDevice){
+        return busDeviceDao.queryDeviceBriefInfo(busDevice);
     }
 
 }

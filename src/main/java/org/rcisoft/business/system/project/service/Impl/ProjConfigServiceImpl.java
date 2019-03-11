@@ -43,8 +43,8 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      * 查询全部项目表信息
      */
     @Override
-    public List<BusProject> queryAllInfo(){
-        return busProjectDao.queryAllInfo();
+    public List<Map<String,Object>> queryAllInfo(){
+        return busProjectDao.queryAllProjInfo();
     }
 
     /**
