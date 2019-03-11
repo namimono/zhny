@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 /**
  * Create by 土豆儿
  * Time：2019/3/8 11:09
+ *
+ * 省、城市联表查询实体类
  **/
 @Data
 @NoArgsConstructor

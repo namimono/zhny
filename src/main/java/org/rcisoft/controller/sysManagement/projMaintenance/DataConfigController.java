@@ -64,4 +64,10 @@ public class DataConfigController {
     public Result updateParamSecondInfo(@RequestBody List<BusParamSecond> list){
         return Result.result(1, dataConfigServiceImpl.updateParamSecondInfo(list));
     }
+
+    @ApiOperation(value="数据配置联表同时查询一级、二级参数信息", notes="数据配置联表同时查询一级、二级参数信息")
+    @GetMapping("/queryDataParam")
+    public Result queryDataParam(@RequestParam("projectId") String projectId){
+        return Result.result(1, dataConfigServiceImpl.queryDataParam(projectId));
+    }
 }

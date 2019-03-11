@@ -7,6 +7,7 @@ import org.rcisoft.dao.SysSystemDao;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamSecond;
 import org.rcisoft.service.sysManagement.projMaintenance.DataConfigService;
+import org.rcisoft.vo.sysManagement.projMaintenance.ParamFirstAndSecond;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -95,5 +96,13 @@ public class DataConfigServiceImpl implements DataConfigService {
             sum++;
         }
         return sum;
+    }
+
+    /**
+     * 数据配置联表查询一级、二级参数信息
+     */
+    @Override
+    public List<ParamFirstAndSecond> queryDataParam(String projectId){
+        return busParamFirstDao.queryDataParam(projectId);
     }
 }

@@ -2,6 +2,7 @@ package org.rcisoft.service.sysManagement.projMaintenance;
 
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamSecond;
+import org.rcisoft.vo.sysManagement.projMaintenance.ParamFirstAndSecond;
 
 import java.util.List;
 import java.util.Map;
@@ -47,4 +48,9 @@ public interface DataConfigService {
      * 修改二级参数信息
      */
     int updateParamSecondInfo(List<BusParamSecond> list);
+
+    /**
+     * 数据配置联表查询一级、二级参数信息
+     */
+    List<ParamFirstAndSecond> queryDataParam(String projectId);
 }
