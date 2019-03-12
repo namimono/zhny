@@ -13,11 +13,6 @@ import java.util.Map;
  * Created by Minghui Xu on 2019-3-4
  */
 public interface ProConfigService {
-
-
-
-
-
     /**
      * 获取关于项目的所有信息
      */
