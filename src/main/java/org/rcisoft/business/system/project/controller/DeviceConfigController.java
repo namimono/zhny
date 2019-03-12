@@ -6,10 +6,7 @@ import org.rcisoft.base.result.Result;
 import org.rcisoft.entity.BusDevice;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Create by 土豆儿
@@ -34,4 +31,11 @@ public class DeviceConfigController {
     public Result queryDeviceBriefInfo(@RequestBody BusDevice busDevice){
         return Result.result(deviceConfigServiceImpl.queryDeviceBriefInfo(busDevice));
     }
+
+    @ApiOperation(value="处理一、二级设备类型下拉菜单级联格式", notes="处理一、二级设备类型下拉菜单级联格式")
+    @GetMapping("/processTypeFormat")
+    public Result processTypeFormat(@RequestParam("systemId") String systemId){
+        return Result.result(deviceConfigServiceImpl.processTypeFormat(systemId));
+    }
+
 }

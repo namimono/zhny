@@ -7,6 +7,7 @@ import org.rcisoft.entity.BusBuilding;
 import org.rcisoft.entity.BusBuildingZone;
 import org.rcisoft.entity.BusProject;
 import org.rcisoft.business.system.project.service.ProjConfigService;
+import org.rcisoft.entity.BusProjectSaving;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -135,5 +136,17 @@ public class ProjConfigController {
     @DeleteMapping("/deleteBuildZone")
     public Result deleteBuildZone(@RequestBody BusBuildingZone busBuildingZone){
         return Result.result(1, projConfigServiceImpl.deleteBuildZone(busBuildingZone));
+    }
+
+    @ApiOperation(value="新增节能改造信息", notes="新增节能改造信息")
+    @PostMapping("/addProjectSaving")
+    public Result addProjectSaving(@RequestBody BusProjectSaving busProjectSaving){
+        return Result.result(1, projConfigServiceImpl.addProjectSaving(busProjectSaving));
+    }
+
+    @ApiOperation(value="修改节能改造信息", notes="修改节能改造信息")
+    @PutMapping("/updateProjectSaving")
+    public Result updateProjectSaving(@RequestBody BusProjectSaving busProjectSaving){
+        return Result.result(1, projConfigServiceImpl.updateProjectSaving(busProjectSaving));
     }
 }

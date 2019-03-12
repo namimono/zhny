@@ -107,4 +107,14 @@ public interface ProjConfigService {
      * 删除建筑分区(气候分区)
      */
     int deleteBuildZone(BusBuildingZone busBuildingZone);
+
+    /**
+     *新增节能改造信息
+     */
+    int addProjectSaving(BusProjectSaving busProjectSaving);
+
+    /**
+     * 修改节能改造信息
+     */
+    int updateProjectSaving(BusProjectSaving busProjectSaving);
 }

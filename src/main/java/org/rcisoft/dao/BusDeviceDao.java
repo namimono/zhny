@@ -27,8 +27,8 @@ public interface BusDeviceDao extends Mapper<BusDevice> {
      */
     @Select("SELECT a.id,a.info,a.location,\n" +
             "b.name AS 'type',c.name AS 'factoryName'\n" +
-            "FROM bus_device a,bus_type_second b,bus_factory c\n" +
+            "FROM bus_device a,bus_type_first b,bus_factory c\n" +
             "where a.system_id = #{systemId} AND a.project_id = #{projectId}\n" +
-            "AND a.type_second_id = b.id AND a.factory_id = c.id")
+            "AND a.type_first_id = b.id AND a.factory_id = c.id")
     List<DeviceBriefInfo> queryDeviceBriefInfo(BusDevice busDevice);
 }

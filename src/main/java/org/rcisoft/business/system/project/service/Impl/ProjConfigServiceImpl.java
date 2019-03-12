@@ -39,6 +39,8 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     private BusBuildingZoneDao busBuildingZoneDao;
     @Autowired
     private SysUserDao sysUserDao;
+    @Autowired
+    private BusProjectSavingDao busProjectSavingDao;
 
     /**
      * 查询全部项目表信息
@@ -108,7 +110,6 @@ public class ProjConfigServiceImpl implements ProjConfigService {
                 resultMap.put(positionInfo.getProId(),list);
             }
         }
-        Map<String,List<PositionInfo>> resultMap1 = resultMap;
         /*
         对每组数据进行进一步格式处理
          */
@@ -240,5 +241,21 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     @Override
     public int deleteBuildZone(BusBuildingZone busBuildingZone){
         return busBuildingZoneDao.deleteByPrimaryKey(busBuildingZone);
+    }
+
+    /**
+     *新增节能改造信息
+     */
+    @Override
+    public int addProjectSaving(BusProjectSaving busProjectSaving){
+        return busProjectSavingDao.insertSelective(busProjectSaving);
+    }
+
+    /**
+     * 修改节能改造信息
+     */
+    @Override
+    public int updateProjectSaving(BusProjectSaving busProjectSaving){
+        return busProjectSavingDao.updateByPrimaryKeySelective(busProjectSaving);
     }
 }

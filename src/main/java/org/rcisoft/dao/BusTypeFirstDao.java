@@ -17,6 +17,6 @@ public interface BusTypeFirstDao extends Mapper<BusTypeFirst> {
     /**
      * 查询一级设备类型列表
      */
-    @Select("")
+    @Select("SELECT * FROM bus_type_first;")
     List<BusTypeFirst> queryTypeFirst();
 }
