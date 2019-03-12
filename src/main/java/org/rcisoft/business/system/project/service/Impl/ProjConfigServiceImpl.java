@@ -115,13 +115,13 @@ public class ProjConfigServiceImpl implements ProjConfigService {
          */
         for(String key : resultMap.keySet()){
             Map<String,Object> proMap = new HashMap<>(16);
-            proMap.put("proId",resultMap.get(key).get(0).getProId());
-            proMap.put("proName",resultMap.get(key).get(0).getProName());
+            proMap.put("value",resultMap.get(key).get(0).getProId());
+            proMap.put("label",resultMap.get(key).get(0).getProName());
             List<Map<String,String>> cityList = new ArrayList<>();
             for(PositionInfo positionInfo : resultMap.get(key)){
                 Map<String,String> cityMap = new HashMap<>(16);
-                cityMap.put("cityId",positionInfo.getCityId());
-                cityMap.put("cityName",positionInfo.getCityName());
+                cityMap.put("value",positionInfo.getCityId());
+                cityMap.put("label",positionInfo.getCityName());
                 cityMap.put("coding",positionInfo.getCoding());
                 cityList.add(cityMap);
             }
