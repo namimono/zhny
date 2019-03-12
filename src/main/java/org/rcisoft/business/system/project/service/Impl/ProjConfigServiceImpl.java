@@ -200,6 +200,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      */
     @Override
     public int insertBuildType(BusBuilding busBuilding){
+        busBuilding.setId(UuidUtil.create32());
         return busBuildingDao.insert(busBuilding);
     }
 
@@ -224,6 +225,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      */
     @Override
     public int insertBuildZone(BusBuildingZone busBuildingZone){
+        busBuildingZone.setId(UuidUtil.create32());
         return busBuildingZoneDao.insert(busBuildingZone);
     }
 
@@ -248,6 +250,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      */
     @Override
     public int addProjectSaving(BusProjectSaving busProjectSaving){
+        busProjectSaving.setId(UuidUtil.create32());
         return busProjectSavingDao.insertSelective(busProjectSaving);
     }
 
