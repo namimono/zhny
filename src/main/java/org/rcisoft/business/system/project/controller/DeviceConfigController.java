@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.entity.BusDevice;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
+import org.rcisoft.entity.BusParamFirst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,12 @@ public class DeviceConfigController {
     @GetMapping("/processTypeFormat")
     public Result processTypeFormat(@RequestParam("systemId") String systemId){
         return Result.result(deviceConfigServiceImpl.processTypeFormat(systemId));
+    }
+
+    @ApiOperation(value="根据项目ID和子系统ID查询未关联一级参数信息", notes="根据项目ID和子系统ID查询未关联一级参数信息")
+    @PostMapping("/queryParamFirstInfoBySysId")
+    public Result queryParamFirstInfoBySysId(@RequestBody BusParamFirst busParamFirst){
+        return Result.result(deviceConfigServiceImpl.queryParamFirstInfoBySysId(busParamFirst));
     }
 
 }

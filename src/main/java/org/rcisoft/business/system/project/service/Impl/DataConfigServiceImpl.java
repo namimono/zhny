@@ -40,7 +40,7 @@ public class DataConfigServiceImpl implements DataConfigService {
     }
 
     /**
-     * 查询一级参数信息
+     * 根据项目ID查询一级参数信息
      */
     @Override
     public List<BusParamFirst> queryParamFirstInfo(BusParamFirst busParamFirst){

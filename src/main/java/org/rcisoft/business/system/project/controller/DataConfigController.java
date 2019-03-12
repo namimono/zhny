@@ -30,9 +30,9 @@ public class DataConfigController extends PageAop {
         return Result.result(dataConfigServiceImpl.querySysSystemInfo());
     }
 
-    @ApiOperation(value="查询一级参数信息", notes="查询一级参数信息")
-    @GetMapping("/queryParamFirstInfo")
-    public Result queryParamFirstInfo(BusParamFirst busParamFirst){
+    @ApiOperation(value="根据项目ID查询一级参数信息", notes="根据项目ID查询一级参数信息")
+    @PostMapping("/queryParamFirstInfo")
+    public Result queryParamFirstInfo(@RequestBody BusParamFirst busParamFirst){
         return Result.result(dataConfigServiceImpl.queryParamFirstInfo(busParamFirst));
     }
 
@@ -49,8 +49,8 @@ public class DataConfigController extends PageAop {
     }
 
     @ApiOperation(value="查询二级参数信息", notes="查询二级参数信息")
-    @GetMapping("/queryParamSecondInfo")
-    public Result queryParamSecondInfo(BusParamSecond busParamSecond){
+    @PostMapping("/queryParamSecondInfo")
+    public Result queryParamSecondInfo(@RequestBody BusParamSecond busParamSecond){
         return Result.result(dataConfigServiceImpl.queryParamSecondInfo(busParamSecond));
     }
 
