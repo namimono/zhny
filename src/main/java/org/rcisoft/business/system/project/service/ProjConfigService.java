@@ -1,5 +1,6 @@
 package org.rcisoft.business.system.project.service;
 
+import org.rcisoft.business.management.evaluateproj.entity.ProjectAssessment;
 import org.rcisoft.business.system.project.entity.ProjectBriefInfo;
 import org.rcisoft.entity.*;
 import org.rcisoft.business.system.project.entity.PositionInfo;
@@ -15,7 +16,7 @@ public interface ProjConfigService {
     /**
      * 查询全部项目表信息
      */
-    List<Map<String,Object>> queryAllInfo();
+    List<ProjectAssessment> queryAllInfo();
 
     /**
      * 新增项目配置信息

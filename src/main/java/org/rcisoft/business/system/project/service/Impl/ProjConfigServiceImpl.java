@@ -1,6 +1,7 @@
 package org.rcisoft.business.system.project.service.Impl;
 
 import org.rcisoft.base.util.UuidUtil;
+import org.rcisoft.business.management.evaluateproj.entity.ProjectAssessment;
 import org.rcisoft.business.system.project.entity.ProjectBriefInfo;
 import org.rcisoft.dao.*;
 import org.rcisoft.business.system.project.dao.ProjConfigDao;
@@ -43,7 +44,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      * 查询全部项目表信息
      */
     @Override
-    public List<Map<String,Object>> queryAllInfo(){
+    public List<ProjectAssessment> queryAllInfo(){
         return busProjectDao.queryAllProjInfo();
     }
 

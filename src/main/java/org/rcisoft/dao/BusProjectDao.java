@@ -2,6 +2,7 @@ package org.rcisoft.dao;
 
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
+import org.rcisoft.business.management.evaluateproj.entity.ProjectAssessment;
 import org.rcisoft.entity.BusProject;
 import org.rcisoft.business.system.project.entity.ProjectBriefInfo;
 import org.springframework.stereotype.Repository;
@@ -37,7 +38,7 @@ public interface BusProjectDao extends Mapper<BusProject> {
      *  查询关于项目的所有信息
      */
     @Select("select * from bus_project as bp right join bus_project_saving as bps on bp.id = bps.project_id")
-    List<Map<String,Object>> queryAllProjInfo();
+    List<ProjectAssessment> queryAllProjInfo();
 
 
 }
