@@ -19,10 +19,19 @@ import java.util.Map;
 public interface BusParamFirstDao extends Mapper<BusParamFirst> {
 
     /**
-     * 查询一级参数信息
+     * 根据项目ID查询一级参数信息
      */
     @Select("SELECT * FROM bus_param_first WHERE project_id = #{projectId};")
     List<BusParamFirst> queryParamFirstInfo(BusParamFirst busParamFirst);
+
+    /**
+     * 根据项目ID和子系统ID查询未关联一级参数信息
+     */
+    @Select("SELECT * FROM bus_param_first \n" +
+            "WHERE status = '0'\n" +
+            "AND project_id = #{projectId} \n" +
+            "AND system_id = #{systemId};")
+    List<BusParamFirst> queryParamFirstInfoBySysId(BusParamFirst busParamFirst);
 
     /**
      * 数据配置联表查询一级、二级参数信息

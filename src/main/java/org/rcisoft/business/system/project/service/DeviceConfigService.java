@@ -3,6 +3,7 @@ package org.rcisoft.business.system.project.service;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.TypeFirstAndSecond;
 import org.rcisoft.entity.BusDevice;
+import org.rcisoft.entity.BusParamFirst;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,11 @@ public interface DeviceConfigService {
      * 查询设备简要信息
      */
     List<DeviceBriefInfo> queryDeviceBriefInfo(BusDevice busDevice);
+
+    /**
+     * 根据项目ID和子系统ID查询未关联一级参数信息
+     */
+    List<BusParamFirst> queryParamFirstInfoBySysId(BusParamFirst busParamFirst);
 
     /**
      * 根据系统类型ID和一级设备类型ID查询二级设备类型信息

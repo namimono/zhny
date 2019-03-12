@@ -4,10 +4,12 @@ import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.TypeFirstAndSecond;
 import org.rcisoft.dao.BusDeviceDao;
+import org.rcisoft.dao.BusParamFirstDao;
 import org.rcisoft.dao.BusTypeFirstDao;
 import org.rcisoft.dao.BusTypeSecondDao;
 import org.rcisoft.entity.BusDevice;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
+import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusTypeFirst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     private BusDeviceDao busDeviceDao;
     @Autowired
     private BusTypeSecondDao busTypeSecondDao;
+    @Autowired
+    private BusParamFirstDao busParamFirstDao;
 
     /**
      * 新增设备配置信息
@@ -52,6 +56,14 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     @Override
     public List<DeviceBriefInfo> queryDeviceBriefInfo(BusDevice busDevice){
         return busDeviceDao.queryDeviceBriefInfo(busDevice);
+    }
+
+    /**
+     * 根据项目ID和子系统ID查询未关联一级参数信息
+     */
+    @Override
+    public List<BusParamFirst> queryParamFirstInfoBySysId(BusParamFirst busParamFirst){
+        return busParamFirstDao.queryParamFirstInfoBySysId(busParamFirst);
     }
 
     /**
