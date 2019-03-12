@@ -4,7 +4,6 @@ import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.management.evaluateproj.entity.ProjectAssessment;
 import org.rcisoft.business.system.project.entity.ProjectBriefInfo;
 import org.rcisoft.dao.*;
-import org.rcisoft.business.system.project.dao.ProjConfigDao;
 import org.rcisoft.entity.*;
 import org.rcisoft.business.system.project.service.ProjConfigService;
 import org.rcisoft.business.system.project.entity.PositionInfo;
@@ -22,13 +21,9 @@ import java.util.*;
 public class ProjConfigServiceImpl implements ProjConfigService {
 
     @Autowired
-    private ProjConfigDao projConfigDao;
-    @Autowired
     private BusProjectDao busProjectDao;
     @Autowired
     private SysProvinceDao sysProvinceDao;
-    @Autowired
-    private SysCityDao sysCityDao;
     @Autowired
     private BusTeamDao busTeamDao;
     @Autowired
@@ -55,20 +50,6 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      */
     @Override
     public String addProjConfig(BusProject busProject){
-
-//        SimpleDateFormat abc = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        SimpleDateFormat fmt = new SimpleDateFormat("yyyy");
-//
-//        try {
-//            busProject.setCreateTime(abc.parse(abc.format(new Date())));
-//            busProject.setBuildingAge(sdf.parse(sdf.format(busProject.getBuildingAge())));
-//            busProject.setEquipmentAge(fmt.parse(fmt.format(busProject.getEquipmentAge())));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        projConfigDao.setProjConfig(busProject)
-
         busProject.setId(UuidUtil.create32());
         busProjectDao.insertSelective(busProject);
         return busProject.getId();
