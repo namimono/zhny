@@ -1,0 +1,18 @@
+package org.rcisoft.business.whole.right.dao;
+
+import org.apache.ibatis.annotations.ResultType;
+import org.apache.ibatis.annotations.Select;
+import org.rcisoft.entity.BusPushRecord;
+import tk.mybatis.mapper.common.Mapper;
+
+/**
+ * @Author Minghui Xu
+ * @Description:
+ * @Date: Created in 10:12 2019/3/13
+ */
+public interface BusPushRecordDao extends Mapper<BusPushRecord> {
+
+    @Select("<script>select push_time,content from bus_push_record</script>")
+    @ResultType(BusPushRecord.class)
+    BusPushRecord queryContent();
+}
