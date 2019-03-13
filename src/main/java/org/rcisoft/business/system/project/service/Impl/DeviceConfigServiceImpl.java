@@ -4,11 +4,8 @@ import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.TypeFirstAndSecond;
 import org.rcisoft.dao.*;
-import org.rcisoft.entity.BusDevice;
+import org.rcisoft.entity.*;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
-import org.rcisoft.entity.BusParamFirst;
-import org.rcisoft.entity.BusParamFixed;
-import org.rcisoft.entity.BusTypeFirst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +29,10 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     private BusParamFirstDao busParamFirstDao;
     @Autowired
     private BusParamFixedDao busParamFixedDao;
+    @Autowired
+    private MidDeviceParamFirstDao midDeviceParamFirstDao;
+    @Autowired
+    private MidDeviceParamSecondDao midDeviceParamSecondDao;
 
     /**
      * 新增设备配置信息
@@ -145,6 +146,56 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     @Override
     public int deleteParamFixed(BusParamFixed busParamFixed){
         return busParamFixedDao.deleteByPrimaryKey(busParamFixed);
+    }
+
+    /**
+     * 增加设备一级参数中间表信息
+     */
+    @Override
+    public int addMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst){
+        midDeviceParamFirst.setId(UuidUtil.create32());
+        return midDeviceParamFirstDao.insertSelective(midDeviceParamFirst);
+    }
+
+    /**
+     * 删除设备一级参数中间表信息
+     */
+    @Override
+    public int deleteMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst){
+        return midDeviceParamFirstDao.deleteByPrimaryKey(midDeviceParamFirst);
+    }
+
+    /**
+     * 增加设备二级参数中间表信息
+     */
+    @Override
+    public int addMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond){
+        midDeviceParamSecond.setId(UuidUtil.create32());
+        return midDeviceParamSecondDao.insertSelective(midDeviceParamSecond);
+    }
+
+    /**
+     * 删除设备二级参数中间表信息
+     */
+    @Override
+    public int deleteMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond){
+        return midDeviceParamSecondDao.deleteByPrimaryKey(midDeviceParamSecond);
+    }
+
+    /**
+     * 修改设备一级参数中间表信息
+     */
+    @Override
+    public int updateMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst){
+        return midDeviceParamFirstDao.updateByPrimaryKeySelective(midDeviceParamFirst);
+    }
+
+    /**
+     * 修改设备二级参数中间表信息
+     */
+    @Override
+    public int updateMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond){
+        return midDeviceParamSecondDao.updateByPrimaryKeySelective(midDeviceParamSecond);
     }
 
 }

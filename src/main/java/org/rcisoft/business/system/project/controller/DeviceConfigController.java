@@ -3,10 +3,8 @@ package org.rcisoft.business.system.project.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
-import org.rcisoft.entity.BusDevice;
+import org.rcisoft.entity.*;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
-import org.rcisoft.entity.BusParamFirst;
-import org.rcisoft.entity.BusParamFixed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,4 +68,39 @@ public class DeviceConfigController {
         return Result.result(1, deviceConfigServiceImpl.deleteParamFixed(busParamFixed));
     }
 
+    @ApiOperation(value="增加设备一级参数中间表信息", notes="增加设备一级参数中间表信息")
+    @PostMapping("/addMidDeviceFirstInfo")
+    public Result addMidDeviceFirstInfo(@RequestBody MidDeviceParamFirst midDeviceParamFirst){
+        return Result.result(1, deviceConfigServiceImpl.addMidDeviceFirstInfo(midDeviceParamFirst));
+    }
+
+    @ApiOperation(value="删除设备一级参数中间表信息", notes="删除设备一级参数中间表信息")
+    @DeleteMapping("/deleteMidDeviceFirstInfo")
+    public Result deleteMidDeviceFirstInfo(@RequestBody MidDeviceParamFirst midDeviceParamFirst){
+        return Result.result(1, deviceConfigServiceImpl.deleteMidDeviceFirstInfo(midDeviceParamFirst));
+    }
+
+    @ApiOperation(value="增加设备二级参数中间表信息", notes="增加设备二级参数中间表信息")
+    @PostMapping("/addMidDeviceSecondInfo")
+    public Result addMidDeviceSecondInfo(@RequestBody MidDeviceParamSecond midDeviceParamSecond){
+        return Result.result(1, deviceConfigServiceImpl.addMidDeviceSecondInfo(midDeviceParamSecond));
+    }
+
+    @ApiOperation(value="删除设备二级参数中间表信息", notes="删除设备二级参数中间表信息")
+    @DeleteMapping("/deleteMidDeviceSecondInfo")
+    public Result deleteMidDeviceSecondInfo(@RequestBody MidDeviceParamSecond midDeviceParamSecond){
+        return Result.result(deviceConfigServiceImpl.deleteMidDeviceSecondInfo(midDeviceParamSecond));
+    }
+
+    @ApiOperation(value="修改设备一级参数中间表信息", notes="修改设备一级参数中间表信息")
+    @PutMapping("/updateMidDeviceFirstInfo")
+    public Result updateMidDeviceFirstInfo(@RequestBody MidDeviceParamFirst midDeviceParamFirst){
+        return Result.result(1, deviceConfigServiceImpl.updateMidDeviceFirstInfo(midDeviceParamFirst));
+    }
+
+    @ApiOperation(value="修改设备二级参数中间表信息", notes="修改设备二级参数中间表信息")
+    @PutMapping("/updateMidDeviceSecondInfo")
+    public Result updateMidDeviceSecondInfo(@RequestBody MidDeviceParamSecond midDeviceParamSecond){
+        return Result.result(1, deviceConfigServiceImpl.updateMidDeviceSecondInfo(midDeviceParamSecond));
+    }
 }

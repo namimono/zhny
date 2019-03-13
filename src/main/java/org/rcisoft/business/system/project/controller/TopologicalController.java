@@ -28,7 +28,7 @@ public class TopologicalController {
     }
 
     @ApiOperation(value="删除拓扑图信息", notes="删除拓扑图信息")
-    @PostMapping("/deleteTopology")
+    @DeleteMapping("/deleteTopology")
     public Result deleteTopology(@RequestBody BusTopology busTopology){
         return Result.result(1, topologicalServiceImpl.deleteTopology(busTopology));
     }
@@ -52,7 +52,7 @@ public class TopologicalController {
     }
 
     @ApiOperation(value="删除拓扑图节点图片信息", notes="删除拓扑图节点图片信息")
-    @PostMapping("/deleteTopologyNode")
+    @DeleteMapping("/deleteTopologyNode")
     public Result deleteTopologyNode(@RequestBody BusTopologyNode busTopologyNode){
         return Result.result(1, topologicalServiceImpl.deleteTopologyNode(busTopologyNode));
     }

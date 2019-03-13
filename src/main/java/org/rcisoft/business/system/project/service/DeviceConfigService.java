@@ -2,9 +2,7 @@ package org.rcisoft.business.system.project.service;
 
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.TypeFirstAndSecond;
-import org.rcisoft.entity.BusDevice;
-import org.rcisoft.entity.BusParamFirst;
-import org.rcisoft.entity.BusParamFixed;
+import org.rcisoft.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -65,4 +63,34 @@ public interface DeviceConfigService {
      * 删除固定参数表信息
      */
     int deleteParamFixed(BusParamFixed busParamFixed);
+
+    /**
+     * 增加设备一级参数中间表信息
+     */
+    int addMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst);
+
+    /**
+     * 删除设备一级参数中间表信息
+     */
+    int deleteMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst);
+
+    /**
+     * 增加设备二级参数中间表信息
+     */
+    int addMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond);
+
+    /**
+     * 删除设备二级参数中间表信息
+     */
+    int deleteMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond);
+
+    /**
+     * 修改设备一级参数中间表信息
+     */
+    int updateMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst);
+
+    /**
+     * 修改设备二级参数中间表信息
+     */
+    int updateMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond);
 }
