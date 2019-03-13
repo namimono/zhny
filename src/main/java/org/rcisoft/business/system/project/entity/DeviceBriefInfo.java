@@ -13,7 +13,6 @@ import javax.persistence.Entity;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class DeviceBriefInfo {
 
     /**

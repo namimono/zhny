@@ -32,6 +32,7 @@ public interface BusParamFirstDao extends Mapper<BusParamFirst> {
             "WHERE status = '0'\n" +
             "AND project_id = #{projectId} \n" +
             "AND system_id = #{systemId};")
+    @ResultType(BusParamFirst.class)
     List<BusParamFirst> queryParamFirstInfoBySysId(BusParamFirst busParamFirst);
 
     /**
@@ -47,4 +48,13 @@ public interface BusParamFirstDao extends Mapper<BusParamFirst> {
             "WHERE a.project_id = #{projectId} AND b.param_first_id = a.id")
     @ResultType(ParamFirstAndSecond.class)
     List<ParamFirstAndSecond> queryDataParam(@Param("projectId") String projectId);
+
+    /**
+     * 根据参数来源查询表具
+     */
+    @Select("SELECT * FROM bus_param_first \n" +
+            "WHERE source_id = '2'\n" +
+            "AND project_id = #{projectId};")
+    @ResultType(BusParamFirst.class)
+    List<BusParamFirst> queryParamFirstBySource(BusParamFirst busParamFirst);
 }
