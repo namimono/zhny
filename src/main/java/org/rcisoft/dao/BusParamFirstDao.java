@@ -22,6 +22,7 @@ public interface BusParamFirstDao extends Mapper<BusParamFirst> {
      * 根据项目ID查询一级参数信息
      */
     @Select("SELECT * FROM bus_param_first WHERE project_id = #{projectId};")
+    @ResultType(BusParamFirst.class)
     List<BusParamFirst> queryParamFirstInfo(BusParamFirst busParamFirst);
 
     /**

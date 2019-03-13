@@ -1,5 +1,6 @@
 package org.rcisoft.dao;
 
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.entity.BusDevice;
@@ -20,6 +21,7 @@ public interface BusDeviceDao extends Mapper<BusDevice> {
      * 根据系统类型查询设备信息
      */
     @Select("SELECT * FROM bus_device where system_id = #{systemId}")
+    @ResultType(BusDevice.class)
     List<BusDevice> queryDeviceInfo(BusDevice busDevice);
 
     /**
@@ -30,5 +32,6 @@ public interface BusDeviceDao extends Mapper<BusDevice> {
             "FROM bus_device a,bus_type_first b,bus_factory c\n" +
             "where a.system_id = #{systemId} AND a.project_id = #{projectId}\n" +
             "AND a.type_first_id = b.id AND a.factory_id = c.id")
+    @ResultType(DeviceBriefInfo.class)
     List<DeviceBriefInfo> queryDeviceBriefInfo(BusDevice busDevice);
 }

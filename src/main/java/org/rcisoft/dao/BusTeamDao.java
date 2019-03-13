@@ -27,6 +27,7 @@ public interface BusTeamDao extends Mapper<BusTeam> {
      * 获取线上团队信息
      */
     @Select("SELECT * FROM bus_team WHERE type = '1';")
+    @ResultType(BusTeam.class)
     List<BusTeam> queryOnTeamInfo();
 
 

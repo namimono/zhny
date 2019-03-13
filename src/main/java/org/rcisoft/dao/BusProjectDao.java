@@ -38,6 +38,7 @@ public interface BusProjectDao extends Mapper<BusProject> {
      *  查询关于项目的所有信息
      */
     @Select("select * from bus_project as bp right join bus_project_saving as bps on bp.id = bps.project_id")
+    @ResultType(ProjectAssessment.class)
     List<ProjectAssessment> queryAllProjInfo();
 
 

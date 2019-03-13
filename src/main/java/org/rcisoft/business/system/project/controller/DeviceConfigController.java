@@ -6,6 +6,7 @@ import org.rcisoft.base.result.Result;
 import org.rcisoft.entity.BusDevice;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.rcisoft.entity.BusParamFirst;
+import org.rcisoft.entity.BusParamFixed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class DeviceConfigController {
     }
 
     @ApiOperation(value="查询设备简要信息", notes="查询设备简要信息")
-    @PostMapping("/queryDeviceBriefInfo")
+    @GetMapping("/queryDeviceBriefInfo")
     public Result queryDeviceBriefInfo(@RequestBody BusDevice busDevice){
         return Result.result(deviceConfigServiceImpl.queryDeviceBriefInfo(busDevice));
     }
@@ -40,9 +41,33 @@ public class DeviceConfigController {
     }
 
     @ApiOperation(value="根据项目ID和子系统ID查询未关联一级参数信息", notes="根据项目ID和子系统ID查询未关联一级参数信息")
-    @PostMapping("/queryParamFirstInfoBySysId")
+    @GetMapping("/queryParamFirstInfoBySysId")
     public Result queryParamFirstInfoBySysId(@RequestBody BusParamFirst busParamFirst){
         return Result.result(deviceConfigServiceImpl.queryParamFirstInfoBySysId(busParamFirst));
+    }
+
+    @ApiOperation(value="根据项目、设备、系统ID查询固定参数信息", notes="根据项目、设备、系统ID查询固定参数信息")
+    @GetMapping("/queryParamFixed")
+    public Result queryParamFixed(@RequestBody BusParamFixed busParamFixed){
+        return Result.result(deviceConfigServiceImpl.queryParamFixed(busParamFixed));
+    }
+
+    @ApiOperation(value="添加固定参数表信息", notes="添加固定参数表信息")
+    @PostMapping("/addParamFixed")
+    public Result addParamFixed(@RequestBody BusParamFixed busParamFixed){
+        return Result.result(1, deviceConfigServiceImpl.addParamFixed(busParamFixed));
+    }
+
+    @ApiOperation(value="修改固定参数表信息", notes="修改固定参数表信息")
+    @PutMapping("/updateParamFixed")
+    public Result updateParamFixed(@RequestBody BusParamFixed busParamFixed){
+        return Result.result(1, deviceConfigServiceImpl.updateParamFixed(busParamFixed));
+    }
+
+    @ApiOperation(value="删除固定参数表信息", notes="删除固定参数表信息")
+    @DeleteMapping("/deleteParamFixed")
+    public Result deleteParamFixed(@RequestBody BusParamFixed busParamFixed){
+        return Result.result(1, deviceConfigServiceImpl.deleteParamFixed(busParamFixed));
     }
 
 }

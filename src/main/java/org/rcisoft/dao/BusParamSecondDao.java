@@ -1,5 +1,6 @@
 package org.rcisoft.dao;
 
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.entity.BusParamSecond;
 import org.springframework.stereotype.Repository;
@@ -23,5 +24,6 @@ public interface BusParamSecondDao extends Mapper<BusParamSecond> {
             "project_id = #{projectId} \n" +
             "AND \n" +
             "system_id = #{systemId};")
+    @ResultType(BusParamSecond.class)
     List<BusParamSecond> queryParamSecondInfo(BusParamSecond busParamSecond);
 }

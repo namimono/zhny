@@ -1,6 +1,7 @@
 package org.rcisoft.dao;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.entity.BusFormula;
 import org.springframework.stereotype.Repository;
@@ -19,5 +20,6 @@ public interface BusFormulaDao extends Mapper<BusFormula> {
      * 根据项目ID查询公式信息
      */
     @Select("SELECT * FROM bus_formula WHERE project_id = #{projectId}")
+    @ResultType(BusFormula.class)
     List<BusFormula> queryFormula(@Param("projectId") String projectId);
 }

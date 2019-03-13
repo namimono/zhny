@@ -4,6 +4,7 @@ import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.TypeFirstAndSecond;
 import org.rcisoft.entity.BusDevice;
 import org.rcisoft.entity.BusParamFirst;
+import org.rcisoft.entity.BusParamFixed;
 
 import java.util.List;
 import java.util.Map;
@@ -45,5 +46,23 @@ public interface DeviceConfigService {
      */
     List<Map<String,Object>> processTypeFormat(String systemId);
 
+    /**
+     * 添加固定参数表信息
+     */
+    int addParamFixed(BusParamFixed busParamFixed);
 
+    /**
+     * 查询固定参数信息
+     */
+    List<BusParamFixed> queryParamFixed(BusParamFixed busParamFixed);
+
+    /**
+     * 修改固定参数表信息
+     */
+    int updateParamFixed(BusParamFixed busParamFixed);
+
+    /**
+     * 删除固定参数表信息
+     */
+    int deleteParamFixed(BusParamFixed busParamFixed);
 }

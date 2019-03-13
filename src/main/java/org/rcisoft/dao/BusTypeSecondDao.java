@@ -1,6 +1,7 @@
 package org.rcisoft.dao;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.system.project.entity.TypeFirstAndSecond;
 import org.rcisoft.entity.BusTypeSecond;
@@ -20,6 +21,7 @@ public interface BusTypeSecondDao extends Mapper<BusTypeSecond> {
      * 查询二级设备类型列表
      */
     @Select("SELECT * FROM bus_type_second;")
+    @ResultType(BusTypeSecond.class)
     List<BusTypeSecond> queryTypeSecond();
 
     /**
@@ -31,5 +33,6 @@ public interface BusTypeSecondDao extends Mapper<BusTypeSecond> {
             "from bus_type_first as a \n" +
             "left join bus_type_second as b \n" +
             "on a.id = b.type_first_id and b.system_id = #{systemId}")
+    @ResultType(TypeFirstAndSecond.class)
     List<TypeFirstAndSecond> queryTypeSecondInfo(@Param("systemId") String systemId);
 }

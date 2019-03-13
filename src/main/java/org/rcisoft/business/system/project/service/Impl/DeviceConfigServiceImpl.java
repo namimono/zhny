@@ -3,13 +3,11 @@ package org.rcisoft.business.system.project.service.Impl;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.TypeFirstAndSecond;
-import org.rcisoft.dao.BusDeviceDao;
-import org.rcisoft.dao.BusParamFirstDao;
-import org.rcisoft.dao.BusTypeFirstDao;
-import org.rcisoft.dao.BusTypeSecondDao;
+import org.rcisoft.dao.*;
 import org.rcisoft.entity.BusDevice;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.rcisoft.entity.BusParamFirst;
+import org.rcisoft.entity.BusParamFixed;
 import org.rcisoft.entity.BusTypeFirst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +30,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     private BusTypeSecondDao busTypeSecondDao;
     @Autowired
     private BusParamFirstDao busParamFirstDao;
+    @Autowired
+    private BusParamFixedDao busParamFixedDao;
 
     /**
      * 新增设备配置信息
@@ -112,6 +112,39 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
             data.add(firstMap);
         }
         return data;
+    }
+
+    /**
+     * 添加固定参数表信息
+     */
+    @Override
+    public int addParamFixed(BusParamFixed busParamFixed){
+        busParamFixed.setId(UuidUtil.create32());
+        return busParamFixedDao.insert(busParamFixed);
+    }
+
+    /**
+     * 查询固定参数信息
+     */
+    @Override
+    public List<BusParamFixed> queryParamFixed(BusParamFixed busParamFixed){
+        return busParamFixedDao.queryParamFixed(busParamFixed);
+    }
+
+    /**
+     * 修改固定参数表信息
+     */
+    @Override
+    public int updateParamFixed(BusParamFixed busParamFixed){
+        return busParamFixedDao.updateByPrimaryKeySelective(busParamFixed);
+    }
+
+    /**
+     * 删除固定参数表信息
+     */
+    @Override
+    public int deleteParamFixed(BusParamFixed busParamFixed){
+        return busParamFixedDao.deleteByPrimaryKey(busParamFixed);
     }
 
 }

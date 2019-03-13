@@ -1,5 +1,6 @@
 package org.rcisoft.dao;
 
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.entity.BusTypeFirst;
 import org.springframework.stereotype.Repository;
@@ -18,5 +19,6 @@ public interface BusTypeFirstDao extends Mapper<BusTypeFirst> {
      * 查询一级设备类型列表
      */
     @Select("SELECT * FROM bus_type_first;")
+    @ResultType(BusTypeFirst.class)
     List<BusTypeFirst> queryTypeFirst();
 }
