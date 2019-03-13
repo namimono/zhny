@@ -21,4 +21,12 @@ public interface BusTopologyDao extends Mapper<BusTopology> {
     @Select("SELECT * FROM bus_topology WHERE project_id = #{projectId} AND system_id = #[systemId};")
     @ResultType(BusTopology.class)
     List<BusTopology> queryTopology(BusTopology busTopology);
+
+    /**
+     * 查看拓扑图的json
+     * @return
+     */
+    @Select("<script>select * from bus_topology</script>")
+    @ResultType(BusTopology.class)
+    BusTopology queryTopoJson();
 }

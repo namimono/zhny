@@ -1,7 +1,7 @@
 package org.rcisoft.business.monitor.intercept.service.Impl;
 
-import org.rcisoft.business.monitor.intercept.dao.BusTopologyDao;
 import org.rcisoft.business.monitor.intercept.service.BusTopologyService;
+import org.rcisoft.dao.BusTopologyDao;
 import org.rcisoft.entity.BusTopology;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
