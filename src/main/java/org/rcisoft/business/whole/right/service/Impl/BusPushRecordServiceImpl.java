@@ -17,6 +17,10 @@ public class BusPushRecordServiceImpl implements BusPushRecordService {
     @Autowired
     BusPushRecordDao busPushRecordDao;
 
+    /**
+     * 查询消息推送时间及内容
+     * @return
+     */
     @Override
     public BusPushRecord queryContent() {
         return busPushRecordDao.queryContent();

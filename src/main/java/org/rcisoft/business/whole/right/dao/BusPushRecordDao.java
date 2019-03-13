@@ -11,7 +11,10 @@ import tk.mybatis.mapper.common.Mapper;
  * @Date: Created in 10:12 2019/3/13
  */
 public interface BusPushRecordDao extends Mapper<BusPushRecord> {
-
+    /**
+     * 查询消息推送时间及内容
+     * @return
+     */
     @Select("<script>select push_time,content from bus_push_record</script>")
     @ResultType(BusPushRecord.class)
     BusPushRecord queryContent();
