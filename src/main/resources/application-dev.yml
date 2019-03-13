@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: /
+    context-path: /zhny2
   port: 8080
   tomcat:
     max-threads: 300
@@ -68,8 +68,33 @@ jwt:
   expiration: 604800
   tokenHead: "Bearer "
 
-
 #  省略debug Console中的大量 CONDITIONS EVALUATION REPORT 日志信息
 logging:
   level:
     org.springframework.boot.autoconfigure: ERROR
+
+# 路径（例子在 business--system--other 模块中）
+# 数据库表中表示路径的字段，只存一个文件名；如果需要区分项目，需要多一层文件夹（项目id作为文件夹名）
+#     如：sys_image表的url字段，存 1.jpg  or  项目id/1.jpg
+# 在本地硬盘的保存路径
+#     如：D:\zhny2\filepath\image\1.jpg(存储根路径文件夹 下的 不同前缀文件夹)
+# 读取的时候，需要将前缀拼上返回
+#     如 localhost/filepath/image/1.jpg（url + 不同前缀 + 文件名）
+location:
+  # 显示图片的url前缀
+  url: ${serverUrl}/filepath/
+  # 存储根路径
+  path: D:\zhny2\filepath\
+  # 背景图文件夹
+  image: image
+  # 拓扑图节点文件夹（需要分系统）
+  node: node
+  # 拓扑图文件夹（需要分项目）
+  topology: topology
+  # 设备图片（需要分项目）
+  device: device
+  # 二维码（需要分项目）
+  qrcode: qrcode
+
+# 项目url
+serverUrl: localhost:8080

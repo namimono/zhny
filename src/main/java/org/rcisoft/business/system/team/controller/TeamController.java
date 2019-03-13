@@ -20,18 +20,12 @@ public class TeamController {
     TeamService teamServiceImpl;
 
     @ApiOperation(value="分页查询线上、线下团队列表", notes="分页查询线上、线下团队列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "type", value = "项目类型，1：线上，2：线下", dataType = "数字"),
-    })
     @GetMapping("/queryTeamByType/{type}")
     public Result queryTeamByType(@PathVariable Integer type) {
         return Result.result(teamServiceImpl.queryTeamByType(type));
     }
 
     @ApiOperation(value="根据id查询线上、线下团队", notes="根据id查询线上、线下团队")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "团队主键", dataType = "字符串"),
-    })
     @GetMapping("/queryTeamById/{id}")
     public Result queryTeamById(@PathVariable String id) {
         return Result.result(teamServiceImpl.queryTeamById(id));
@@ -50,9 +44,6 @@ public class TeamController {
     }
 
     @ApiOperation(value="删除团队", notes="删除团队")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "团队主键", dataType = "字符串"),
-    })
     @DeleteMapping("/deleteTeamById/{id}")
     public Result deleteTeamById(@PathVariable String id) {
         return Result.result(teamServiceImpl.deleteTeamById(id), null);
