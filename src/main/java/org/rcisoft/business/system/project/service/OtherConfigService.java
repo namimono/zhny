@@ -4,6 +4,7 @@ import org.rcisoft.business.system.project.entity.EnergyTypeConfig;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamLibrary;
 import org.rcisoft.entity.EnergyConfig;
+import org.rcisoft.entity.EnergyParamLibrary;
 
 import java.util.List;
 
@@ -40,12 +41,28 @@ public interface OtherConfigService {
     int addParamLibrary(BusParamLibrary busParamLibrary);
 
     /**
+     * 删除参数库信息
+     */
+    int deleteParamLibrary(BusParamLibrary busParamLibrary);
+
+    /**
      * 修改参数库信息
      */
     int updateParamLibrary(BusParamLibrary busParamLibrary);
 
     /**
-     * 删除参数库信息
+     * 新增参数库记录表信息
      */
-    int deleteParamLibrary(BusParamLibrary busParamLibrary);
+    int addEnergyParamLibrary(EnergyParamLibrary energyParamLibrary);
+
+    /**
+     * 删除参数库记录表信息
+     */
+    int deleteEnergyParamLibrary(EnergyParamLibrary energyParamLibrary);
+
+    /**
+     * 修改参数库记录表信息
+     */
+    int updateEnergyParamLibrary(EnergyParamLibrary energyParamLibrary);
+
 }

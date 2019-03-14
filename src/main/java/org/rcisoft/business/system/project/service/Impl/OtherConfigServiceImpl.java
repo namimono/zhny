@@ -7,9 +7,11 @@ import org.rcisoft.business.system.project.service.OtherConfigService;
 import org.rcisoft.dao.BusParamFirstDao;
 import org.rcisoft.dao.BusParamLibraryDao;
 import org.rcisoft.dao.EnergyConfigDao;
+import org.rcisoft.dao.EnergyParamLibraryDao;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamLibrary;
 import org.rcisoft.entity.EnergyConfig;
+import org.rcisoft.entity.EnergyParamLibrary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,8 @@ public class OtherConfigServiceImpl implements OtherConfigService {
     private EnergyConfigDao energyConfigDao;
     @Autowired
     private BusParamLibraryDao busParamLibraryDao;
+    @Autowired
+    private EnergyParamLibraryDao energyParamLibraryDao;
 
     /**
      * 根据参数来源查询表具
@@ -87,7 +91,32 @@ public class OtherConfigServiceImpl implements OtherConfigService {
      */
     @Override
     public int deleteParamLibrary(BusParamLibrary busParamLibrary){
-        return busParamLibraryDao.deleteByPrimaryKey(busParamFirstDao);
+        return busParamLibraryDao.deleteByPrimaryKey(busParamLibrary);
+    }
+
+    /**
+     * 新增参数库记录表信息
+     */
+    @Override
+    public int addEnergyParamLibrary(EnergyParamLibrary energyParamLibrary){
+        energyParamLibrary.setId(UuidUtil.create32());
+        return energyParamLibraryDao.insertSelective(energyParamLibrary);
+    }
+
+    /**
+     * 删除参数库记录表信息
+     */
+    @Override
+    public int deleteEnergyParamLibrary(EnergyParamLibrary energyParamLibrary){
+        return energyParamLibraryDao.deleteByPrimaryKey(energyParamLibrary);
+    }
+
+    /**
+     * 修改参数库记录表信息
+     */
+    @Override
+    public int updateEnergyParamLibrary(EnergyParamLibrary energyParamLibrary){
+        return energyParamLibraryDao.updateByPrimaryKeySelective(energyParamLibrary);
     }
 
 //    /**

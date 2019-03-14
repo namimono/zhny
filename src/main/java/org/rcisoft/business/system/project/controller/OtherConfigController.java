@@ -8,6 +8,7 @@ import org.rcisoft.business.system.project.service.OtherConfigService;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamLibrary;
 import org.rcisoft.entity.EnergyConfig;
+import org.rcisoft.entity.EnergyParamLibrary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,5 +74,23 @@ public class OtherConfigController {
     @PutMapping("/updateParamLibrary")
     public Result updateParamLibrary(@RequestBody BusParamLibrary busParamLibrary){
         return Result.result(1,otherConfigServiceImpl.updateParamLibrary(busParamLibrary));
+    }
+
+    @ApiOperation(value="新增参数库记录表信息", notes="新增参数库记录表信息")
+    @PostMapping("/addEnergyParamLibrary")
+    public Result addEnergyParamLibrary(@RequestBody EnergyParamLibrary energyParamLibrary){
+        return Result.result(1,otherConfigServiceImpl.addEnergyParamLibrary(energyParamLibrary));
+    }
+
+    @ApiOperation(value="删除参数库记录表信息", notes="删除参数库记录表信息")
+    @DeleteMapping("/deleteEnergyParamLibrary")
+    public Result deleteEnergyParamLibrary(@RequestBody EnergyParamLibrary energyParamLibrary){
+        return Result.result(1,otherConfigServiceImpl.deleteEnergyParamLibrary(energyParamLibrary));
+    }
+
+    @ApiOperation(value="修改参数库记录表信息", notes="修改参数库记录表信息")
+    @PutMapping("/updateEnergyParamLibrary")
+    public Result updateEnergyParamLibrary(@RequestBody EnergyParamLibrary energyParamLibrary){
+        return Result.result(1,otherConfigServiceImpl.updateEnergyParamLibrary(energyParamLibrary));
     }
 }
