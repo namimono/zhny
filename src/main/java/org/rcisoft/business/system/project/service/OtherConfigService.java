@@ -1,11 +1,13 @@
 package org.rcisoft.business.system.project.service;
 
 import org.rcisoft.business.system.project.entity.EnergyTypeConfig;
+import org.rcisoft.business.system.project.entity.LibraryAndParam;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamLibrary;
 import org.rcisoft.entity.EnergyConfig;
 import org.rcisoft.entity.EnergyParamLibrary;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -65,4 +67,13 @@ public interface OtherConfigService {
      */
     int updateEnergyParamLibrary(EnergyParamLibrary energyParamLibrary);
 
+    /**
+     * 联查一二级参数和参数库信息
+     */
+    List<LibraryAndParam> queryLibraryAndParam(LibraryAndParam libraryAndParam);
+
+    /**
+     * 导出模板（项目维护-其他配置-参数库）
+     */
+    void downloadLibraryTemplate(HttpServletResponse response,String year,String model,LibraryAndParam libraryAndParam);
 }

@@ -2,7 +2,9 @@ package org.rcisoft.business.system.project.service.Impl;
 
 import org.apache.poi.hssf.usermodel.*;
 import org.rcisoft.base.util.UuidUtil;
+import org.rcisoft.business.system.project.dao.OtherConfigDao;
 import org.rcisoft.business.system.project.entity.EnergyTypeConfig;
+import org.rcisoft.business.system.project.entity.LibraryAndParam;
 import org.rcisoft.business.system.project.service.OtherConfigService;
 import org.rcisoft.dao.BusParamFirstDao;
 import org.rcisoft.dao.BusParamLibraryDao;
@@ -36,6 +38,8 @@ public class OtherConfigServiceImpl implements OtherConfigService {
     private BusParamLibraryDao busParamLibraryDao;
     @Autowired
     private EnergyParamLibraryDao energyParamLibraryDao;
+    @Autowired
+    private OtherConfigDao otherConfigDao;
 
     /**
      * 根据参数来源查询表具
@@ -119,68 +123,99 @@ public class OtherConfigServiceImpl implements OtherConfigService {
         return energyParamLibraryDao.updateByPrimaryKeySelective(energyParamLibrary);
     }
 
-//    /**
-//     * 导出模板（项目维护-其他配置-参数库）
-//     */
-//    public void downloadAllClassmate(HttpServletResponse response) throws IOException {
-//        HSSFWorkbook workbook = new HSSFWorkbook();
-//        //SimpleDateFormat fdate=new SimpleDateFormat("yyyy-MM-dd"); fdate.format(new Date())
-//        String fileName = date + ".xls";//设置要导出的文件的名字
-//        List<String> DnameList = totalDataServiceImpl.getDeviceId(proId);
-//        for (int i = 0; i<DnameList.size(); i++) {
-//            String deviceId = DnameList.get(i);
-//            String deviceParam[] = deviceId.split("_",2);
-//            String devicePId = deviceParam[1];
-//            List<Map<String,Object>> TimeAndName = totalDataServiceImpl.getTimeAndName(deviceId);
-//            String sheetName = TimeAndName.get(0).get("DEV_NM").toString();
-//            HSSFSheet sheet = workbook.createSheet(sheetName);
-//            List<Map<String,Object>> ParamName = totalDataServiceImpl.getParamName(proId);
-//            List<String> headlist = new ArrayList<>();
-//            headlist.add("时间");
-//            for (int j = 0; j<ParamName.size(); j++) {
-//                headlist.add(ParamName.get(j).get("PARAM_NM").toString());
-//            }
-//            headlist.add("运行时长");
-//            //新增数据行，并且设置单元格数据
-//            int rowNum = 1;
-//            //headers表示excel表中第一行的表头
-//            HSSFRow row = sheet.createRow(0);
-//            //在excel表中添加表头
-//            for (int j0 = 0; j0 < headlist.size(); j0++) {
-//                HSSFCell cell = row.createCell(j0);
-//                HSSFRichTextString text = new HSSFRichTextString(headlist.get(j0));
-//                cell.setCellValue(text);
-//            }
-//            //在表中存放查询到的数据放入对应的列
-//            List<Map<String,Object>> ParamList = totalDataServiceImpl.getParam(deviceId);
-//            List<Map<String,Object>> TMAndJSON = totalDataServiceImpl.getTMAndJSON(proId,date);
-//            SimpleDateFormat fdates = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            for (int k = 0;k<TMAndJSON.size();k++) {
-//                HSSFRow row1 = sheet.createRow(rowNum);
-//                JSONObject jsonObject = JSON.parseObject(TMAndJSON.get(k).get("JSON").toString());
-//                JSONObject devicePaId = jsonObject.getJSONObject(devicePId);
-//                JSONObject param = devicePaId.getJSONObject("REG_VAL");
-//                row1.createCell(0).setCellValue(fdates.format(TMAndJSON.get(k).get("TM")));
-//                row1.createCell(1).setCellValue(param.getString(ParamList.get(0).get("PARAM").toString()));
-//                row1.createCell(2).setCellValue(param.getString(ParamList.get(1).get("PARAM").toString()));
-//                row1.createCell(3).setCellValue(param.getString(ParamList.get(2).get("PARAM").toString()));
-//                row1.createCell(4).setCellValue(param.getString(ParamList.get(3).get("PARAM").toString()));
-//                row1.createCell(5).setCellValue(param.getString(ParamList.get(4).get("PARAM").toString()));
-//                row1.createCell(6).setCellValue(param.getString(ParamList.get(5).get("PARAM").toString()));
-//                row1.createCell(7).setCellValue(param.getString(ParamList.get(6).get("PARAM").toString()));
-//                row1.createCell(8).setCellValue(param.getString(ParamList.get(7).get("PARAM").toString()));
-//                row1.createCell(9).setCellValue(param.getString(ParamList.get(8).get("PARAM").toString()));
-//                row1.createCell(10).setCellValue(param.getString(ParamList.get(9).get("PARAM").toString()));
-//                row1.createCell(11).setCellValue(param.getString(ParamList.get(10).get("PARAM").toString()));
-//                row1.createCell(12).setCellValue(param.getString(ParamList.get(11).get("PARAM").toString()));
-//                row1.createCell(13).setCellValue(param.getString(ParamList.get(12).get("PARAM").toString()));
-//                row1.createCell(14).setCellValue(param.getString(ParamList.get(13).get("PARAM").toString()));
-//                rowNum++;
-//            }
-//        }
-//        response.setContentType("application/octet-stream");
-//        response.setHeader("Content-disposition", "attachment;filename=" + fileName);
-//        response.flushBuffer();
-//        workbook.write(response.getOutputStream());
-//    }
+    /**
+     * 联查一二级参数和参数库信息
+     */
+    @Override
+    public List<LibraryAndParam> queryLibraryAndParam(LibraryAndParam libraryAndParam){
+        return otherConfigDao.queryLibraryAndParam(libraryAndParam);
+    }
+
+    /**
+     * 导出模板（项目维护-其他配置-参数库）
+     */
+    @Override
+    public void downloadLibraryTemplate(HttpServletResponse response,String year,String model,LibraryAndParam libraryAndParam){
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("参数库模板");
+        List<LibraryAndParam> libraryAndParamList = otherConfigDao.queryLibraryAndParam(libraryAndParam);
+        //设置要导出的文件的名字
+        String fileName = model + ".xls";
+        String[] header1 = {"设备型号"," "," ","年份"," "};
+        String[] header2 = {"参数","二级参数名称","二级参数编码","来源","类型"};
+        String[] header3 = {" "," "," ","主参数"," ","其他参数"};
+        String[] header4 = {"参数值列表","功率（kw）","用气速率（m3/h）","参数1值","参数2值","参数3值","参数4值"};
+        header1[1] = model;
+        header1[4] = year;
+        //添加第一行表头
+        HSSFRow row0 = sheet.createRow(0);
+        //在excel表中添加表头
+        for(int i=0;i<header1.length;i++){
+            HSSFCell cell = row0.createCell(i);
+            HSSFRichTextString text = new HSSFRichTextString(header1[i]);
+            cell.setCellValue(text);
+        }
+        //添加第二行表头(表格第三行开始)
+        HSSFRow row1 = sheet.createRow(2);
+        for(int i=0;i<header2.length;i++){
+            HSSFCell cell = row1.createCell(i);
+            HSSFRichTextString text = new HSSFRichTextString(header2[i]);
+            cell.setCellValue(text);
+        }
+        //新增数据行（从表格第四行开始），并且设置单元格数据
+        int rowNum = 3;
+        //在表中存放查询到的数据放入对应的列
+        int index = 1;
+        String souce = "";
+        String type = "";
+        for (LibraryAndParam libraryAndParams : libraryAndParamList) {
+            if ("1".equals(libraryAndParams.getSourceId())){
+                souce = "设备";
+            }else if ("2".equals(libraryAndParams.getSourceId())){
+                souce = "计量表";
+            }else if ("3".equals(libraryAndParams.getSourceId())){
+                souce = "传感器";
+            }else if ("4".equals(libraryAndParams.getSourceId())){
+                souce = "固定参数";
+            }
+            if ("0".equals(libraryAndParams.getCompareSign())){
+                type = " ";
+            }else if ("1".equals(libraryAndParams.getCompareSign())){
+                type = "主参数";
+            }
+            HSSFRow row2 = sheet.createRow(rowNum);
+            row2.createCell(0).setCellValue(index);
+            row2.createCell(1).setCellValue(libraryAndParams.getParamSecondName());
+            row2.createCell(2).setCellValue(libraryAndParams.getParamSecondCoding());
+            row2.createCell(3).setCellValue(souce);
+            row2.createCell(4).setCellValue(type);
+            //row2.createCell(5).setCellValue(libraryAndParams);
+            rowNum++;
+        }
+        //添加第一行表头
+        HSSFRow row3 = sheet.createRow(5);
+        //在excel表中添加表头
+        for(int i=0;i<header3.length;i++){
+            HSSFCell cell = row3.createCell(i);
+            HSSFRichTextString text = new HSSFRichTextString(header3[i]);
+            cell.setCellValue(text);
+        }
+        //添加第二行表头(表格第三行开始)
+        HSSFRow row4 = sheet.createRow(6);
+        for(int i=0;i<header4.length;i++){
+            HSSFCell cell = row4.createCell(i);
+            HSSFRichTextString text = new HSSFRichTextString(header4[i]);
+            cell.setCellValue(text);
+        }
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-disposition", "attachment;filename=" + fileName);
+        try {
+            response.flushBuffer();
+            workbook.write(response.getOutputStream());
+            //return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //return false;
+    }
 }

@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.business.system.project.entity.EnergyTypeConfig;
+import org.rcisoft.business.system.project.entity.LibraryAndParam;
 import org.rcisoft.business.system.project.service.OtherConfigService;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamLibrary;
@@ -11,6 +12,9 @@ import org.rcisoft.entity.EnergyConfig;
 import org.rcisoft.entity.EnergyParamLibrary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author 土豆儿
@@ -92,5 +96,13 @@ public class OtherConfigController {
     @PutMapping("/updateEnergyParamLibrary")
     public Result updateEnergyParamLibrary(@RequestBody EnergyParamLibrary energyParamLibrary){
         return Result.result(1,otherConfigServiceImpl.updateEnergyParamLibrary(energyParamLibrary));
+    }
+
+    @ApiOperation(value="导出模板（项目维护-其他配置-参数库）", notes="导出模板（项目维护-其他配置-参数库）")
+    @GetMapping("/downloadLibraryTemplate")
+    public void downloadLibraryTemplate(HttpServletResponse response,String year,String model,String deviceId){
+        LibraryAndParam libraryAndParam = new LibraryAndParam();
+        libraryAndParam.setDeviceId(deviceId);
+        otherConfigServiceImpl.downloadLibraryTemplate(response,year,model,libraryAndParam);
     }
 }
