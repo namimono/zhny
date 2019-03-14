@@ -6,6 +6,7 @@ import org.rcisoft.base.result.Result;
 import org.rcisoft.business.system.project.entity.EnergyTypeConfig;
 import org.rcisoft.business.system.project.service.OtherConfigService;
 import org.rcisoft.entity.BusParamFirst;
+import org.rcisoft.entity.BusParamLibrary;
 import org.rcisoft.entity.EnergyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,5 +46,32 @@ public class OtherConfigController {
     @PutMapping("/updateEnergyConfig")
     public Result updateEnergyConfig(@RequestBody EnergyConfig energyConfig){
         return Result.result(1,otherConfigServiceImpl.updateEnergyConfig(energyConfig));
+    }
+
+    @ApiOperation(value="根据设备ID、二级参数ID查询参数库信息", notes="根据设备ID、二级参数ID查询参数库信息")
+    @GetMapping("/queryParamLibrary")
+    public Result queryParamLibrary(String deviceId,String paramSecondId){
+        BusParamLibrary busParamLibrary = new BusParamLibrary();
+        busParamLibrary.setDeviceId(deviceId);
+        busParamLibrary.setParamSecondId(paramSecondId);
+        return Result.result(otherConfigServiceImpl.queryParamLibrary(busParamLibrary));
+    }
+
+    @ApiOperation(value="新增参数库信息", notes="新增参数库信息")
+    @PostMapping("/addParamLibrary")
+    public Result addParamLibrary(@RequestBody BusParamLibrary busParamLibrary){
+        return Result.result(1,otherConfigServiceImpl.addParamLibrary(busParamLibrary));
+    }
+
+    @ApiOperation(value="删除参数库信息", notes="删除参数库信息")
+    @DeleteMapping("/deleteParamLibrary")
+    public Result deleteParamLibrary(@RequestBody BusParamLibrary busParamLibrary){
+        return Result.result(1,otherConfigServiceImpl.deleteParamLibrary(busParamLibrary));
+    }
+
+    @ApiOperation(value="修改参数库信息", notes="修改参数库信息")
+    @PutMapping("/updateParamLibrary")
+    public Result updateParamLibrary(@RequestBody BusParamLibrary busParamLibrary){
+        return Result.result(1,otherConfigServiceImpl.updateParamLibrary(busParamLibrary));
     }
 }

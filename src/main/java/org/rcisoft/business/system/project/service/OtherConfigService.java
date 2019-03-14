@@ -2,6 +2,7 @@ package org.rcisoft.business.system.project.service;
 
 import org.rcisoft.business.system.project.entity.EnergyTypeConfig;
 import org.rcisoft.entity.BusParamFirst;
+import org.rcisoft.entity.BusParamLibrary;
 import org.rcisoft.entity.EnergyConfig;
 
 import java.util.List;
@@ -28,5 +29,23 @@ public interface OtherConfigService {
      */
     int updateEnergyConfig(EnergyConfig energyConfig);
 
+    /**
+     * 根据设备ID、二级参数ID查询参数库信息
+     */
+    List<BusParamLibrary> queryParamLibrary(BusParamLibrary busParamLibrary);
 
+    /**
+     * 新增参数库信息
+     */
+    int addParamLibrary(BusParamLibrary busParamLibrary);
+
+    /**
+     * 修改参数库信息
+     */
+    int updateParamLibrary(BusParamLibrary busParamLibrary);
+
+    /**
+     * 删除参数库信息
+     */
+    int deleteParamLibrary(BusParamLibrary busParamLibrary);
 }
