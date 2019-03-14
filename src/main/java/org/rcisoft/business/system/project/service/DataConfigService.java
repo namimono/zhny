@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamSecond;
 import org.rcisoft.business.system.project.entity.ParamFirstAndSecond;
+import org.rcisoft.entity.EnergyConfig;
 import org.rcisoft.entity.SysSystem;
 
 import java.util.List;
@@ -55,4 +56,14 @@ public interface DataConfigService {
      * 数据配置联表查询一级、二级参数信息
      */
     PageInfo<ParamFirstAndSecond> queryDataParamForPage(String projectId);
+
+    /**
+     * 增加能源配置信息
+     */
+    int addEnergyConfig(EnergyConfig energyConfig);
+
+    /**
+     * 删除能源配置信息
+     */
+    int deleteEnergyConfig(EnergyConfig energyConfig);
 }

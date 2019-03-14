@@ -2,6 +2,7 @@ package org.rcisoft.business.system.project.service;
 
 import org.rcisoft.business.system.project.entity.EnergyTypeConfig;
 import org.rcisoft.entity.BusParamFirst;
+import org.rcisoft.entity.EnergyConfig;
 
 import java.util.List;
 
@@ -21,4 +22,11 @@ public interface OtherConfigService {
      * 根据项目设备等ID查询能耗分类信息
      */
     List<EnergyTypeConfig> queryTypeNameByConfig(EnergyTypeConfig energyTypeConfig);
+
+    /**
+     * 修改能源配置信息
+     */
+    int updateEnergyConfig(EnergyConfig energyConfig);
+
+
 }

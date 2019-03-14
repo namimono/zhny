@@ -1,10 +1,12 @@
 package org.rcisoft.business.system.project.service.Impl;
 
+import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.entity.EnergyTypeConfig;
 import org.rcisoft.business.system.project.service.OtherConfigService;
 import org.rcisoft.dao.BusParamFirstDao;
 import org.rcisoft.dao.EnergyConfigDao;
 import org.rcisoft.entity.BusParamFirst;
+import org.rcisoft.entity.EnergyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,4 +39,14 @@ public class OtherConfigServiceImpl implements OtherConfigService {
     public List<EnergyTypeConfig> queryTypeNameByConfig(EnergyTypeConfig energyTypeConfig){
         return energyConfigDao.queryTypeNameByConfig(energyTypeConfig);
     }
+
+    /**
+     * 修改能源配置信息
+     */
+    @Override
+    public int updateEnergyConfig(EnergyConfig energyConfig){
+        return energyConfigDao.updateByPrimaryKeySelective(energyConfig);
+    }
+
+
 }

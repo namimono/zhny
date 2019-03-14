@@ -7,6 +7,7 @@ import org.rcisoft.base.result.Result;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamSecond;
 import org.rcisoft.business.system.project.service.DataConfigService;
+import org.rcisoft.entity.EnergyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,5 +77,17 @@ public class DataConfigController extends PageAop {
     @GetMapping("/queryDataParamForPage")
     public Result queryDataParamForPage(@RequestParam String projectId){
         return Result.result(dataConfigServiceImpl.queryDataParamForPage(projectId));
+    }
+
+    @ApiOperation(value="增加能源配置信息", notes="增加能源配置信息")
+    @PostMapping("/addEnergyConfig")
+    public Result addEnergyConfig(@RequestBody EnergyConfig energyConfig){
+        return Result.result(1,dataConfigServiceImpl.addEnergyConfig(energyConfig));
+    }
+
+    @ApiOperation(value="删除能源配置信息", notes="删除能源配置信息")
+    @PostMapping("/deleteEnergyConfig")
+    public Result deleteEnergyConfig(@RequestBody EnergyConfig energyConfig){
+        return Result.result(1,dataConfigServiceImpl.deleteEnergyConfig(energyConfig));
     }
 }

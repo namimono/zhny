@@ -6,6 +6,7 @@ import org.rcisoft.base.result.Result;
 import org.rcisoft.business.system.project.entity.EnergyTypeConfig;
 import org.rcisoft.business.system.project.service.OtherConfigService;
 import org.rcisoft.entity.BusParamFirst;
+import org.rcisoft.entity.EnergyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,5 +39,11 @@ public class OtherConfigController {
         energyTypeConfig.setParamFirstId(paramFirstId);
         energyTypeConfig.setParamSecondId(paramSecondId);
         return Result.result(otherConfigServiceImpl.queryTypeNameByConfig(energyTypeConfig));
+    }
+
+    @ApiOperation(value="修改能源配置信息", notes="修改能源配置信息")
+    @PutMapping("/updateEnergyConfig")
+    public Result updateEnergyConfig(@RequestBody EnergyConfig energyConfig){
+        return Result.result(1,otherConfigServiceImpl.updateEnergyConfig(energyConfig));
     }
 }
