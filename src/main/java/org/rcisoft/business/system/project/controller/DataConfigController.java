@@ -32,7 +32,9 @@ public class DataConfigController extends PageAop {
 
     @ApiOperation(value="根据项目ID查询一级参数信息", notes="根据项目ID查询一级参数信息")
     @GetMapping("/queryParamFirstInfo")
-    public Result queryParamFirstInfo(@RequestBody BusParamFirst busParamFirst){
+    public Result queryParamFirstInfo(String projectId){
+        BusParamFirst busParamFirst = new BusParamFirst();
+        busParamFirst.setProjectId(projectId);
         return Result.result(dataConfigServiceImpl.queryParamFirstInfo(busParamFirst));
     }
 
@@ -50,7 +52,11 @@ public class DataConfigController extends PageAop {
 
     @ApiOperation(value="查询二级参数信息", notes="查询二级参数信息")
     @GetMapping("/queryParamSecondInfo")
-    public Result queryParamSecondInfo(@RequestBody BusParamSecond busParamSecond){
+    public Result queryParamSecondInfo(String paramFirstId,String projectId,String systemId){
+        BusParamSecond busParamSecond = new BusParamSecond();
+        busParamSecond.setParamFirstId(paramFirstId);
+        busParamSecond.setProjectId(projectId);
+        busParamSecond.setSystemId(systemId);
         return Result.result(dataConfigServiceImpl.queryParamSecondInfo(busParamSecond));
     }
 
@@ -68,7 +74,7 @@ public class DataConfigController extends PageAop {
 
     @ApiOperation(value="数据配置联表同时查询一级、二级参数信息", notes="数据配置联表同时查询一级、二级参数信息")
     @GetMapping("/queryDataParamForPage")
-    public Result queryDataParamForPage(@RequestParam("projectId") String projectId){
+    public Result queryDataParamForPage(@RequestParam String projectId){
         return Result.result(dataConfigServiceImpl.queryDataParamForPage(projectId));
     }
 }

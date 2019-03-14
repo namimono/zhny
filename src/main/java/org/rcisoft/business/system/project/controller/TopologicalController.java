@@ -41,7 +41,10 @@ public class TopologicalController {
 
     @ApiOperation(value="查询拓扑图信息", notes="查询拓扑图信息")
     @GetMapping("/queryTopology")
-    public Result queryTopology(@RequestBody BusTopology busTopology){
+    public Result queryTopology(String projectId,String systemId){
+        BusTopology busTopology = new BusTopology();
+        busTopology.setProjectId(projectId);
+        busTopology.setSystemId(systemId);
         return Result.result(topologicalServiceImpl.queryTopology(busTopology));
     }
 
@@ -65,7 +68,9 @@ public class TopologicalController {
 
     @ApiOperation(value="查询拓扑图节点图片信息", notes="查询拓扑图节点图片信息")
     @GetMapping("/queryTopologyNode")
-    public Result queryTopologyNode(@RequestBody BusTopologyNode busTopologyNode){
+    public Result queryTopologyNode(@RequestParam String systemId){
+        BusTopologyNode busTopologyNode = new BusTopologyNode();
+        busTopologyNode.setSystemId(systemId);
         return Result.result(topologicalServiceImpl.queryTopologyNode(busTopologyNode));
     }
 }

@@ -7,10 +7,7 @@ import org.rcisoft.business.system.project.entity.EnergyTypeConfig;
 import org.rcisoft.business.system.project.service.OtherConfigService;
 import org.rcisoft.entity.BusParamFirst;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author 土豆儿
@@ -26,13 +23,20 @@ public class OtherConfigController {
 
     @ApiOperation(value="根据参数来源查询表具", notes="根据参数来源查询表具")
     @GetMapping("/queryParamFirstBySource")
-    public Result queryParamFirstBySource(@RequestBody BusParamFirst busParamFirst){
+    public Result queryParamFirstBySource(String projectId){
+        BusParamFirst busParamFirst = new BusParamFirst();
+        busParamFirst.setProjectId(projectId);
         return Result.result(otherConfigServiceImpl.queryParamFirstBySource(busParamFirst));
     }
 
     @ApiOperation(value="根据项目设备等ID查询能耗分类信息", notes="根据项目设备等ID查询能耗分类信息")
     @GetMapping("/queryTypeNameByConfig")
-    public Result queryTypeNameByConfig(@RequestBody EnergyTypeConfig energyTypeConfig){
+    public Result queryTypeNameByConfig(String projectId,String deviceId,String paramFirstId,String paramSecondId){
+        EnergyTypeConfig energyTypeConfig = new EnergyTypeConfig();
+        energyTypeConfig.setProjectId(projectId);
+        energyTypeConfig.setDeviceId(deviceId);
+        energyTypeConfig.setParamFirstId(paramFirstId);
+        energyTypeConfig.setParamSecondId(paramSecondId);
         return Result.result(otherConfigServiceImpl.queryTypeNameByConfig(energyTypeConfig));
     }
 }

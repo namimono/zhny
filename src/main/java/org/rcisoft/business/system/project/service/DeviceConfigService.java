@@ -50,7 +50,7 @@ public interface DeviceConfigService {
     int addParamFixed(BusParamFixed busParamFixed);
 
     /**
-     * 查询固定参数信息
+     * 根据项目、设备、系统ID查询固定参数信息
      */
     List<BusParamFixed> queryParamFixed(BusParamFixed busParamFixed);
 
