@@ -32,8 +32,8 @@ public class DataConfigController extends PageAop {
     }
 
     @ApiOperation(value="根据项目ID查询一级参数信息", notes="根据项目ID查询一级参数信息")
-    @GetMapping("/queryParamFirstInfo")
-    public Result queryParamFirstInfo(String projectId){
+    @GetMapping("/queryParamFirstInfo/{projectId}")
+    public Result queryParamFirstInfo(@PathVariable String projectId){
         BusParamFirst busParamFirst = new BusParamFirst();
         busParamFirst.setProjectId(projectId);
         return Result.result(dataConfigServiceImpl.queryParamFirstInfo(busParamFirst));
@@ -42,18 +42,18 @@ public class DataConfigController extends PageAop {
     @ApiOperation(value="新增一级参数信息", notes="新增一级参数信息")
     @PostMapping("/addParamFirstInfo")
     public Result addParamFirstInfo(@RequestBody BusParamFirst busParamFirst){
-        return Result.result(1, dataConfigServiceImpl.addParamFirstInfo(busParamFirst));
+        return Result.serviceResult(dataConfigServiceImpl.addParamFirstInfo(busParamFirst),"新增一级参数信息成功","新增一级参数信息失败");
     }
 
     @ApiOperation(value="修改一级参数信息", notes="修改一级参数信息")
     @PostMapping("/updateParamFirstInfo")
     public Result updateParamFirstInfo(@RequestBody BusParamFirst busParamFirst){
-        return Result.result(1, dataConfigServiceImpl.updateParamFirstInfo(busParamFirst));
+        return Result.result(dataConfigServiceImpl.updateParamFirstInfo(busParamFirst),"修改一级参数信息成功","修改一级参数信息失败");
     }
 
     @ApiOperation(value="查询二级参数信息", notes="查询二级参数信息")
-    @GetMapping("/queryParamSecondInfo")
-    public Result queryParamSecondInfo(String paramFirstId,String projectId,String systemId){
+    @GetMapping("/queryParamSecondInfo/{paramFirstId}/{projectId}/{systemId}")
+    public Result queryParamSecondInfo(@PathVariable String paramFirstId,@PathVariable String projectId,@PathVariable String systemId){
         BusParamSecond busParamSecond = new BusParamSecond();
         busParamSecond.setParamFirstId(paramFirstId);
         busParamSecond.setProjectId(projectId);
@@ -64,30 +64,30 @@ public class DataConfigController extends PageAop {
     @ApiOperation(value="新增二级参数信息", notes="新增二级参数信息")
     @PostMapping("/addParamSecondInfo")
     public Result addParamSecondInfo(@RequestBody List<BusParamSecond> list){
-        return Result.result(1, dataConfigServiceImpl.addParamSecondInfo(list));
+        return Result.result(dataConfigServiceImpl.addParamSecondInfo(list),"新增二级参数信息成功","新增二级参数信息失败");
     }
 
     @ApiOperation(value="修改二级参数信息", notes="修改二级参数信息")
     @PostMapping("/updateParamSecondInfo")
     public Result updateParamSecondInfo(@RequestBody List<BusParamSecond> list){
-        return Result.result(1, dataConfigServiceImpl.updateParamSecondInfo(list));
+        return Result.result(dataConfigServiceImpl.updateParamSecondInfo(list),"修改二级参数信息成功","修改二级参数信息失败");
     }
 
     @ApiOperation(value="数据配置联表同时查询一级、二级参数信息", notes="数据配置联表同时查询一级、二级参数信息")
-    @GetMapping("/queryDataParamForPage")
-    public Result queryDataParamForPage(@RequestParam String projectId){
+    @GetMapping("/queryDataParamForPage/{projectId}")
+    public Result queryDataParamForPage(@PathVariable String projectId){
         return Result.result(dataConfigServiceImpl.queryDataParamForPage(projectId));
     }
 
     @ApiOperation(value="增加能源配置信息", notes="增加能源配置信息")
     @PostMapping("/addEnergyConfig")
     public Result addEnergyConfig(@RequestBody EnergyConfig energyConfig){
-        return Result.result(1,dataConfigServiceImpl.addEnergyConfig(energyConfig));
+        return Result.result(dataConfigServiceImpl.addEnergyConfig(energyConfig),"增加能源配置信息成功","增加能源配置信息失败");
     }
 
     @ApiOperation(value="删除能源配置信息", notes="删除能源配置信息")
     @PostMapping("/deleteEnergyConfig")
     public Result deleteEnergyConfig(@RequestBody EnergyConfig energyConfig){
-        return Result.result(1,dataConfigServiceImpl.deleteEnergyConfig(energyConfig));
+        return Result.result(dataConfigServiceImpl.deleteEnergyConfig(energyConfig),"删除能源配置信息成功","删除能源配置信息失败");
     }
 }
