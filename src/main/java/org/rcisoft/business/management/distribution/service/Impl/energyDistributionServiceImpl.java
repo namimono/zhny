@@ -41,6 +41,16 @@ public class energyDistributionServiceImpl implements energyDistributionService 
             //计算能耗水平
             BigDecimal energyNum = sum.divide(ed.getBuildingArea(), 2, BigDecimal.ROUND_HALF_UP);
             ed.setEnergyNum(energyNum);
+            try{
+                //截取年份存入年份字段
+                Calendar c = Calendar.getInstance();
+                c.setTime(ed.getEquipmentAge());
+                ed.setEquipmentYear(c.get(Calendar.YEAR));
+                c.setTime(ed.getBuildingAge());
+                ed.setBuildingYear(c.get(Calendar.YEAR));
+            }catch(Exception e ){
+                e.getStackTrace();
+            }
         }
         System.out.println(list);
         return list;

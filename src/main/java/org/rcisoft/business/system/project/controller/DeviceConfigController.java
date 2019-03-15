@@ -28,7 +28,10 @@ public class DeviceConfigController {
 
     @ApiOperation(value="查询设备简要信息", notes="查询设备简要信息")
     @GetMapping("/queryDeviceBriefInfo")
-    public Result queryDeviceBriefInfo(@RequestBody BusDevice busDevice){
+    public Result queryDeviceBriefInfo(String systemId,String projectId){
+        BusDevice busDevice = new BusDevice();
+        busDevice.setSystemId(systemId);
+        busDevice.setProjectId(projectId);
         return Result.result(deviceConfigServiceImpl.queryDeviceBriefInfo(busDevice));
     }
 
@@ -40,13 +43,20 @@ public class DeviceConfigController {
 
     @ApiOperation(value="根据项目ID和子系统ID查询未关联一级参数信息", notes="根据项目ID和子系统ID查询未关联一级参数信息")
     @GetMapping("/queryParamFirstInfoBySysId")
-    public Result queryParamFirstInfoBySysId(@RequestBody BusParamFirst busParamFirst){
+    public Result queryParamFirstInfoBySysId(String systemId,String projectId){
+        BusParamFirst busParamFirst = new BusParamFirst();
+        busParamFirst.setSystemId(systemId);
+        busParamFirst.setProjectId(projectId);
         return Result.result(deviceConfigServiceImpl.queryParamFirstInfoBySysId(busParamFirst));
     }
 
     @ApiOperation(value="根据项目、设备、系统ID查询固定参数信息", notes="根据项目、设备、系统ID查询固定参数信息")
     @GetMapping("/queryParamFixed")
-    public Result queryParamFixed(@RequestBody BusParamFixed busParamFixed){
+    public Result queryParamFixed(String systemId,String projectId,String deviceId){
+        BusParamFixed busParamFixed = new BusParamFixed();
+        busParamFixed.setSystemId(systemId);
+        busParamFixed.setProjectId(projectId);
+        busParamFixed.setDeviceId(deviceId);
         return Result.result(deviceConfigServiceImpl.queryParamFixed(busParamFixed));
     }
 

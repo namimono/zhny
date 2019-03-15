@@ -125,7 +125,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     }
 
     /**
-     * 查询固定参数信息
+     * 根据项目、设备、系统ID查询固定参数信息
      */
     @Override
     public List<BusParamFixed> queryParamFixed(BusParamFixed busParamFixed){

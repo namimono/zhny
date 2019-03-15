@@ -12,6 +12,9 @@ import org.rcisoft.entity.BusTeam;
 import org.rcisoft.entity.SysPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -43,6 +46,7 @@ public class TeamServiceImpl implements TeamService {
         return teamDao.queryTeamById(id);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
     @Override
     public Integer insertTeam(BusTeam busTeam) {
         busTeam.setId(UuidUtil.create32());
@@ -50,11 +54,13 @@ public class TeamServiceImpl implements TeamService {
         return busTeamDao.insert(busTeam);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
     @Override
     public Integer updateTeam(BusTeam busTeam) {
         return busTeamDao.updateByPrimaryKey(busTeam);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
     @Override
     public Integer deleteTeamById(String id) {
         return busTeamDao.deleteByPrimaryKey(id);

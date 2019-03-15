@@ -16,7 +16,7 @@ import java.util.List;
 public interface BusParamFixedDao extends Mapper<BusParamFixed> {
 
     /**
-     * 查询固定参数信息
+     * 根据项目、设备、系统ID查询固定参数信息
      */
     @Select("SELECT * FROM bus_param_fixed \n" +
             "WHERE project_id = #{projectId}\n" +

@@ -15,7 +15,6 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class EnergyDistribution {
 
 	/**
@@ -42,9 +41,14 @@ public class EnergyDistribution {
 
 
 	/**
-	 * 建筑年代
+	 * 建筑年代(date)
 	 */
 	private Date buildingAge;
+
+	/**
+	 * 建筑年代(int)
+	 */
+	private int buildingYear;
 
 	/**
 	 * 建筑面积
@@ -52,9 +56,14 @@ public class EnergyDistribution {
 	private BigDecimal buildingArea;
 
 	/**
-	 * 暖通设备年限
+	 * 暖通设备年限(date)
 	 */
 	private Date equipmentAge;
+
+	/**
+	 * 暖通设备年限(date)
+	 */
+	private int equipmentYear;
 
 	/**
 	 * 所属气候带类型
