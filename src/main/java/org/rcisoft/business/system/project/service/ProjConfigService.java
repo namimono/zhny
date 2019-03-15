@@ -118,4 +118,10 @@ public interface ProjConfigService {
      * 修改节能改造信息
      */
     int updateProjectSaving(BusProjectSaving busProjectSaving);
+
+    /**
+     * 查询认定员信息
+     */
+    List<SysAuthenticator> queryAuthenticator();
+
 }

@@ -37,6 +37,8 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     private SysUserDao sysUserDao;
     @Autowired
     private BusProjectSavingDao busProjectSavingDao;
+    @Autowired
+    private SysAuthenticatorDao sysAuthenticatorDao;
 
     /**
      * 查询全部项目表信息
@@ -243,5 +245,13 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     @Override
     public int updateProjectSaving(BusProjectSaving busProjectSaving){
         return busProjectSavingDao.updateByPrimaryKeySelective(busProjectSaving);
+    }
+
+    /**
+     * 查询认定员信息
+     */
+    @Override
+    public List<SysAuthenticator> queryAuthenticator(){
+        return sysAuthenticatorDao.queryAuthenticator();
     }
 }

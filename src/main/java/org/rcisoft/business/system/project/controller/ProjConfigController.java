@@ -46,7 +46,7 @@ public class ProjConfigController {
     @ApiOperation(value="新增项目配置信息", notes="新增项目配置信息")
     @PostMapping("/addProjConfig")
     public Result addProjConfig(@RequestBody BusProject busProject){
-        return Result.serviceResult(projConfigServiceImpl.addProjConfig(busProject), "succ", "error");
+        return Result.serviceResult(projConfigServiceImpl.addProjConfig(busProject), "新增项目配置信息成功", "新增项目配置信息失败");
     }
 
     @ApiOperation(value="获取省份信息及其ID", notes="获取省份信息及其ID")
@@ -149,5 +149,11 @@ public class ProjConfigController {
     @PutMapping("/updateProjectSaving")
     public Result updateProjectSaving(@RequestBody BusProjectSaving busProjectSaving){
         return Result.result(1, projConfigServiceImpl.updateProjectSaving(busProjectSaving));
+    }
+
+    @ApiOperation(value="查询认定员信息", notes="查询认定员信息")
+    @GetMapping("/queryAuthenticator")
+    public Result queryAuthenticator(){
+        return Result.result(projConfigServiceImpl.queryAuthenticator());
     }
 }
