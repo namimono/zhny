@@ -6,8 +6,10 @@ import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamLibrary;
 import org.rcisoft.entity.EnergyConfig;
 import org.rcisoft.entity.EnergyParamLibrary;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -76,4 +78,10 @@ public interface OtherConfigService {
      * 导出模板（项目维护-其他配置-参数库）
      */
     void downloadLibraryTemplate(HttpServletResponse response,String year,String model,LibraryAndParam libraryAndParam);
+
+    /**
+     * 导入参数库模板数据
+     */
+    int importData(MultipartFile file, String deviceId, String projectId);
+
 }

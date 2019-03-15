@@ -12,8 +12,10 @@ import org.rcisoft.entity.EnergyConfig;
 import org.rcisoft.entity.EnergyParamLibrary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -104,5 +106,11 @@ public class OtherConfigController {
         LibraryAndParam libraryAndParam = new LibraryAndParam();
         libraryAndParam.setDeviceId(deviceId);
         otherConfigServiceImpl.downloadLibraryTemplate(response,year,model,libraryAndParam);
+    }
+
+    @ApiOperation(value="导入参数库模板数据", notes="导入参数库模板数据")
+    @PostMapping("/importData")
+    public void importData(MultipartFile file, String deviceId, String projectId){
+        otherConfigServiceImpl.importData(file,deviceId,projectId);
     }
 }
