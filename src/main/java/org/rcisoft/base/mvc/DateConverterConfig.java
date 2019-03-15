@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 全局页面传入日期字符串，自动转换成日期格式
  */
-//@Component
+@Component
 public class DateConverterConfig implements Converter<String, Date> {
  
     private static final List<String> formarts = new ArrayList<>(4);
