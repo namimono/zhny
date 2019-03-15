@@ -9,14 +9,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.util.Date;
-import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table ( name ="energy_planning_cost" )
-public class EnergyPlanningCost {
+@Table ( name ="energy_planning_device" )
+public class EnergyPlanningDevice {
 
 
 	/**
@@ -43,29 +42,5 @@ public class EnergyPlanningCost {
 	 */
    	@Column(name = "create_time" )
 	private Date createTime;
-
-	/**
-	 * 电能耗（功率）
-	 */
-   	@Column(name = "energy_elec" )
-	private BigDecimal energyElec;
-
-	/**
-	 * 气能耗（用气速率）
-	 */
-   	@Column(name = "energy_gas" )
-	private BigDecimal energyGas;
-
-	/**
-	 * 电花费
-	 */
-   	@Column(name = "money_elec" )
-	private BigDecimal moneyElec;
-
-	/**
-	 * 气花费
-	 */
-   	@Column(name = "money_gas" )
-	private BigDecimal moneyGas;
 
 }

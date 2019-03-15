@@ -15,8 +15,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table ( name ="energy_planning" )
-public class EnergyPlanning {
+@Table ( name ="energy_planning_record" )
+public class EnergyPlanningRecord {
 
 
 	/**
@@ -39,40 +39,52 @@ public class EnergyPlanning {
 	private String deviceId;
 
 	/**
-	 * 一级参数id，有两个参数中间使用 / 分隔
+	 * 第一个主参数，一级参数id
 	 */
-   	@Column(name = "param_first_ids" )
-	private String paramFirstIds;
+   	@Column(name = "main_first_id" )
+	private String mainFirstId;
 
 	/**
-	 * 二级参数id，有两个参数中间使用 / 分隔
+	 * 第一个主参数，二级参数id
 	 */
-   	@Column(name = "param_second_ids" )
-	private String paramSecondIds;
+   	@Column(name = "main_second_id" )
+	private String mainSecondId;
 
 	/**
-	 * 数值，有两个参数中间使用 / 分隔
+	 * 第一个主参数值
 	 */
-   	@Column(name = "param_values" )
-	private String paramValues;
+   	@Column(name = "main_value" )
+	private BigDecimal mainValue;
 
 	/**
-	 * 其他数值，有两个参数中间使用 / 分隔
+	 * 第二个主参数，一级参数id
 	 */
-   	@Column(name = "other_values" )
-	private String otherValues;
+   	@Column(name = "main_first_id2" )
+	private String mainFirstId2;
 
 	/**
-	 * 电能耗（功率）
+	 * 第二个主参数，二级参数id
 	 */
-   	@Column(name = "energy_elec" )
-	private BigDecimal energyElec;
+   	@Column(name = "main_second_id2" )
+	private String mainSecondId2;
 
 	/**
-	 * 气能耗（用气速率）
+	 * 第二个主参数值
 	 */
-   	@Column(name = "energy_gas" )
-	private BigDecimal energyGas;
+   	@Column(name = "main_value2" )
+	private BigDecimal mainValue2;
+
+	/**
+	 * 第一个副参数值
+	 */
+   	@Column(name = "param_value" )
+	private BigDecimal paramValue;
+
+	/**
+	 * 第二个副参数值
+	 */
+   	@Column(name = "param_value2" )
+	private BigDecimal paramValue2;
 
 	/**
 	 * 创建时间
