@@ -147,6 +147,14 @@ public class OtherConfigServiceImpl implements OtherConfigService {
         String[] header4 = {"参数值列表","功率（kw）","用气速率（m3/h）","参数1值","参数2值","参数3值","参数4值"};
         header1[1] = model;
         header1[4] = year;
+        //设置列宽
+        sheet.setColumnWidth(0,3000);
+        sheet.setColumnWidth(1,4000);
+        sheet.setColumnWidth(2,4300);
+        sheet.setColumnWidth(3,3000);
+        sheet.setColumnWidth(4,3000);
+        sheet.setColumnWidth(5,3000);
+        sheet.setColumnWidth(6,3000);
         //添加第一行表头
         HSSFRow row0 = sheet.createRow(0);
         //在excel表中添加表头
@@ -178,9 +186,9 @@ public class OtherConfigServiceImpl implements OtherConfigService {
             }else if ("4".equals(libraryAndParams.getSourceId())){
                 souce = "固定参数";
             }
-            if ("0".equals(libraryAndParams.getCompareSign())){
+            if ((libraryAndParams.getCompareSign()) == 0){
                 type = " ";
-            }else if ("1".equals(libraryAndParams.getCompareSign())){
+            }else if ((libraryAndParams.getCompareSign()) == 1){
                 type = "主参数";
             }
             HSSFRow row2 = sheet.createRow(rowNum);
@@ -189,11 +197,11 @@ public class OtherConfigServiceImpl implements OtherConfigService {
             row2.createCell(2).setCellValue(libraryAndParams.getParamSecondCoding());
             row2.createCell(3).setCellValue(souce);
             row2.createCell(4).setCellValue(type);
-            //row2.createCell(5).setCellValue(libraryAndParams);
+            index++;
             rowNum++;
         }
         //添加第一行表头
-        HSSFRow row3 = sheet.createRow(5);
+        HSSFRow row3 = sheet.createRow(rowNum+1);
         //在excel表中添加表头
         for(int i=0;i<header3.length;i++){
             HSSFCell cell = row3.createCell(i);
@@ -201,7 +209,7 @@ public class OtherConfigServiceImpl implements OtherConfigService {
             cell.setCellValue(text);
         }
         //添加第二行表头(表格第三行开始)
-        HSSFRow row4 = sheet.createRow(6);
+        HSSFRow row4 = sheet.createRow(rowNum+2);
         for(int i=0;i<header4.length;i++){
             HSSFCell cell = row4.createCell(i);
             HSSFRichTextString text = new HSSFRichTextString(header4[i]);
