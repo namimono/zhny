@@ -80,6 +80,21 @@ public class Result {
      * @param operate 增删改的操作结果，大于0时，返回成功，小于0时，返回失败
      * @param success 成功的提示信息
      * @param error 失败的提示信息
+     * @return
+     */
+    public static Result result(int operate, String success, String error) {
+        Result result = new Result(ResultCode.SUCCESS.code, success, null);
+        if (operate <= 0)
+            result.setCode(ResultCode.FAIL.code).setMsg(error);
+        return result;
+    }
+
+    /**
+     * 返回值
+     * 适用于增删改
+     * @param operate 增删改的操作结果，大于0时，返回成功，小于0时，返回失败
+     * @param success 成功的提示信息
+     * @param error 失败的提示信息
      * @param data 结果集
      * @return
      */
