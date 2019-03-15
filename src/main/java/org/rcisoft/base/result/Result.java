@@ -119,6 +119,26 @@ public class Result {
         return new Result(code.code, msg, data);
     }
 
+    /**
+     *
+     * @param serviceResult
+     * @return
+     */
+    public static Result serviceResult(ServiceResult serviceResult) {
+        return result(serviceResult.getResult(), serviceResult.getObject());
+    }
+
+    /**
+     *
+     * @param serviceResult
+     * @param success
+     * @param error
+     * @return
+     */
+    public static Result serviceResult(ServiceResult serviceResult, String success, String error) {
+        return result(serviceResult.getResult(), success, error, serviceResult.getObject());
+    }
+
     @Override
     public String toString() {
         return JSON.toJSONString(this);

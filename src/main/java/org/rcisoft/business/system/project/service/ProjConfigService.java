@@ -1,5 +1,6 @@
 package org.rcisoft.business.system.project.service;
 
+import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.business.management.evaluateproj.entity.ProjectAssessment;
 import org.rcisoft.business.system.project.entity.ProjectBriefInfo;
 import org.rcisoft.entity.*;
@@ -21,7 +22,7 @@ public interface ProjConfigService {
     /**
      * 新增项目配置信息
      */
-    String addProjConfig(BusProject busProject);
+    ServiceResult addProjConfig(BusProject busProject);
 
     /**
      * 修改项目配置信息

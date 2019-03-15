@@ -3,6 +3,7 @@ package org.rcisoft.business.system.project.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
+import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.entity.BusBuilding;
 import org.rcisoft.entity.BusBuildingZone;
 import org.rcisoft.entity.BusProject;
@@ -45,7 +46,7 @@ public class ProjConfigController {
     @ApiOperation(value="新增项目配置信息", notes="新增项目配置信息")
     @PostMapping("/addProjConfig")
     public Result addProjConfig(@RequestBody BusProject busProject){
-        return Result.result(1, projConfigServiceImpl.addProjConfig(busProject));
+        return Result.serviceResult(projConfigServiceImpl.addProjConfig(busProject), "succ", "error");
     }
 
     @ApiOperation(value="获取省份信息及其ID", notes="获取省份信息及其ID")
