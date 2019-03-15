@@ -5,32 +5,22 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.rcisoft.base.util.ExcelUtil;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.dao.OtherConfigDao;
 import org.rcisoft.business.system.project.entity.EnergyTypeConfig;
 import org.rcisoft.business.system.project.entity.LibraryAndParam;
+import org.rcisoft.business.system.project.entity.TitleParamAndParam;
 import org.rcisoft.business.system.project.service.OtherConfigService;
-import org.rcisoft.dao.BusParamFirstDao;
-import org.rcisoft.dao.BusParamLibraryDao;
-import org.rcisoft.dao.EnergyConfigDao;
-import org.rcisoft.dao.EnergyParamLibraryDao;
-import org.rcisoft.entity.BusParamFirst;
-import org.rcisoft.entity.BusParamLibrary;
-import org.rcisoft.entity.EnergyConfig;
-import org.rcisoft.entity.EnergyParamLibrary;
+import org.rcisoft.dao.*;
+import org.rcisoft.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author 土豆儿
@@ -49,6 +39,10 @@ public class OtherConfigServiceImpl implements OtherConfigService {
     private EnergyParamLibraryDao energyParamLibraryDao;
     @Autowired
     private OtherConfigDao otherConfigDao;
+    @Autowired
+    private BusTitleDao busTitleDao;
+    @Autowired
+    private BusTitleParamDao busTitleParamDao;
 
     /**
      * 根据参数来源查询表具
@@ -256,7 +250,6 @@ public class OtherConfigServiceImpl implements OtherConfigService {
     public int importData(MultipartFile file, String deviceId, String projectId)
     {
         Workbook wb = null;
-        //List<LibraryAndParam> libraryAndParamList = new ArrayList();
         try
         {
             if (file.getOriginalFilename().endsWith("xls")) {
@@ -310,5 +303,71 @@ public class OtherConfigServiceImpl implements OtherConfigService {
             e.printStackTrace();
         }
         return energyParamLibraryDao.insertSelective(energyParamLibrary);
+    }
+
+    /**
+     * 增加自定义标题信息
+     */
+    @Override
+    public int addTitleInfo(BusTitle busTitle){
+        busTitle.setId(UuidUtil.create32());
+        return busTitleDao.insert(busTitle);
+    }
+
+    /**
+     * 删除自定义标题信息
+     */
+    @Override
+    public int deleteTitleInfo(BusTitle busTitle){
+        return busTitleDao.deleteByPrimaryKey(busTitle);
+    }
+
+    /**
+     * 修改自定义标题信息
+     */
+    @Override
+    public int updateTitleInfo(BusTitle busTitle){
+        return busTitleDao.updateByPrimaryKeySelective(busTitle);
+    }
+
+    /**
+     * 根据项目ID查询自定义标题信息
+     */
+    @Override
+    public List<BusTitle> queryTitleInfo(String projectId){
+        return busTitleDao.queryTitleInfo(projectId);
+    }
+
+    /**
+     * 增加自定义参数信息
+     */
+    @Override
+    public int addTitleParamInfo(BusTitleParam busTitleParam){
+        busTitleParam.setId(UuidUtil.create32());
+        return busTitleParamDao.insertSelective(busTitleParam);
+    }
+
+    /**
+     * 删除自定义参数信息
+     */
+    @Override
+    public int deleteTitleParamInfo(BusTitleParam busTitleParam){
+        return busTitleParamDao.deleteByPrimaryKey(busTitleParam);
+    }
+
+    /**
+     * 修改自定义参数信息
+     */
+    @Override
+    public int updateTitleParamInfo(BusTitleParam busTitleParam){
+        return busTitleParamDao.updateByPrimaryKeySelective(busTitleParam);
+    }
+
+    /**
+     * 根据自定义标题ID查询自定义参数信息
+     */
+    @Override
+    public List<TitleParamAndParam> queryTitleParamsInfo(String titleId){
+        return busTitleParamDao.queryTitleParamsInfo(titleId);
     }
 }
