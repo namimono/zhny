@@ -54,4 +54,10 @@ public class EnergyConfig {
    	@Column(name = "energy_type_id" )
 	private String energyTypeId;
 
+	/**
+	 * 当能耗分类id=2（电）时，0：电度，1：功率，默认是0'
+	 */
+	@Column(name = "elec_type" )
+	private String elecType;
+
 }

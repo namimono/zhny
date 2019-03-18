@@ -1,6 +1,7 @@
 package org.rcisoft.business.system.project.service;
 
 import com.github.pagehelper.PageInfo;
+import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamSecond;
 import org.rcisoft.business.system.project.entity.ParamFirstAndSecond;
@@ -30,7 +31,7 @@ public interface DataConfigService {
     /**
      * 新增一级参数信息
      */
-    String addParamFirstInfo(BusParamFirst busParamFirst);
+    ServiceResult addParamFirstInfo(BusParamFirst busParamFirst);
 
     /**
      * 修改一级参数信息

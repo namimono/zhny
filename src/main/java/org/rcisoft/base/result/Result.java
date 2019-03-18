@@ -69,8 +69,25 @@ public class Result {
      */
     public static Result result(int operate, Object data) {
         Result result = new Result(ResultCode.SUCCESS.code, MessageConstant.MESSAGE_ALERT_SUCCESS.msg, data);
-        if (operate <= 0)
+        if (operate <= 0) {
             result.setCode(ResultCode.FAIL.code).setMsg(MessageConstant.MESSAGE_ALERT_ERROR.msg);
+        }
+        return result;
+    }
+
+    /**
+     * 返回值
+     * 适用于增删改
+     * @param operate 增删改的操作结果，大于0时，返回成功，小于0时，返回失败
+     * @param success 成功的提示信息
+     * @param error 失败的提示信息
+     * @return
+     */
+    public static Result result(int operate, String success, String error) {
+        Result result = new Result(ResultCode.SUCCESS.code, success, null);
+        if (operate <= 0) {
+            result.setCode(ResultCode.FAIL.code).setMsg(error);
+        }
         return result;
     }
 
@@ -85,8 +102,9 @@ public class Result {
      */
     public static Result result(int operate, String success, String error, Object data) {
         Result result = new Result(ResultCode.SUCCESS.code, success, data);
-        if (operate <= 0)
+        if (operate <= 0) {
             result.setCode(ResultCode.FAIL.code).setMsg(error);
+        }
         return result;
     }
 
@@ -99,6 +117,26 @@ public class Result {
      */
     public static Result result(ResultCode code, String msg, Object data) {
         return new Result(code.code, msg, data);
+    }
+
+    /**
+     *
+     * @param serviceResult
+     * @return
+     */
+    public static Result serviceResult(ServiceResult serviceResult) {
+        return result(serviceResult.getResult(), serviceResult.getObject());
+    }
+
+    /**
+     *
+     * @param serviceResult
+     * @param success
+     * @param error
+     * @return
+     */
+    public static Result serviceResult(ServiceResult serviceResult, String success, String error) {
+        return result(serviceResult.getResult(), success, error, serviceResult.getObject());
     }
 
     @Override

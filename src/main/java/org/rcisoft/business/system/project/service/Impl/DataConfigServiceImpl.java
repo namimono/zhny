@@ -2,6 +2,7 @@ package org.rcisoft.business.system.project.service.Impl;
 
 import com.github.pagehelper.PageInfo;
 import org.rcisoft.base.result.PageUtil;
+import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.dao.BusParamFirstDao;
 import org.rcisoft.dao.BusParamSecondDao;
@@ -55,10 +56,11 @@ public class DataConfigServiceImpl implements DataConfigService {
      * 新增一级参数信息
      */
     @Override
-    public String addParamFirstInfo(BusParamFirst busParamFirst){
-        busParamFirst.setId(UuidUtil.create32());
-        busParamFirstDao.insert(busParamFirst);
-        return busParamFirst.getId();
+    public ServiceResult addParamFirstInfo(BusParamFirst busParamFirst){
+        String id = UuidUtil.create32();
+        busParamFirst.setId(id);
+        int i = busParamFirstDao.insert(busParamFirst);
+        return new ServiceResult(i, id);
     }
 
     /**

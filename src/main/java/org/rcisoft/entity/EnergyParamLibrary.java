@@ -38,76 +38,29 @@ public class EnergyParamLibrary {
 	private String deviceId;
 
 	/**
-	 * 一级参数id，第一个参数
+	 * 第一个主参数值
 	 */
-   	@Column(name = "param_first_id_one" )
-	private String paramFirstIdOne;
+   	@Column(name = "main_value" )
+	private BigDecimal mainValue;
 
 	/**
-	 * 二级参数id，第一个参数
+	 * 第二个主参数值（一共只有2或3个参数时，为空）
 	 */
-   	@Column(name = "param_second_id_one" )
-	private String paramSecondIdOne;
+   	@Column(name = "main_value2" )
+	private BigDecimal mainValue2;
 
 	/**
-	 * 第一个参数值
+	 * 第一个副参数值
 	 */
-   	@Column(name = "value_one" )
-	private BigDecimal valueOne;
+   	@Column(name = "param_value" )
+	private BigDecimal paramValue;
 
 	/**
-	 * 一级参数id，第二个参数
+	 * 第二个副参数值（一共只有2个参数时，为空）
 	 */
-   	@Column(name = "param_first_id_two" )
-	private String paramFirstIdTwo;
+   	@Column(name = "param_value2" )
+	private BigDecimal paramValue2;
 
-	/**
-	 * 二级参数id，第二个参数
-	 */
-   	@Column(name = "param_second_id_two" )
-	private String paramSecondIdTwo;
-
-	/**
-	 * 第二个参数值
-	 */
-   	@Column(name = "value_two" )
-	private BigDecimal valueTwo;
-
-	/**
-	 * 一级参数id，第三个参数
-	 */
-   	@Column(name = "param_first_id_three" )
-	private String paramFirstIdThree;
-
-	/**
-	 * 二级参数id，第三个参数
-	 */
-   	@Column(name = "param_second_id_three" )
-	private String paramSecondIdThree;
-
-	/**
-	 * 第三个参数值
-	 */
-   	@Column(name = "value_three" )
-	private BigDecimal valueThree;
-
-	/**
-	 * 一级参数id，第四个参数
-	 */
-   	@Column(name = "param_first_id_four" )
-	private String paramFirstIdFour;
-
-	/**
-	 * 二级参数id，第四个参数
-	 */
-   	@Column(name = "param_second_id_four" )
-	private String paramSecondIdFour;
-
-	/**
-	 * 第四个参数值
-	 */
-   	@Column(name = "value_four" )
-	private BigDecimal valueFour;
 
 	/**
 	 * 电能耗（功率）
@@ -120,5 +73,17 @@ public class EnergyParamLibrary {
 	 */
    	@Column(name = "energy_gas" )
 	private BigDecimal energyGas;
+
+	/**
+	 * 电费用
+	 */
+	@Column(name = "money_elec" )
+	private BigDecimal moneyElec;
+
+	/**
+	 * 气费用
+	 */
+	@Column(name = "money_gas" )
+	private BigDecimal moneyGas;
 
 }

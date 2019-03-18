@@ -39,13 +39,13 @@ public class ProjConfigController {
     @ApiOperation(value="修改项目配置信息", notes="修改项目配置信息")
     @PostMapping("/updateProjConfig")
     public Result updateProjConfig(@RequestBody BusProject busProject){
-        return Result.result(1, projConfigServiceImpl.updateProjConfig(busProject));
+        return Result.result(projConfigServiceImpl.updateProjConfig(busProject),"修改项目配置信息成功","修改项目配置信息失败");
     }
 
     @ApiOperation(value="新增项目配置信息", notes="新增项目配置信息")
     @PostMapping("/addProjConfig")
     public Result addProjConfig(@RequestBody BusProject busProject){
-        return Result.result(1, projConfigServiceImpl.addProjConfig(busProject));
+        return Result.serviceResult(projConfigServiceImpl.addProjConfig(busProject), "新增项目配置信息成功", "新增项目配置信息失败");
     }
 
     @ApiOperation(value="获取省份信息及其ID", notes="获取省份信息及其ID")
@@ -105,48 +105,60 @@ public class ProjConfigController {
     @ApiOperation(value="新增建筑类型", notes="新增建筑类型")
     @PostMapping("/insertBuildType")
     public Result insertBuildType(@RequestBody BusBuilding busBuilding){
-        return Result.result(1, projConfigServiceImpl.insertBuildType(busBuilding));
+        return Result.result(projConfigServiceImpl.insertBuildType(busBuilding), "新增建筑类型成功", "新增建筑类型失败");
     }
 
     @ApiOperation(value="修改建筑类型", notes="修改建筑类型")
     @PutMapping("/updateBuildType")
     public Result updateBuildType(@RequestBody BusBuilding busBuilding){
-        return Result.result(1, projConfigServiceImpl.updateBuildType(busBuilding));
+        return Result.result(projConfigServiceImpl.updateBuildType(busBuilding), "修改建筑类型成功", "修改建筑类型失败");
     }
 
     @ApiOperation(value="删除建筑类型", notes="删除建筑类型")
     @DeleteMapping("/deleteBuildType")
     public Result deleteBuildType(@RequestBody BusBuilding busBuilding){
-        return Result.result(1, projConfigServiceImpl.deleteBuildType(busBuilding));
+        return Result.result(projConfigServiceImpl.deleteBuildType(busBuilding), "删除建筑类型成功", "删除建筑类型失败");
     }
 
     @ApiOperation(value="新增建筑分区(气候分区)", notes="新增建筑分区(气候分区)")
     @DeleteMapping("/insertBuildZone")
     public Result insertBuildZone(@RequestBody BusBuildingZone busBuildingZone){
-        return Result.result(1, projConfigServiceImpl.insertBuildZone(busBuildingZone));
+        return Result.result(projConfigServiceImpl.insertBuildZone(busBuildingZone), "新增建筑分区(气候分区)成功", "新增建筑分区(气候分区)失败");
     }
 
     @ApiOperation(value="修改建筑分区(气候分区)", notes="修改建筑分区(气候分区)")
     @PutMapping("/updateBuildZone")
     public Result updateBuildZone(@RequestBody BusBuildingZone busBuildingZone){
-        return Result.result(1, projConfigServiceImpl.updateBuildZone(busBuildingZone));
+        return Result.result(projConfigServiceImpl.updateBuildZone(busBuildingZone), "修改建筑分区(气候分区)成功", "修改建筑分区(气候分区)失败");
     }
 
     @ApiOperation(value="删除建筑分区(气候分区)", notes="删除建筑分区(气候分区)")
     @DeleteMapping("/deleteBuildZone")
     public Result deleteBuildZone(@RequestBody BusBuildingZone busBuildingZone){
-        return Result.result(1, projConfigServiceImpl.deleteBuildZone(busBuildingZone));
+        return Result.result(projConfigServiceImpl.deleteBuildZone(busBuildingZone), "删除建筑分区(气候分区)成功", "删除建筑分区(气候分区)失败");
     }
 
     @ApiOperation(value="新增节能改造信息", notes="新增节能改造信息")
     @PostMapping("/addProjectSaving")
     public Result addProjectSaving(@RequestBody BusProjectSaving busProjectSaving){
-        return Result.result(1, projConfigServiceImpl.addProjectSaving(busProjectSaving));
+        return Result.result(projConfigServiceImpl.addProjectSaving(busProjectSaving), "新增节能改造信息成功", "新增节能改造信息失败");
     }
 
     @ApiOperation(value="修改节能改造信息", notes="修改节能改造信息")
     @PutMapping("/updateProjectSaving")
     public Result updateProjectSaving(@RequestBody BusProjectSaving busProjectSaving){
-        return Result.result(1, projConfigServiceImpl.updateProjectSaving(busProjectSaving));
+        return Result.result(projConfigServiceImpl.updateProjectSaving(busProjectSaving), "修改节能改造信息成功", "修改节能改造信息失败");
+    }
+
+    @ApiOperation(value="查询认定员信息", notes="查询认定员信息")
+    @GetMapping("/queryAuthenticator")
+    public Result queryAuthenticator(){
+        return Result.result(projConfigServiceImpl.queryAuthenticator());
+    }
+
+    @ApiOperation(value="项目表、节能改造表联查编辑回显", notes="项目表、节能改造表联查编辑回显")
+    @GetMapping("/queryProjectConfigInfo/{projectId}")
+    public Result queryProjectConfigInfo(@PathVariable String projectId){
+        return Result.result(projConfigServiceImpl.queryProjectConfigInfo(projectId));
     }
 }
