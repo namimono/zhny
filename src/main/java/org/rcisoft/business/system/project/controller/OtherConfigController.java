@@ -39,10 +39,16 @@ public class OtherConfigController {
         return Result.result(otherConfigServiceImpl.queryTypeNameByConfig(energyTypeConfig));
     }
 
-    @ApiOperation(value="修改能源配置信息", notes="修改能源配置信息")
+    @ApiOperation(value="增加能耗配置", notes="增加能耗配置")
+    @PostMapping("/addEnergyConfig")
+    public Result addEnergyConfig(@RequestBody EnergyConfig energyConfig){
+        return Result.result(otherConfigServiceImpl.addEnergyConfig(energyConfig),"增加能耗配置成功","增加能耗配置失败");
+    }
+
+    @ApiOperation(value="修改能耗配置信息", notes="修改能耗配置信息")
     @PutMapping("/updateEnergyConfig")
     public Result updateEnergyConfig(@RequestBody EnergyConfig energyConfig){
-        return Result.result(otherConfigServiceImpl.updateEnergyConfig(energyConfig),"修改能源配置信息成功","修改能源配置信息失败");
+        return Result.result(otherConfigServiceImpl.updateEnergyConfig(energyConfig),"修改能耗配置信息成功","修改能耗配置信息失败");
     }
 
     @ApiOperation(value="根据设备ID、二级参数ID查询参数库信息", notes="根据设备ID、二级参数ID查询参数库信息")

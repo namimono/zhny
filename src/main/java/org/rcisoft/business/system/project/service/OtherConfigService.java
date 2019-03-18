@@ -28,7 +28,12 @@ public interface OtherConfigService {
     List<EnergyTypeConfig> queryTypeNameByConfig(EnergyTypeConfig energyTypeConfig);
 
     /**
-     * 修改能源配置信息
+     * 增加能耗配置
+     */
+    int addEnergyConfig(EnergyConfig energyConfig);
+
+    /**
+     * 修改能耗配置信息
      */
     int updateEnergyConfig(EnergyConfig energyConfig);
 
@@ -68,7 +73,7 @@ public interface OtherConfigService {
     int updateEnergyParamLibrary(EnergyParamLibrary energyParamLibrary);
 
     /**
-     * 联查一二级参数和参数库信息
+     * 联查一二级参数和参数库信息(用于导出模板)
      */
     List<LibraryAndParam> queryLibraryAndParam(LibraryAndParam libraryAndParam);
 
@@ -122,4 +127,5 @@ public interface OtherConfigService {
      * 根据自定义标题ID查询自定义参数信息
      */
     List<TitleParamAndParam> queryTitleParamsInfo(String titleId);
+
 }

@@ -16,6 +16,7 @@ import org.rcisoft.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -61,7 +62,16 @@ public class OtherConfigServiceImpl implements OtherConfigService {
     }
 
     /**
-     * 修改能源配置信息
+     * 增加能耗配置
+     */
+    @Override
+    public int addEnergyConfig(EnergyConfig energyConfig){
+        energyConfig.setId(UuidUtil.create32());
+        return energyConfigDao.insertSelective(energyConfig);
+    }
+
+    /**
+     * 修改能耗配置信息
      */
     @Override
     public int updateEnergyConfig(EnergyConfig energyConfig){
@@ -302,6 +312,11 @@ public class OtherConfigServiceImpl implements OtherConfigService {
         {
             e.printStackTrace();
         }
+        Example example = new Example(EnergyParamLibrary.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",projectId);
+        criteria.andEqualTo("deviceId",deviceId);
+        energyParamLibraryDao.deleteByExample(example);
         return energyParamLibraryDao.insertSelective(energyParamLibrary);
     }
 
@@ -370,4 +385,5 @@ public class OtherConfigServiceImpl implements OtherConfigService {
     public List<TitleParamAndParam> queryTitleParamsInfo(String titleId){
         return busTitleParamDao.queryTitleParamsInfo(titleId);
     }
+
 }
