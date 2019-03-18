@@ -4,11 +4,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.business.equipment.report.service.FormulaOperationService;
+import org.rcisoft.entity.BusVariable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author 土豆儿
@@ -23,8 +21,44 @@ public class FormulaOperationController {
     private FormulaOperationService formulaOperationServiceImpl;
 
     @ApiOperation(value="根据项目ID查询公式信息", notes="根据项目ID查询公式信息")
-    @GetMapping("/queryFormula")
-    public Result queryFormula(@RequestParam("projectId") String projectId){
+    @GetMapping("/queryFormula/{projectId}")
+    public Result queryFormula(@PathVariable String projectId){
         return Result.result(formulaOperationServiceImpl.queryFormula(projectId));
+    }
+
+    @ApiOperation(value="查询参数来源", notes="查询参数来源")
+    @GetMapping("/querySource")
+    public Result querySource(){
+        return Result.result(formulaOperationServiceImpl.querySource());
+    }
+
+    @ApiOperation(value="根据公式ID和项目ID查询变量", notes="根据公式ID和项目ID查询变量")
+    @GetMapping("/queryVariable/{projectId}/{formulaId}")
+    public Result queryVariable(@PathVariable String projectId,@PathVariable String formulaId){
+        return Result.result(formulaOperationServiceImpl.queryVariable(projectId,formulaId));
+    }
+
+    @ApiOperation(value="增加变量信息", notes="增加变量信息")
+    @PostMapping("/addVariable")
+    public Result addVariable(@RequestBody BusVariable busVariable){
+        return Result.result(formulaOperationServiceImpl.addVariable(busVariable));
+    }
+
+    @ApiOperation(value="删除变量信息", notes="删除变量信息")
+    @DeleteMapping("/deleteVariable")
+    public Result deleteVariable(@RequestBody BusVariable busVariable){
+        return Result.result(formulaOperationServiceImpl.deleteVariable(busVariable));
+    }
+
+    @ApiOperation(value="修改变量信息", notes="修改变量信息")
+    @PutMapping("/updateVariable")
+    public Result updateVariable(@RequestBody BusVariable busVariable){
+        return Result.result(formulaOperationServiceImpl.updateVariable(busVariable));
+    }
+
+    @ApiOperation(value="根据项目ID和参数来源查询二级参数信息", notes="根据项目ID和参数来源查询二级参数信息")
+    @GetMapping("/queryVariable/{projectId}/{sourceId}")
+    public Result queryParamSecondByProId(@PathVariable String projectId,@PathVariable String sourceId){
+        return Result.result(formulaOperationServiceImpl.queryParamSecondByProId(projectId,sourceId));
     }
 }

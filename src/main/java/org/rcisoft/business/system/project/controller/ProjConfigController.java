@@ -3,7 +3,6 @@ package org.rcisoft.business.system.project.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
-import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.entity.BusBuilding;
 import org.rcisoft.entity.BusBuildingZone;
 import org.rcisoft.entity.BusProject;

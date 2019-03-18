@@ -1,6 +1,7 @@
 package org.rcisoft.business.system.project.dao;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.system.project.entity.ProjectConfigInfo;
 import org.springframework.stereotype.Repository;
@@ -38,5 +39,6 @@ public interface ProConfigDao extends Mapper<ProjectConfigInfo> {
             "a.id = b.project_id\n" +
             "WHERE \n" +
             "a.id = #{projectId};")
+    @ResultType(ProjectConfigInfo.class)
     List<ProjectConfigInfo> queryProjectConfigInfo(@Param("projectId") String projectId);
 }
