@@ -38,7 +38,7 @@ public interface BusProjectDao extends Mapper<BusProject> {
     /**
      *  查询关于项目的所有信息(包含检定员信息)
      */
-    @Select("<script>select bp.name as projName,bp.name as buildingType,bp.building_local as buildingLocal,bp.building_area as buildingArea,bp.energy_potential as energyPotential," +
+    @Select("<script>select bp.name as projName,bb.name as buildingType,bp.building_local as buildingLocal,bp.building_area as buildingArea,bp.energy_potential as energyPotential," +
             "bp.create_time as createTime,bps.save_content as saveContent,bps.save_estimate as saveEstimate," +
             "bps.save_cost as saveCost,sac.name as saveCostName,sae.name as saveEnergyName,sac.performance as saveCostPerformance,sac.employment_time as saveCostEmploymentTime," +
             "sac.qualification as saveCostQualification,sae.qualification as saveEnergyQualification," +
