@@ -156,4 +156,10 @@ public class ProjConfigController {
     public Result queryAuthenticator(){
         return Result.result(projConfigServiceImpl.queryAuthenticator());
     }
+
+    @ApiOperation(value="项目表、节能改造表联查编辑回显", notes="项目表、节能改造表联查编辑回显")
+    @GetMapping("/queryProjectConfigInfo/{projectId}")
+    public Result queryProjectConfigInfo(@PathVariable String projectId){
+        return Result.result(projConfigServiceImpl.queryProjectConfigInfo(projectId));
+    }
 }

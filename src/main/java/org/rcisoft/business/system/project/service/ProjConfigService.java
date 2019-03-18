@@ -3,6 +3,7 @@ package org.rcisoft.business.system.project.service;
 import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.business.management.evaluateproj.entity.ProjectAssessment;
 import org.rcisoft.business.system.project.entity.ProjectBriefInfo;
+import org.rcisoft.business.system.project.entity.ProjectConfigInfo;
 import org.rcisoft.entity.*;
 import org.rcisoft.business.system.project.entity.PositionInfo;
 
@@ -123,5 +124,15 @@ public interface ProjConfigService {
      * 查询认定员信息
      */
     List<SysAuthenticator> queryAuthenticator();
+
+    /**
+     * 删除项目信息（谨慎！）
+     *
+     */
+
+    /**
+     * 项目表、节能改造表联查编辑回显
+     */
+    List<ProjectConfigInfo> queryProjectConfigInfo(String projectId);
 
 }

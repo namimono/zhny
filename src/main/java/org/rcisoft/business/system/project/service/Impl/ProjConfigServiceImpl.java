@@ -3,7 +3,9 @@ package org.rcisoft.business.system.project.service.Impl;
 import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.management.evaluateproj.entity.ProjectAssessment;
+import org.rcisoft.business.system.project.dao.ProConfigDao;
 import org.rcisoft.business.system.project.entity.ProjectBriefInfo;
+import org.rcisoft.business.system.project.entity.ProjectConfigInfo;
 import org.rcisoft.dao.*;
 import org.rcisoft.entity.*;
 import org.rcisoft.business.system.project.service.ProjConfigService;
@@ -39,6 +41,8 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     private BusProjectSavingDao busProjectSavingDao;
     @Autowired
     private SysAuthenticatorDao sysAuthenticatorDao;
+    @Autowired
+    private ProConfigDao proConfigDao;
 
     /**
      * 查询全部项目表信息
@@ -253,5 +257,13 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     @Override
     public List<SysAuthenticator> queryAuthenticator(){
         return sysAuthenticatorDao.queryAuthenticator();
+    }
+
+    /**
+     * 项目表、节能改造表联查编辑回显
+     */
+    @Override
+    public List<ProjectConfigInfo> queryProjectConfigInfo(String projectId){
+        return proConfigDao.queryProjectConfigInfo(projectId);
     }
 }
