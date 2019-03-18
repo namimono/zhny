@@ -25,7 +25,7 @@ public class energyDistributionController {
     private energyDistributionService energyDistributionService;
 
     @ApiOperation(value = "能耗分布及计算",notes = "能耗分布计算")
-    @GetMapping(value = "/energyNum")
+    @PostMapping(value = "/energyNum")
     public Result energyNum(@RequestParam(required = false) String Month,@RequestParam int year, HttpServletRequest request){
         List<EnergyDistribution> list = energyDistributionService.queryEnergyDistributed(year,Month);
         return Result.result(1,list);

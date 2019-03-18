@@ -23,7 +23,7 @@ public class SysCityController {
 
     @ApiOperation(value = "获取城市天气",notes = "获取城市天气")
     @GetMapping(value = "/weatherInfo/{city}")
-    public Result weather(@RequestParam String city){
+    public Result weather(@PathVariable String city){
         System.out.println(city);
         return Result.result(1,sysCityService.queryCityByName(city));
     }

@@ -3,6 +3,8 @@ package org.rcisoft.dao;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.management.evaluateproj.entity.ProjectAssessment;
+import org.rcisoft.business.monitor.intercept.entity.BusProjectParam;
+import org.rcisoft.entity.BusParamSecond;
 import org.rcisoft.entity.BusProject;
 import org.rcisoft.business.system.project.entity.ProjectBriefInfo;
 import org.springframework.stereotype.Repository;
@@ -48,6 +50,24 @@ public interface BusProjectDao extends Mapper<BusProject> {
             "</script>")
     @ResultType(ProjectAssessment.class)
     List<ProjectAssessment> queryAllProjInfo();
+
+
+    /**
+     * 查询项目网关
+     * @param id
+     */
+    @Select("<script>select phones from bus_project where id = #{id}</script>")
+    String queryPhones(String id);
+
+
+    /**
+     * 查询项目参数
+     * @param projectId
+     * @return
+     */
+    @Select("<script>select bpf.name,bps.coding from bus_param_second bps,bus_param_first bpf " +
+            "where bps.param_first_id = bpf.id and bps.project_id = #{projectId} </script>")
+    List<BusProjectParam> queryParam(String projectId);
 
 
 }
