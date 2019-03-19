@@ -41,6 +41,31 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
     }
 
     /**
+     * 增加公式信息
+     */
+    @Override
+    public int addFormula(BusFormula busFormula){
+        busFormula.setId(UuidUtil.create32());
+        return busFormulaDao.insertSelective(busFormula);
+    }
+
+    /**
+     * 删除公式信息
+     */
+    @Override
+    public int deleteFormula(BusFormula busFormula){
+        return busFormulaDao.deleteByPrimaryKey(busFormula);
+    }
+
+    /**
+     * 修改公式信息
+     */
+    @Override
+    public int updateFormula(BusFormula busFormula){
+        return busFormulaDao.updateByPrimaryKeySelective(busFormula);
+    }
+
+    /**
      * 根据公式ID和项目ID查询变量
      */
     @Override
