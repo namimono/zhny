@@ -60,4 +60,10 @@ public class BusParamLibrary {
    	@Column(name = "first_sign" )
 	private Integer firstSign;
 
+	/**
+	 * 设备id一致时，参数的顺序
+	 */
+	@Column(name = "sequence" )
+	private Integer sequence;
+
 }

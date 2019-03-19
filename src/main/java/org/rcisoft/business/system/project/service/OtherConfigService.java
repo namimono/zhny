@@ -45,7 +45,7 @@ public interface OtherConfigService {
     /**
      * 新增参数库信息
      */
-    int addParamLibrary(BusParamLibrary busParamLibrary);
+    int addParamLibrary(List<BusParamLibrary> busParamLibraryList);
 
     /**
      * 删除参数库信息

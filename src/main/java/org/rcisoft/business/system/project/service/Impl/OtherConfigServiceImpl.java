@@ -90,9 +90,28 @@ public class OtherConfigServiceImpl implements OtherConfigService {
      * 新增参数库信息
      */
     @Override
-    public int addParamLibrary(BusParamLibrary busParamLibrary){
-        busParamLibrary.setId(UuidUtil.create32());
-        return busParamLibraryDao.insertSelective(busParamLibrary);
+    public int addParamLibrary(List<BusParamLibrary> busParamLibraryList){
+        int sum = 0;
+        for (BusParamLibrary busParamLibrary : busParamLibraryList){
+            if(busParamLibrary.getCompareSign() == 1 && busParamLibrary.getFirstSign() == 1){
+                busParamLibrary.setSequence(1);
+            }else {
+                if (busParamLibrary.getCompareSign() == 1 && busParamLibrary.getFirstSign() == 0){
+                    busParamLibrary.setSequence(2);
+                }else {
+                    if (busParamLibrary.getCompareSign() == 0 && busParamLibrary.getFirstSign() == 1){
+                        busParamLibrary.setSequence(3);
+                    }else {
+                        if (busParamLibrary.getCompareSign() == 0 && busParamLibrary.getFirstSign() == 0) {
+                            busParamLibrary.setSequence(4);
+                        }
+                    }
+                }
+            }
+            busParamLibrary.setId(UuidUtil.create32());
+            busParamLibraryDao.insertSelective(busParamLibrary);
+        }
+        return sum;
     }
 
     /**
@@ -205,11 +224,15 @@ public class OtherConfigServiceImpl implements OtherConfigService {
                 souce = "传感器";
             }else if ("4".equals(libraryAndParams.getSourceId())){
                 souce = "固定参数";
+            }else {
+                souce = "无";
             }
             if ((libraryAndParams.getCompareSign()) == 0){
-                type = " ";
+                type = "副参数";
             }else if ((libraryAndParams.getCompareSign()) == 1){
                 type = "主参数";
+            }else {
+                souce = "无";
             }
             HSSFRow row2 = sheet.createRow(rowNum);
             row2.createCell(0).setCellValue(index);
