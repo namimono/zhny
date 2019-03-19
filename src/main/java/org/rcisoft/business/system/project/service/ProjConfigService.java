@@ -7,6 +7,7 @@ import org.rcisoft.business.system.project.entity.ProjectConfigInfo;
 import org.rcisoft.entity.*;
 import org.rcisoft.business.system.project.entity.PositionInfo;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -129,6 +130,7 @@ public interface ProjConfigService {
      * 删除项目信息（谨慎！）
      *
      */
+    String deleteAllByProId(String projectId);
 
     /**
      * 项目表、节能改造表联查编辑回显

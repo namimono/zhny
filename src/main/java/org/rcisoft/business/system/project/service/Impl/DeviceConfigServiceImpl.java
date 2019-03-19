@@ -95,7 +95,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
                 resultMap.put(typeFirstAndSecond.getFirstId(),list);
             }
         }
-        /*
+        /*SET @projectId=21;
+CALL delete_AllByProId(@projectId) ;
         对每组数据进行进一步格式处理
          */
         for(String key : resultMap.keySet()){

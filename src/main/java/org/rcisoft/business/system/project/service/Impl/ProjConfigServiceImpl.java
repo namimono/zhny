@@ -266,4 +266,14 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     public List<ProjectConfigInfo> queryProjectConfigInfo(String projectId){
         return proConfigDao.queryProjectConfigInfo(projectId);
     }
+
+    /**
+     * 删除项目信息（谨慎！）
+     *
+     */
+    @Override
+    public String deleteAllByProId(String projectId){
+        return proConfigDao.deleteAllByProId(projectId);
+    }
+
 }

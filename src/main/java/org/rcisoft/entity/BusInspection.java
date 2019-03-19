@@ -25,6 +25,12 @@ public class BusInspection {
 	@Id
 	private String id;
 
+   	/**
+	 * 项目id
+	 */
+	@Column(name = "project_id" )
+	private String projectId;
+
 	/**
 	 * 设备id
 	 */
