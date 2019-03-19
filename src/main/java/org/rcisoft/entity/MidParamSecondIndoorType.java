@@ -25,6 +25,12 @@ public class MidParamSecondIndoorType {
 	private String id;
 
 	/**
+	 * 项目id
+	 */
+	@Column(name = "project_id" )
+	private String projectId;
+
+	/**
 	 * 二级参数id
 	 */
    	@Column(name = "param_second_id" )

@@ -25,6 +25,12 @@ public class BusTitleParam {
 	private String id;
 
 	/**
+	 * 项目id
+	 */
+	@Column(name = "project_id" )
+	private String projectId;
+
+	/**
 	 * 标题表id
 	 */
    	@Column(name = "title_id" )
