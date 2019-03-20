@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- *  将设备的计划编制记录信息按照十分钟一次处理，保存在这个实体中
+ *  将设备的计划编制记录的部分信息保存在这个实体中
  * @author GaoLiwei
  * @date 2019/3/15
  */

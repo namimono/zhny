@@ -1,6 +1,6 @@
 package org.rcisoft.business.operation.establishment.service;
 
-import org.rcisoft.business.operation.establishment.entity.ProIdAndDate;
+import org.rcisoft.business.operation.establishment.entity.ConditionDto;
 import org.rcisoft.entity.EnergyPlanningCost;
 
 /**
@@ -12,9 +12,9 @@ public interface EnergyPlanningCostService {
 
     /**
      *  根据项目Id与时间查出当前项目在改天的计划能耗花费
-     * @param proIdAndDate
+     * @param conditionDto
      * @return
      */
-    EnergyPlanningCost getEnergyPlanningCostByDateAndProId(ProIdAndDate proIdAndDate);
+    EnergyPlanningCost getEnergyPlanningCostByDateAndProId(ConditionDto conditionDto);
 
 }

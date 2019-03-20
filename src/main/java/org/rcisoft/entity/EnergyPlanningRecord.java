@@ -1,15 +1,16 @@
 package org.rcisoft.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -90,18 +91,21 @@ public class EnergyPlanningRecord {
 	 * 创建时间
 	 */
    	@Column(name = "create_time" )
+	@JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
 	private Date createTime;
 
 	/**
 	 * 计划开始时间
 	 */
    	@Column(name = "start_time" )
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	private Date startTime;
 
 	/**
 	 * 计划结束时间
 	 */
    	@Column(name = "end_time" )
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	private Date endTime;
 
 }

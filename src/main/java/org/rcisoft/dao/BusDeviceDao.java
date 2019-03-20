@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Create by 土豆儿

@@ -27,6 +27,11 @@ public class DevicePlanningFromDb {
     String deviceName;
 
     /**
+     * 计划编制记录表Id
+     */
+    String energyPlanningRecordId;
+
+    /**
      * 第一个主参数名称
      */
     String mainName;
@@ -37,12 +42,12 @@ public class DevicePlanningFromDb {
     String mainName2;
 
     /**
-     * 第三个主参数名称
+     * 第一个副参数名称
      */
     String paramName;
 
     /**
-     * 第四个主参数名称
+     * 第二个副参数名称
      */
     String paramName2;
 

@@ -12,23 +12,29 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
     platform: mysql
-    url: jdbc:mysql://10.96.129.56:3308/zhny-2nd?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/zhny?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
     username: root
-    password: 123456
-    initialSize: 5
-    minIdle: 5
-    maxActive: 20
-    maxWait: 60000
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 300000
-    validationQuery: SELECT1FROMDUAL
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    filters: stat,wall,log4j
-#    logSlowSql: true
-    poolPreparedStatements: true
-    maxPoolPreparedStatementPerConnectionSize: 20
+    password: root
+    druid:
+      filter:
+        wall:
+          config:
+            multi-statement-allow: true
+            none-base-statement-allow: true
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT1FROMDUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: stat,log4j
+
   servlet:
       multipart:
         max-file-size: 100Mb

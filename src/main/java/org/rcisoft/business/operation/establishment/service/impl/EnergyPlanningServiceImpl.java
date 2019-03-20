@@ -1,14 +1,20 @@
 package org.rcisoft.business.operation.establishment.service.impl;
 
+import org.rcisoft.base.util.ZhnyUtils;
 import org.rcisoft.business.operation.establishment.dao.DevicePlanningRepository;
 import org.rcisoft.business.operation.establishment.entity.*;
 import org.rcisoft.business.operation.establishment.service.EnergyPlanningService;
 import org.rcisoft.dao.BusDeviceDao;
+import org.rcisoft.dao.EnergyPlanningCostDao;
 import org.rcisoft.dao.EnergyPlanningDeviceDao;
+import org.rcisoft.dao.EnergyPlanningRecordDao;
 import org.rcisoft.entity.BusDevice;
+import org.rcisoft.entity.EnergyPlanningCost;
 import org.rcisoft.entity.EnergyPlanningDevice;
+import org.rcisoft.entity.EnergyPlanningRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -24,24 +30,25 @@ public class EnergyPlanningServiceImpl implements EnergyPlanningService {
     private DevicePlanningRepository devicePlanningRepository;
     @Autowired
     private BusDeviceDao busDeviceDao;
+    @Autowired
+    private EnergyPlanningRecordDao energyPlanningRecordDao;
+    @Autowired
+    private EnergyPlanningCostDao energyPlanningCostDao;
 
     @Override
-    public List<PlanningDeviceInformation> listDevicePlanningRecord(ProIdAndDate proIdAndDate) {
+    public List<PlanningDeviceInformation> listDevicePlanningRecord(ConditionDto conditionDto) {
         //要返回的数据
         List<PlanningDeviceInformation> returnPlanningDeviceInformationList = new ArrayList<>();
 
         //得到当前时间，当前项目的计划编制设备
-        EnergyPlanningDevice energyPlanningDevice = new EnergyPlanningDevice();
-        energyPlanningDevice.setCreateTime(proIdAndDate.getDate());
-        energyPlanningDevice.setProjectId(proIdAndDate.getProId());
-        List<EnergyPlanningDevice> energyPlanningDeviceList = energyPlanningDeviceDao.select(energyPlanningDevice);
+        List<EnergyPlanningDevice> energyPlanningDeviceList = this.listEnergyPlanningDeviceByDateAndProId(conditionDto, 1);
 
         //得到当前时间，当前项目的计划编制的信息
-        List<DevicePlanningFromDb> devicePlanningFromDbList = devicePlanningRepository.listDevicePlanningFromDb(proIdAndDate);
+        List<DevicePlanningFromDb> devicePlanningFromDbList = devicePlanningRepository.listDevicePlanningFromDb(conditionDto);
 
         //得到项目下设备的名称
         BusDevice busDevice = new BusDevice();
-        busDevice.setProjectId(proIdAndDate.getProId());
+        busDevice.setProjectId(conditionDto.getProId());
         List<BusDevice> busDeviceList = busDeviceDao.select(busDevice);
 
         //根据设备Id,对查出来的计划编制信息进行分组
@@ -58,8 +65,7 @@ public class EnergyPlanningServiceImpl implements EnergyPlanningService {
 
                 //得到这个设备当天的计划编制记录
                 List<DevicePlanningFromDb> listDevicePlanningFromDb = groupDevicePlanningFromDb.get(device.getDeviceId());
-                //当这个设备有详细的计划编制记录的时候，则正常处理，封装信
-                // 息
+                //当这个设备有详细的计划编制记录的时候，则正常处理，封装信息
                 if (null != listDevicePlanningFromDb && listDevicePlanningFromDb.size() > 0) {
                     //对每个时间段的计划编制记录进行处理
                     for (DevicePlanningFromDb record : listDevicePlanningFromDb) {
@@ -105,7 +111,7 @@ public class EnergyPlanningServiceImpl implements EnergyPlanningService {
                     }
                 } else {//如果这个设备没有计划编制记录，则特殊处理，拿到设备名称
                     for (BusDevice dev : busDeviceList) {
-                        if (dev.getId().equals(device.getDeviceId())){
+                        if (dev.getId().equals(device.getDeviceId())) {
                             planningDeviceInformation.setDeviceName(dev.getName());
                         }
                     }
@@ -120,8 +126,179 @@ public class EnergyPlanningServiceImpl implements EnergyPlanningService {
     }
 
     @Override
-    public List<PlanList> listPlanList(String deviceId) {
-        return devicePlanningRepository.listPlanList(deviceId);
+    public List<PlanList> listPlanList(ConditionDto conditionDto) {
+        return devicePlanningRepository.listPlanList(conditionDto);
+    }
+
+    @Override
+    public List<DevicePlanningFromDb> listDevicePlanningByDevIdAndRecId(ConditionDto conditionDto) {
+        return devicePlanningRepository.listDevicePlanningByDevIdAndRecId(conditionDto);
+    }
+
+    @Override
+    public List<ParameterNameId> listDevicePlanningByDevId(ConditionDto conditionDto) {
+        return devicePlanningRepository.listDevicePlanningByDevId(conditionDto);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer deletePlanTheDayByProIdAndDate(ConditionDto conditionDto) {
+        return this.deletePlan(conditionDto, 1);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer copyPlanning(ConditionDto conditionDto) {
+        //得到当前时间的计划能耗花费
+        List<EnergyPlanningCost> energyPlanningCostList = this.listEnergyPlanningCostByDateAndProId(conditionDto, 1);
+        //得到当前时间的计划编制设备
+        List<EnergyPlanningDevice> energyPlanningDeviceList = this.listEnergyPlanningDeviceByDateAndProId(conditionDto, 1);
+        //得到当前时间的计划编制记录
+        List<EnergyPlanningRecord> energyPlanningRecordList = this.listEnergyPlanningRecordByDateAndProId(conditionDto, 1);
+        //删除要复制的那天的数据
+        this.deletePlan(conditionDto, 2);
+
+        //为计划能耗花费替换主键
+        Map<String,Object> map = new HashMap<>(1);
+        map.put("createTime",conditionDto.getCopyToDate());
+        List<EnergyPlanningCost> newEnergyPlanningCostList = (List<EnergyPlanningCost>) ZhnyUtils.replaceId(energyPlanningCostList, "id", map);
+        //为计划编制设备替换主键
+        List<EnergyPlanningDevice> newEnergyPlanningDeviceList = (List<EnergyPlanningDevice>) ZhnyUtils.replaceId(energyPlanningDeviceList, "id", map);
+        //为计划编制记录替换主键
+        List<EnergyPlanningRecord> newEnergyPlanningRecordList = (List<EnergyPlanningRecord>) ZhnyUtils.replaceId(energyPlanningRecordList, "id", map);
+
+        Integer newEnergyPlanningCostListFlag = energyPlanningCostDao.saveListEnergyPlanningCost(newEnergyPlanningCostList);
+        Integer newEnergyPlanningDeviceListFlag = energyPlanningDeviceDao.saveListEnergyPlanningDevice(newEnergyPlanningDeviceList);
+        Integer newEnergyPlanningRecordListFlag = energyPlanningRecordDao.saveListEnergyPlanningRecord(newEnergyPlanningRecordList);
+
+        if (newEnergyPlanningCostListFlag != 0 || newEnergyPlanningDeviceListFlag != 0 || newEnergyPlanningRecordListFlag != 0){
+            return 1;
+        }
+        return 0;
+    }
+
+
+    /**
+     * 根据时间与项目Id,删除某一天的计划编制信息
+     * flag是1的时候，表示时间为指定的某个时间，为2的时候表示复制当天计划的时候要复制到的某个时间
+     *
+     * @author GaoLiWei
+     * @date 10:13 2019/3/20
+     **/
+    private Integer deletePlan(ConditionDto conditionDto, int flag) {
+
+        //flag是1，则时间为指定时间，即为date属性
+        if (flag == 1) {
+            //删除计划编制设备
+            EnergyPlanningRecord energyPlanningRecord = new EnergyPlanningRecord();
+            energyPlanningRecord.setCreateTime(conditionDto.getDate());
+            energyPlanningRecord.setProjectId(conditionDto.getProId());
+            int deleteEnergyPlanningRecord = energyPlanningRecordDao.delete(energyPlanningRecord);
+            //删除计划编制记录
+            EnergyPlanningDevice energyPlanningDevice = new EnergyPlanningDevice();
+            energyPlanningDevice.setCreateTime(conditionDto.getDate());
+            energyPlanningDevice.setProjectId(conditionDto.getProId());
+            int deleteEnergyPlanningDevice = energyPlanningDeviceDao.delete(energyPlanningDevice);
+            //删除计划能耗花费
+            EnergyPlanningCost energyPlanningCost = new EnergyPlanningCost();
+            energyPlanningCost.setCreateTime(conditionDto.getDate());
+            energyPlanningCost.setProjectId(conditionDto.getProId());
+            int deleteEnergyPlanningCostDao = energyPlanningCostDao.delete(energyPlanningCost);
+            if (0 != deleteEnergyPlanningRecord || 0 != deleteEnergyPlanningDevice || 0 != deleteEnergyPlanningCostDao) {
+                return 1;
+            }
+            return 0;
+        }
+        //为2的时候表示复制当天计划的时候要复制到的某个时间，即为copyToDate属性
+        //删除计划编制设备
+        EnergyPlanningRecord energyPlanningRecord = new EnergyPlanningRecord();
+        energyPlanningRecord.setCreateTime(conditionDto.getCopyToDate());
+        energyPlanningRecord.setProjectId(conditionDto.getProId());
+        int deleteEnergyPlanningRecord = energyPlanningRecordDao.delete(energyPlanningRecord);
+        //删除计划编制记录
+        EnergyPlanningDevice energyPlanningDevice = new EnergyPlanningDevice();
+        energyPlanningDevice.setCreateTime(conditionDto.getCopyToDate());
+        energyPlanningDevice.setProjectId(conditionDto.getProId());
+        int deleteEnergyPlanningDevice = energyPlanningDeviceDao.delete(energyPlanningDevice);
+        //删除计划能耗花费
+        EnergyPlanningCost energyPlanningCost = new EnergyPlanningCost();
+        energyPlanningCost.setCreateTime(conditionDto.getCopyToDate());
+        energyPlanningCost.setProjectId(conditionDto.getProId());
+        int deleteEnergyPlanningCostDao = energyPlanningCostDao.delete(energyPlanningCost);
+        if (0 != deleteEnergyPlanningRecord || 0 != deleteEnergyPlanningDevice || 0 != deleteEnergyPlanningCostDao) {
+            return 1;
+        }
+        return 0;
+
+    }
+
+
+    /**
+     * 根据时间与项目Id,查出某一天的计划编制设备
+     * flag是1的时候，表示时间为指定的某个时间，为2的时候表示复制当天计划的时候要复制到的某个时间
+     *
+     * @author GaoLiWei
+     * @date 10:18 2019/3/20
+     **/
+    private List<EnergyPlanningDevice> listEnergyPlanningDeviceByDateAndProId(ConditionDto conditionDto, int flag) {
+        //flag是1，则时间为指定时间，即为date属性
+        if (flag == 1) {
+            EnergyPlanningDevice energyPlanningDevice = new EnergyPlanningDevice();
+            energyPlanningDevice.setCreateTime(conditionDto.getDate());
+            energyPlanningDevice.setProjectId(conditionDto.getProId());
+            return energyPlanningDeviceDao.select(energyPlanningDevice);
+        }
+        //为2的时候表示复制当天计划的时候要复制到的某个时间，即为copyToDate属性
+        EnergyPlanningDevice energyPlanningDevice = new EnergyPlanningDevice();
+        energyPlanningDevice.setCreateTime(conditionDto.getCopyToDate());
+        energyPlanningDevice.setProjectId(conditionDto.getProId());
+        return energyPlanningDeviceDao.select(energyPlanningDevice);
+    }
+
+    /**
+     * 根据时间与项目Id,查出某一天的计划编制记录
+     * flag是1的时候，表示时间为指定的某个时间，为2的时候表示复制当天计划的时候要复制到的某个时间
+     *
+     * @author GaoLiWei
+     * @date 10:18 2019/3/20
+     **/
+    private List<EnergyPlanningRecord> listEnergyPlanningRecordByDateAndProId(ConditionDto conditionDto, int flag) {
+        //flag是1，则时间为指定时间，即为date属性
+        if (flag == 1) {
+            EnergyPlanningRecord energyPlanningRecord = new EnergyPlanningRecord();
+            energyPlanningRecord.setProjectId(conditionDto.getProId());
+            energyPlanningRecord.setCreateTime(conditionDto.getDate());
+            return energyPlanningRecordDao.select(energyPlanningRecord);
+        }
+        //为2的时候表示复制当天计划的时候要复制到的某个时间，即为copyToDate属性
+        EnergyPlanningRecord energyPlanningRecord = new EnergyPlanningRecord();
+        energyPlanningRecord.setProjectId(conditionDto.getProId());
+        energyPlanningRecord.setCreateTime(conditionDto.getCopyToDate());
+        return energyPlanningRecordDao.select(energyPlanningRecord);
+    }
+
+
+    /**
+     * 根据时间与项目Id,查出某一天的计划能耗花费
+     * flag是1的时候，表示时间为指定的某个时间，为2的时候表示复制当天计划的时候要复制到的某个时间
+     *
+     * @author GaoLiWei
+     * @date 11:29 2019/3/20
+     **/
+    private List<EnergyPlanningCost> listEnergyPlanningCostByDateAndProId(ConditionDto conditionDto, int flag) {
+        //flag是1，则时间为指定时间，即为date属性
+        if (flag == 1) {
+            EnergyPlanningCost energyPlanningCost = new EnergyPlanningCost();
+            energyPlanningCost.setProjectId(conditionDto.getProId());
+            energyPlanningCost.setCreateTime(conditionDto.getDate());
+            return energyPlanningCostDao.select(energyPlanningCost);
+        }
+        //为2的时候表示复制当天计划的时候要复制到的某个时间，即为copyToDate属性
+        EnergyPlanningCost energyPlanningCost = new EnergyPlanningCost();
+        energyPlanningCost.setProjectId(conditionDto.getProId());
+        energyPlanningCost.setCreateTime(conditionDto.getCopyToDate());
+        return energyPlanningCostDao.select(energyPlanningCost);
+
     }
 
 

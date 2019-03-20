@@ -1,13 +1,13 @@
 package org.rcisoft.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Data
 @NoArgsConstructor
@@ -53,5 +53,11 @@ public class BusParamLibrary {
 	 */
    	@Column(name = "first_sign" )
 	private Integer firstSign;
+
+	/**
+	 * 1代表主参数1；2代表主参数2；3代表副参数；4代表副参数2。当只有2个或3个参数的时候，数值不变。
+	 */
+	@Column(name = "sequence" )
+   	private Integer sequence;
 
 }

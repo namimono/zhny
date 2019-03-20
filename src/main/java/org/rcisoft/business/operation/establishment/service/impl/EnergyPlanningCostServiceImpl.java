@@ -1,6 +1,6 @@
 package org.rcisoft.business.operation.establishment.service.impl;
 
-import org.rcisoft.business.operation.establishment.entity.ProIdAndDate;
+import org.rcisoft.business.operation.establishment.entity.ConditionDto;
 import org.rcisoft.business.operation.establishment.service.EnergyPlanningCostService;
 import org.rcisoft.dao.EnergyPlanningCostDao;
 import org.rcisoft.entity.EnergyPlanningCost;
@@ -22,10 +22,10 @@ public class EnergyPlanningCostServiceImpl implements EnergyPlanningCostService 
      * @date 9:55 2019/3/15
      **/
     @Override
-    public EnergyPlanningCost getEnergyPlanningCostByDateAndProId(ProIdAndDate proIdAndDate) {
+    public EnergyPlanningCost getEnergyPlanningCostByDateAndProId(ConditionDto conditionDto) {
         EnergyPlanningCost energyPlanningCost = new EnergyPlanningCost();
-        energyPlanningCost.setCreateTime(proIdAndDate.getDate());
-        energyPlanningCost.setProjectId(proIdAndDate.getProId());
+        energyPlanningCost.setCreateTime(conditionDto.getDate());
+        energyPlanningCost.setProjectId(conditionDto.getProId());
         return energyPlanningCostDao.selectOne(energyPlanningCost);
     }
 }

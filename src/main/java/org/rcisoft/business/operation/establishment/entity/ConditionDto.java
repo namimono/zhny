@@ -15,7 +15,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProIdAndDate {
+public class ConditionDto {
     /**
      * 项目Id
      */
@@ -27,8 +27,19 @@ public class ProIdAndDate {
     String devId;
 
     /**
+     * 计划编制记录表Id
+     */
+    String energyPlanningRecordId;
+
+    /**
      * 时间，格式 yyyy-MM-dd
      */
     @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
     Date date;
+
+    /**
+     * 要复制到某一天的时间，格式 yyyy-MM-dd
+     */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    Date copyToDate;
 }
