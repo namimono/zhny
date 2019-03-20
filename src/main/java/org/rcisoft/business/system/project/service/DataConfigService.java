@@ -67,4 +67,14 @@ public interface DataConfigService {
      * 删除能源配置信息
      */
     int deleteEnergyConfig(EnergyConfig energyConfig);
+
+    /**
+     * 删除一级参数信息
+     */
+    int deleteParamFirst(String id);
+
+    /**
+     * 删除二级参数信息
+     */
+    int deleteParamSecond(String id);
 }

@@ -1,5 +1,6 @@
 package org.rcisoft.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
@@ -17,11 +18,11 @@ import java.util.List;
 public interface BusDeviceDao extends Mapper<BusDevice> {
 
     /**
-     * 根据系统类型查询设备信息
+     * 根据设备ID查询设备信息
      */
-    @Select("SELECT * FROM bus_device where system_id = #{systemId}")
+    @Select("SELECT * FROM bus_device where id = #{deviceId};")
     @ResultType(BusDevice.class)
-    List<BusDevice> queryDeviceInfo(BusDevice busDevice);
+    List<BusDevice> queryDeviceInfo(@Param("deviceId") String deviceId);
 
     /**
      * 查询设备简要信息
@@ -32,5 +33,14 @@ public interface BusDeviceDao extends Mapper<BusDevice> {
             "where a.system_id = #{systemId} AND a.project_id = #{projectId}\n" +
             "AND a.type_first_id = b.id AND a.factory_id = c.id")
     @ResultType(DeviceBriefInfo.class)
-    List<DeviceBriefInfo> queryDeviceBriefInfo(BusDevice busDevice);
+    List<DeviceBriefInfo> queryDeviceBriefInfo(DeviceBriefInfo deviceBriefInfo);
+
+    /**
+     * 根据项目id查询设备
+     * @param projectId
+     * @return
+     */
+    @Select("<script>select id, name from bus_device where project_id = #{projectId}</script>")
+    @ResultType(BusDevice.class)
+    List<BusDevice> queryDeviceByProjectId(@Param("projectId") String projectId);
 }

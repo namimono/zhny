@@ -34,19 +34,19 @@ public class TeamController {
     @ApiOperation(value="增加团队", notes="增加团队")
     @PostMapping("/insertTeam")
     public Result insertTeam(@RequestBody BusTeam busTeam) {
-        return Result.result(teamServiceImpl.insertTeam(busTeam), null);
+        return Result.result(teamServiceImpl.insertTeam(busTeam), "新增团队成功", "新增团队失败");
     }
 
     @ApiOperation(value="修改团队", notes="修改团队")
     @PutMapping("/updateTeam")
     public Result updateTeam(@RequestBody BusTeam busTeam) {
-        return Result.result(teamServiceImpl.updateTeam(busTeam), null);
+        return Result.result(teamServiceImpl.updateTeam(busTeam), "修改团队成功", "修改团队失败");
     }
 
     @ApiOperation(value="删除团队", notes="删除团队")
     @DeleteMapping("/deleteTeamById/{id}")
     public Result deleteTeamById(@PathVariable String id) {
-        return Result.result(teamServiceImpl.deleteTeamById(id), null);
+        return Result.result(teamServiceImpl.deleteTeamById(id), "删除团队成功", "删除团队失败");
     }
 
     @ApiOperation(value="查询团队负责人id、姓名列表", notes="查询团队负责人id、姓名列表")

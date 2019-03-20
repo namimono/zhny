@@ -21,6 +21,21 @@ public interface FormulaOperationService {
     List<BusFormula> queryFormula(String projectId);
 
     /**
+     * 增加公式信息
+     */
+    int addFormula(BusFormula busFormula);
+
+    /**
+     * 删除公式信息
+     */
+    int deleteFormula(BusFormula busFormula);
+
+    /**
+     * 修改公式信息
+     */
+    int updateFormula(BusFormula busFormula);
+
+    /**
      * 根据公式ID和项目ID查询变量
      */
     List<VariableAndParam> queryVariable(String projectId, String formulaId);

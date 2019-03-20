@@ -1,12 +1,15 @@
 package org.rcisoft.business.system.project.dao;
 
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.mapping.StatementType;
 import org.rcisoft.business.system.project.entity.ProjectConfigInfo;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -41,4 +44,13 @@ public interface ProConfigDao extends Mapper<ProjectConfigInfo> {
             "a.id = #{projectId};")
     @ResultType(ProjectConfigInfo.class)
     List<ProjectConfigInfo> queryProjectConfigInfo(@Param("projectId") String projectId);
+
+    /**
+     * 删除项目信息（谨慎！）
+     *
+     */
+    @Options(statementType = StatementType.CALLABLE)
+    @Select("call delete_AllByProId(#{projectId})")
+    int deleteAllByProId(@Param("projectId") String projectId);
+
 }

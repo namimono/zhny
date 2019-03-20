@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author 土豆儿
@@ -62,8 +63,8 @@ public class OtherConfigController {
 
     @ApiOperation(value="新增参数库信息", notes="新增参数库信息")
     @PostMapping("/addParamLibrary")
-    public Result addParamLibrary(@RequestBody BusParamLibrary busParamLibrary){
-        return Result.result(otherConfigServiceImpl.addParamLibrary(busParamLibrary),"新增参数库信息成功","新增参数库信息失败");
+    public Result addParamLibrary(@RequestBody List<BusParamLibrary> busParamLibraryList){
+        return Result.result(otherConfigServiceImpl.addParamLibrary(busParamLibraryList),"新增参数库信息成功","新增参数库信息失败");
     }
 
     @ApiOperation(value="删除参数库信息", notes="删除参数库信息")

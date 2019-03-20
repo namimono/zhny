@@ -1,6 +1,7 @@
 package org.rcisoft.business.system.project.service.Impl;
 
 import org.rcisoft.base.util.UuidUtil;
+import org.rcisoft.business.system.project.dao.DeviceConfigDao;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.TypeFirstAndSecond;
 import org.rcisoft.dao.*;
@@ -24,6 +25,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     @Autowired
     private BusDeviceDao busDeviceDao;
     @Autowired
+    private DeviceConfigDao deviceConfigDao;
+    @Autowired
     private BusTypeSecondDao busTypeSecondDao;
     @Autowired
     private BusParamFirstDao busParamFirstDao;
@@ -44,19 +47,35 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     }
 
     /**
-     * 根据系统类型查询设备信息
+     * 删除设备信息(谨慎!)
      */
     @Override
-    public List<BusDevice> queryDeviceInfo(BusDevice busDevice){
-        return busDeviceDao.queryDeviceInfo(busDevice);
+    public int deleteDevice(String deviceId){
+        return deviceConfigDao.deleteAllByDevId(deviceId);
+    }
+
+    /**
+     * 修改设备信息
+     */
+    @Override
+    public int updateDevice(BusDevice busDevice){
+        return busDeviceDao.updateByPrimaryKeySelective(busDevice);
+    }
+
+    /**
+     * 根据设备ID查询设备信息
+     */
+    @Override
+    public List<BusDevice> queryDeviceInfo(String deviceId){
+        return busDeviceDao.queryDeviceInfo(deviceId);
     }
 
     /**
      * 查询设备简要信息
      */
     @Override
-    public List<DeviceBriefInfo> queryDeviceBriefInfo(BusDevice busDevice){
-        return busDeviceDao.queryDeviceBriefInfo(busDevice);
+    public List<DeviceBriefInfo> queryDeviceBriefInfo(DeviceBriefInfo deviceBriefInfo){
+        return busDeviceDao.queryDeviceBriefInfo(deviceBriefInfo);
     }
 
     /**
@@ -95,7 +114,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
                 resultMap.put(typeFirstAndSecond.getFirstId(),list);
             }
         }
-        /*
+        /*SET @projectId=21;
+CALL delete_AllByProId(@projectId) ;
         对每组数据进行进一步格式处理
          */
         for(String key : resultMap.keySet()){
@@ -197,5 +217,6 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     public int updateMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond){
         return midDeviceParamSecondDao.updateByPrimaryKeySelective(midDeviceParamSecond);
     }
+
 
 }

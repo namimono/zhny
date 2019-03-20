@@ -67,4 +67,9 @@ public class LibraryAndParam {
      * 4个参数时，作为第一个待选参数，1：第一个参数，0：其他参数
      */
     private Integer firstSign;
+
+    /**
+     * 设备id一致时，参数的顺序
+     */
+    private Integer sequence;
 }

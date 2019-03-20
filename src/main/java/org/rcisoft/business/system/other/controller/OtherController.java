@@ -30,14 +30,13 @@ public class OtherController {
     @ApiOperation(value="上传图片", notes="上传图片")
     @PostMapping("/uploadImage")
     public Result uploadImage(@RequestParam MultipartFile file) {
-        ServiceResult serviceResult = otherServiceImpl.uploadImage(file);
-        return Result.result(serviceResult.getResult(), serviceResult.getObject());
+        return Result.serviceResult(otherServiceImpl.uploadImage(file), "上传图片成功", "上传图片失败");
     }
 
     @ApiOperation(value="根据id删除文件及数据库记录", notes="根据id删除文件及数据库记录")
     @DeleteMapping("/deleteImage/{id}")
     public Result deleteImage(@PathVariable Integer id) {
-        return Result.result(otherServiceImpl.deleteImage(id), null);
+        return Result.result(otherServiceImpl.deleteImage(id), "删除图片成功", "删除图片失败");
     }
 
 
