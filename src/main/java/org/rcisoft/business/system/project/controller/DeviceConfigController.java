@@ -3,6 +3,7 @@ package org.rcisoft.business.system.project.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
+import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.entity.*;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,32 @@ public class DeviceConfigController {
         return Result.result(deviceConfigServiceImpl.addDeviceConfigInfo(busDevice),"新增设备配置信息成功","新增设备配置信息失败");
     }
 
+    @ApiOperation(value="删除设备信息(谨慎!)", notes="删除设备信息(谨慎!)")
+    @DeleteMapping("/deleteAllByProId/{deviceId}")
+    public Result deleteDevice(@PathVariable String deviceId){
+        int i = deviceConfigServiceImpl.deleteDevice(deviceId);
+        return Result.result(i,"删除设备信息成功","删除设备信息失败",i);
+    }
+
+    @ApiOperation(value="修改设备信息", notes="修改设备信息")
+    @PutMapping("/updateDevice")
+    public Result updateDevice(@RequestBody BusDevice busDevice){
+        return Result.result(deviceConfigServiceImpl.updateDevice(busDevice),"修改设备信息成功","修改设备信息失败");
+    }
+
     @ApiOperation(value="查询设备简要信息", notes="查询设备简要信息")
     @GetMapping("/queryDeviceBriefInfo/{systemId}/{projectId}")
     public Result queryDeviceBriefInfo(@PathVariable String systemId,@PathVariable String projectId){
-        BusDevice busDevice = new BusDevice();
-        busDevice.setSystemId(systemId);
-        busDevice.setProjectId(projectId);
-        return Result.result(deviceConfigServiceImpl.queryDeviceBriefInfo(busDevice));
+        DeviceBriefInfo deviceBriefInfo = new DeviceBriefInfo();
+        deviceBriefInfo.setSystemId(systemId);
+        deviceBriefInfo.setProjectId(projectId);
+        return Result.result(deviceConfigServiceImpl.queryDeviceBriefInfo(deviceBriefInfo));
+    }
+
+    @ApiOperation(value="根据设备ID查询设备信息", notes="根据设备ID查询设备信息")
+    @GetMapping("/queryDeviceInfo/{deviceId}")
+    public Result queryDeviceInfo(@PathVariable String deviceId){
+        return Result.result(deviceConfigServiceImpl.queryDeviceInfo(deviceId));
     }
 
     @ApiOperation(value="处理一、二级设备类型下拉菜单级联格式", notes="处理一、二级设备类型下拉菜单级联格式")
@@ -114,9 +134,4 @@ public class DeviceConfigController {
         return Result.result(deviceConfigServiceImpl.updateMidDeviceSecondInfo(midDeviceParamSecond),"修改设备二级参数中间表信息成功","修改设备二级参数中间表信息失败");
     }
 
-    @ApiOperation(value="删除设备信息(谨慎!)", notes="删除设备信息(谨慎!)")
-    @DeleteMapping("/deleteAllByProId/{deviceId}")
-    public Result deleteDevice(@PathVariable String deviceId){
-        return Result.result(deviceConfigServiceImpl.deleteDevice(deviceId));
-    }
 }

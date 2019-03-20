@@ -19,5 +19,5 @@ public interface DeviceConfigDao {
      */
     @Options(statementType = StatementType.CALLABLE)
     @Select("call delete_AllByDevId(#{deviceId})")
-    String deleteAllByDevId(@Param("deviceId") String deviceId);
+    int deleteAllByDevId(@Param("deviceId") String deviceId);
 }

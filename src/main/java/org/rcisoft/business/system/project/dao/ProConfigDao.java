@@ -51,6 +51,6 @@ public interface ProConfigDao extends Mapper<ProjectConfigInfo> {
      */
     @Options(statementType = StatementType.CALLABLE)
     @Select("call delete_AllByProId(#{projectId})")
-    String deleteAllByProId(@Param("projectId") String projectId);
+    int deleteAllByProId(@Param("projectId") String projectId);
 
 }

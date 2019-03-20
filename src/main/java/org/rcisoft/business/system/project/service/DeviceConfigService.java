@@ -20,14 +20,24 @@ public interface DeviceConfigService {
     int addDeviceConfigInfo(BusDevice busDevice);
 
     /**
-     * 根据系统类型查询设备信息
+     * 删除设备信息(谨慎!)
      */
-    List<BusDevice> queryDeviceInfo(BusDevice busDevice);
+    int deleteDevice(String deviceId);
+
+    /**
+     * 修改设备信息
+     */
+    int updateDevice(BusDevice busDevice);
+
+    /**
+     * 根据设备ID查询设备信息
+     */
+    List<BusDevice> queryDeviceInfo(String deviceId);
 
     /**
      * 查询设备简要信息
      */
-    List<DeviceBriefInfo> queryDeviceBriefInfo(BusDevice busDevice);
+    List<DeviceBriefInfo> queryDeviceBriefInfo(DeviceBriefInfo deviceBriefInfo);
 
     /**
      * 根据项目ID和子系统ID查询未关联一级参数信息
@@ -94,8 +104,5 @@ public interface DeviceConfigService {
      */
     int updateMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond);
 
-    /**
-     * 删除设备信息(谨慎!)
-     */
-    String deleteDevice(String deviceId);
+
 }

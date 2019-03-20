@@ -46,7 +46,7 @@ public class DataConfigController extends PageAop {
     }
 
     @ApiOperation(value="修改一级参数信息", notes="修改一级参数信息")
-    @PostMapping("/updateParamFirstInfo")
+    @PutMapping("/updateParamFirstInfo")
     public Result updateParamFirstInfo(@RequestBody BusParamFirst busParamFirst){
         return Result.result(dataConfigServiceImpl.updateParamFirstInfo(busParamFirst),"修改一级参数信息成功","修改一级参数信息失败");
     }
@@ -68,7 +68,7 @@ public class DataConfigController extends PageAop {
     }
 
     @ApiOperation(value="修改二级参数信息", notes="修改二级参数信息")
-    @PostMapping("/updateParamSecondInfo")
+    @PutMapping("/updateParamSecondInfo")
     public Result updateParamSecondInfo(@RequestBody List<BusParamSecond> list){
         return Result.result(dataConfigServiceImpl.updateParamSecondInfo(list),"修改二级参数信息成功","修改二级参数信息失败");
     }
@@ -86,8 +86,20 @@ public class DataConfigController extends PageAop {
     }
 
     @ApiOperation(value="删除能源配置信息", notes="删除能源配置信息")
-    @PostMapping("/deleteEnergyConfig")
+    @DeleteMapping("/deleteEnergyConfig")
     public Result deleteEnergyConfig(@RequestBody EnergyConfig energyConfig){
         return Result.result(dataConfigServiceImpl.deleteEnergyConfig(energyConfig),"删除能源配置信息成功","删除能源配置信息失败");
+    }
+
+    @ApiOperation(value="删除一级参数信息", notes="删除一级参数信息")
+    @DeleteMapping("/deleteParamFirst/{id}")
+    public Result deleteParamFirst(@PathVariable String id){
+        return Result.result(dataConfigServiceImpl.deleteParamFirst(id),"删除一级参数信息成功","删除一级参数信息失败");
+    }
+
+    @ApiOperation(value="删除二级参数信息", notes="删除二级参数信息")
+    @DeleteMapping("/deleteParamSecond/{id}")
+    public Result deleteParamSecond(@PathVariable String id){
+        return Result.result(dataConfigServiceImpl.deleteParamSecond(id),"删除二级参数信息成功","删除二级参数信息失败");
     }
 }

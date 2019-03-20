@@ -130,7 +130,7 @@ public interface ProjConfigService {
      * 删除项目信息（谨慎！）
      *
      */
-    String deleteAllByProId(String projectId);
+    int deleteAllByProId(String projectId);
 
     /**
      * 项目表、节能改造表联查编辑回显

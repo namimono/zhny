@@ -47,19 +47,35 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     }
 
     /**
-     * 根据系统类型查询设备信息
+     * 删除设备信息(谨慎!)
      */
     @Override
-    public List<BusDevice> queryDeviceInfo(BusDevice busDevice){
-        return busDeviceDao.queryDeviceInfo(busDevice);
+    public int deleteDevice(String deviceId){
+        return deviceConfigDao.deleteAllByDevId(deviceId);
+    }
+
+    /**
+     * 修改设备信息
+     */
+    @Override
+    public int updateDevice(BusDevice busDevice){
+        return busDeviceDao.updateByPrimaryKeySelective(busDevice);
+    }
+
+    /**
+     * 根据设备ID查询设备信息
+     */
+    @Override
+    public List<BusDevice> queryDeviceInfo(String deviceId){
+        return busDeviceDao.queryDeviceInfo(deviceId);
     }
 
     /**
      * 查询设备简要信息
      */
     @Override
-    public List<DeviceBriefInfo> queryDeviceBriefInfo(BusDevice busDevice){
-        return busDeviceDao.queryDeviceBriefInfo(busDevice);
+    public List<DeviceBriefInfo> queryDeviceBriefInfo(DeviceBriefInfo deviceBriefInfo){
+        return busDeviceDao.queryDeviceBriefInfo(deviceBriefInfo);
     }
 
     /**
@@ -202,12 +218,5 @@ CALL delete_AllByProId(@projectId) ;
         return midDeviceParamSecondDao.updateByPrimaryKeySelective(midDeviceParamSecond);
     }
 
-    /**
-     * 删除设备信息(谨慎!)
-     */
-    @Override
-    public String deleteDevice(String deviceId){
-        return deviceConfigDao.deleteAllByDevId(deviceId);
-    }
 
 }

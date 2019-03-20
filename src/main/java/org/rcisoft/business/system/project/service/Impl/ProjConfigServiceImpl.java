@@ -272,7 +272,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      *
      */
     @Override
-    public String deleteAllByProId(String projectId){
+    public int deleteAllByProId(String projectId){
         return proConfigDao.deleteAllByProId(projectId);
     }
 

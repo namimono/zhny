@@ -165,6 +165,7 @@ public class ProjConfigController {
     @ApiOperation(value="删除项目信息(谨慎!)", notes="删除项目信息(谨慎!)")
     @DeleteMapping("/deleteAllByProId/{projectId}")
     public Result deleteAllByProId(@PathVariable String projectId){
-        return Result.result(projConfigServiceImpl.deleteAllByProId(projectId));
+        int i = projConfigServiceImpl.deleteAllByProId(projectId);
+        return Result.result(i,"删除项目信息成功","删除项目信息失败");
     }
 }

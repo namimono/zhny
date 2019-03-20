@@ -131,4 +131,20 @@ public class DataConfigServiceImpl implements DataConfigService {
     public int deleteEnergyConfig(EnergyConfig energyConfig){
         return energyConfigDao.deleteByPrimaryKey(energyConfigDao);
     }
+
+    /**
+     * 删除一级参数信息
+     */
+    @Override
+    public int deleteParamFirst(String id){
+        return busParamFirstDao.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 删除二级参数信息
+     */
+    @Override
+    public int deleteParamSecond(String id){
+        return busParamSecondDao.deleteByPrimaryKey(id);
+    }
 }

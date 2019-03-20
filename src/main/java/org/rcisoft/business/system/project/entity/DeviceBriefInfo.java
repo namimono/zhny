@@ -45,5 +45,15 @@ public class DeviceBriefInfo {
      */
     private String location;
 
+    /**
+     * 项目ID
+     */
+    private String projectId;
+
+    /**
+     * 系统ID
+     */
+    private String systemId;
+
 
 }
