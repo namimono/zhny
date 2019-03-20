@@ -1,6 +1,7 @@
 package org.rcisoft.business.system.project.service.Impl;
 
 import org.rcisoft.base.util.UuidUtil;
+import org.rcisoft.business.system.project.dao.DeviceConfigDao;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.TypeFirstAndSecond;
 import org.rcisoft.dao.*;
@@ -23,6 +24,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
 
     @Autowired
     private BusDeviceDao busDeviceDao;
+    @Autowired
+    private DeviceConfigDao deviceConfigDao;
     @Autowired
     private BusTypeSecondDao busTypeSecondDao;
     @Autowired
@@ -197,6 +200,14 @@ CALL delete_AllByProId(@projectId) ;
     @Override
     public int updateMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond){
         return midDeviceParamSecondDao.updateByPrimaryKeySelective(midDeviceParamSecond);
+    }
+
+    /**
+     * 删除设备信息(谨慎!)
+     */
+    @Override
+    public String deleteDevice(String deviceId){
+        return deviceConfigDao.deleteAllByDevId(deviceId);
     }
 
 }

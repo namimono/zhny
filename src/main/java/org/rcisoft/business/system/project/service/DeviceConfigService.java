@@ -93,4 +93,9 @@ public interface DeviceConfigService {
      * 修改设备二级参数中间表信息
      */
     int updateMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond);
+
+    /**
+     * 删除设备信息(谨慎!)
+     */
+    String deleteDevice(String deviceId);
 }

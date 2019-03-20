@@ -113,4 +113,10 @@ public class DeviceConfigController {
     public Result updateMidDeviceSecondInfo(@RequestBody MidDeviceParamSecond midDeviceParamSecond){
         return Result.result(deviceConfigServiceImpl.updateMidDeviceSecondInfo(midDeviceParamSecond),"修改设备二级参数中间表信息成功","修改设备二级参数中间表信息失败");
     }
+
+    @ApiOperation(value="删除设备信息(谨慎!)", notes="删除设备信息(谨慎!)")
+    @DeleteMapping("/deleteAllByProId/{deviceId}")
+    public Result deleteDevice(@PathVariable String deviceId){
+        return Result.result(deviceConfigServiceImpl.deleteDevice(deviceId));
+    }
 }
