@@ -1,5 +1,7 @@
 package org.rcisoft.business.monitor.intercept.service;
 
+import org.rcisoft.business.monitor.intercept.entity.DeviceParam;
+
 import java.util.List;
 import java.util.Map;
 
@@ -11,4 +13,5 @@ import java.util.Map;
 public interface BusProjectService {
     Map<String,Object> queryPhones(String id);
     List<Map<String, Object>> queryParam(String id);
+    List<DeviceParam> queryDeviceParam(String deviceId);
 }
