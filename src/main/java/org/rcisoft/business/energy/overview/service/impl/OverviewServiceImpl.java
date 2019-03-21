@@ -114,12 +114,11 @@ public class OverviewServiceImpl implements OverviewService {
     }
 
     @Override
-    public PriceForDay queryPriceForDay(String projectId, Integer energyType, String dayType) {
+    public PriceForDay queryPriceForDay(String projectId, Integer energyType) {
         // 返回值
         PriceForDay result = new PriceForDay();
-        String[] dayArray = dayType.split(",");
-        for (String dayString : dayArray) {
-            Integer dayTime = Integer.parseInt(dayString);
+        Integer[] dayArray = {0, -1};
+        for (Integer dayTime : dayArray) {
             // 取得时间
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DATE, dayTime);

@@ -31,10 +31,10 @@ public class OverviewController {
         return Result.result(overviewServiceImpl.queryPriceAndRank(projectId));
     }
 
-    @ApiOperation(value="今日、昨日分时运行费用", notes="1：水，2：电，3：气，总费用不需要传值；0：今日，-1：昨日，0,-1：今日+昨日")
-    @GetMapping("/queryPriceForDay/{projectId}/{energyType}/{dayType}")
-    public Result queryPriceForDay(@PathVariable String projectId, @PathVariable(required = false) Integer energyType, @PathVariable String dayType) {
-        return Result.result(overviewServiceImpl.queryPriceForDay(projectId, energyType, dayType));
+    @ApiOperation(value="今日、昨日分时运行费用", notes="1：水，2：电，3：气，总费用不需要传值；0：今日，-1：昨日")
+    @GetMapping("/queryPriceForDay/{projectId}/{energyType}")
+    public Result queryPriceForDay(@PathVariable String projectId, @PathVariable(required = false) Integer energyType) {
+        return Result.result(overviewServiceImpl.queryPriceForDay(projectId, energyType));
     }
 
     @ApiOperation(value="能耗拆分", notes="改成了饼图，和一期一样；energyType：1：水，2：电，3：气")

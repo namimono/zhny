@@ -1,9 +1,6 @@
 package org.rcisoft.business.energy.overview.service;
 
-import org.rcisoft.business.energy.overview.entity.EnergySplitResult;
-import org.rcisoft.business.energy.overview.entity.PriceAndRank;
-import org.rcisoft.business.energy.overview.entity.PriceForDay;
-import org.rcisoft.business.energy.overview.entity.PricePerHour;
+import org.rcisoft.business.energy.overview.entity.*;
 
 /**
  * Created by JiChao on 2019/3/15.
@@ -29,10 +26,9 @@ public interface OverviewService {
      * 今日、昨日分时运行费用
      * @param projectId 项目id
      * @param energyType 1：水，2：电，3：气，null：总费用
-     * @param dayType 0：今日，-1：昨日，0,-1：今日+昨日
      * @return
      */
-    PriceForDay queryPriceForDay(String projectId, Integer energyType, String dayType);
+    PriceForDay queryPriceForDay(String projectId, Integer energyType);
 
     /**
      * 能耗拆分，水电气查询
