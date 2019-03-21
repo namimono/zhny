@@ -22,4 +22,11 @@ public interface BusFormulaDao extends Mapper<BusFormula> {
     @Select("SELECT * FROM bus_formula WHERE project_id = #{projectId}")
     @ResultType(BusFormula.class)
     List<BusFormula> queryFormula(@Param("projectId") String projectId);
+
+    /**
+     * 根据公式ID查询公式信息
+     */
+    @Select("SELECT * FROM bus_formula WHERE id IN (${formulaIds});")
+    @ResultType(BusFormula.class)
+    List<BusFormula> queryFormulaById(@Param("formulaIds") String formulaIds);
 }

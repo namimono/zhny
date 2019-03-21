@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -127,7 +128,7 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
     }
 
     /**
-     * 导出模板（项目维护-其他配置-参数库）
+     * 导出公式数据
      */
     @Override
     public void downloadFormulaData(HttpServletResponse response,String projectId,String beginTime,String endTime,List<BusFormula> formulaList){
@@ -145,7 +146,7 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
         String[] header = {"公式名称","公式内容","时间","数值"};
 
         //设置默认列宽
-        sheet.setDefaultColumnWidth(30);
+        sheet.setDefaultColumnWidth(15);
         //设置列宽
         sheet.setColumnWidth(0,5000);
 
@@ -228,11 +229,12 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
         int rowNum = 3;
         // 公式计算类
         FelEngine fel = new FelEngineImpl();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //在表中存放查询到的数据放入对应的列
         for (SysData sysData : sysDataList) {
             JSONObject jsonObject = JSON.parseObject(sysData.getJson());
             HSSFRow row4 = sheet.createRow(rowNum);
-            row4.createCell(0, CellType.STRING).setCellValue(sysData.getCreateTime());
+            row4.createCell(0, CellType.STRING).setCellValue(sdf.format(sysData.getCreateTime()));
             //通过公式的数量进行循环
             int i = 1;
             for (String key : resultMap.keySet()){

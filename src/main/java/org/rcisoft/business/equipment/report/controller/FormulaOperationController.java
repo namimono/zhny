@@ -84,9 +84,9 @@ public class FormulaOperationController {
         return Result.result(formulaOperationServiceImpl.queryParamSecondByProId(projectId,sourceId));
     }
 
-    @ApiOperation(value="导出模板（项目维护-其他配置-参数库）", notes="导出模板（项目维护-其他配置-参数库）")
-    @GetMapping("/downloadFormulaData")
-    public void downloadFormulaData(HttpServletResponse response, String projectId, String beginTime, String endTime, List<BusFormula> formulaList){
+    @ApiOperation(value="导出公式数据",notes="导出公式数据",produces="application/octet-stream")
+    @PostMapping("/downloadFormulaData")
+    public void downloadFormulaData(HttpServletResponse response, String projectId, String beginTime, String endTime,@RequestBody List<BusFormula> formulaList){
         formulaOperationServiceImpl.downloadFormulaData(response,projectId,beginTime,endTime,formulaList);
     }
 }

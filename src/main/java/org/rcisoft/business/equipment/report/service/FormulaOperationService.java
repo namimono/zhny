@@ -67,7 +67,7 @@ public interface FormulaOperationService {
     List<BusParamSecond> queryParamSecondByProId(String projectId,String sourceId);
 
     /**
-     * 导出公式
+     * 导出公式数据
      */
     void downloadFormulaData(HttpServletResponse response,String projectId,String beginTime,String endTime,List<BusFormula> formulaList);
 }
