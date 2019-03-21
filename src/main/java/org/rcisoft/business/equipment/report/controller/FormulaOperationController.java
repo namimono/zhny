@@ -9,6 +9,9 @@ import org.rcisoft.entity.BusVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+
 /**
  * @author 土豆儿
  * @date 2019/3/12 16:40
@@ -79,5 +82,11 @@ public class FormulaOperationController {
     @GetMapping("/queryVariable/{projectId}/{sourceId}")
     public Result queryParamSecondByProId(@PathVariable String projectId,@PathVariable String sourceId){
         return Result.result(formulaOperationServiceImpl.queryParamSecondByProId(projectId,sourceId));
+    }
+
+    @ApiOperation(value="导出模板（项目维护-其他配置-参数库）", notes="导出模板（项目维护-其他配置-参数库）")
+    @GetMapping("/downloadFormulaData")
+    public void downloadFormulaData(HttpServletResponse response, String projectId, String beginTime, String endTime, List<BusFormula> formulaList){
+        formulaOperationServiceImpl.downloadFormulaData(response,projectId,beginTime,endTime,formulaList);
     }
 }

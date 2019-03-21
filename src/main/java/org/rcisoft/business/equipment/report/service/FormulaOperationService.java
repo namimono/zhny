@@ -6,6 +6,7 @@ import org.rcisoft.entity.BusParamSecond;
 import org.rcisoft.entity.BusVariable;
 import org.rcisoft.entity.SysSource;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -64,4 +65,9 @@ public interface FormulaOperationService {
      * 根据项目ID和参数来源查询二级参数信息
      */
     List<BusParamSecond> queryParamSecondByProId(String projectId,String sourceId);
+
+    /**
+     * 导出公式
+     */
+    void downloadFormulaData(HttpServletResponse response,String projectId,String beginTime,String endTime,List<BusFormula> formulaList);
 }
