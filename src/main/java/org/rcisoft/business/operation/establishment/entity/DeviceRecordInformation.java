@@ -18,6 +18,14 @@ import java.util.Date;
 public class DeviceRecordInformation {
 
     /**
+     * 表示状态
+     *     当设备参数的状态不同时，为3，前台显示红色
+     *     当设备参数的状态相同，但是参数值不同时，为2，前台显示蓝色
+     *     当设备参数的状态，参数都相同时，为1，前台显示绿色
+     */
+    Integer status = null;
+
+    /**
      * 开始时间
      */
     Date startTime;

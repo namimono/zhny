@@ -36,12 +36,12 @@ public class PlanningDeviceInformation {
     String mainName2;
 
     /**
-     * 第三个主参数名称
+     * 第一个副参数名称
      */
     String paramName;
 
     /**
-     * 第四个主参数名称
+     * 第二个副参数名称
      */
     String paramName2;
 

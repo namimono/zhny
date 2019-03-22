@@ -53,11 +53,19 @@ public class EnergyPlanningController {
         return Result.result(energyPlanningService.listPlanList(conditionDto));
     }
 
-    @ApiOperation(value = "点击修改计划列表中的修改，查出在计划列表修改计划用到的信息", notes = "参数：计划编制记录表Id与设备Id")
-    @PostMapping("/listDevicePlanningByDevIdAndRecId")
-    public Result listDevicePlanningByDevIdAndRecId(@RequestBody ConditionDto conditionDto) {
-        return Result.result(energyPlanningService.listDevicePlanningByDevIdAndRecId(conditionDto));
+
+    @ApiOperation(value = "点击修改计划列表中的修改或者新增计划编制记录时，查出设备的参数名称", notes = "参数：设备Id")
+    @PostMapping("/listDeviceParamNameByDevId")
+    public Result listDeviceParamNameByDevId(@RequestBody ConditionDto conditionDto) {
+        return Result.result(energyPlanningService.listDeviceParamNameByDevId(conditionDto));
     }
+
+    @ApiOperation(value = "点击修改计划列表中的修改计划编制记录时，查出要修改的记录的信息用于回显", notes = "参数：计划编制Id")
+    @PostMapping("/getEnergyPlanningRecordById")
+    public Result getEnergyPlanningRecordById(@RequestBody ConditionDto conditionDto) {
+        return Result.result(energyPlanningService.getEnergyPlanningRecordById(conditionDto));
+    }
+
 
     @ApiOperation(value = "修改或者新增计划编制记录时,根据主参数的值，查出副参数值", notes = "参数：主参数，设备Id")
     @PostMapping("/listEnergyParamLibraryByParam")
@@ -97,17 +105,13 @@ public class EnergyPlanningController {
     }
 
 
-    @ApiOperation(value = "点击添加一条，新增计划编制", notes = "参数为：项目Id,设备Id,第一个主参数二级Id,第二个主参数二级Id,所有参数值，创建时间（yyyy-MM-dd）,开始时间与结束时间（yyyy-MM-dd HH:mm:ss）")
+    @ApiOperation(value = "点击添加一条，新增计划编制", notes = "参数为：项目Id,设备Id,所有参数值，创建时间（yyyy-MM-dd）,开始时间与结束时间（yyyy-MM-dd HH:mm:ss）")
     @PostMapping("/saveEnergyPlanningRecord")
     public Result saveEnergyPlanningRecord(@RequestBody EnergyPlanningRecord energyPlanningRecord) {
         return Result.result(energyPlanningRecordService.saveEnergyPlanningRecord(energyPlanningRecord), "添加计划成功", "添加计划失败");
     }
 
-    @ApiOperation(value = "点击添加一条后，显示该设备的计划参数名称，查询新增计划编制时的参数名称，Id", notes = "参数为：设备Id")
-    @PostMapping("/listDevicePlanningByDevId")
-    public Result listDevicePlanningByDevId(@RequestBody ConditionDto conditionDto) {
-        return Result.result(energyPlanningService.listDevicePlanningByDevId(conditionDto));
-    }
+
 
     @ApiOperation(value = "点击删除，删除计划编制记录", notes = "参数为：计划编制记录表Id")
     @DeleteMapping("/deleteEnergyPlanningRecordById")

@@ -4,17 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 /**
+ *  设备参数名称
  * @author GaoLiwei
- * @date 2019/3/19
+ * @date 2019/3/21
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ParameterNameId {
-
+public class DeviceParamName {
 
     /**
      * 第一个主参数名称
@@ -35,28 +33,4 @@ public class ParameterNameId {
      * 第二个副参数名称
      */
     String paramName2;
-
-    /**
-     * 第一个主参数值的一级参数Id
-     */
-    BigDecimal mainFirstId;
-
-    /**
-     * 第一个主参数值的二级参数Id
-     */
-    BigDecimal mainSecondId;
-
-    /**
-     * 第二个主参数值的一级参数Id
-     */
-    BigDecimal mainFirstId2;
-
-    /**
-     * 第二个主参数值的二级参数Id
-     */
-    BigDecimal mainSecondId2;
-
-
-
-
 }

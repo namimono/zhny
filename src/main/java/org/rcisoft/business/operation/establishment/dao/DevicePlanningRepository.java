@@ -3,10 +3,7 @@ package org.rcisoft.business.operation.establishment.dao;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
-import org.rcisoft.business.operation.establishment.entity.ConditionDto;
-import org.rcisoft.business.operation.establishment.entity.DevicePlanningFromDb;
-import org.rcisoft.business.operation.establishment.entity.ParameterNameId;
-import org.rcisoft.business.operation.establishment.entity.PlanList;
+import org.rcisoft.business.operation.establishment.entity.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,13 +16,13 @@ import java.util.List;
 public interface DevicePlanningRepository {
 
     /**
-     * 根据时间与项目Id查出当前项目的计划编制需要用到的信息
+     * 根据时间与项目Id查出当前项目的计划编制需要用到的信息，
+     *     包括设备名字，两个主参数的名字，设备编制表所有信息
      *
      * @param conditionDto
      * @return
      */
-    @Select("<script>SELECT epr.device_id as deviceId, bd.`name` as deviceName, bps.`name` as mainName, bps1.`name` as mainName2, " +
-            " epr.start_time, epr.end_time, epr.main_value, epr.main_value2\n" +
+    @Select("<script>SELECT epr.*, bd.`name` as deviceName, bps.`name` as mainName, bps1.`name` as mainName2 " +
             "FROM energy_planning_record epr\n" +
             "LEFT JOIN bus_param_second bps ON epr.main_second_id = bps.id\n" +
             "LEFT JOIN bus_param_second bps1 ON epr.main_second_id2 = bps1.id\n" +
@@ -47,39 +44,28 @@ public interface DevicePlanningRepository {
     List<PlanList> listPlanList(@Param("conditionDto") ConditionDto conditionDto);
 
 
-    /**
-     * 根据设备Id,与计划编制记录表Id，查出编辑计划列表时用到的信息
-     *
-     * @param conditionDto
-     * @return
-     */
-    @Select("<script> SELECT epr.start_time, epr.end_time, epr.main_value, epr.main_value2, epr.param_value, epr.param_value2, epr.id AS energyPlanningRecordId \n" +
-            " (SELECT bps.`name` FROM bus_param_library bpl LEFT JOIN bus_param_second bps ON bpl.param_second_id = bps.id WHERE bpl.sequence = 1 AND bpl.device_id = #{conditionDto.devId} ) AS mainName,\n" +
-            " (SELECT bps.`name` FROM bus_param_library bpl LEFT JOIN bus_param_second bps ON bpl.param_second_id = bps.id WHERE bpl.sequence = 2 AND bpl.device_id = #{conditionDto.devId} ) AS mainName2,\n" +
-            " (SELECT bps.`name` FROM bus_param_library bpl LEFT JOIN bus_param_second bps ON bpl.param_second_id = bps.id WHERE bpl.sequence = 3 AND bpl.device_id = #{conditionDto.devId} ) AS paramName,\n" +
-            " (SELECT bps.`name` FROM bus_param_library bpl LEFT JOIN bus_param_second bps ON bpl.param_second_id = bps.id WHERE bpl.sequence = 4 AND bpl.device_id = #{conditionDto.devId} ) AS paramName2\n" +
-            " FROM energy_planning_record epr WHERE epr.id = #{conditionDto.energyPlanningRecordId}</script>")
-    @ResultType(DevicePlanningFromDb.class)
-    List<DevicePlanningFromDb> listDevicePlanningByDevIdAndRecId(@Param("conditionDto") ConditionDto conditionDto);
+
 
 
     /**
-     * 根据设备Id,查出参数的Id，参数的名称
-     *
+     *  根据设备Id，查出该设备的计划参数的名称，以及是第几个参数
      * @param conditionDto
      * @return
      */
-    @Select("<script>SELECT \n" +
-            "(SELECT bpl.param_first_id FROM bus_param_library bpl WHERE bpl.sequence = 1 AND bpl.device_id = #{conditionDto.devId} ) AS mainFirstId,\n" +
-            "(SELECT bpl.param_second_id FROM bus_param_library bpl WHERE bpl.sequence = 1 AND bpl.device_id = #{conditionDto.devId} ) AS mainSecondId,\n" +
-            "(SELECT bpl.param_first_id FROM bus_param_library bpl WHERE bpl.sequence = 2 AND bpl.device_id = #{conditionDto.devId} ) AS mainFirstId2,\n" +
-            "(SELECT bpl.param_second_id FROM bus_param_library bpl WHERE bpl.sequence = 2 AND bpl.device_id = #{conditionDto.devId} ) AS mainSecondId2,\n" +
-            "(SELECT bps.`name` FROM bus_param_library bpl LEFT JOIN bus_param_second bps ON bpl.param_second_id = bps.id WHERE bpl.sequence = 1 AND bpl.device_id = #{conditionDto.devId} ) AS mainName,\n" +
-            "(SELECT bps.`name` FROM bus_param_library bpl LEFT JOIN bus_param_second bps ON bpl.param_second_id = bps.id WHERE bpl.sequence = 2 AND bpl.device_id = #{conditionDto.devId} ) AS mainName2,\n" +
-            "(SELECT bps.`name` FROM bus_param_library bpl LEFT JOIN bus_param_second bps ON bpl.param_second_id = bps.id WHERE bpl.sequence = 3 AND bpl.device_id = #{conditionDto.devId} ) AS paramName,\n" +
-            "(SELECT bps.`name` FROM bus_param_library bpl LEFT JOIN bus_param_second bps ON bpl.param_second_id = bps.id WHERE bpl.sequence = 4 AND bpl.device_id = #{conditionDto.devId} ) AS paramName2</script>")
-    @ResultType(ParameterNameId.class)
-    List<ParameterNameId> listDevicePlanningByDevId(@Param("conditionDto") ConditionDto conditionDto);
+    @Select("<script>SELECT bps.`name` AS devParamName,bpl.sequence  FROM bus_param_library bpl  " +
+            " LEFT JOIN bus_param_second bps ON bpl.param_second_id = bps.id WHERE bpl.device_id = #{conditionDto.devId}  </script>")
+    List<DeviceNameAndSeq> listDeviceParamNameAndSeqByDevId(@Param("conditionDto") ConditionDto conditionDto);
+
+    /**
+     *  根据设备id，查出该设备的计划编制主参数的一级参数Id,二级参数Id
+     * @param devId
+     * @return
+     */
+    @Select("<script>SELECT bpl.param_first_id, bpl.param_second_id, bpl.sequence  " +
+            "  FROM bus_param_library bpl WHERE bpl.sequence in (1,2) AND bpl.device_id = #{devId}</script>")
+    List<DeviceParamIdAndSeq> listDeviceParamIdAndSeqByDevId(@Param("devId") String devId);
+
+
 
 
 }
