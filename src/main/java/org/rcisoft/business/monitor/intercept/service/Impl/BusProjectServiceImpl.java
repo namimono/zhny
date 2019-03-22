@@ -1,7 +1,9 @@
 package org.rcisoft.business.monitor.intercept.service.Impl;
 
 import org.rcisoft.base.redis.RedisService;
+import org.rcisoft.business.monitor.intercept.dao.DeviceParamDao;
 import org.rcisoft.business.monitor.intercept.entity.BusProjectParam;
+import org.rcisoft.business.monitor.intercept.entity.DeviceParam;
 import org.rcisoft.business.monitor.intercept.service.BusProjectService;
 import org.rcisoft.dao.BusProjectDao;
 import org.rcisoft.entity.BusParamSecond;
@@ -27,6 +29,8 @@ public class BusProjectServiceImpl implements BusProjectService {
     private BusProjectDao busProjectDao;
     @Autowired
     private RedisService redisService;
+    @Autowired
+    private DeviceParamDao deviceParamDao;
 
 
     @Override
@@ -72,5 +76,10 @@ public class BusProjectServiceImpl implements BusProjectService {
             data.add(firstMap);
         }
         return data;
+    }
+
+    @Override
+    public List<DeviceParam> queryDeviceParam(String deviceId) {
+        return deviceParamDao.queryDeviceParam(deviceId);
     }
 }

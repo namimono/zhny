@@ -11,5 +11,4 @@ import tk.mybatis.mapper.common.Mapper;
 @Repository
 public interface SysImageDao extends Mapper<SysImage> {
 
-
 }

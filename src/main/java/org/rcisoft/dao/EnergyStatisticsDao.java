@@ -1,8 +1,8 @@
 package org.rcisoft.dao;
 
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
+import org.rcisoft.business.energy.compare.entity.CompareParam;
 import org.rcisoft.business.energy.overview.entity.OverviewParam;
 import org.rcisoft.entity.EnergyStatistics;
 import org.springframework.stereotype.Repository;
@@ -16,6 +16,7 @@ import java.util.List;
 @Repository
 public interface EnergyStatisticsDao extends Mapper<EnergyStatistics> {
 
+    /** -----------------------------用能概况---------------------------------------- */
     /**
      * 查询当日费用
      * @param overviewParam year, month, day, projectId
@@ -51,15 +52,23 @@ public interface EnergyStatisticsDao extends Mapper<EnergyStatistics> {
     @Select("<script>select sum(money_water) money_water, sum(money_elec) money_elec, sum(money_gas) money_gas, time_hour from energy_statistics where time_year = #{year} and time_month = #{month} and time_day = #{day} and project_id = #{projectId} group by time_hour order by time_hour asc</script>")
     @ResultType(EnergyStatistics.class)
     List<EnergyStatistics> queryPriceForDay(OverviewParam overviewParam);
+    /** -----------------------------用能概况---------------------------------------- */
 
+    /** -----------------------------用能比较---------------------------------------- */
     /**
-     * 能耗拆分
-     * @param overviewParam year, month, hour, projectId
+     * 今日，本月 水电气 用量
+     * 没有日期参数，查本月
+     * 有日期，查今日
+     * @param compareParam year, month, day, projectId
      * @return
      */
-    @Select("<script>select sum(money_water) money_water, sum(money_elec) money_elec, sum(money_gas) money_gas, device_id from energy_statistics where time_year = #{year} and time_month = #{month} and time_day = #{day} and project_id = #{projectId} group by device_id</script>")
+    @Select("<script>select sum(energy_water) energy_water, sum(energy_elec) energy_elec, sum(energy_gas) energy_gas " +
+            "from energy_statistics " +
+            "where time_year = #{year} and time_month = #{month} and project_id = #{projectId} " +
+            "<if test = \"day != null\"> and time_day = #{day} </if></script>")
     @ResultType(EnergyStatistics.class)
-    List<EnergyStatistics> queryEnergySplit(OverviewParam overviewParam);
+    EnergyStatistics queryEnergyDayAndMon(CompareParam compareParam);
 
+    /** -----------------------------用能比较---------------------------------------- */
 
 }
