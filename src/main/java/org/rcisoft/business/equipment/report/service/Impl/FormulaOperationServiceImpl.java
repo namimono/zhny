@@ -146,7 +146,7 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
         String[] header = {"公式名称","公式内容","时间","数值"};
 
         //设置默认列宽
-        sheet.setDefaultColumnWidth(15);
+        sheet.setDefaultColumnWidth(12);
         //设置列宽
         sheet.setColumnWidth(0,5000);
 
@@ -273,6 +273,8 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
         String value = "";
         if (param.get(formulaVariableData.getParamSecondCoding()) != null) {
             value = param.get(formulaVariableData.getParamSecondCoding()).toString();
+        }else {
+            value = "0";
         }
         //将公式中的变量替换为相应的数值
         formula = formula.replaceAll(formulaVariableData.getVariable(),value);
@@ -303,6 +305,8 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
             if (result != null) {
                 eval = result.toString();
             }
+        }else {
+            eval = null;
         }
         return eval;
     }
