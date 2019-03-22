@@ -289,7 +289,7 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
      * @author GaoLiWei
      * @date 9:35 2019/3/18
      **/
-    private static Date getDayStartTime(ConditionDto conditionDto) {
+    private Date getDayStartTime(ConditionDto conditionDto) {
         Calendar dayStart = Calendar.getInstance();
         dayStart.setTime(conditionDto.getDate());
         dayStart.set(Calendar.HOUR, 0);
@@ -305,7 +305,7 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
      * @author GaoLiWei
      * @date 9:35 2019/3/18
      **/
-    private static Date getDayEndTime(ConditionDto conditionDto) {
+    private Date getDayEndTime(ConditionDto conditionDto) {
         Calendar dayEnd = Calendar.getInstance();
         dayEnd.setTime(conditionDto.getDate());
         dayEnd.set(Calendar.HOUR, 23);

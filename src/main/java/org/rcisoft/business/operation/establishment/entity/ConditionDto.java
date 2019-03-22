@@ -37,6 +37,13 @@ public class ConditionDto {
     @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
     Date date;
 
+
+    /**
+     * 月份时间，格式 yyyy-MM
+     */
+    @JsonFormat(pattern="yyyy-MM",timezone="GMT+8")
+    Date monthDate;
+
     /**
      * 要复制到某一天的时间，格式 yyyy-MM-dd
      */
