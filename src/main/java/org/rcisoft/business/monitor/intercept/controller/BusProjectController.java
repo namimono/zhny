@@ -52,4 +52,21 @@ public class BusProjectController {
     @ApiOperation(value = "查询设备参数",notes = "查询设备参数")
     @GetMapping(value = "queryDeviceParam/{id}")
     public Result queryDeviceParam(@PathVariable String id){return Result.result(1,busProjectService.queryDeviceParam(id));}
+
+    @ApiOperation(value = "查询设备列表标题",notes = "查询设备列表标题")
+    @GetMapping(value = "queryDeviceTitle")
+    public Result queryDeviceTitle(){return Result.result(1,busProjectService.queryDeviceTitle());}
+
+    @ApiOperation(value = "获取设备具体信息",notes = "获取设备具体信息")
+    @GetMapping(value = "queryDeviceInfo/{typeFirstId}")
+    public Result queryDeviceInfo(@PathVariable String typeFirstId){
+        return Result.result(1,busProjectService.queryDeviceInfo(typeFirstId));
+    }
+
+    @ApiOperation(value = "左侧边栏模块名称",notes = "左侧边栏模块名称")
+    @GetMapping(value = "queryModelName")
+    public Result queryModelName(){
+        return Result.result(1,busProjectService.queryModelName());
+    }
+
 }
