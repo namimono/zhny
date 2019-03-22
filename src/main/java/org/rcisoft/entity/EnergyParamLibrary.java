@@ -1,13 +1,13 @@
 package org.rcisoft.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
 @Data
@@ -75,13 +75,13 @@ public class EnergyParamLibrary {
 	private BigDecimal energyGas;
 
 	/**
-	 * 电费用
+	 * 每小时电费用
 	 */
 	@Column(name = "money_elec" )
 	private BigDecimal moneyElec;
 
 	/**
-	 * 气费用
+	 * 每小时气费用
 	 */
 	@Column(name = "money_gas" )
 	private BigDecimal moneyGas;

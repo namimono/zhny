@@ -108,4 +108,16 @@ public class EnergyPlanningRecord {
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	private Date endTime;
 
+    /**
+     * 每小时电费用
+     */
+    @Column(name = "money_elec" )
+    private BigDecimal moneyElec;
+
+    /**
+     * 每小时气费用
+     */
+    @Column(name = "money_gas" )
+    private BigDecimal moneyGas;
+
 }
