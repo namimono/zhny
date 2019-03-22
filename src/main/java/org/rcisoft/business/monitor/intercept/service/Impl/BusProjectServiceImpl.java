@@ -1,8 +1,10 @@
 package org.rcisoft.business.monitor.intercept.service.Impl;
 
 import org.rcisoft.base.redis.RedisService;
+import org.rcisoft.business.monitor.intercept.dao.BusProjectParamDao;
 import org.rcisoft.business.monitor.intercept.dao.DeviceParamDao;
 import org.rcisoft.business.monitor.intercept.entity.BusProjectParam;
+import org.rcisoft.business.monitor.intercept.entity.DeviceInfo;
 import org.rcisoft.business.monitor.intercept.entity.DeviceParam;
 import org.rcisoft.business.monitor.intercept.service.BusProjectService;
 import org.rcisoft.dao.BusProjectDao;
@@ -31,6 +33,8 @@ public class BusProjectServiceImpl implements BusProjectService {
     private RedisService redisService;
     @Autowired
     private DeviceParamDao deviceParamDao;
+    @Autowired
+    private BusProjectParamDao busProjectParamDao;
 
 
     @Override
@@ -81,5 +85,38 @@ public class BusProjectServiceImpl implements BusProjectService {
     @Override
     public List<DeviceParam> queryDeviceParam(String deviceId) {
         return deviceParamDao.queryDeviceParam(deviceId);
+    }
+
+    @Override
+    public List<String> queryDeviceTitle() {
+        return deviceParamDao.queryDeviceTitle();
+    }
+
+    @Override
+    public List<DeviceInfo> queryDeviceInfo(String typeFirstId) {
+        List<String> list_mal = deviceParamDao.queryMalfunction();
+        List<DeviceInfo> list = new ArrayList<>();
+        list = deviceParamDao.queryDeviceInfo(typeFirstId);
+        for (DeviceInfo li : list){
+            for(String str : list_mal){
+                if(li.getId().equals(str)){
+                    li.setStatus(1);
+                }
+            }
+            long time = li.getRuntime();
+            long second = time / 1000;
+            long minute = second / 60;
+            second = second % 1000;
+            long hour = minute / 60;
+            minute = minute % 60;
+            String runtime = hour + ":" + minute + ":" + second;
+            li.setTime(runtime);
+        }
+        return list;
+    }
+
+    @Override
+    public List<String> queryModelName() {
+        return busProjectParamDao.queryModelName();
     }
 }
