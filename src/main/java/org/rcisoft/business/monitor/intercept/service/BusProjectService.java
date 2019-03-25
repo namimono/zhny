@@ -2,6 +2,7 @@ package org.rcisoft.business.monitor.intercept.service;
 
 import org.rcisoft.business.monitor.intercept.entity.DeviceInfo;
 import org.rcisoft.business.monitor.intercept.entity.DeviceParam;
+import org.rcisoft.business.monitor.intercept.entity.EnergyEcharts;
 
 import java.util.List;
 import java.util.Map;
@@ -18,4 +19,5 @@ public interface BusProjectService {
     List<String> queryDeviceTitle();
     List<DeviceInfo> queryDeviceInfo(String typeFirstId);
     List<String> queryModelName();
+    Map<String,Object> EnergyEchart(String titleId);
 }

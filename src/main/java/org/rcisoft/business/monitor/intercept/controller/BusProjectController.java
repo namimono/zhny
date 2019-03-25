@@ -69,4 +69,10 @@ public class BusProjectController {
         return Result.result(1,busProjectService.queryModelName());
     }
 
+    @ApiOperation(value = "查询echarts图数据",notes = "查询echarts图数据")
+    @GetMapping(value = "EnergyEchart/{titleId}")
+    public Result EnergyEchart(@PathVariable String titleId){
+        return Result.result(1,busProjectService.EnergyEchart(titleId));
+    }
+
 }

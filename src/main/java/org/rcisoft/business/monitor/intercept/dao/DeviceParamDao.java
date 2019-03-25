@@ -3,6 +3,8 @@ package org.rcisoft.business.monitor.intercept.dao;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.monitor.intercept.entity.DeviceInfo;
 import org.rcisoft.business.monitor.intercept.entity.DeviceParam;
+import org.rcisoft.business.monitor.intercept.entity.EnergyEcharts;
+import org.rcisoft.business.monitor.intercept.entity.TimeJson;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -36,6 +38,25 @@ public interface DeviceParamDao extends Mapper<DeviceParam> {
     @Select("<script>select device_id from bus_malfunction where to_days(create_time) = to_days(now())</script>")
     List<String> queryMalfunction();
 
+    /**
+     * 查询设备具体信息
+     * @param typeFirstId
+     * @return
+     */
     @Select("<script>select id,name,runtime from bus_device where type_first_id = #{typeFirstId}</script>")
     List<DeviceInfo> queryDeviceInfo(String typeFirstId);
+
+    /**
+     * 查询一级二级参数及二级名称（echart）
+     */
+    @Select("<script>select bpf.coding as codingFirst,bps.coding as codingSecond,bps.name as nameSecond from bus_title_param btp,bus_param_first bpf,bus_param_second bps where btp.param_first_id = bpf.id " +
+            "and btp.param_second_id = bps.id and  btp.title_id = #{titleId}</script>")
+    List<EnergyEcharts> queryEnergyEchart(String titleId);
+
+    /**
+     * 查询整点原始数据（echart）
+     */
+    @Select("<script>select create_time as createTime,json from sys_data where to_days(create_time) = to_days(now())" +
+            " and  RIGHT(create_time,5)='00:00'</script>")
+    List<TimeJson> queryData();
 }
