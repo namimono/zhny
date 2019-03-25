@@ -47,7 +47,7 @@ public class BusProject {
 	/**
 	 * 建筑名称
 	 */
-	@Column(name = "building_id" )
+	@Column(name = "building_name" )
 	private String buildingName;
 
 	/**
