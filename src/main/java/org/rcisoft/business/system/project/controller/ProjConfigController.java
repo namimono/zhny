@@ -141,7 +141,7 @@ public class ProjConfigController {
     @ApiOperation(value="新增节能改造信息", notes="新增节能改造信息")
     @PostMapping("/addProjectSaving")
     public Result addProjectSaving(@RequestBody BusProjectSaving busProjectSaving){
-        return Result.result(projConfigServiceImpl.addProjectSaving(busProjectSaving), "新增节能改造信息成功", "新增节能改造信息失败");
+        return Result.serviceResult(projConfigServiceImpl.addProjectSaving(busProjectSaving), "新增节能改造信息成功", "新增节能改造信息失败");
     }
 
     @ApiOperation(value="修改节能改造信息", notes="修改节能改造信息")

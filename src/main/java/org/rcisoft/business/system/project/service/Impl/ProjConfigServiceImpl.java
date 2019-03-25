@@ -74,6 +74,17 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     }
 
     /**
+     *新增节能改造信息
+     */
+    @Override
+    public ServiceResult addProjectSaving(BusProjectSaving busProjectSaving){
+        String id = UuidUtil.create32();
+        busProjectSaving.setId(id);
+        int i = busProjectSavingDao.insertSelective(busProjectSaving);
+        return new ServiceResult(i, id);
+    }
+
+    /**
      * 修改项目配置信息
      */
     @Override
@@ -242,15 +253,6 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     @Override
     public int deleteBuildZone(BusBuildingZone busBuildingZone){
         return busBuildingZoneDao.deleteByPrimaryKey(busBuildingZone);
-    }
-
-    /**
-     *新增节能改造信息
-     */
-    @Override
-    public int addProjectSaving(BusProjectSaving busProjectSaving){
-        busProjectSaving.setId(UuidUtil.create32());
-        return busProjectSavingDao.insertSelective(busProjectSaving);
     }
 
     /**
