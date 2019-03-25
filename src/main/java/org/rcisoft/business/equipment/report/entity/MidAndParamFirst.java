@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 /**
  * @author 土豆儿
  * @date 2019/3/25 9:41
+ * 中间表联查一级参数信息
  **/
 @Data
 @NoArgsConstructor
