@@ -11,31 +11,22 @@ import java.util.List;
 
 /**
  * Created by JiChao on 2019/3/22.
- * 今日用能计划 返回值
+ * 今日、月用能计划 返回值
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class PlanDayResult {
-
-    /**
-     * 初始化
-     */
-    public PlanDayResult() {
-        for (int i = 0; i < 24; i++) {
-            realList.add(new BigDecimal(0));
-            planList.add(new BigDecimal(0));
-        }
-    }
+public class PlanResult {
 
     /**
      * 实际24小时值，默认0
      */
-    private List<BigDecimal> realList = new ArrayList<>(24);
+    private List<BigDecimal> realList = new ArrayList<>();
 
     /**
      * 计划24小时值，默认0
      */
-    private List<BigDecimal> planList = new ArrayList<>(24);
+    private List<BigDecimal> planList = new ArrayList<>();
 
 }

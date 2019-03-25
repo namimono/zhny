@@ -34,4 +34,10 @@ public class PlanController {
         return Result.result(planServiceImpl.queryPlanDay(projectId));
     }
 
+    @ApiOperation(value="月用能计划", notes="月用能计划")
+    @GetMapping("/queryPlanMonth/{projectId}/{year}/{month}")
+    public Result queryPlanMonth(@PathVariable String projectId, @PathVariable Integer year, @PathVariable Integer month) {
+        return Result.result(planServiceImpl.queryPlanMonth(projectId, year, month));
+    }
+
 }

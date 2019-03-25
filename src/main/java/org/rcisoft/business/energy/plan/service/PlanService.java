@@ -1,6 +1,6 @@
 package org.rcisoft.business.energy.plan.service;
 
-import org.rcisoft.business.energy.plan.entity.PlanDayResult;
+import org.rcisoft.business.energy.plan.entity.PlanResult;
 import org.rcisoft.business.energy.plan.entity.PlanStatisticsResult;
 
 /**
@@ -20,6 +20,15 @@ public interface PlanService {
      * @param projectId
      * @return
      */
-    PlanDayResult queryPlanDay(String projectId);
+    PlanResult queryPlanDay(String projectId);
+
+    /**
+     * 月用能计划
+     * @param projectId
+     * @param year
+     * @param month
+     * @return
+     */
+    PlanResult queryPlanMonth(String projectId, Integer year, Integer month);
 
 }

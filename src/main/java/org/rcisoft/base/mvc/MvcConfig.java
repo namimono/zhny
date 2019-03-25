@@ -35,8 +35,6 @@ import java.util.List;
 @Slf4j
 public class MvcConfig implements WebMvcConfigurer {
 
-
-
     @Value("${spring.profiles.active}")
     private String env;//当前激活的配置文件
 
@@ -45,7 +43,6 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/").setViewName("index");
 //        registry.addViewController("/").setViewName("forward:/login.html");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
-//        super.addViewControllers(registry);
     }
 
     @Override
@@ -56,7 +53,6 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
-//        super.addResourceHandlers(registry);
     }
 
     //统一异常处理
@@ -123,10 +119,8 @@ public class MvcConfig implements WebMvcConfigurer {
     }
 
     /**
-     * 解决乱码
-     * @return
+     * --------------------解决乱码------------------------
      */
-
     @Bean
     public HttpMessageConverter<String> responseBodyConverter() {
         StringHttpMessageConverter converter = new StringHttpMessageConverter(
@@ -134,7 +128,10 @@ public class MvcConfig implements WebMvcConfigurer {
         return converter;
     }
 
-
+    /**
+     * 传给前台的日期格式
+     * @return
+     */
     @Bean
     public MappingJackson2HttpMessageConverter jackson2HttpMessageConverter() {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
@@ -156,27 +153,13 @@ public class MvcConfig implements WebMvcConfigurer {
 
     }
 
-
     @Override
     public void configureContentNegotiation(
             ContentNegotiationConfigurer configurer) {
         configurer.favorPathExtension(false);
     }
-
     /**
-     * 增加字符串转日期的功能
+     * --------------------解决乱码------------------------
      */
-//    @PostConstruct
-//    public void initEditableAvlidation() {
-//
-//        ConfigurableWebBindingInitializer initializer = (ConfigurableWebBindingInitializer)handlerAdapter.getWebBindingInitializer();
-//        if(initializer.getConversionService()!=null) {
-//            GenericConversionService genericConversionService = (GenericConversionService)initializer.getConversionService();
-//
-//            genericConversionService.addConverter(new DateConverterConfig());
-//
-//        }
-//
-//    }
 
 }

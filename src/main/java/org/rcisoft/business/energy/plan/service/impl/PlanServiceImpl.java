@@ -2,7 +2,7 @@ package org.rcisoft.business.energy.plan.service.impl;
 
 import org.rcisoft.business.energy.plan.dao.PlanDao;
 import org.rcisoft.business.energy.plan.entity.MoneyAndTime;
-import org.rcisoft.business.energy.plan.entity.PlanDayResult;
+import org.rcisoft.business.energy.plan.entity.PlanResult;
 import org.rcisoft.business.energy.plan.entity.PlanParam;
 import org.rcisoft.business.energy.plan.entity.PlanStatisticsResult;
 import org.rcisoft.business.energy.plan.service.PlanService;
@@ -69,11 +69,16 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public PlanDayResult queryPlanDay(String projectId) {
+    public PlanResult queryPlanDay(String projectId) {
         // 返回值
-        PlanDayResult result = new PlanDayResult();
+        PlanResult result = new PlanResult();
         List<BigDecimal> resultRealList = result.getRealList();
         List<BigDecimal> resultPlanList = result.getPlanList();
+        // 初始化
+        for (int i = 0; i < 24; i++) {
+            resultRealList.add(new BigDecimal(0));
+            resultPlanList.add(new BigDecimal(0));
+        }
         // 参数
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -83,13 +88,13 @@ public class PlanServiceImpl implements PlanService {
         PlanParam p = new PlanParam(projectId, year, month, day, time);
         // 查找实际值
         List<MoneyAndTime> realList = planDao.queryMoneyRealHour(p);
+        // 查找计划值
+        List<EnergyPlanningRecord> planList = planDao.queryMoneyPlanHour(p);
         // 实际值放入结果集
         realList.forEach(moneyAndTime -> {
             resultRealList.set(moneyAndTime.getTime(), moneyAndTime.getMoneyElec().add(moneyAndTime.getMoneyGas()));
         });
-        // 查找计划值
-        List<EnergyPlanningRecord> planList = planDao.queryMoneyPlanHour(p);
-        // 循环并赋值
+        // 计划值循环并赋值
         planList.forEach(e -> {
             Date startTime = e.getStartTime();
             Date endTime = e.getEndTime();
@@ -122,6 +127,38 @@ public class PlanServiceImpl implements PlanService {
                 // 分钟+10
                 minute += 10;
             }
+        });
+        return result;
+    }
+
+    @Override
+    public PlanResult queryPlanMonth(String projectId, Integer year, Integer month) {
+        // 参数
+        Calendar calendar = Calendar.getInstance();
+        String time = year + "-" + month;
+        PlanParam p = new PlanParam(projectId, year, month, null, time);
+        // 每月天数
+        int date = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        if (date == 28) {date = 29;} // 2月按照29天算，避免空指针
+        // 返回值
+        PlanResult result = new PlanResult();
+        List<BigDecimal> resultRealList = result.getRealList();
+        List<BigDecimal> resultPlanList = result.getPlanList();
+        // 初始化
+        for (int i = 0; i < date; i++) {
+            resultRealList.add(new BigDecimal(0));
+            resultPlanList.add(new BigDecimal(0));
+        }
+        // 查询实际
+        List<MoneyAndTime> realList = planDao.queryMoneyRealDay(p);
+        // 查询计划
+        List<MoneyAndTime> planList = planDao.queryMoneyPlanDay(p);
+        // 放入值
+        realList.forEach(moneyAndTime -> {
+            resultRealList.set(moneyAndTime.getTime() - 1, moneyAndTime.getMoneyElec().add(moneyAndTime.getMoneyGas()));
+        });
+        planList.forEach(moneyAndTime -> {
+            resultPlanList.set(moneyAndTime.getTime() - 1, moneyAndTime.getMoneyElec().add(moneyAndTime.getMoneyGas()));
         });
         return result;
     }

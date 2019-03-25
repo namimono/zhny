@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,7 @@ public class BusTeam {
 	/**
 	 * 上线时间
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
    	@Column(name = "online_time" )
 	private Date onlineTime;
 
