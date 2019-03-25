@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,6 +43,12 @@ public class BusParamFixed {
 	 */
    	@Column(name = "unit" )
 	private String unit;
+
+	/**
+	 * 数值
+	 */
+	@Column(name = "fix_value")
+   	private BigDecimal fixValue;
 
 	/**
 	 * 项目id
