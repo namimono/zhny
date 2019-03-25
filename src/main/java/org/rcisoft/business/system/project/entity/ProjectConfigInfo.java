@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -35,6 +36,12 @@ public class ProjectConfigInfo {
      * 建筑类型
      */
     private String buildingId;
+
+    /**
+     * 建筑名称
+     */
+    @Column(name = "building_id" )
+    private String buildingName;
 
     /**
      * 建筑面积

@@ -24,11 +24,11 @@ public class ProjConfigController {
     @Autowired
     private ProjConfigService projConfigServiceImpl;
 
-    @ApiOperation(value="获取全部项目表信息", notes="获取全部项目表信息")
-    @GetMapping("/queryAllInfo")
-    public Result queryAllInfo(){
-        return Result.result(projConfigServiceImpl.queryAllInfo());
-    }
+//    @ApiOperation(value="获取全部项目表信息", notes="获取全部项目表信息")
+//    @GetMapping("/queryAllInfo")
+//    public Result queryAllInfo(){
+//        return Result.result(projConfigServiceImpl.queryAllInfo());
+//    }
 
     @ApiOperation(value="获取项目简要信息", notes="获取项目简要信息")
     @GetMapping("/queryBriefInfo")

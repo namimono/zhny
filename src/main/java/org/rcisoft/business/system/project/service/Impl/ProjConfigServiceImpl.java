@@ -13,6 +13,8 @@ import org.rcisoft.business.system.project.entity.PositionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -59,6 +61,14 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     public ServiceResult addProjConfig(BusProject busProject){
         String id = UuidUtil.create32();
         busProject.setId(id);
+        SimpleDateFormat fdate = new SimpleDateFormat("yyyy-MM-dd");
+        Date nowTime = null;
+        try {
+            nowTime = fdate.parse(fdate.format(new Date()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        busProject.setCreateTime(nowTime);
         int i = busProjectDao.insertSelective(busProject);
         return new ServiceResult(i, id);
     }
