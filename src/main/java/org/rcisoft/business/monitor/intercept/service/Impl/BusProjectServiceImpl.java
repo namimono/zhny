@@ -141,4 +141,14 @@ public class BusProjectServiceImpl implements BusProjectService {
         }
         return map;
     }
+
+    @Override
+    public List<EnergyParam> queryEnergyParam(String deviceId) {
+        return busProjectParamDao.queryEnergyParam(deviceId);
+    }
+
+    @Override
+    public List<DeviceFixValue> queryDeviceFixValue(String deviceId) {
+        return busProjectParamDao.queryDeviceFixParam(deviceId);
+    }
 }
