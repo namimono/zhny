@@ -61,7 +61,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     public ServiceResult addProjConfig(BusProject busProject){
         String id = UuidUtil.create32();
         busProject.setId(id);
-        SimpleDateFormat fdate = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat fdate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date nowTime = null;
         try {
             nowTime = fdate.parse(fdate.format(new Date()));

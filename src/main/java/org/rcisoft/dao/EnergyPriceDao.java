@@ -21,7 +21,7 @@ public interface EnergyPriceDao extends Mapper<EnergyPrice> {
      * @param overviewParam projectId：项目id；hour：当前时刻
      * @return
      */
-    @Select("<script>select price, energy_type_id from energy_price where project_id = #{projectId} and per_hour = #{hour} </script>")
+    @Select("<script>select price,energy_type_id from energy_price where project_id = #{projectId} and per_hour = #{hour} </script>")
     @ResultType(EnergyPrice.class)
     List<EnergyPrice> queryPricePerHour(OverviewParam overviewParam);
 
