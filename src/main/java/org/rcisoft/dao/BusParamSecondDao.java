@@ -37,4 +37,11 @@ public interface BusParamSecondDao extends Mapper<BusParamSecond> {
             "source_id = #{sourceId};")
     @ResultType(BusParamSecond.class)
     List<BusParamSecond> queryParamSecondByProId(@Param("projectId") String projectId,@Param("sourceId") String sourceId);
+
+    /**
+     * 根据一级参数IDs查询二级参数信息
+     */
+    @Select("SELECT * FROM bus_param_second WHERE param_first_id in (${paramFirstIds})")
+    @ResultType(BusParamSecond.class)
+    List<BusParamSecond> queryParamSecondByIds(@Param("paramFirstIds") String paramFirstIds);
 }
