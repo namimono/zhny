@@ -27,7 +27,7 @@ public class EmissionController {
     }
 
     @ApiOperation(value="碳排放强度统计", notes="日排放返回24小时，月排放返回当月总日期")
-    @GetMapping("/queryEmission/{projectId}")
+    @GetMapping("/queryEmissionStatistics/{projectId}")
     public Result queryEmissionStatistics(@RequestBody EmissionParam emissionParam) {
         return Result.result(emissionServiceImpl.queryEmissionStatistics(emissionParam));
     }
