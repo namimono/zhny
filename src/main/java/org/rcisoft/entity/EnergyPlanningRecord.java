@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -107,6 +104,19 @@ public class EnergyPlanningRecord {
    	@Column(name = "end_time" )
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	private Date endTime;
+
+
+	/**
+	 * 电能耗（功率）
+	 */
+	@Column(name = "energy_elec" )
+	private BigDecimal energyElec;
+
+	/**
+	 * 气能耗（用气速率）
+	 */
+	@Column(name = "energy_gas" )
+	private BigDecimal energyGas;
 
     /**
      * 每小时电费用
