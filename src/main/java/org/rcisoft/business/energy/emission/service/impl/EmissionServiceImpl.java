@@ -125,24 +125,30 @@ public class EmissionServiceImpl implements EmissionService {
 
     /**
      * 计算百分比
+     * 如果有无法对比的情况，返回空字符串
      * @param now 当前值
      * @param compare 对比值
      * @return
      */
     private String percent(BigDecimal now, BigDecimal compare) {
-        if (compare.compareTo(new BigDecimal(0)) != 0) {
-            if (now.compareTo(new BigDecimal(0)) != 0) {
-                return now.subtract(compare).multiply(new BigDecimal(100)).divide(compare, 2, BigDecimal.ROUND_HALF_UP).toString() + "%";
-            } else {
-                return "-100%";
-            }
+        if (compare.compareTo(new BigDecimal(0)) != 0 && now.compareTo(new BigDecimal(0)) != 0) {
+            return now.subtract(compare).multiply(new BigDecimal(100)).divide(compare, 2, BigDecimal.ROUND_HALF_UP).toString() + "%";
         } else {
-            if (now.compareTo(new BigDecimal(0)) != 0) {
-                return "100%";
-            } else {
-                return "0%";
-            }
+            return "";
         }
+//        if (compare.compareTo(new BigDecimal(0)) != 0) {
+//            if (now.compareTo(new BigDecimal(0)) != 0) {
+//                return now.subtract(compare).multiply(new BigDecimal(100)).divide(compare, 2, BigDecimal.ROUND_HALF_UP).toString() + "%";
+//            } else {
+//                return "-100%";
+//            }
+//        } else {
+//            if (now.compareTo(new BigDecimal(0)) != 0) {
+//                return "100%";
+//            } else {
+//                return "0%";
+//            }
+//        }
     }
 
 }

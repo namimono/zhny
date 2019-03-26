@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Created by JiChao on 2019/3/25.
- * 能耗管理--用能比较
+ * 能耗管理--碳排放量
  */
 public interface EmissionService {
 
