@@ -31,8 +31,9 @@ public interface BusProjectDao extends Mapper<BusProject> {
     /**
      * 查询项目简要信息
      */
-    @Select("SELECT a.id,a.name,a.building_local,a.building_area,b.username,c.`name` AS 'buildTypeName' \n" +
-            "FROM bus_project a,sys_user b,bus_building c \n" +
+    @Select("SELECT a.id as 'proId',a.name as 'proName',a.building_local as 'buildingLocal',\n" +
+            "a.building_area as 'buildingArea',b.username as 'userName',c.name AS 'buildTypeName'\n" +
+            "FROM bus_project a,sys_user b,bus_building c\n" +
             "WHERE a.user_id = b.id AND a.building_id = c.id;")
     @ResultType(ProjectBriefInfo.class)
     List<ProjectBriefInfo> queryBriefInfo();

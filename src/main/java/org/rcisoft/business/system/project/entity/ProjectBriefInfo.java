@@ -20,12 +20,12 @@ public class ProjectBriefInfo {
     /**
      * 项目主键
      */
-    private String projId;
+    private String proId;
 
     /**
      * 项目名称
      */
-    private String projName;
+    private String proName;
 
     /**
      * 建筑地址
@@ -33,18 +33,18 @@ public class ProjectBriefInfo {
     private String buildingLocal;
 
     /**
-     * 建筑类型
-     */
-    private String buildTypeName;
-
-    /**
      * 建筑面积
      */
     private String buildingArea;
 
     /**
-     * 所属业主
+     * 建筑类型
      */
-    private String userId;
+    private String buildTypeName;
+
+    /**
+     * 所属业主名称
+     */
+    private String userName;
 
 }
