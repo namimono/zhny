@@ -51,11 +51,15 @@ public class BusProjectController {
 
     @ApiOperation(value = "查询设备参数",notes = "查询设备参数")
     @GetMapping(value = "queryDeviceParam/{id}")
-    public Result queryDeviceParam(@PathVariable String id){return Result.result(1,busProjectService.queryDeviceParam(id));}
+    public Result queryDeviceParam(@PathVariable String id){
+        return Result.result(1,busProjectService.queryDeviceParam(id));
+    }
 
     @ApiOperation(value = "查询设备列表标题",notes = "查询设备列表标题")
     @GetMapping(value = "queryDeviceTitle")
-    public Result queryDeviceTitle(){return Result.result(1,busProjectService.queryDeviceTitle());}
+    public Result queryDeviceTitle(){
+        return Result.result(1,busProjectService.queryDeviceTitle());
+    }
 
     @ApiOperation(value = "获取设备具体信息",notes = "获取设备具体信息")
     @GetMapping(value = "queryDeviceInfo/{typeFirstId}")
@@ -69,4 +73,21 @@ public class BusProjectController {
         return Result.result(1,busProjectService.queryModelName());
     }
 
+    @ApiOperation(value = "查询echarts图数据",notes = "查询echarts图数据")
+    @GetMapping(value = "EnergyEchart/{titleId}")
+    public Result EnergyEchart(@PathVariable String titleId){
+        return Result.result(1,busProjectService.EnergyEchart(titleId));
+    }
+
+    @ApiOperation(value = "查询能源参数",notes = "查询能源参数")
+    @GetMapping(value = "EnergyParam/{deviceId}")
+    public Result EnergyParam(@PathVariable String deviceId){
+        return Result.result(1,busProjectService.queryEnergyParam(deviceId));
+    }
+
+    @ApiOperation(value = "查询设备固定参数",notes = "查询设备固定参数")
+    @GetMapping(value = "DeviceFixValue/{deviceId}")
+    public Result queryDeviceFixValue(@PathVariable String deviceId){
+        return Result.result(1,busProjectService.queryDeviceFixValue(deviceId));
+    }
 }

@@ -114,7 +114,12 @@ public interface ProjConfigService {
     /**
      *新增节能改造信息
      */
-    int addProjectSaving(BusProjectSaving busProjectSaving);
+    ServiceResult addProjectSaving(BusProjectSaving busProjectSaving);
+
+    /**
+     * 删除节能改造信息
+     */
+    int deleteProjectSaving(String savingId);
 
     /**
      * 修改节能改造信息

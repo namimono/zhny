@@ -7,14 +7,15 @@ server:
     max-http-post-size: 10240000
   max-http-header-size: 10240000
 
+
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
     platform: mysql
-    url: jdbc:mysql://127.0.0.1:3306/zhny?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+    url: jdbc:mysql://10.96.129.56:3308/zhny-2nd?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
     username: root
-    password: root
+    password: 123456
     druid:
       filter:
         wall:
@@ -63,6 +64,9 @@ spring:
     user:
       name: admin
       password: admin
+  http:
+    encoding:
+      charset: utf-8
 
 mybatis:
 #  mapper-locations: classpath:mapper/*.xml

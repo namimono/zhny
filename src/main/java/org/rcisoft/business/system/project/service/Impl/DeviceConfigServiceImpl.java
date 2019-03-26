@@ -10,10 +10,9 @@ import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Create by 土豆儿
@@ -43,6 +42,14 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     @Override
     public int addDeviceConfigInfo(BusDevice busDevice){
         busDevice.setId(UuidUtil.create32());
+        SimpleDateFormat fdate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date nowTime = null;
+        try {
+            nowTime = fdate.parse(fdate.format(new Date()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        busDevice.setCreateTime(nowTime);
         return busDeviceDao.insertSelective(busDevice);
     }
 

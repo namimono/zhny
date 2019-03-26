@@ -45,6 +45,12 @@ public class BusProject {
 	private String buildingId;
 
 	/**
+	 * 建筑名称
+	 */
+	@Column(name = "building_name" )
+	private String buildingName;
+
+	/**
 	 * 建筑面积
 	 */
    	@Column(name = "building_area" )

@@ -13,10 +13,10 @@ import java.util.List;
 
 public interface AdaptiveService {
 
-//    /**
-//     * 气候自适应模块
-//     */
-//    ClimateAdaptation climateAdaptation(String proId, String year, String month, String day);
+    /**
+     * 气候自适应模块
+     */
+    ClimateAdaptation climateAdaptation(String projectId,String beginTime,String endTime);
 //
 //    /**
 //     * 建筑负荷自适应模块

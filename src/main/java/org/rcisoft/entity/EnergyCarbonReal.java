@@ -8,7 +8,9 @@ import javax.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -32,6 +34,12 @@ public class EnergyCarbonReal {
 	private String projectId;
 
 	/**
+	 * 创建时间
+	 */
+	@Column(name = "create_time" )
+	private Date createTime;
+
+	/**
 	 * 年
 	 */
    	@Column(name = "time_year" )
@@ -48,6 +56,12 @@ public class EnergyCarbonReal {
 	 */
    	@Column(name = "time_day" )
 	private Integer timeDay;
+
+	/**
+	 * 小时
+	 */
+	@Column(name = "time_hour" )
+	private Integer timeHour;
 
 	/**
 	 * 碳排放量

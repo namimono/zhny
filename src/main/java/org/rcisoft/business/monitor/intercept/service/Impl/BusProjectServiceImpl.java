@@ -1,11 +1,12 @@
 package org.rcisoft.business.monitor.intercept.service.Impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.rcisoft.base.redis.RedisService;
 import org.rcisoft.business.monitor.intercept.dao.BusProjectParamDao;
 import org.rcisoft.business.monitor.intercept.dao.DeviceParamDao;
-import org.rcisoft.business.monitor.intercept.entity.BusProjectParam;
-import org.rcisoft.business.monitor.intercept.entity.DeviceInfo;
-import org.rcisoft.business.monitor.intercept.entity.DeviceParam;
+import org.rcisoft.business.monitor.intercept.entity.*;
 import org.rcisoft.business.monitor.intercept.service.BusProjectService;
 import org.rcisoft.dao.BusProjectDao;
 import org.rcisoft.entity.BusParamSecond;
@@ -14,6 +15,7 @@ import org.rcisoft.entity.SysCity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -118,5 +120,35 @@ public class BusProjectServiceImpl implements BusProjectService {
     @Override
     public List<String> queryModelName() {
         return busProjectParamDao.queryModelName();
+    }
+
+    @Override
+    public Map<String,Object> EnergyEchart(String titleId) {
+        Map<String,Object> map = new HashMap<>();
+        List<TimeJson> list_data = deviceParamDao.queryData();
+        List<EnergyEcharts> list = deviceParamDao.queryEnergyEchart(titleId);
+        for (int i = 0; i < list.size(); i++){
+            int resultData[] = new int[24];
+            for(int j = 0; j < list_data.size(); j++){
+                JSONObject jsonObject = JSON.parseObject(list_data.get(j).getJson());
+                JSONObject jsonData = jsonObject.getJSONObject(list.get(i).getCodingFirst());
+                JSONObject jData = jsonData.getJSONObject("REG_VAL");
+                SimpleDateFormat formatter = new SimpleDateFormat( "HH");
+                int time = Integer.valueOf(formatter.format(list_data.get(j).getCreateTime()));
+                resultData[time] = jData.getInteger(list.get(i).getCodingSecond());
+                map.put(list.get(i).getNameSecond(),resultData);
+            }
+        }
+        return map;
+    }
+
+    @Override
+    public List<EnergyParam> queryEnergyParam(String deviceId) {
+        return busProjectParamDao.queryEnergyParam(deviceId);
+    }
+
+    @Override
+    public List<DeviceFixValue> queryDeviceFixValue(String deviceId) {
+        return busProjectParamDao.queryDeviceFixParam(deviceId);
     }
 }

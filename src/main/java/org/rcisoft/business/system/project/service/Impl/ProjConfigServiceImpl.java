@@ -13,6 +13,8 @@ import org.rcisoft.business.system.project.entity.PositionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -59,8 +61,35 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     public ServiceResult addProjConfig(BusProject busProject){
         String id = UuidUtil.create32();
         busProject.setId(id);
+        SimpleDateFormat fdate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date nowTime = null;
+        try {
+            nowTime = fdate.parse(fdate.format(new Date()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        busProject.setCreateTime(nowTime);
         int i = busProjectDao.insertSelective(busProject);
         return new ServiceResult(i, id);
+    }
+
+    /**
+     *新增节能改造信息
+     */
+    @Override
+    public ServiceResult addProjectSaving(BusProjectSaving busProjectSaving){
+        String id = UuidUtil.create32();
+        busProjectSaving.setId(id);
+        int i = busProjectSavingDao.insertSelective(busProjectSaving);
+        return new ServiceResult(i, id);
+    }
+
+    /**
+     * 删除节能改造信息
+     */
+    @Override
+    public int deleteProjectSaving(String savingId){
+        return busProjectSavingDao.deleteByPrimaryKey(savingId);
     }
 
     /**
@@ -232,15 +261,6 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     @Override
     public int deleteBuildZone(BusBuildingZone busBuildingZone){
         return busBuildingZoneDao.deleteByPrimaryKey(busBuildingZone);
-    }
-
-    /**
-     *新增节能改造信息
-     */
-    @Override
-    public int addProjectSaving(BusProjectSaving busProjectSaving){
-        busProjectSaving.setId(UuidUtil.create32());
-        return busProjectSavingDao.insertSelective(busProjectSaving);
     }
 
     /**

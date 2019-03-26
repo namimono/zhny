@@ -24,7 +24,7 @@ public interface ProConfigDao extends Mapper<ProjectConfigInfo> {
      */
     @Select("SELECT \n" +
             "a.id,a.name AS 'projectName',a.phones,a.building_id AS 'buildingId',\n" +
-            "a.building_area AS 'buildingArea',a.building_local AS 'buildingLocal',\n" +
+            "a.building_area AS 'buildingArea',a.building_name AS 'buildingName',a.building_local AS 'buildingLocal',\n" +
             "a.building_coordinate AS 'buildingCoordinate',a.building_zone_id AS 'buildingZoneId',\n" +
             "a.user_id AS 'userId',a.province_id AS 'provinceId',a.city_id AS 'cityId',a.code,\n" +
             "a.building_age AS 'buildingAge',a.create_time AS 'createTime',a.equipment_age AS 'equipmentAge',\n" +

@@ -16,7 +16,6 @@ import java.util.Date;
 @AllArgsConstructor
 public class BusProjectParam {
 
-
 	/**
 	 * 一级参数名称
 	 */

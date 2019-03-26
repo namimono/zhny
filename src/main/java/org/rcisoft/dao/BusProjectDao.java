@@ -1,5 +1,6 @@
 package org.rcisoft.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.management.evaluateproj.entity.ProjectAssessment;
@@ -69,5 +70,9 @@ public interface BusProjectDao extends Mapper<BusProject> {
             "where bps.param_first_id = bpf.id and bps.project_id = #{projectId} </script>")
     List<BusProjectParam> queryParam(String projectId);
 
-
+    /**
+     * 查询城市Code
+     */
+    @Select("select code from bus_project where id = #{projectId}")
+    String queryCityCode(@Param("projectId") String projectId);
 }
