@@ -33,10 +33,34 @@ public class BasicDataController {
         return Result.result(basicDataServiceImpl.addPerHourPrice(list),"新增水电气24小时单价信息成功","新增水电气24小时单价信息失败");
     }
 
+    @ApiOperation(value="修改水电气24小时单价信息", notes="修改水电气24小时单价信息")
+    @PutMapping("/updetePerHourPrice")
+    public Result updetePerHourPrice(@RequestBody List<EnergyPrice> list){
+        return Result.result(basicDataServiceImpl.updatePerHourPrice(list),"修改水电气24小时单价信息成功","修改水电气24小时单价信息失败");
+    }
+
+    @ApiOperation(value="查询水电气24小时单价信息", notes="查询水电气24小时单价信息")
+    @GetMapping("/queryPerHourPrice/{proId}")
+    public Result queryPerHourPrice(@PathVariable String proId){
+        return Result.result(basicDataServiceImpl.queryPerHourPrice(proId));
+    }
+
     @ApiOperation(value="新增能源标准", notes="新增能源标准")
     @PostMapping("/addEnergyStandard")
     public Result addEnergyStandard(@RequestBody List<EnergyStandard> list){
         return Result.result(basicDataServiceImpl.addEnergyStandard(list),"新增能源标准成功","新增能源标准失败");
+    }
+
+    @ApiOperation(value="修改能源标准", notes="修改能源标准")
+    @PutMapping("/updateEnergyStandard")
+    public Result updateEnergyStandard(@RequestBody List<EnergyStandard> list){
+        return Result.result(basicDataServiceImpl.updateEnergyStandard(list),"修改能源标准成功","修改能源标准失败");
+    }
+
+    @ApiOperation(value="查询水电气24小时单价信息", notes="查询水电气24小时单价信息")
+    @GetMapping("/queryEnergyStandard/{proId}")
+    public Result queryEnergyStandard(@PathVariable String proId){
+        return Result.result(basicDataServiceImpl.queryEnergyStandard(proId));
     }
 
     @ApiOperation(value="上传基准碳排放量模板", notes="上传基准碳排放量模板")

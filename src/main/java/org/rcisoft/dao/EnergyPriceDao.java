@@ -2,6 +2,7 @@ package org.rcisoft.dao;
 
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
+import org.rcisoft.base.util.SpecialBatchMapper;
 import org.rcisoft.business.energy.overview.entity.OverviewParam;
 import org.rcisoft.entity.EnergyPrice;
 import org.springframework.stereotype.Repository;
@@ -14,7 +15,7 @@ import java.util.List;
  * Time：2019/3/6 12:22
  **/
 @Repository
-public interface EnergyPriceDao extends Mapper<EnergyPrice> {
+public interface EnergyPriceDao extends Mapper<EnergyPrice>, SpecialBatchMapper<EnergyPrice> {
 
     /**
      * 根据项目id、时刻查询每小时的价格

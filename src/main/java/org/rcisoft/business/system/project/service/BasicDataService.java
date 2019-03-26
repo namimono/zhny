@@ -23,9 +23,29 @@ public interface BasicDataService {
     int addPerHourPrice(List<EnergyPrice> list);
 
     /**
+     *修改水电气24小时单价信息
+     */
+    int updatePerHourPrice(List<EnergyPrice> list);
+
+    /**
+     *查询水电气24小时单价信息
+     */
+    List<EnergyPrice> queryPerHourPrice(String proId);
+
+    /**
      * 新增能源标准
      */
     int addEnergyStandard(List<EnergyStandard> list);
+
+    /**
+     * 修改能源标准
+     */
+    int updateEnergyStandard(List<EnergyStandard> list);
+
+    /**
+     * 查询能源标准
+     */
+    List<EnergyStandard> queryEnergyStandard(String proId);
 
     /**
      * 上传基准碳排放量模板

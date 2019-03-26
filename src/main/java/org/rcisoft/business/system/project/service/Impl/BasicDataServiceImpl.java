@@ -10,6 +10,7 @@ import org.rcisoft.business.system.project.service.BasicDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,24 +32,36 @@ public class BasicDataServiceImpl implements BasicDataService {
     private EnergyPriceDao energyPriceDao;
 
     /**
-     *获取水电气24小时单价信息
+     *新增水电气24小时单价信息
      */
     @Override
     public int addPerHourPrice(List<EnergyPrice> list){
-//        Map<String,List<String>> mapList = new HashMap<>();
-//        List<Map<String,String>> listMap = new ArrayList<>();
-//        String[] array = {"0","0","0","0","0","0","0","0","0","0","0","0",
-//                "0","0","0","0","0","0","0","0","0","0","0","0"};
-//        List<String> waterList = new ArrayList<>(Arrays.asList(array));
-//        listMap = basicDataDao.queryWaterPerHourPrice(energyPrice);
-//        for (Map<String, String> map : listMap){}
+        list.forEach(energyPrice -> energyPrice.setId(UuidUtil.create32()));
+        return energyPriceDao.insertListUseAllCols(list);
+    }
+
+    /**
+     *修改水电气24小时单价信息
+     */
+    @Override
+    public int updatePerHourPrice(List<EnergyPrice> list){
         int sum = 0;
         for(EnergyPrice energyPrice : list){
-            energyPrice.setId(UuidUtil.create32());
-            energyPriceDao.insert(energyPrice);
+            energyPriceDao.updateByPrimaryKeySelective(energyPrice);
             sum++;
         }
         return sum;
+    }
+
+    /**
+     *查询水电气24小时单价信息
+     */
+    @Override
+    public List<EnergyPrice> queryPerHourPrice(String proId){
+        Example example = new Example(EnergyPrice.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",proId);
+        return energyPriceDao.selectByExample(example);
     }
 
     /**
@@ -56,13 +69,32 @@ public class BasicDataServiceImpl implements BasicDataService {
      */
     @Override
     public int addEnergyStandard(List<EnergyStandard> list){
+        list.forEach(energyStandard -> energyStandard.setId(UuidUtil.create32()));
+        return energyStandardDao.insertListUseAllCols(list);
+    }
+
+    /**
+     * 修改能源标准
+     */
+    @Override
+    public int updateEnergyStandard(List<EnergyStandard> list){
         int sum = 0;
         for(EnergyStandard energyStandard : list){
-            energyStandard.setId(UuidUtil.create32());
-            energyStandardDao.insert(energyStandard);
+            energyStandardDao.updateByPrimaryKeySelective(energyStandard);
             sum++;
         }
         return sum;
+    }
+
+    /**
+     * 查询能源标准
+     */
+    @Override
+    public List<EnergyStandard> queryEnergyStandard(String proId){
+        Example example = new Example(EnergyStandard.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",proId);
+        return energyStandardDao.selectByExample(example);
     }
 
     /**
