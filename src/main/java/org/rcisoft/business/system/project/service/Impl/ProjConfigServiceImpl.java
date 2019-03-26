@@ -85,6 +85,14 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     }
 
     /**
+     * 删除节能改造信息
+     */
+    @Override
+    public int deleteProjectSaving(String savingId){
+        return busProjectSavingDao.deleteByPrimaryKey(savingId);
+    }
+
+    /**
      * 修改项目配置信息
      */
     @Override
