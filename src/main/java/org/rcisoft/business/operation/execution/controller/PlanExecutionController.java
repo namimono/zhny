@@ -28,4 +28,17 @@ public class PlanExecutionController {
         return Result.result(planExecutionService.listDevicePlanningInfoAndStatus(conditionDto));
     }
 
+    @ApiOperation(value = "根据月份查询的选定月份的每天有几条计划编制信息", notes = "参数：项目Id与月份时间（yyyy-MM）")
+    @PostMapping("/listMonthPlanNum")
+    public Result listMonthPlanNum(@RequestBody ConditionDto conditionDto) {
+        return Result.result(planExecutionService.listMonthPlanNum(conditionDto));
+    }
+
+
+    @ApiOperation(value = "点击左侧列表某一个时间，查询当天的所有花费信息", notes = "参数：项目Id与时间（yyyy-MM-dd）")
+    @PostMapping("/getMoneySum")
+    public Result getMoneySum(@RequestBody ConditionDto conditionDto) {
+        return Result.result(planExecutionService.getMoneySum(conditionDto));
+    }
+
 }

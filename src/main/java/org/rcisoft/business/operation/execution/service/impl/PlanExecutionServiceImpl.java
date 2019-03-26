@@ -8,6 +8,8 @@ import org.rcisoft.business.operation.establishment.entity.DevicePlanningFromDb;
 import org.rcisoft.business.operation.establishment.entity.DeviceRecordInformation;
 import org.rcisoft.business.operation.establishment.entity.PlanningDeviceInformation;
 import org.rcisoft.business.operation.execution.dao.PlanExecutionRepository;
+import org.rcisoft.business.operation.execution.entity.DateAndNum;
+import org.rcisoft.business.operation.execution.entity.MoneySum;
 import org.rcisoft.business.operation.execution.service.PlanExecutionService;
 import org.rcisoft.dao.*;
 import org.rcisoft.entity.*;
@@ -177,6 +179,16 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
         }
 
         return resultPlanningDeviceInformationList;
+    }
+
+    @Override
+    public List<DateAndNum> listMonthPlanNum(ConditionDto conditionDto) {
+        return planExecutionRepository.listMonthPlanNum(conditionDto);
+    }
+
+    @Override
+    public MoneySum getMoneySum(ConditionDto conditionDto) {
+        return planExecutionRepository.getMoneySum(conditionDto);
     }
 
 
