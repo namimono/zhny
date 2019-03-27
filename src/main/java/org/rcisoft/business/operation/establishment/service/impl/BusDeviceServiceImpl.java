@@ -2,7 +2,6 @@ package org.rcisoft.business.operation.establishment.service.impl;
 
 import org.rcisoft.business.operation.establishment.service.BusDeviceService;
 import org.rcisoft.dao.BusDeviceDao;
-import org.rcisoft.entity.BusDevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

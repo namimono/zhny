@@ -4,10 +4,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.aop.PageAop;
 import org.rcisoft.base.result.Result;
+import org.rcisoft.business.system.project.service.DataConfigService;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamSecond;
-import org.rcisoft.business.system.project.service.DataConfigService;
-import org.rcisoft.entity.EnergyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -2,7 +2,6 @@ package org.rcisoft.dao;
 
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
-import org.rcisoft.entity.BusParamFixed;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 

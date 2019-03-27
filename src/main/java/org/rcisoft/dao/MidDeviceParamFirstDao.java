@@ -3,7 +3,6 @@ package org.rcisoft.dao;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.equipment.report.entity.MidAndParamFirst;
-import org.rcisoft.entity.MidDeviceParamFirst;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 

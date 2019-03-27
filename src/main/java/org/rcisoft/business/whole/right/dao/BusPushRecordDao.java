@@ -2,7 +2,6 @@ package org.rcisoft.business.whole.right.dao;
 
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
-import org.rcisoft.entity.BusPushRecord;
 import tk.mybatis.mapper.common.Mapper;
 
 /**

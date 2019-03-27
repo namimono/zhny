@@ -1,7 +1,6 @@
 package org.rcisoft.business.test.hello.controller;
 
 import org.rcisoft.base.result.Result;
-import org.rcisoft.entity.BusProject;
 import org.rcisoft.business.test.hello.service.HelloService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -13,8 +13,8 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table ( name ="mid_indoor_param_second" )
-public class MidIndoorParamSecond {
+@Table ( name ="bus_indoor_param" )
+public class BusIndoorParam {
 
 
 	/**
@@ -25,27 +25,33 @@ public class MidIndoorParamSecond {
 	private String id;
 
 	/**
-	 * 项目id
-	 */
-	@Column(name = "project_id" )
-	private String projectId;
-
-	/**
 	 * 室内环境id
 	 */
    	@Column(name = "indoor_id" )
 	private String indoorId;
 
 	/**
-	 * 二级参数id
+	 * 一级参数编码
 	 */
-   	@Column(name = "param_second_id" )
-	private String paramSecondId;
+   	@Column(name = "coding_first" )
+	private String codingFirst;
 
 	/**
-	 * 室内环境id相同时，排序字段
+	 * 二级参数编码
 	 */
-   	@Column(name = "sequence" )
-	private Integer sequence;
+   	@Column(name = "coding_second" )
+	private String codingSecond;
+
+	/**
+	 * 类型：1：温度，2：湿度，3：PM2.5，4：CO2
+	 */
+   	@Column(name = "type" )
+	private Integer type;
+
+	/**
+	 * 1：室内，2：室外
+	 */
+   	@Column(name = "side" )
+	private Integer side;
 
 }

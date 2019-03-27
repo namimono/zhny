@@ -48,7 +48,7 @@ public class BusTemperature {
 	 * 湿度
 	 */
    	@Column(name = "humidity" )
-	private String humidity;
+	private Integer humidity;
 
 	/**
 	 * 风向风速

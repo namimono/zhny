@@ -31,6 +31,12 @@ public class BusTitle {
 	private String name;
 
 	/**
+	 * 项目id
+	 */
+   	@Column(name = "project_id" )
+	private String projectId;
+
+	/**
 	 * 子系统id
 	 */
    	@Column(name = "system_id" )

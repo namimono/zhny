@@ -64,7 +64,7 @@ public interface FormulaOperationService {
     /**
      * 根据项目ID和参数来源查询二级参数信息
      */
-    List<BusParamSecond> queryParamSecondByProId(String projectId,String sourceId);
+    List<BusParamSecond> queryParamSecondByProId(String projectId, String sourceId);
 
     /**
      * 导出公式数据

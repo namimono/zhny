@@ -28,7 +28,7 @@ public class BusMaintenance {
 	/**
 	 * 项目id
 	 */
-	@Column(name = "project_id" )
+   	@Column(name = "project_id" )
 	private String projectId;
 
 	/**

@@ -3,7 +3,6 @@ package org.rcisoft.business.operation.establishment.service.impl;
 import org.rcisoft.business.operation.establishment.entity.ConditionDto;
 import org.rcisoft.business.operation.establishment.service.EnergyPlanningCostService;
 import org.rcisoft.dao.EnergyPlanningCostDao;
-import org.rcisoft.entity.EnergyPlanningCost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

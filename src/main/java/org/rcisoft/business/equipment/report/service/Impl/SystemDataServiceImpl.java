@@ -3,7 +3,6 @@ package org.rcisoft.business.equipment.report.service.Impl;
 import org.rcisoft.business.equipment.report.dao.SystemDataDao;
 import org.rcisoft.business.equipment.report.service.SystemDataService;
 import org.rcisoft.dao.BusParamSecondDao;
-import org.rcisoft.entity.BusParamSecond;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

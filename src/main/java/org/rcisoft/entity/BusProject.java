@@ -1,15 +1,15 @@
 package org.rcisoft.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import java.math.BigDecimal;
+import javax.persistence.Id;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.util.Date;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -47,7 +47,7 @@ public class BusProject {
 	/**
 	 * 建筑名称
 	 */
-	@Column(name = "building_name" )
+   	@Column(name = "building_name" )
 	private String buildingName;
 
 	/**
@@ -67,6 +67,12 @@ public class BusProject {
 	 */
    	@Column(name = "building_coordinate" )
 	private String buildingCoordinate;
+
+	/**
+	 * 建筑年代
+	 */
+   	@Column(name = "building_age" )
+	private Date buildingAge;
 
 	/**
 	 * 建筑分区id
@@ -97,12 +103,6 @@ public class BusProject {
 	 */
    	@Column(name = "code" )
 	private String code;
-
-	/**
-	 * 建筑年代
-	 */
-	@Column(name = "building_age" )
-	private Date buildingAge;
 
 	/**
 	 * 项目创建时间

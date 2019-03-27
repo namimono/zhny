@@ -9,11 +9,8 @@ import org.rcisoft.business.equipment.report.service.DeviceReportService;
 import org.rcisoft.dao.BusParamSecondDao;
 import org.rcisoft.dao.MidDeviceParamFirstDao;
 import org.rcisoft.dao.SysDataDao;
-import org.rcisoft.entity.BusParamSecond;
-import org.rcisoft.entity.SysData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

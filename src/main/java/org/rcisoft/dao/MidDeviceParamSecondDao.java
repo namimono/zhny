@@ -1,6 +1,5 @@
 package org.rcisoft.dao;
 
-import org.rcisoft.entity.MidDeviceParamSecond;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 

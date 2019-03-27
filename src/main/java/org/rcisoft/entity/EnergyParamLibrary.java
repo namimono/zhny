@@ -1,13 +1,13 @@
 package org.rcisoft.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Id;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
 
 @Data
@@ -61,15 +61,14 @@ public class EnergyParamLibrary {
    	@Column(name = "param_value2" )
 	private BigDecimal paramValue2;
 
-
 	/**
-	 * 电能耗（功率）
+	 * 每小时电能耗（功率）
 	 */
    	@Column(name = "energy_elec" )
 	private BigDecimal energyElec;
 
 	/**
-	 * 气能耗（用气速率）
+	 * 每小时气能耗（用气速率）
 	 */
    	@Column(name = "energy_gas" )
 	private BigDecimal energyGas;
@@ -77,13 +76,13 @@ public class EnergyParamLibrary {
 	/**
 	 * 每小时电费用
 	 */
-	@Column(name = "money_elec" )
+   	@Column(name = "money_elec" )
 	private BigDecimal moneyElec;
 
 	/**
 	 * 每小时气费用
 	 */
-	@Column(name = "money_gas" )
+   	@Column(name = "money_gas" )
 	private BigDecimal moneyGas;
 
 }

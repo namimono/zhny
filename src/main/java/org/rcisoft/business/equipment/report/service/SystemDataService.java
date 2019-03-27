@@ -1,7 +1,5 @@
 package org.rcisoft.business.equipment.report.service;
 
-import org.rcisoft.entity.BusParamSecond;
-
 import java.util.List;
 
 /**

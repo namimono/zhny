@@ -1,10 +1,5 @@
 package org.rcisoft.business.whole.head.service;
 
-import org.rcisoft.entity.BusTemperature;
-import org.rcisoft.entity.SysCity;
-
-import java.util.Map;
-
 /**
  * @Author Minghui Xu
  * @Description:

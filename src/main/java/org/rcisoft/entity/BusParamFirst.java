@@ -25,24 +25,6 @@ public class BusParamFirst {
 	private String id;
 
 	/**
-	 * 设备or计量表or传感器 参数名称
-	 */
-   	@Column(name = "name" )
-	private String name;
-
-	/**
-	 * 设备or计量表or传感器 参数编码
-	 */
-   	@Column(name = "coding" )
-	private String coding;
-
-	/**
-	 * 是否已经在使用（被关联），1：是，0：否（）
-	 */
-   	@Column(name = "status" )
-	private Integer status;
-
-	/**
 	 * 项目id
 	 */
    	@Column(name = "project_id" )
@@ -55,9 +37,27 @@ public class BusParamFirst {
 	private String systemId;
 
 	/**
+	 * 设备id
+	 */
+   	@Column(name = "device_id" )
+	private String deviceId;
+
+	/**
 	 * 参数来源id
 	 */
    	@Column(name = "source_id" )
 	private Integer sourceId;
+
+	/**
+	 * 设备or计量表or传感器 参数名称
+	 */
+   	@Column(name = "name" )
+	private String name;
+
+	/**
+	 * 设备or计量表or传感器 参数编码
+	 */
+   	@Column(name = "coding" )
+	private String coding;
 
 }

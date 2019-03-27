@@ -8,8 +8,6 @@ import org.rcisoft.dao.BusDeviceDao;
 import org.rcisoft.dao.EnergyPlanningCostDao;
 import org.rcisoft.dao.EnergyPlanningDeviceDao;
 import org.rcisoft.dao.EnergyPlanningRecordDao;
-import org.rcisoft.entity.BusDevice;
-import org.rcisoft.entity.EnergyPlanningCost;
 import org.rcisoft.entity.EnergyPlanningDevice;
 import org.rcisoft.entity.EnergyPlanningRecord;
 import org.springframework.beans.factory.annotation.Autowired;

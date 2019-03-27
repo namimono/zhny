@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.util.Date;
-import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -90,7 +89,7 @@ public class BusDevice {
 	 * 运行时长
 	 */
    	@Column(name = "runtime" )
-	private BigDecimal runtime;
+	private Integer runtime;
 
 	/**
 	 * 二维码存放路径

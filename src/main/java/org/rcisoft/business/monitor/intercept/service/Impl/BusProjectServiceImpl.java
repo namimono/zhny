@@ -1,7 +1,6 @@
 package org.rcisoft.business.monitor.intercept.service.Impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.rcisoft.base.redis.RedisService;
 import org.rcisoft.business.monitor.intercept.dao.BusProjectParamDao;
@@ -9,9 +8,6 @@ import org.rcisoft.business.monitor.intercept.dao.DeviceParamDao;
 import org.rcisoft.business.monitor.intercept.entity.*;
 import org.rcisoft.business.monitor.intercept.service.BusProjectService;
 import org.rcisoft.dao.BusProjectDao;
-import org.rcisoft.entity.BusParamSecond;
-import org.rcisoft.entity.BusProject;
-import org.rcisoft.entity.SysCity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

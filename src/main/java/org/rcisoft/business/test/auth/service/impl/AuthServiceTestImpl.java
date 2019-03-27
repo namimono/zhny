@@ -1,9 +1,9 @@
 package org.rcisoft.business.test.auth.service.impl;
 
-import org.rcisoft.business.test.auth.dao.SysUserDao2;
 import org.rcisoft.base.jwt.JwtTokenUtil;
-import org.rcisoft.entity.SysUser;
+import org.rcisoft.business.test.auth.dao.SysUserDao2;
 import org.rcisoft.business.test.auth.service.AuthServiceTest;
+import org.rcisoft.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;

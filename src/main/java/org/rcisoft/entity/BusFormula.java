@@ -17,6 +17,7 @@ import java.util.Date;
 @Table ( name ="bus_formula" )
 public class BusFormula {
 
+
 	/**
 	 * 主键
 	 */

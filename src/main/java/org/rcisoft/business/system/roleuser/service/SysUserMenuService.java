@@ -1,7 +1,6 @@
 package org.rcisoft.business.system.roleuser.service;
 
 import org.rcisoft.entity.SysMenu;
-import org.rcisoft.entity.SysUser;
 
 import java.util.List;
 

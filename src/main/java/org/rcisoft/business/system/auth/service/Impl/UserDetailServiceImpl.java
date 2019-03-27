@@ -1,7 +1,6 @@
 package org.rcisoft.business.system.auth.service.Impl;
 
 import org.rcisoft.dao.SysUserDao;
-import org.rcisoft.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;

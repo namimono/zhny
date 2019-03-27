@@ -5,14 +5,12 @@ import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.management.evaluateproj.entity.ProjectAssessment;
 import org.rcisoft.business.monitor.intercept.entity.BusProjectParam;
-import org.rcisoft.entity.BusParamSecond;
-import org.rcisoft.entity.BusProject;
 import org.rcisoft.business.system.project.entity.ProjectBriefInfo;
+import org.rcisoft.entity.BusProject;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Create by 土豆儿

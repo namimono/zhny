@@ -67,4 +67,10 @@ public class BusMalfunction {
    	@Column(name = "principal" )
 	private String principal;
 
+	/**
+	 * 故障状态，0：未处理，1：已处理
+	 */
+   	@Column(name = "status" )
+	private Integer status;
+
 }

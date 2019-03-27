@@ -8,9 +8,8 @@ import javax.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-
-import java.math.BigDecimal;
 import java.util.Date;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -36,7 +35,7 @@ public class EnergyCarbonReal {
 	/**
 	 * 创建时间
 	 */
-	@Column(name = "create_time" )
+   	@Column(name = "create_time" )
 	private Date createTime;
 
 	/**
@@ -60,7 +59,7 @@ public class EnergyCarbonReal {
 	/**
 	 * 小时
 	 */
-	@Column(name = "time_hour" )
+   	@Column(name = "time_hour" )
 	private Integer timeHour;
 
 	/**

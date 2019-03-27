@@ -1,23 +1,17 @@
 package org.rcisoft.business.operation.adaptive.service.Impl;
 
 import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.lang3.StringUtils;
-import org.rcisoft.business.operation.adaptive.entity.AdaptiveParam;
-import org.rcisoft.business.operation.adaptive.entity.BuildingAdaptation;
 import org.rcisoft.business.operation.adaptive.entity.ClimateAdaptation;
 import org.rcisoft.business.operation.adaptive.service.AdaptiveService;
 import org.rcisoft.dao.BusProjectDao;
 import org.rcisoft.dao.BusTemperatureDao;
 import org.rcisoft.dao.SysDataDao;
-import org.rcisoft.entity.BusTemperature;
-import org.rcisoft.entity.SysData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
 
 /**

@@ -1,6 +1,5 @@
 package org.rcisoft.base.jwt;
 
-import org.rcisoft.entity.SysUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -23,6 +24,36 @@ public class BusParamSecond {
    	@Column(name = "id" )
 	@Id
 	private String id;
+
+	/**
+	 * 一级参数表id
+	 */
+   	@Column(name = "param_first_id" )
+	private String paramFirstId;
+
+	/**
+	 * 项目id
+	 */
+   	@Column(name = "project_id" )
+	private String projectId;
+
+	/**
+	 * 子系统id
+	 */
+   	@Column(name = "system_id" )
+	private String systemId;
+
+	/**
+	 * 设备id
+	 */
+   	@Column(name = "device_id" )
+	private String deviceId;
+
+	/**
+	 * 参数来源id，也可作为排序字段
+	 */
+   	@Column(name = "source_id" )
+	private Integer sourceId;
 
 	/**
 	 * 参数名称
@@ -49,27 +80,63 @@ public class BusParamSecond {
 	private Integer sequence;
 
 	/**
-	 * 一级参数表id
+	 * 是否作故障判断，0：否，1：是
 	 */
-   	@Column(name = "param_first_id" )
-	private String paramFirstId;
+   	@Column(name = "fault_status" )
+	private Integer faultStatus;
 
 	/**
-	 * 项目id
+	 * 故障：最小值
 	 */
-   	@Column(name = "project_id" )
-	private String projectId;
+   	@Column(name = "min_value" )
+	private BigDecimal minValue;
 
 	/**
-	 * 子系统id
+	 * 故障：最大值
 	 */
-   	@Column(name = "system_id" )
-	private String systemId;
+   	@Column(name = "max_value" )
+	private BigDecimal maxValue;
 
 	/**
-	 * 参数来源id，也可作为排序字段
+	 * 故障内容
 	 */
-   	@Column(name = "source_id" )
-	private Integer sourceId;
+   	@Column(name = "content" )
+	private String content;
+
+	/**
+	 * 是否作能耗统计，0：否，1：是
+	 */
+   	@Column(name = "energy_status" )
+	private Integer energyStatus;
+
+	/**
+	 * 能耗分类id
+	 */
+   	@Column(name = "energy_type_id" )
+	private Integer energyTypeId;
+
+	/**
+	 * 当能耗分类id=2（电）时，0：电度，1：功率，默认是0
+	 */
+   	@Column(name = "elec_type" )
+	private Integer elecType;
+
+	/**
+	 * 是否作参数库待选参数，0：否，1：是
+	 */
+   	@Column(name = "param_status" )
+	private Integer paramStatus;
+
+	/**
+	 * 是否作为主参数，1：是，0：否
+	 */
+   	@Column(name = "compare_sign" )
+	private Integer compareSign;
+
+	/**
+	 * 1代表主参数1；2代表主参数2；3代表副参数；4代表副参数2。当只有2个或3个参数的时候，数值不变。
+	 */
+   	@Column(name = "first_sign" )
+	private Integer firstSign;
 
 }
