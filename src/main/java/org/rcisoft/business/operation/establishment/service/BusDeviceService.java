@@ -1,5 +1,7 @@
 package org.rcisoft.business.operation.establishment.service;
 
+import org.rcisoft.entity.BusDevice;
+
 import java.util.List;
 
 /**

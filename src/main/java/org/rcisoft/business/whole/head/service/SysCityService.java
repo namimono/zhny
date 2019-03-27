@@ -1,5 +1,7 @@
 package org.rcisoft.business.whole.head.service;
 
+import org.rcisoft.entity.BusTemperature;
+
 /**
  * @Author Minghui Xu
  * @Description:

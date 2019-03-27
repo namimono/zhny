@@ -5,6 +5,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.business.whole.head.service.SysCityService;
 import org.rcisoft.dao.SysCityDao;
+import org.rcisoft.entity.BusTemperature;
+import org.rcisoft.entity.SysCity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

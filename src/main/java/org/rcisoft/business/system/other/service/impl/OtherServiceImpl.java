@@ -6,6 +6,7 @@ import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.other.service.OtherService;
 import org.rcisoft.dao.SysImageDao;
+import org.rcisoft.entity.SysImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

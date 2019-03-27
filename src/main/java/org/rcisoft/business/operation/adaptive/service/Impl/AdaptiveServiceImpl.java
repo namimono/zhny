@@ -6,6 +6,8 @@ import org.rcisoft.business.operation.adaptive.service.AdaptiveService;
 import org.rcisoft.dao.BusProjectDao;
 import org.rcisoft.dao.BusTemperatureDao;
 import org.rcisoft.dao.SysDataDao;
+import org.rcisoft.entity.BusTemperature;
+import org.rcisoft.entity.SysData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
