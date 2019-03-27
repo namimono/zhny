@@ -1,13 +1,13 @@
 package org.rcisoft.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
 @Data
@@ -103,11 +103,6 @@ public class BusParamSecond {
    	@Column(name = "content" )
 	private String content;
 
-	/**
-	 * 是否作能耗统计，0：否，1：是
-	 */
-   	@Column(name = "energy_status" )
-	private Integer energyStatus;
 
 	/**
 	 * 能耗分类id
@@ -121,17 +116,6 @@ public class BusParamSecond {
    	@Column(name = "elec_type" )
 	private Integer elecType;
 
-	/**
-	 * 是否作参数库待选参数，0：否，1：是
-	 */
-   	@Column(name = "param_status" )
-	private Integer paramStatus;
-
-	/**
-	 * 是否作为主参数，1：是，0：否
-	 */
-   	@Column(name = "compare_sign" )
-	private Integer compareSign;
 
 	/**
 	 * 1代表主参数1；2代表主参数2；3代表副参数；4代表副参数2。当只有2个或3个参数的时候，数值不变。
