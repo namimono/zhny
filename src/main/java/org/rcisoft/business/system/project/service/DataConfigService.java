@@ -56,15 +56,15 @@ public interface DataConfigService {
      */
     PageInfo<ParamFirstAndSecond> queryDataParamForPage(String projectId);
 
-    /**
-     * 增加能源配置信息
-     */
-    int addEnergyConfig(EnergyConfig energyConfig);
-
-    /**
-     * 删除能源配置信息
-     */
-    int deleteEnergyConfig(EnergyConfig energyConfig);
+//    /**
+//     * 增加能源配置信息
+//     */
+//    int addEnergyConfig(EnergyConfig energyConfig);
+//
+//    /**
+//     * 删除能源配置信息
+//     */
+//    int deleteEnergyConfig(EnergyConfig energyConfig);
 
     /**
      * 删除一级参数信息

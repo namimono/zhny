@@ -32,12 +32,12 @@ public class OtherConfigServiceImpl implements OtherConfigService {
 
     @Autowired
     private BusParamFirstDao busParamFirstDao;
-    @Autowired
-    private EnergyConfigDao energyConfigDao;
-    @Autowired
-    private BusParamLibraryDao busParamLibraryDao;
-    @Autowired
-    private EnergyParamLibraryDao energyParamLibraryDao;
+//    @Autowired
+//    private EnergyConfigDao energyConfigDao;
+//    @Autowired
+//    private BusParamLibraryDao busParamLibraryDao;
+//    @Autowired
+//    private EnergyParamLibraryDao energyParamLibraryDao;
     @Autowired
     private OtherConfigDao otherConfigDao;
     @Autowired
@@ -53,107 +53,107 @@ public class OtherConfigServiceImpl implements OtherConfigService {
         return busParamFirstDao.queryParamFirstBySource(busParamFirst);
     }
 
-    /**
-     * 根据项目设备等ID查询能耗分类信息
-     */
-    @Override
-    public List<EnergyTypeConfig> queryTypeNameByConfig(EnergyTypeConfig energyTypeConfig){
-        return energyConfigDao.queryTypeNameByConfig(energyTypeConfig);
-    }
+//    /**
+//     * 根据项目设备等ID查询能耗分类信息
+//     */
+//    @Override
+//    public List<EnergyTypeConfig> queryTypeNameByConfig(EnergyTypeConfig energyTypeConfig){
+//        return energyConfigDao.queryTypeNameByConfig(energyTypeConfig);
+//    }
 
-    /**
-     * 增加能耗配置
-     */
-    @Override
-    public int addEnergyConfig(EnergyConfig energyConfig){
-        energyConfig.setId(UuidUtil.create32());
-        return energyConfigDao.insertSelective(energyConfig);
-    }
+//    /**
+//     * 增加能耗配置
+//     */
+//    @Override
+//    public int addEnergyConfig(EnergyConfig energyConfig){
+//        energyConfig.setId(UuidUtil.create32());
+//        return energyConfigDao.insertSelective(energyConfig);
+//    }
+//
+//    /**
+//     * 修改能耗配置信息
+//     */
+//    @Override
+//    public int updateEnergyConfig(EnergyConfig energyConfig){
+//        return energyConfigDao.updateByPrimaryKeySelective(energyConfig);
+//    }
+//
+//    /**
+//     * 根据设备ID、二级参数ID查询参数库信息
+//     */
+//    @Override
+//    public List<BusParamLibrary> queryParamLibrary(BusParamLibrary busParamLibrary){
+//        return busParamLibraryDao.queryParamLibrary(busParamLibrary);
+//    }
+//
+//    /**
+//     * 新增参数库信息
+//     */
+//    @Override
+//    public int addParamLibrary(List<BusParamLibrary> busParamLibraryList){
+//        int sum = 0;
+//        for (BusParamLibrary busParamLibrary : busParamLibraryList){
+//            if(busParamLibrary.getCompareSign() == 1 && busParamLibrary.getFirstSign() == 1){
+//                busParamLibrary.setSequence(1);
+//            }else {
+//                if (busParamLibrary.getCompareSign() == 1 && busParamLibrary.getFirstSign() == 0){
+//                    busParamLibrary.setSequence(2);
+//                }else {
+//                    if (busParamLibrary.getCompareSign() == 0 && busParamLibrary.getFirstSign() == 1){
+//                        busParamLibrary.setSequence(3);
+//                    }else {
+//                        if (busParamLibrary.getCompareSign() == 0 && busParamLibrary.getFirstSign() == 0) {
+//                            busParamLibrary.setSequence(4);
+//                        }
+//                    }
+//                }
+//            }
+//            busParamLibrary.setId(UuidUtil.create32());
+//            busParamLibraryDao.insertSelective(busParamLibrary);
+//        }
+//        return sum;
+//    }
+//
+//    /**
+//     * 修改参数库信息
+//     */
+//    @Override
+//    public int updateParamLibrary(BusParamLibrary busParamLibrary){
+//        return busParamLibraryDao.updateByPrimaryKeySelective(busParamLibrary);
+//    }
+//
+//    /**
+//     * 删除参数库信息
+//     */
+//    @Override
+//    public int deleteParamLibrary(BusParamLibrary busParamLibrary){
+//        return busParamLibraryDao.deleteByPrimaryKey(busParamLibrary);
+//    }
 
-    /**
-     * 修改能耗配置信息
-     */
-    @Override
-    public int updateEnergyConfig(EnergyConfig energyConfig){
-        return energyConfigDao.updateByPrimaryKeySelective(energyConfig);
-    }
-
-    /**
-     * 根据设备ID、二级参数ID查询参数库信息
-     */
-    @Override
-    public List<BusParamLibrary> queryParamLibrary(BusParamLibrary busParamLibrary){
-        return busParamLibraryDao.queryParamLibrary(busParamLibrary);
-    }
-
-    /**
-     * 新增参数库信息
-     */
-    @Override
-    public int addParamLibrary(List<BusParamLibrary> busParamLibraryList){
-        int sum = 0;
-        for (BusParamLibrary busParamLibrary : busParamLibraryList){
-            if(busParamLibrary.getCompareSign() == 1 && busParamLibrary.getFirstSign() == 1){
-                busParamLibrary.setSequence(1);
-            }else {
-                if (busParamLibrary.getCompareSign() == 1 && busParamLibrary.getFirstSign() == 0){
-                    busParamLibrary.setSequence(2);
-                }else {
-                    if (busParamLibrary.getCompareSign() == 0 && busParamLibrary.getFirstSign() == 1){
-                        busParamLibrary.setSequence(3);
-                    }else {
-                        if (busParamLibrary.getCompareSign() == 0 && busParamLibrary.getFirstSign() == 0) {
-                            busParamLibrary.setSequence(4);
-                        }
-                    }
-                }
-            }
-            busParamLibrary.setId(UuidUtil.create32());
-            busParamLibraryDao.insertSelective(busParamLibrary);
-        }
-        return sum;
-    }
-
-    /**
-     * 修改参数库信息
-     */
-    @Override
-    public int updateParamLibrary(BusParamLibrary busParamLibrary){
-        return busParamLibraryDao.updateByPrimaryKeySelective(busParamLibrary);
-    }
-
-    /**
-     * 删除参数库信息
-     */
-    @Override
-    public int deleteParamLibrary(BusParamLibrary busParamLibrary){
-        return busParamLibraryDao.deleteByPrimaryKey(busParamLibrary);
-    }
-
-    /**
-     * 新增参数库记录表信息
-     */
-    @Override
-    public int addEnergyParamLibrary(EnergyParamLibrary energyParamLibrary){
-        energyParamLibrary.setId(UuidUtil.create32());
-        return energyParamLibraryDao.insertSelective(energyParamLibrary);
-    }
-
-    /**
-     * 删除参数库记录表信息
-     */
-    @Override
-    public int deleteEnergyParamLibrary(EnergyParamLibrary energyParamLibrary){
-        return energyParamLibraryDao.deleteByPrimaryKey(energyParamLibrary);
-    }
-
-    /**
-     * 修改参数库记录表信息
-     */
-    @Override
-    public int updateEnergyParamLibrary(EnergyParamLibrary energyParamLibrary){
-        return energyParamLibraryDao.updateByPrimaryKeySelective(energyParamLibrary);
-    }
+//    /**
+//     * 新增参数库记录表信息
+//     */
+//    @Override
+//    public int addEnergyParamLibrary(EnergyParamLibrary energyParamLibrary){
+//        energyParamLibrary.setId(UuidUtil.create32());
+//        return energyParamLibraryDao.insertSelective(energyParamLibrary);
+//    }
+//
+//    /**
+//     * 删除参数库记录表信息
+//     */
+//    @Override
+//    public int deleteEnergyParamLibrary(EnergyParamLibrary energyParamLibrary){
+//        return energyParamLibraryDao.deleteByPrimaryKey(energyParamLibrary);
+//    }
+//
+//    /**
+//     * 修改参数库记录表信息
+//     */
+//    @Override
+//    public int updateEnergyParamLibrary(EnergyParamLibrary energyParamLibrary){
+//        return energyParamLibraryDao.updateByPrimaryKeySelective(energyParamLibrary);
+//    }
 
     /**
      * 联查一二级参数和参数库信息
@@ -276,72 +276,72 @@ public class OtherConfigServiceImpl implements OtherConfigService {
         //return false;
     }
 
-    /**
-     * 导入参数库模板数据
-     */
-    @Override
-    public int importData(MultipartFile file, String deviceId, String projectId)
-    {
-        Workbook wb = null;
-        try
-        {
-            if (file.getOriginalFilename().endsWith("xls")) {
-                wb = new HSSFWorkbook(file.getInputStream());
-            } else {
-                wb = new XSSFWorkbook(file.getInputStream());
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-
-            return 0;
-        }
-        //获取第一张表
-        Sheet sheet = wb.getSheetAt(0);
-
-        EnergyParamLibrary energyParamLibrary = new EnergyParamLibrary();
-        energyParamLibrary.setId(UuidUtil.create32());
-        energyParamLibrary.setDeviceId(deviceId);
-        energyParamLibrary.setProjectId(projectId);
-
-        //获取索引为i的行，以0开始
-        Row row = sheet.getRow(10);
-        energyParamLibrary.setMainValue(new BigDecimal(row.getCell(0).getStringCellValue()));
-        if (!" ".equals(row.getCell(1).getStringCellValue())) {
-            energyParamLibrary.setMainValue2(new BigDecimal(row.getCell(1).getStringCellValue()));
-        }
-        energyParamLibrary.setParamValue(new BigDecimal(row.getCell(2).getStringCellValue()));
-        if (!" ".equals(row.getCell(3).getStringCellValue())) {
-            energyParamLibrary.setParamValue2(new BigDecimal(row.getCell(3).getStringCellValue()));
-        }
-        if (!" ".equals(row.getCell(4).getStringCellValue())) {
-            energyParamLibrary.setEnergyElec(new BigDecimal(row.getCell(4).getStringCellValue()));
-        }
-        if (!" ".equals(row.getCell(5).getStringCellValue())) {
-            energyParamLibrary.setEnergyGas(new BigDecimal(row.getCell(5).getStringCellValue()));
-        }
-        if (!" ".equals(row.getCell(6).getStringCellValue())) {
-            energyParamLibrary.setMoneyElec(new BigDecimal(row.getCell(6).getStringCellValue()));
-        }
-        if (!" ".equals(row.getCell(6).getStringCellValue())) {
-            energyParamLibrary.setMoneyGas(new BigDecimal(row.getCell(7).getStringCellValue()));
-        }
-        try
-        {
-            wb.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        Example example = new Example(EnergyParamLibrary.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",projectId);
-        criteria.andEqualTo("deviceId",deviceId);
-        energyParamLibraryDao.deleteByExample(example);
-        return energyParamLibraryDao.insertSelective(energyParamLibrary);
-    }
+//    /**
+//     * 导入参数库模板数据
+//     */
+//    @Override
+//    public int importData(MultipartFile file, String deviceId, String projectId)
+//    {
+//        Workbook wb = null;
+//        try
+//        {
+//            if (file.getOriginalFilename().endsWith("xls")) {
+//                wb = new HSSFWorkbook(file.getInputStream());
+//            } else {
+//                wb = new XSSFWorkbook(file.getInputStream());
+//            }
+//        }
+//        catch (IOException e)
+//        {
+//            e.printStackTrace();
+//
+//            return 0;
+//        }
+//        //获取第一张表
+//        Sheet sheet = wb.getSheetAt(0);
+//
+//        EnergyParamLibrary energyParamLibrary = new EnergyParamLibrary();
+//        energyParamLibrary.setId(UuidUtil.create32());
+//        energyParamLibrary.setDeviceId(deviceId);
+//        energyParamLibrary.setProjectId(projectId);
+//
+//        //获取索引为i的行，以0开始
+//        Row row = sheet.getRow(10);
+//        energyParamLibrary.setMainValue(new BigDecimal(row.getCell(0).getStringCellValue()));
+//        if (!" ".equals(row.getCell(1).getStringCellValue())) {
+//            energyParamLibrary.setMainValue2(new BigDecimal(row.getCell(1).getStringCellValue()));
+//        }
+//        energyParamLibrary.setParamValue(new BigDecimal(row.getCell(2).getStringCellValue()));
+//        if (!" ".equals(row.getCell(3).getStringCellValue())) {
+//            energyParamLibrary.setParamValue2(new BigDecimal(row.getCell(3).getStringCellValue()));
+//        }
+//        if (!" ".equals(row.getCell(4).getStringCellValue())) {
+//            energyParamLibrary.setEnergyElec(new BigDecimal(row.getCell(4).getStringCellValue()));
+//        }
+//        if (!" ".equals(row.getCell(5).getStringCellValue())) {
+//            energyParamLibrary.setEnergyGas(new BigDecimal(row.getCell(5).getStringCellValue()));
+//        }
+//        if (!" ".equals(row.getCell(6).getStringCellValue())) {
+//            energyParamLibrary.setMoneyElec(new BigDecimal(row.getCell(6).getStringCellValue()));
+//        }
+//        if (!" ".equals(row.getCell(6).getStringCellValue())) {
+//            energyParamLibrary.setMoneyGas(new BigDecimal(row.getCell(7).getStringCellValue()));
+//        }
+//        try
+//        {
+//            wb.close();
+//        }
+//        catch (IOException e)
+//        {
+//            e.printStackTrace();
+//        }
+//        Example example = new Example(EnergyParamLibrary.class);
+//        Example.Criteria criteria = example.createCriteria();
+//        criteria.andEqualTo("projectId",projectId);
+//        criteria.andEqualTo("deviceId",deviceId);
+//        energyParamLibraryDao.deleteByExample(example);
+//        return energyParamLibraryDao.insertSelective(energyParamLibrary);
+//    }
 
     /**
      * 增加自定义标题信息

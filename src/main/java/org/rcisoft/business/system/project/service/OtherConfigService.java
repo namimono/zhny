@@ -22,55 +22,55 @@ public interface OtherConfigService {
      */
     List<BusParamFirst> queryParamFirstBySource(BusParamFirst busParamFirst);
 
-    /**
-     * 根据项目设备等ID查询能耗分类信息
-     */
-    List<EnergyTypeConfig> queryTypeNameByConfig(EnergyTypeConfig energyTypeConfig);
+//    /**
+//     * 根据项目设备等ID查询能耗分类信息
+//     */
+//    List<EnergyTypeConfig> queryTypeNameByConfig(EnergyTypeConfig energyTypeConfig);
 
-    /**
-     * 增加能耗配置
-     */
-    int addEnergyConfig(EnergyConfig energyConfig);
+//    /**
+//     * 增加能耗配置
+//     */
+//    int addEnergyConfig(EnergyConfig energyConfig);
+//
+//    /**
+//     * 修改能耗配置信息
+//     */
+//    int updateEnergyConfig(EnergyConfig energyConfig);
+//
+//    /**
+//     * 根据设备ID、二级参数ID查询参数库信息
+//     */
+//    List<BusParamLibrary> queryParamLibrary(BusParamLibrary busParamLibrary);
+//
+//    /**
+//     * 新增参数库信息
+//     */
+//    int addParamLibrary(List<BusParamLibrary> busParamLibraryList);
+//
+//    /**
+//     * 删除参数库信息
+//     */
+//    int deleteParamLibrary(BusParamLibrary busParamLibrary);
+//
+//    /**
+//     * 修改参数库信息
+//     */
+//    int updateParamLibrary(BusParamLibrary busParamLibrary);
 
-    /**
-     * 修改能耗配置信息
-     */
-    int updateEnergyConfig(EnergyConfig energyConfig);
-
-    /**
-     * 根据设备ID、二级参数ID查询参数库信息
-     */
-    List<BusParamLibrary> queryParamLibrary(BusParamLibrary busParamLibrary);
-
-    /**
-     * 新增参数库信息
-     */
-    int addParamLibrary(List<BusParamLibrary> busParamLibraryList);
-
-    /**
-     * 删除参数库信息
-     */
-    int deleteParamLibrary(BusParamLibrary busParamLibrary);
-
-    /**
-     * 修改参数库信息
-     */
-    int updateParamLibrary(BusParamLibrary busParamLibrary);
-
-    /**
-     * 新增参数库记录表信息
-     */
-    int addEnergyParamLibrary(EnergyParamLibrary energyParamLibrary);
-
-    /**
-     * 删除参数库记录表信息
-     */
-    int deleteEnergyParamLibrary(EnergyParamLibrary energyParamLibrary);
-
-    /**
-     * 修改参数库记录表信息
-     */
-    int updateEnergyParamLibrary(EnergyParamLibrary energyParamLibrary);
+//    /**
+//     * 新增参数库记录表信息
+//     */
+//    int addEnergyParamLibrary(EnergyParamLibrary energyParamLibrary);
+//
+//    /**
+//     * 删除参数库记录表信息
+//     */
+//    int deleteEnergyParamLibrary(EnergyParamLibrary energyParamLibrary);
+//
+//    /**
+//     * 修改参数库记录表信息
+//     */
+//    int updateEnergyParamLibrary(EnergyParamLibrary energyParamLibrary);
 
     /**
      * 联查一二级参数和参数库信息(用于导出模板)
@@ -82,10 +82,10 @@ public interface OtherConfigService {
      */
     void downloadLibraryTemplate(HttpServletResponse response,String year,String model,LibraryAndParam libraryAndParam);
 
-    /**
-     * 导入参数库模板数据
-     */
-    int importData(MultipartFile file, String deviceId, String projectId);
+//    /**
+//     * 导入参数库模板数据
+//     */
+//    int importData(MultipartFile file, String deviceId, String projectId);
 
     /**
      * 增加自定义标题信息

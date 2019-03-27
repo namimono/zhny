@@ -29,12 +29,12 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     private BusTypeSecondDao busTypeSecondDao;
     @Autowired
     private BusParamFirstDao busParamFirstDao;
-    @Autowired
-    private BusParamFixedDao busParamFixedDao;
-    @Autowired
-    private MidDeviceParamFirstDao midDeviceParamFirstDao;
-    @Autowired
-    private MidDeviceParamSecondDao midDeviceParamSecondDao;
+//    @Autowired
+//    private BusParamFixedDao busParamFixedDao;
+//    @Autowired
+//    private MidDeviceParamFirstDao midDeviceParamFirstDao;
+//    @Autowired
+//    private MidDeviceParamSecondDao midDeviceParamSecondDao;
 
     /**
      * 新增设备配置信息
@@ -141,89 +141,89 @@ CALL delete_AllByProId(@projectId) ;
         }
         return data;
     }
-
-    /**
-     * 添加固定参数表信息
-     */
-    @Override
-    public int addParamFixed(BusParamFixed busParamFixed){
-        busParamFixed.setId(UuidUtil.create32());
-        return busParamFixedDao.insert(busParamFixed);
-    }
-
-    /**
-     * 根据项目、设备、系统ID查询固定参数信息
-     */
-    @Override
-    public List<BusParamFixed> queryParamFixed(BusParamFixed busParamFixed){
-        return busParamFixedDao.queryParamFixed(busParamFixed);
-    }
-
-    /**
-     * 修改固定参数表信息
-     */
-    @Override
-    public int updateParamFixed(BusParamFixed busParamFixed){
-        return busParamFixedDao.updateByPrimaryKeySelective(busParamFixed);
-    }
-
-    /**
-     * 删除固定参数表信息
-     */
-    @Override
-    public int deleteParamFixed(BusParamFixed busParamFixed){
-        return busParamFixedDao.deleteByPrimaryKey(busParamFixed);
-    }
-
-    /**
-     * 增加设备一级参数中间表信息
-     */
-    @Override
-    public int addMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst){
-        midDeviceParamFirst.setId(UuidUtil.create32());
-        return midDeviceParamFirstDao.insertSelective(midDeviceParamFirst);
-    }
-
-    /**
-     * 删除设备一级参数中间表信息
-     */
-    @Override
-    public int deleteMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst){
-        return midDeviceParamFirstDao.deleteByPrimaryKey(midDeviceParamFirst);
-    }
-
-    /**
-     * 增加设备二级参数中间表信息
-     */
-    @Override
-    public int addMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond){
-        midDeviceParamSecond.setId(UuidUtil.create32());
-        return midDeviceParamSecondDao.insertSelective(midDeviceParamSecond);
-    }
-
-    /**
-     * 删除设备二级参数中间表信息
-     */
-    @Override
-    public int deleteMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond){
-        return midDeviceParamSecondDao.deleteByPrimaryKey(midDeviceParamSecond);
-    }
-
-    /**
-     * 修改设备一级参数中间表信息
-     */
-    @Override
-    public int updateMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst){
-        return midDeviceParamFirstDao.updateByPrimaryKeySelective(midDeviceParamFirst);
-    }
-
-    /**
-     * 修改设备二级参数中间表信息
-     */
-    @Override
-    public int updateMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond){
-        return midDeviceParamSecondDao.updateByPrimaryKeySelective(midDeviceParamSecond);
-    }
+//
+//    /**
+//     * 添加固定参数表信息
+//     */
+//    @Override
+//    public int addParamFixed(BusParamFixed busParamFixed){
+//        busParamFixed.setId(UuidUtil.create32());
+//        return busParamFixedDao.insert(busParamFixed);
+//    }
+//
+//    /**
+//     * 根据项目、设备、系统ID查询固定参数信息
+//     */
+//    @Override
+//    public List<BusParamFixed> queryParamFixed(BusParamFixed busParamFixed){
+//        return busParamFixedDao.queryParamFixed(busParamFixed);
+//    }
+//
+//    /**
+//     * 修改固定参数表信息
+//     */
+//    @Override
+//    public int updateParamFixed(BusParamFixed busParamFixed){
+//        return busParamFixedDao.updateByPrimaryKeySelective(busParamFixed);
+//    }
+//
+//    /**
+//     * 删除固定参数表信息
+//     */
+//    @Override
+//    public int deleteParamFixed(BusParamFixed busParamFixed){
+//        return busParamFixedDao.deleteByPrimaryKey(busParamFixed);
+//    }
+//
+//    /**
+//     * 增加设备一级参数中间表信息
+//     */
+//    @Override
+//    public int addMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst){
+//        midDeviceParamFirst.setId(UuidUtil.create32());
+//        return midDeviceParamFirstDao.insertSelective(midDeviceParamFirst);
+//    }
+//
+//    /**
+//     * 删除设备一级参数中间表信息
+//     */
+//    @Override
+//    public int deleteMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst){
+//        return midDeviceParamFirstDao.deleteByPrimaryKey(midDeviceParamFirst);
+//    }
+//
+//    /**
+//     * 增加设备二级参数中间表信息
+//     */
+//    @Override
+//    public int addMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond){
+//        midDeviceParamSecond.setId(UuidUtil.create32());
+//        return midDeviceParamSecondDao.insertSelective(midDeviceParamSecond);
+//    }
+//
+//    /**
+//     * 删除设备二级参数中间表信息
+//     */
+//    @Override
+//    public int deleteMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond){
+//        return midDeviceParamSecondDao.deleteByPrimaryKey(midDeviceParamSecond);
+//    }
+//
+//    /**
+//     * 修改设备一级参数中间表信息
+//     */
+//    @Override
+//    public int updateMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst){
+//        return midDeviceParamFirstDao.updateByPrimaryKeySelective(midDeviceParamFirst);
+//    }
+//
+//    /**
+//     * 修改设备二级参数中间表信息
+//     */
+//    @Override
+//    public int updateMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond){
+//        return midDeviceParamSecondDao.updateByPrimaryKeySelective(midDeviceParamSecond);
+//    }
 
 
 }
