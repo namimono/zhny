@@ -52,8 +52,8 @@ public interface DevicePlanningRepository {
      * @param conditionDto
      * @return
      */
-    @Select("<script>SELECT bps.`name` AS devParamName,bpl.sequence  FROM bus_param_library bpl  " +
-            " LEFT JOIN bus_param_second bps ON bpl.param_second_id = bps.id WHERE bpl.device_id = #{conditionDto.devId}  </script>")
+    @Select("<script>SELECT bps.`name` AS devParamName, bps.first_sign  FROM " +
+            " bus_param_second bps  WHERE bps.device_id = #{conditionDto.devId}  </script>")
     List<DeviceNameAndSeq> listDeviceParamNameAndSeqByDevId(@Param("conditionDto") ConditionDto conditionDto);
 
     /**
@@ -61,8 +61,8 @@ public interface DevicePlanningRepository {
      * @param devId
      * @return
      */
-    @Select("<script>SELECT bpl.param_first_id, bpl.param_second_id, bpl.sequence  " +
-            "  FROM bus_param_library bpl WHERE bpl.sequence in (1,2) AND bpl.device_id = #{devId}</script>")
+    @Select("<script>SELECT bps.param_first_id, bps.id AS paramSecondId, bps.first_sign  " +
+            "  FROM bus_param_second bps WHERE bps.first_sign in (1,2) AND bps.device_id = #{devId}</script>")
     List<DeviceParamIdAndSeq> listDeviceParamIdAndSeqByDevId(@Param("devId") String devId);
 
 

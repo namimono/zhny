@@ -20,7 +20,7 @@ public class DeviceParamIdAndSeq {
     String paramFirstId;
 
     /**
-     * 设备参数一级Id
+     * 设备参数二级Id
      */
     String paramSecondId;
 
@@ -28,5 +28,5 @@ public class DeviceParamIdAndSeq {
      * 表示第几个参数
      *      1代表主参数1；2代表主参数2；3代表副参数；4代表副参数2
      */
-    int sequence;
+    int firstSign;
 }

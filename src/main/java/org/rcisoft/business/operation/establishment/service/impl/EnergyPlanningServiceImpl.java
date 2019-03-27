@@ -159,7 +159,7 @@ public class EnergyPlanningServiceImpl implements EnergyPlanningService {
         if (deviceNameInfoList.size() > 0){
             for (DeviceNameAndSeq deviceNameAndSeq : deviceNameInfoList){
                 //1代表主参数1；2代表主参数2；3代表副参数；4代表副参数2
-                switch (deviceNameAndSeq.getSequence()){
+                switch (deviceNameAndSeq.getFirstSign()){
                     case 1:
                         deviceParamName.setMainName(deviceNameAndSeq.getDevParamName());
                         break;

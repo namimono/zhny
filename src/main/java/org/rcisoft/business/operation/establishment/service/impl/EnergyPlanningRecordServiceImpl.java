@@ -37,7 +37,7 @@ public class EnergyPlanningRecordServiceImpl implements EnergyPlanningRecordServ
     public Integer updateEnergyPlanningRecord(EnergyPlanningRecord energyPlanningRecord) {
         int updateFlag = energyPlanningRecordDao.updateByPrimaryKeySelective(energyPlanningRecord);
         if (updateFlag > 0){
-            //得到计划编制记录，为了拿设备Id
+            //得到计划编制记录
             EnergyPlanningRecord planningRecord = energyPlanningRecordDao.selectByPrimaryKey(energyPlanningRecord.getId());
             //更新当天的计划能耗花费
             updateEnergyPlanningCost(planningRecord);
@@ -53,7 +53,7 @@ public class EnergyPlanningRecordServiceImpl implements EnergyPlanningRecordServ
         int insertFlag = 0;
         if (deviceParamIdAndSeqList.size() > 0){
             for (DeviceParamIdAndSeq deviceParamIdAndSeq : deviceParamIdAndSeqList){
-                switch (deviceParamIdAndSeq.getSequence()){
+                switch (deviceParamIdAndSeq.getFirstSign()){
                     //处理第一个主要参数
                     case 1:
                         energyPlanningRecord.setMainFirstId(deviceParamIdAndSeq.getParamFirstId());
