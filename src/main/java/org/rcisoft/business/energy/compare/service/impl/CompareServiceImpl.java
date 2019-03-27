@@ -42,14 +42,17 @@ public class CompareServiceImpl implements CompareService {
         // 查询当日
         EnergyStatistics monEnergy = energyStatisticsDao.queryEnergyDayAndMon(c);
         // 返回值
-        EnergyDayAndMon result = new EnergyDayAndMon(
-                dayEnergy.getEnergyWater(),
-                dayEnergy.getEnergyElec(),
-                dayEnergy.getEnergyGas(),
-                monEnergy.getEnergyWater(),
-                monEnergy.getEnergyElec(),
-                monEnergy.getEnergyGas()
-        );
+        EnergyDayAndMon result = new EnergyDayAndMon();
+        if (dayEnergy != null) {
+            result.setDayWater(dayEnergy.getEnergyWater());
+            result.setDayElec(dayEnergy.getEnergyElec());
+            result.setDayGas(dayEnergy.getEnergyGas());
+        }
+        if (monEnergy != null) {
+            result.setMonWater(monEnergy.getEnergyWater());
+            result.setMonElec(monEnergy.getEnergyElec());
+            result.setMonGas(monEnergy.getEnergyGas());
+        }
         return result;
     }
 
@@ -123,11 +126,11 @@ public class CompareServiceImpl implements CompareService {
         }
         // 放入当月
         energyList.forEach(dayAndEnergy -> {
-            result.getEnergyList().set(dayAndEnergy.getDay() - 1, dayAndEnergy.getEnergy());
+            result.getEnergyList().set(dayAndEnergy.getDay() - 1, dayAndEnergy.getEnergy() == null ? new BigDecimal(0) : dayAndEnergy.getEnergy());
         });
         // 放入对比
         compareList.forEach(dayAndEnergy -> {
-            result.getCompareList().set(dayAndEnergy.getDay() - 1, dayAndEnergy.getEnergy());
+            result.getCompareList().set(dayAndEnergy.getDay() - 1, dayAndEnergy.getEnergy() == null ? new BigDecimal(0) : dayAndEnergy.getEnergy());
         });
         // 放入差值
         for (int i = 0; i < result.getDiffList().size(); i++) {

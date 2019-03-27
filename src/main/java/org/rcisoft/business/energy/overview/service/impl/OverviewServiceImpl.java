@@ -73,25 +73,29 @@ public class OverviewServiceImpl implements OverviewService {
         OverviewParam o = new OverviewParam(year, month, day, hour, projectId);
         // 当日
         EnergyStatistics dayEnergy = energyStatisticsDao.queryEnergyForDay(o);
-        BigDecimal dayWater = dayEnergy.getMoneyWater();
-        BigDecimal dayElec = dayEnergy.getMoneyElec();
-        BigDecimal dayGas = dayEnergy.getMoneyGas();
-        result.setDayWater(dayWater);
-        result.setDayElec(dayElec);
-        result.setDayGas(dayGas);
-        if (dayWater != null && dayElec != null && dayGas != null) {
-            result.setDayTotal(dayWater.add(dayElec).add(dayGas));
+        if (dayEnergy != null) {
+            BigDecimal dayWater = dayEnergy.getMoneyWater();
+            BigDecimal dayElec = dayEnergy.getMoneyElec();
+            BigDecimal dayGas = dayEnergy.getMoneyGas();
+            result.setDayWater(dayWater);
+            result.setDayElec(dayElec);
+            result.setDayGas(dayGas);
+            if (dayWater != null && dayElec != null && dayGas != null) {
+                result.setDayTotal(dayWater.add(dayElec).add(dayGas));
+            }
         }
         // 当月
         EnergyStatistics monEnergy = energyStatisticsDao.queryEnergyForMonth(o);
-        BigDecimal monWater = monEnergy.getMoneyWater();
-        BigDecimal monElec = monEnergy.getMoneyElec();
-        BigDecimal monGas = monEnergy.getMoneyGas();
-        result.setMonWater(monWater);
-        result.setMonElec(monElec);
-        result.setMonGas(monGas);
-        if (monWater != null && monElec != null && monGas != null) {
-            result.setMonTotal(monWater.add(monElec).add(monGas));
+        if (monEnergy != null) {
+            BigDecimal monWater = monEnergy.getMoneyWater();
+            BigDecimal monElec = monEnergy.getMoneyElec();
+            BigDecimal monGas = monEnergy.getMoneyGas();
+            result.setMonWater(monWater);
+            result.setMonElec(monElec);
+            result.setMonGas(monGas);
+            if (monWater != null && monElec != null && monGas != null) {
+                result.setMonTotal(monWater.add(monElec).add(monGas));
+            }
         }
         // 排行
         List<EnergyStatistics> list = energyStatisticsDao.queryRank(o);
