@@ -123,6 +123,8 @@ public class BusProjectServiceImpl implements BusProjectService {
         Map<String,Object> map = new HashMap<>();
         List<TimeJson> list_data = deviceParamDao.queryData();
         List<EnergyEcharts> list = deviceParamDao.queryEnergyEchart(titleId);
+        System.out.println(list_data);
+        System.out.println(list);
         for (int i = 0; i < list.size(); i++){
             int resultData[] = new int[24];
             for(int j = 0; j < list_data.size(); j++){

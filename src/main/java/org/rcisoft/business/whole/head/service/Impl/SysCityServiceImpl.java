@@ -43,7 +43,8 @@ public class SysCityServiceImpl implements SysCityService {
             String code = sysCity.getCoding();
             JSONObject weatherJson = this.getWeatherMessage(code);
             //湿度
-            int sd = (int) weatherJson.get("SD");
+            String sd =  (String)weatherJson.get("SD");
+            int Humidity = Integer.parseInt(sd.replaceAll("%", ""));
             //温度
             String wd = (String)weatherJson.get("temp");
             //风速
@@ -51,7 +52,8 @@ public class SysCityServiceImpl implements SysCityService {
             BigDecimal temp = new BigDecimal(wd);
            busTemperature.setWind(fs);
            busTemperature.setTemperature(temp);
-           busTemperature.setHumidity(sd);
+           busTemperature.setHumidity(Humidity);
+           busTemperature.setHumidityPercent(sd);
            busTemperature.setCoding(code);
         }catch(Exception e){
             e.printStackTrace();
