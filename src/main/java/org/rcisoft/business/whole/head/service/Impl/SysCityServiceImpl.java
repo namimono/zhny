@@ -43,7 +43,7 @@ public class SysCityServiceImpl implements SysCityService {
             String code = sysCity.getCoding();
             JSONObject weatherJson = this.getWeatherMessage(code);
             //湿度
-            String sd = (String)weatherJson.get("SD");
+            int sd = (int) weatherJson.get("SD");
             //温度
             String wd = (String)weatherJson.get("temp");
             //风速

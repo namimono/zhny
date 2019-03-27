@@ -8,7 +8,7 @@ import org.rcisoft.business.system.project.entity.ParamFirstAndSecond;
 import org.rcisoft.business.system.project.service.DataConfigService;
 import org.rcisoft.dao.BusParamFirstDao;
 import org.rcisoft.dao.BusParamSecondDao;
-import org.rcisoft.dao.EnergyConfigDao;
+//import org.rcisoft.dao.EnergyConfigDao;
 import org.rcisoft.dao.SysSystemDao;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamSecond;
@@ -31,8 +31,8 @@ public class DataConfigServiceImpl implements DataConfigService {
     private BusParamFirstDao busParamFirstDao;
     @Autowired
     private BusParamSecondDao busParamSecondDao;
-    @Autowired
-    private EnergyConfigDao energyConfigDao;
+//    @Autowired
+//    private EnergyConfigDao energyConfigDao;
 
     /**
      * 查询系统类型信息
@@ -113,22 +113,22 @@ public class DataConfigServiceImpl implements DataConfigService {
         return PageUtil.pageResult(busParamFirstDao.queryDataParam(projectId));
     }
 
-    /**
-     * 增加能源配置信息
-     */
-    @Override
-    public int addEnergyConfig(EnergyConfig energyConfig){
-        energyConfig.setId(UuidUtil.create32());
-        return energyConfigDao.insert(energyConfig);
-    }
+//    /**
+//     * 增加能源配置信息
+//     */
+//    @Override
+//    public int addEnergyConfig(EnergyConfig energyConfig){
+//        energyConfig.setId(UuidUtil.create32());
+//        return energyConfigDao.insert(energyConfig);
+//    }
 
-    /**
-     * 删除能源配置信息
-     */
-    @Override
-    public int deleteEnergyConfig(EnergyConfig energyConfig){
-        return energyConfigDao.deleteByPrimaryKey(energyConfigDao);
-    }
+//    /**
+//     * 删除能源配置信息
+//     */
+//    @Override
+//    public int deleteEnergyConfig(EnergyConfig energyConfig){
+//        return energyConfigDao.deleteByPrimaryKey(energyConfigDao);
+//    }
 
     /**
      * 删除一级参数信息

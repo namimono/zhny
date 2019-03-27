@@ -2,6 +2,7 @@ package org.rcisoft.business.whole.right.service.Impl;
 
 import org.rcisoft.business.whole.right.dao.BusPushRecordDao;
 import org.rcisoft.business.whole.right.service.BusPushRecordService;
+import org.rcisoft.entity.BusPushRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
