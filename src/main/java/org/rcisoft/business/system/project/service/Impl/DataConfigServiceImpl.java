@@ -53,15 +53,34 @@ public class DataConfigServiceImpl implements DataConfigService {
     }
 
     /**
-     * 新增一级参数信息
+     * 新增一、二级参数信息
      */
     @Override
-    public ServiceResult addParamFirstInfo(BusParamFirst busParamFirst){
+    public ServiceResult addParamFirstAndSecond(BusParamFirst busParamFirst,List<BusParamSecond> list){
+        //添加一级参数信息并返回新增ID
         String id = UuidUtil.create32();
         busParamFirst.setId(id);
         int i = busParamFirstDao.insert(busParamFirst);
+
+        //批量增加二级参数信息
+        list.forEach(busParamSecond -> busParamSecond.setId(UuidUtil.create32()));
+        busParamSecondDao.insertListUseAllCols(list);
         return new ServiceResult(i, id);
     }
+
+//    /**
+//     * 新增二级参数信息
+//     */
+//    @Override
+//    public int addParamSecondInfo(List<BusParamSecond> list){
+//        int sum = 0;
+//        for(BusParamSecond busParamSecond : list){
+//            busParamSecond.setId(UuidUtil.create32());
+//            busParamSecondDao.insert(busParamSecond);
+//            sum++;
+//        }
+//        return sum;
+//    }
 
     /**
      * 修改一级参数信息
@@ -77,20 +96,6 @@ public class DataConfigServiceImpl implements DataConfigService {
     @Override
     public List<BusParamSecond> queryParamSecondInfo(BusParamSecond busParamSecond){
         return busParamSecondDao.queryParamSecondInfo(busParamSecond);
-    }
-
-    /**
-     * 新增二级参数信息
-     */
-    @Override
-    public int addParamSecondInfo(List<BusParamSecond> list){
-        int sum = 0;
-        for(BusParamSecond busParamSecond : list){
-            busParamSecond.setId(UuidUtil.create32());
-            busParamSecondDao.insert(busParamSecond);
-            sum++;
-        }
-        return sum;
     }
 
     /**
@@ -115,22 +120,22 @@ public class DataConfigServiceImpl implements DataConfigService {
         return PageUtil.pageResult(busParamFirstDao.queryDataParam(projectId));
     }
 
-    /**
-     * 增加能源配置信息
-     */
-    @Override
-    public int addEnergyConfig(EnergyConfig energyConfig){
-        energyConfig.setId(UuidUtil.create32());
-        return energyConfigDao.insert(energyConfig);
-    }
-
-    /**
-     * 删除能源配置信息
-     */
-    @Override
-    public int deleteEnergyConfig(EnergyConfig energyConfig){
-        return energyConfigDao.deleteByPrimaryKey(energyConfigDao);
-    }
+//    /**
+//     * 增加能源配置信息
+//     */
+//    @Override
+//    public int addEnergyConfig(EnergyConfig energyConfig){
+//        energyConfig.setId(UuidUtil.create32());
+//        return energyConfigDao.insert(energyConfig);
+//    }
+//
+//    /**
+//     * 删除能源配置信息
+//     */
+//    @Override
+//    public int deleteEnergyConfig(EnergyConfig energyConfig){
+//        return energyConfigDao.deleteByPrimaryKey(energyConfigDao);
+//    }
 
     /**
      * 删除一级参数信息

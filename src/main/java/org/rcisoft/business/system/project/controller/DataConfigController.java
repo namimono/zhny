@@ -79,17 +79,17 @@ public class DataConfigController extends PageAop {
         return Result.result(dataConfigServiceImpl.queryDataParamForPage(projectId));
     }
 
-    @ApiOperation(value="增加能源配置信息", notes="增加能源配置信息")
-    @PostMapping("/addEnergyConfig")
-    public Result addEnergyConfig(@RequestBody EnergyConfig energyConfig){
-        return Result.result(dataConfigServiceImpl.addEnergyConfig(energyConfig),"增加能源配置信息成功","增加能源配置信息失败");
-    }
-
-    @ApiOperation(value="删除能源配置信息", notes="删除能源配置信息")
-    @DeleteMapping("/deleteEnergyConfig")
-    public Result deleteEnergyConfig(@RequestBody EnergyConfig energyConfig){
-        return Result.result(dataConfigServiceImpl.deleteEnergyConfig(energyConfig),"删除能源配置信息成功","删除能源配置信息失败");
-    }
+//    @ApiOperation(value="增加能源配置信息", notes="增加能源配置信息")
+//    @PostMapping("/addEnergyConfig")
+//    public Result addEnergyConfig(@RequestBody EnergyConfig energyConfig){
+//        return Result.result(dataConfigServiceImpl.addEnergyConfig(energyConfig),"增加能源配置信息成功","增加能源配置信息失败");
+//    }
+//
+//    @ApiOperation(value="删除能源配置信息", notes="删除能源配置信息")
+//    @DeleteMapping("/deleteEnergyConfig")
+//    public Result deleteEnergyConfig(@RequestBody EnergyConfig energyConfig){
+//        return Result.result(dataConfigServiceImpl.deleteEnergyConfig(energyConfig),"删除能源配置信息成功","删除能源配置信息失败");
+//    }
 
     @ApiOperation(value="删除一级参数信息", notes="删除一级参数信息")
     @DeleteMapping("/deleteParamFirst/{id}")

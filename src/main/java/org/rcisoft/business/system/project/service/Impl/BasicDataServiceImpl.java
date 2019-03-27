@@ -45,12 +45,12 @@ public class BasicDataServiceImpl implements BasicDataService {
      */
     @Override
     public int updatePerHourPrice(List<EnergyPrice> list){
-        int sum = 0;
-        for(EnergyPrice energyPrice : list){
-            energyPriceDao.updateByPrimaryKeySelective(energyPrice);
-            sum++;
-        }
-        return sum;
+        Example example = new Example(EnergyPrice.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",list.get(0).getProjectId());
+        energyPriceDao.deleteByExample(example);
+        list.forEach(energyPrice -> energyPrice.setId(UuidUtil.create32()));
+        return energyPriceDao.insertListUseAllCols(list);
     }
 
     /**
@@ -78,12 +78,12 @@ public class BasicDataServiceImpl implements BasicDataService {
      */
     @Override
     public int updateEnergyStandard(List<EnergyStandard> list){
-        int sum = 0;
-        for(EnergyStandard energyStandard : list){
-            energyStandardDao.updateByPrimaryKeySelective(energyStandard);
-            sum++;
-        }
-        return sum;
+        Example example = new Example(EnergyStandard.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",list.get(0).getProjectId());
+        energyStandardDao.deleteByExample(example);
+        list.forEach(energyStandard -> energyStandard.setId(UuidUtil.create32()));
+        return energyStandardDao.insertListUseAllCols(list);
     }
 
     /**

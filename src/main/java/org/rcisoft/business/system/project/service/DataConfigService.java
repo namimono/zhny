@@ -29,9 +29,14 @@ public interface DataConfigService {
     List<BusParamFirst> queryParamFirstInfo(BusParamFirst busParamFirst);
 
     /**
-     * 新增一级参数信息
+     * 新增一、二级参数信息
      */
-    ServiceResult addParamFirstInfo(BusParamFirst busParamFirst);
+    ServiceResult addParamFirstAndSecond(BusParamFirst busParamFirst,List<BusParamSecond> list);
+
+//    /**
+//     * 新增二级参数信息
+//     */
+//    int addParamSecondInfo(List<BusParamSecond> list);
 
     /**
      * 修改一级参数信息
@@ -44,11 +49,6 @@ public interface DataConfigService {
     List<BusParamSecond> queryParamSecondInfo(BusParamSecond busParamSecond);
 
     /**
-     * 新增二级参数信息
-     */
-    int addParamSecondInfo(List<BusParamSecond> list);
-
-    /**
      * 修改二级参数信息
      */
     int updateParamSecondInfo(List<BusParamSecond> list);
@@ -58,15 +58,15 @@ public interface DataConfigService {
      */
     PageInfo<ParamFirstAndSecond> queryDataParamForPage(String projectId);
 
-    /**
-     * 增加能源配置信息
-     */
-    int addEnergyConfig(EnergyConfig energyConfig);
-
-    /**
-     * 删除能源配置信息
-     */
-    int deleteEnergyConfig(EnergyConfig energyConfig);
+//    /**
+//     * 增加能源配置信息
+//     */
+//    int addEnergyConfig(EnergyConfig energyConfig);
+//
+//    /**
+//     * 删除能源配置信息
+//     */
+//    int deleteEnergyConfig(EnergyConfig energyConfig);
 
     /**
      * 删除一级参数信息
