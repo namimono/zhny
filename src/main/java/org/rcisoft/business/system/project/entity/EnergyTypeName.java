@@ -15,7 +15,7 @@ import javax.persistence.Entity;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EnergyTypeConfig {
+public class EnergyTypeName {
 
     /**
      * 能耗分类主键

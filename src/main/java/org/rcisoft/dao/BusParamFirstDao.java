@@ -49,7 +49,7 @@ public interface BusParamFirstDao extends Mapper<BusParamFirst> {
     List<ParamFirstAndSecond> queryDataParam(@Param("projectId") String projectId);
 
     /**
-     * 根据参数来源查询表具
+     * 根据参数来源查询一级表具参数信息
      */
     @Select("SELECT * FROM bus_param_first \n" +
             "WHERE source_id = '2'\n" +

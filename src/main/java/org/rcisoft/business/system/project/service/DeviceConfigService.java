@@ -35,9 +35,9 @@ public interface DeviceConfigService {
     List<BusDevice> queryDeviceInfo(String deviceId);
 
     /**
-     * 查询设备简要信息
+     * 查询设备简要信息（设备配置）
      */
-    List<DeviceBriefInfo> queryDeviceBriefInfo(DeviceBriefInfo deviceBriefInfo);
+    List<DeviceBriefInfo> queryDeviceBriefInfo(String systemId,String projectId);
 
     /**
      * 根据项目ID和子系统ID查询未关联一级参数信息

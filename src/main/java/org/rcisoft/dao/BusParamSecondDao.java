@@ -29,7 +29,7 @@ public interface BusParamSecondDao extends Mapper<BusParamSecond> {
     List<BusParamSecond> queryParamSecondInfo(BusParamSecond busParamSecond);
 
     /**
-     * 根据项目ID和参数来源查询二级参数信息
+     * 根据项目ID查询二级参数信息
      */
     @Select("SELECT * FROM bus_param_second WHERE \n" +
             "project_id = #{projectId} \n" +

@@ -174,4 +174,11 @@ public class ProjConfigController {
         int i = projConfigServiceImpl.deleteAllByProId(projectId);
         return Result.result(i,"删除项目信息成功","删除项目信息失败");
     }
+
+    @ApiOperation(value="查询系统类型", notes="查询系统类型")
+    @GetMapping("/querySystemType")
+    public Result querySystemType(){
+        return Result.result(projConfigServiceImpl.querySystemType());
+    }
+
 }

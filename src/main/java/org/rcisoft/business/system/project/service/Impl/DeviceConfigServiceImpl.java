@@ -78,11 +78,11 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     }
 
     /**
-     * 查询设备简要信息
+     * 查询设备简要信息（设备配置）
      */
     @Override
-    public List<DeviceBriefInfo> queryDeviceBriefInfo(DeviceBriefInfo deviceBriefInfo){
-        return busDeviceDao.queryDeviceBriefInfo(deviceBriefInfo);
+    public List<DeviceBriefInfo> queryDeviceBriefInfo(String systemId,String projectId){
+        return busDeviceDao.queryDeviceBriefInfo(systemId,projectId);
     }
 
     /**

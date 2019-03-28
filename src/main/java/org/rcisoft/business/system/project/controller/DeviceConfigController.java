@@ -40,13 +40,10 @@ public class DeviceConfigController {
         return Result.result(deviceConfigServiceImpl.updateDevice(busDevice),"修改设备信息成功","修改设备信息失败");
     }
 
-    @ApiOperation(value="查询设备简要信息", notes="查询设备简要信息")
+    @ApiOperation(value="查询设备简要信息（设备配置）", notes="查询设备简要信息（设备配置）")
     @GetMapping("/queryDeviceBriefInfo/{systemId}/{projectId}")
     public Result queryDeviceBriefInfo(@PathVariable String systemId,@PathVariable String projectId){
-        DeviceBriefInfo deviceBriefInfo = new DeviceBriefInfo();
-        deviceBriefInfo.setSystemId(systemId);
-        deviceBriefInfo.setProjectId(projectId);
-        return Result.result(deviceConfigServiceImpl.queryDeviceBriefInfo(deviceBriefInfo));
+        return Result.result(deviceConfigServiceImpl.queryDeviceBriefInfo(systemId,projectId));
     }
 
     @ApiOperation(value="根据设备ID查询设备信息", notes="根据设备ID查询设备信息")

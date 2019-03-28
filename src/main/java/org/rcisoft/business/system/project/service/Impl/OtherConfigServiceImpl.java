@@ -1,13 +1,9 @@
 package org.rcisoft.business.system.project.service.Impl;
 
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.dao.OtherConfigDao;
-import org.rcisoft.business.system.project.entity.EnergyTypeConfig;
+import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.LibraryAndParam;
 import org.rcisoft.business.system.project.entity.TitleParamAndParam;
 import org.rcisoft.business.system.project.service.OtherConfigService;
@@ -15,12 +11,10 @@ import org.rcisoft.dao.*;
 import org.rcisoft.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -32,12 +26,8 @@ public class OtherConfigServiceImpl implements OtherConfigService {
 
     @Autowired
     private BusParamFirstDao busParamFirstDao;
-//    @Autowired
-//    private EnergyConfigDao energyConfigDao;
-//    @Autowired
-//    private BusParamLibraryDao busParamLibraryDao;
-//    @Autowired
-//    private EnergyParamLibraryDao energyParamLibraryDao;
+    @Autowired
+    private BusParamSecondDao busParamSecondDao;
     @Autowired
     private OtherConfigDao otherConfigDao;
     @Autowired
@@ -46,114 +36,31 @@ public class OtherConfigServiceImpl implements OtherConfigService {
     private BusTitleParamDao busTitleParamDao;
 
     /**
-     * 根据参数来源查询表具
+     * 根据参数来源查询一级表具参数信息
      */
     @Override
     public List<BusParamFirst> queryParamFirstBySource(BusParamFirst busParamFirst){
         return busParamFirstDao.queryParamFirstBySource(busParamFirst);
     }
 
-//    /**
-//     * 根据项目设备等ID查询能耗分类信息
-//     */
-//    @Override
-//    public List<EnergyTypeConfig> queryTypeNameByConfig(EnergyTypeConfig energyTypeConfig){
-//        return energyConfigDao.queryTypeNameByConfig(energyTypeConfig);
-//    }
+    /**
+     * 查询设备简要信息（参数库）
+     */
+    @Override
+    public List<DeviceBriefInfo> queryDeviceBrief(String projectId){
+        return otherConfigDao.queryDeviceBrief(projectId);
+    }
 
-//    /**
-//     * 增加能耗配置
-//     */
-//    @Override
-//    public int addEnergyConfig(EnergyConfig energyConfig){
-//        energyConfig.setId(UuidUtil.create32());
-//        return energyConfigDao.insertSelective(energyConfig);
-//    }
-//
-//    /**
-//     * 修改能耗配置信息
-//     */
-//    @Override
-//    public int updateEnergyConfig(EnergyConfig energyConfig){
-//        return energyConfigDao.updateByPrimaryKeySelective(energyConfig);
-//    }
-//
-//    /**
-//     * 根据设备ID、二级参数ID查询参数库信息
-//     */
-//    @Override
-//    public List<BusParamLibrary> queryParamLibrary(BusParamLibrary busParamLibrary){
-//        return busParamLibraryDao.queryParamLibrary(busParamLibrary);
-//    }
-//
-//    /**
-//     * 新增参数库信息
-//     */
-//    @Override
-//    public int addParamLibrary(List<BusParamLibrary> busParamLibraryList){
-//        int sum = 0;
-//        for (BusParamLibrary busParamLibrary : busParamLibraryList){
-//            if(busParamLibrary.getCompareSign() == 1 && busParamLibrary.getFirstSign() == 1){
-//                busParamLibrary.setSequence(1);
-//            }else {
-//                if (busParamLibrary.getCompareSign() == 1 && busParamLibrary.getFirstSign() == 0){
-//                    busParamLibrary.setSequence(2);
-//                }else {
-//                    if (busParamLibrary.getCompareSign() == 0 && busParamLibrary.getFirstSign() == 1){
-//                        busParamLibrary.setSequence(3);
-//                    }else {
-//                        if (busParamLibrary.getCompareSign() == 0 && busParamLibrary.getFirstSign() == 0) {
-//                            busParamLibrary.setSequence(4);
-//                        }
-//                    }
-//                }
-//            }
-//            busParamLibrary.setId(UuidUtil.create32());
-//            busParamLibraryDao.insertSelective(busParamLibrary);
-//        }
-//        return sum;
-//    }
-//
-//    /**
-//     * 修改参数库信息
-//     */
-//    @Override
-//    public int updateParamLibrary(BusParamLibrary busParamLibrary){
-//        return busParamLibraryDao.updateByPrimaryKeySelective(busParamLibrary);
-//    }
-//
-//    /**
-//     * 删除参数库信息
-//     */
-//    @Override
-//    public int deleteParamLibrary(BusParamLibrary busParamLibrary){
-//        return busParamLibraryDao.deleteByPrimaryKey(busParamLibrary);
-//    }
-
-//    /**
-//     * 新增参数库记录表信息
-//     */
-//    @Override
-//    public int addEnergyParamLibrary(EnergyParamLibrary energyParamLibrary){
-//        energyParamLibrary.setId(UuidUtil.create32());
-//        return energyParamLibraryDao.insertSelective(energyParamLibrary);
-//    }
-//
-//    /**
-//     * 删除参数库记录表信息
-//     */
-//    @Override
-//    public int deleteEnergyParamLibrary(EnergyParamLibrary energyParamLibrary){
-//        return energyParamLibraryDao.deleteByPrimaryKey(energyParamLibrary);
-//    }
-//
-//    /**
-//     * 修改参数库记录表信息
-//     */
-//    @Override
-//    public int updateEnergyParamLibrary(EnergyParamLibrary energyParamLibrary){
-//        return energyParamLibraryDao.updateByPrimaryKeySelective(energyParamLibrary);
-//    }
+    /**
+     * 根据设备ID查询二级参数信息（参数库）
+     */
+    @Override
+    public List<BusParamSecond> queryParamSecondByDevId(String deviceId){
+        Example example = new Example(BusParamSecond.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("deviceId",deviceId);
+        return busParamSecondDao.selectByExample(example);
+    }
 
     /**
      * 联查一二级参数和参数库信息

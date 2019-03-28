@@ -45,6 +45,8 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     private SysAuthenticatorDao sysAuthenticatorDao;
     @Autowired
     private ProConfigDao proConfigDao;
+    @Autowired
+    private SysSystemDao sysSystemDao;
 
     /**
      * 查询全部项目表信息
@@ -294,6 +296,14 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     @Override
     public int deleteAllByProId(String projectId){
         return proConfigDao.deleteAllByProId(projectId);
+    }
+
+    /**
+     * 查询系统类型
+     */
+    @Override
+    public List<SysSystem> querySystemType(){
+        return sysSystemDao.querySysSystemInfo();
     }
 
 }

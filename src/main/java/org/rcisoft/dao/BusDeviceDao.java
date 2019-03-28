@@ -25,15 +25,15 @@ public interface BusDeviceDao extends Mapper<BusDevice> {
     List<BusDevice> queryDeviceInfo(@Param("deviceId") String deviceId);
 
     /**
-     * 查询设备简要信息
+     * 查询设备简要信息（设备配置）
      */
-    @Select("SELECT a.id,a.info,a.location,\n" +
+    @Select("SELECT a.id as 'deviceId',a.name as 'deviceName',a.info,a.location,\n" +
             "b.name AS 'type',c.name AS 'factoryName'\n" +
             "FROM bus_device a,bus_type_first b,bus_factory c\n" +
             "where a.system_id = #{systemId} AND a.project_id = #{projectId}\n" +
             "AND a.type_first_id = b.id AND a.factory_id = c.id")
     @ResultType(DeviceBriefInfo.class)
-    List<DeviceBriefInfo> queryDeviceBriefInfo(DeviceBriefInfo deviceBriefInfo);
+    List<DeviceBriefInfo> queryDeviceBriefInfo(@Param("systemId") String systemId,@Param("projectId") String projectId);
 
     /**
      * 根据项目id查询设备
