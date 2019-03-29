@@ -3,7 +3,6 @@ package org.rcisoft.business.system.project.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
-import org.rcisoft.business.system.project.entity.LibraryAndParam;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.rcisoft.business.system.project.service.OtherConfigService;
 import org.rcisoft.entity.*;
@@ -24,34 +23,7 @@ public class OtherConfigController {
     @Autowired
     private OtherConfigService otherConfigServiceImpl;
 
-    @ApiOperation(value="根据参数来源查询一级表具参数信息", notes="根据参数来源查询一级表具参数信息")
-    @GetMapping("/queryParamFirstBySource/{projectId}")
-    public Result queryParamFirstBySource(@PathVariable String projectId){
-        BusParamFirst busParamFirst = new BusParamFirst();
-        busParamFirst.setProjectId(projectId);
-        return Result.result(otherConfigServiceImpl.queryParamFirstBySource(busParamFirst));
-    }
 
-    @ApiOperation(value="查询设备简要信息（参数库）", notes="查询设备简要信息（参数库）")
-    @GetMapping("/queryDeviceBrief/{projectId}")
-    public Result queryDeviceBrief(@PathVariable String projectId){
-        return Result.result(otherConfigServiceImpl.queryDeviceBrief(projectId));
-    }
-
-    @ApiOperation(value="根据设备ID查询二级参数信息（参数库）", notes="根据设备ID查询二级参数信息（参数库）")
-    @GetMapping("/queryParamSecondByDevId/{deviceId}")
-    public Result queryParamSecondByDevId(@PathVariable String deviceId){
-        return Result.result(otherConfigServiceImpl.queryParamSecondByDevId(deviceId));
-    }
-
-
-    @ApiOperation(value="导出模板（项目维护-其他配置-参数库）", notes="导出模板（项目维护-其他配置-参数库）")
-    @GetMapping("/downloadLibraryTemplate")
-    public void downloadLibraryTemplate(HttpServletResponse response,String year,String model,String deviceId){
-        LibraryAndParam libraryAndParam = new LibraryAndParam();
-        libraryAndParam.setDeviceId(deviceId);
-        otherConfigServiceImpl.downloadLibraryTemplate(response,year,model,libraryAndParam);
-    }
 
 //    @ApiOperation(value="导入参数库模板数据", notes="导入参数库模板数据")
 //    @PostMapping("/importData")

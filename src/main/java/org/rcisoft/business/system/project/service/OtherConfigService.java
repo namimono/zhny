@@ -1,7 +1,6 @@
 package org.rcisoft.business.system.project.service;
 
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
-import org.rcisoft.business.system.project.entity.LibraryAndParam;
 import org.rcisoft.business.system.project.entity.TitleParamAndParam;
 import org.rcisoft.entity.*;
 
@@ -15,30 +14,12 @@ import java.util.List;
 
 public interface OtherConfigService {
 
-    /**
-     * 根据参数来源查询一级表具参数信息
-     */
-    List<BusParamFirst> queryParamFirstBySource(BusParamFirst busParamFirst);
 
-    /**
-     * 查询设备简要信息（参数库）
-     */
-    List<DeviceBriefInfo> queryDeviceBrief(String projectId);
 
-    /**
-     * 根据设备ID查询二级参数信息（参数库）
-     */
-    List<BusParamSecond> queryParamSecondByDevId(String deviceId);
-
-    /**
-     * 联查一二级参数和参数库信息(用于导出模板)
-     */
-    List<LibraryAndParam> queryLibraryAndParam(LibraryAndParam libraryAndParam);
-
-    /**
-     * 导出模板（项目维护-其他配置-参数库）
-     */
-    void downloadLibraryTemplate(HttpServletResponse response,String year,String model,LibraryAndParam libraryAndParam);
+//    /**
+//     * 导出模板（项目维护-其他配置-参数库）
+//     */
+//    void downloadLibraryTemplate(HttpServletResponse response,String year,String model,LibraryAndParam libraryAndParam);
 
 //    /**
 //     * 导入参数库模板数据

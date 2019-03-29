@@ -16,7 +16,6 @@ import lombok.AllArgsConstructor;
 @Table ( name ="bus_param_first" )
 public class BusParamFirst {
 
-
 	/**
 	 * 主键
 	 */
