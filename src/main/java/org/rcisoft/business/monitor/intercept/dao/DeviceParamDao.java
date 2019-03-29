@@ -5,6 +5,8 @@ import org.rcisoft.business.monitor.intercept.entity.DeviceInfo;
 import org.rcisoft.business.monitor.intercept.entity.DeviceParam;
 import org.rcisoft.business.monitor.intercept.entity.EnergyEcharts;
 import org.rcisoft.business.monitor.intercept.entity.TimeJson;
+import org.springframework.stereotype.Repository;
+
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
  * @Description:
  * @Date: Created in 14:57 2019/3/21
  */
+@Repository
 public interface DeviceParamDao extends Mapper<DeviceParam> {
     /**
      * 查询设备一二级参数及二级名称

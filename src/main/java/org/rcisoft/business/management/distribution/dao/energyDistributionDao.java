@@ -31,10 +31,9 @@ public interface energyDistributionDao extends Mapper<EnergyDistribution> {
             "SUM(es.money_water) as sumWater,SUM(es.money_gas) as sumGas,SUM(es.money_elec) as sumElec " +
             "from bus_project bp right join energy_statistics es on bp.id = es.project_id ,bus_building bb ,bus_building_zone bbz " +
             "where bbz.id = bp.building_zone_id and bb.id = bp.building_id and es.time_year = ${timeYear} " +
-            "<if test = \"Month != null and timeMonth != '' \">and es.time_month = #{Month}</if> " +
-            "<if test = \"Month == null and Month == ''\"> and es.time_month &lt; ${timeMonth}</if>"+
+            "and es.time_month = #{timeMonth}" +
             "GROUP BY bp.name" +
             "</script>")
     @ResultType(EnergyDistribution.class)
-    List<EnergyDistribution> queryEnergyDistributed(@Param("timeYear") int timeYear,@Param("Month") String Month,@Param("timeMonth") int timeMonth);
+    List<EnergyDistribution> queryEnergyDistributed(@Param("timeYear") int timeYear,@Param("timeMonth") String Month);
 }

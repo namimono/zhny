@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.monitor.intercept.entity.BusProjectParam;
 import org.rcisoft.business.monitor.intercept.entity.DeviceFixValue;
 import org.rcisoft.business.monitor.intercept.entity.EnergyParam;
+import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * @Description:
  * @Date: Created in 11:30 2019/3/18
  */
+@Repository
 public interface BusProjectParamDao extends Mapper<BusProjectParam> {
     /**
      * 查询设备一二级参数

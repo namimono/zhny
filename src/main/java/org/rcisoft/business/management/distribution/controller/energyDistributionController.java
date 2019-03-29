@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Minghui Xu
@@ -26,8 +27,8 @@ public class energyDistributionController {
 
     @ApiOperation(value = "能耗分布及计算",notes = "能耗分布计算")
     @PostMapping(value = "/energyNum")
-    public Result energyNum(@RequestParam(required = false) String Month,@RequestParam int year, HttpServletRequest request){
-        List<EnergyDistribution> list = energyDistributionService.queryEnergyDistributed(year,Month);
-        return Result.result(1,list);
+    public Result energyNum(@RequestParam String Month,@RequestParam int year, HttpServletRequest request){
+        Map<String,Object> map = energyDistributionService.queryEnergyDistributed(year,Month);
+        return Result.result(1,map);
     }
 }
