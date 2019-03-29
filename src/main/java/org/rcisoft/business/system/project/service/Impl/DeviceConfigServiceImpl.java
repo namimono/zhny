@@ -226,6 +226,14 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     }
 
     /**
+     * 批量更新一级参数
+     */
+    @Override
+    public int updateAllParamFirst(List<BusParamFirst> list){
+        return deviceConfigDao.updateAllParamFirst(list);
+    }
+
+    /**
      * 修改二级参数信息
      */
     @Override

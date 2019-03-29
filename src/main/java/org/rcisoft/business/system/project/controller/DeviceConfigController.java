@@ -9,6 +9,8 @@ import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Create by 土豆儿
  * Time：2019/3/6 17:14
@@ -86,6 +88,12 @@ public class DeviceConfigController {
     @DeleteMapping("/deleteParamSecond/{paramSecondId}")
     public Result deleteParamSecond(@PathVariable String paramSecondId){
         return Result.result(deviceConfigServiceImpl.deleteParamSecond(paramSecondId),"删除二级参数信息成功","删除二级参数信息失败");
+    }
+
+    @ApiOperation(value="批量更新一级参数", notes="批量更新一级参数")
+    @PutMapping("/updateAllParamFirst")
+    public Result updateAllParamFirst(@RequestBody List<BusParamFirst> list){
+        return Result.result(deviceConfigServiceImpl.updateAllParamFirst(list),"批量更新一级参数成功","批量更新一级参数失败");
     }
 
     @ApiOperation(value="修改一级参数信息", notes="修改一级参数信息")

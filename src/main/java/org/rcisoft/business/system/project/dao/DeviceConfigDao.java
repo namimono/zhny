@@ -1,11 +1,12 @@
 package org.rcisoft.business.system.project.dao;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.StatementType;
+import org.rcisoft.entity.BusParamFirst;
+import org.rcisoft.entity.BusParamSecond;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author 土豆儿
@@ -23,8 +24,17 @@ public interface DeviceConfigDao {
     int deleteAllByDevId(@Param("deviceId") String deviceId);
 
     /**
-     * 删除公式（被一级参数关联删除）
+     * 批量更新一级参数
      */
-    @Delete("")
-    int deleteFormula();
+    @Update("<script><foreach collection=\"list\" item=\"list\" index=\"index\" open=\"\" close=\"\" separator=\";\">\n" +
+            "UPDATE bus_param_first SET source_id = #{list.sourceId},`name` = #{list.name}," +
+            "coding = #{list.coding} WHERE id = #{list.id}\n" +
+            "</foreach></script>")
+    int updateAllParamFirst(List<BusParamFirst> list);
+
+    /**
+     * 批量更新二级参数
+     */
+    @Update("")
+    int updateAllParamSecond(List<BusParamSecond> list);
 }

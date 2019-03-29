@@ -3,6 +3,7 @@ package org.rcisoft.business.system.project.service;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.TitleParamAndParam;
 import org.rcisoft.entity.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -15,12 +16,12 @@ import java.util.List;
 public interface OtherConfigService {
 
 
-
+//
 //    /**
 //     * 导出模板（项目维护-其他配置-参数库）
 //     */
-//    void downloadLibraryTemplate(HttpServletResponse response,String year,String model,LibraryAndParam libraryAndParam);
-
+//    void downloadLibraryTemplate(HttpServletResponse response,String year,String model,BusParamSecond busParamSecond);
+//
 //    /**
 //     * 导入参数库模板数据
 //     */

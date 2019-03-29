@@ -75,6 +75,11 @@ public interface DeviceConfigService {
     int updateParamFirst(BusParamFirst busParamFirst);
 
     /**
+     * 批量更新一级参数
+     */
+    int updateAllParamFirst(List<BusParamFirst> list);
+
+    /**
      * 修改二级参数信息
      */
     int updateParamSecond(BusParamSecond busParamSecond);

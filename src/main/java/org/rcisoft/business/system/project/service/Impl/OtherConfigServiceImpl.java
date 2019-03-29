@@ -28,8 +28,6 @@ public class OtherConfigServiceImpl implements OtherConfigService {
     @Autowired
     private BusParamSecondDao busParamSecondDao;
     @Autowired
-    private OtherConfigDao otherConfigDao;
-    @Autowired
     private BusTitleDao busTitleDao;
     @Autowired
     private BusTitleParamDao busTitleParamDao;
@@ -38,7 +36,7 @@ public class OtherConfigServiceImpl implements OtherConfigService {
 //     * 导出模板（项目维护-其他配置-参数库）
 //     */
 //    @Override
-//    public void downloadLibraryTemplate(HttpServletResponse response,String year,String model,LibraryAndParam libraryAndParam){
+//    public void downloadLibraryTemplate(HttpServletResponse response,String year,String model,BusParamSecond busParamSecond){
 //        HSSFWorkbook workbook = new HSSFWorkbook();
 //        HSSFSheet sheet = workbook.createSheet("参数库模板");
 //
@@ -48,7 +46,7 @@ public class OtherConfigServiceImpl implements OtherConfigService {
 //        textStyle.setDataFormat(format.getFormat("@"));
 //        //设置单元格格式为"文本" cell.setCellStyle(textStyle);
 //
-//        List<LibraryAndParam> libraryAndParamList = otherConfigDao.queryLibraryAndParam(libraryAndParam);
+//        List<BusParamSecond> paramSecondList = busParamSecondDao.queryParamSecondByDevId(d);
 //        //设置要导出的文件的名字
 //        String fileName = model + ".xls";
 //        String[] header1 = {"设备型号"," "," ","年份"," "};
@@ -146,7 +144,7 @@ public class OtherConfigServiceImpl implements OtherConfigService {
 //        }
 //        //return false;
 //    }
-
+//
 //    /**
 //     * 导入参数库模板数据
 //     */

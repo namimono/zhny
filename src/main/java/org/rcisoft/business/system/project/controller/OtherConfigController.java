@@ -23,8 +23,6 @@ public class OtherConfigController {
     @Autowired
     private OtherConfigService otherConfigServiceImpl;
 
-
-
 //    @ApiOperation(value="导入参数库模板数据", notes="导入参数库模板数据")
 //    @PostMapping("/importData")
 //    public void importData(MultipartFile file, String deviceId, String projectId){
