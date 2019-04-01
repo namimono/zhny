@@ -38,9 +38,9 @@ public interface CommonDao {
      * @param projectId
      * @return
      */
-    @Select("<script>select id, name from bus_device where project_id = #{projectId}</script>")
+    @Select("<script>select id, name from bus_device where project_id = #{projectId} <if test = \"typeFirstId != null\">and type_first_id = #{typeFirstId}</if></script>")
     @ResultType(BusDevice.class)
-    List<BusDevice> queryDevices(@Param("projectId") String projectId);
+    List<BusDevice> queryDevices(@Param("projectId") String projectId, @Param("typeFirstId") String typeFirstId);
 
     /**
      * 查询设备的一级参数

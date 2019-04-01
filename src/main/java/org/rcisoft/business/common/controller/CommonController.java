@@ -5,10 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.business.common.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by JiChao on 2019/3/26.
@@ -34,10 +31,10 @@ public class CommonController {
         return Result.result(commonServiceImpl.querySystemForProject(projectId));
     }
 
-    @ApiOperation(value="查询项目下所有设备", notes="查询项目下所有设备")
-    @GetMapping("/queryDevices/{projectId}")
-    public Result queryDevices(@PathVariable String projectId) {
-        return Result.result(commonServiceImpl.queryDevices(projectId));
+    @ApiOperation(value="查询项目下所有设备", notes="typeFirstId：一级设备类型id，在养护计划模块用到，非必填")
+    @PostMapping("/queryDevices")
+    public Result queryDevices(@RequestParam String projectId, @RequestParam(required = false) String typeFirstId) {
+        return Result.result(commonServiceImpl.queryDevices(projectId, typeFirstId));
     }
 
     @ApiOperation(value="查询设备的一级参数", notes="查询设备的一级参数")

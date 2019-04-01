@@ -1,34 +1,42 @@
 server:
   servlet:
-    context-path: /
+    context-path: /zhny2
+  url: 10.96.129.56
   port: 8080
   tomcat:
     max-threads: 300
     max-http-post-size: 10240000
   max-http-header-size: 10240000
 
+
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
     platform: mysql
-    url: jdbc:mysql://127.0.0.1:3306/springboot?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://10.96.129.56:3309/zhny-2nd-change?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
     username: root
-    password: root
-    initialSize: 5
-    minIdle: 5
-    maxActive: 20
-    maxWait: 60000
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 300000
-    validationQuery: SELECT1FROMDUAL
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    filters: stat,wall,log4j
-#    logSlowSql: true
-    poolPreparedStatements: true
-    maxPoolPreparedStatementPerConnectionSize: 20
+    password: 123456
+    druid:
+      filter:
+        wall:
+          config:
+            multi-statement-allow: true
+            none-base-statement-allow: true
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT1FROMDUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: stat,log4j
+
   servlet:
       multipart:
         max-file-size: 100Mb
@@ -57,6 +65,9 @@ spring:
     user:
       name: admin
       password: admin
+  http:
+    encoding:
+      charset: utf-8
 
 mybatis:
 #  mapper-locations: classpath:mapper/*.xml
@@ -68,3 +79,30 @@ jwt:
   expiration: 604800
   tokenHead: "Bearer "
 
+#  省略debug Console中的大量 CONDITIONS EVALUATION REPORT 日志信息
+logging:
+  level:
+    org.springframework.boot.autoconfigure: ERROR
+
+# 路径（例子在 business--system--other 模块中）
+# 数据库表中表示路径的字段，只存一个文件名；如果需要区分项目，需要多一层文件夹（项目id作为文件夹名）
+#     如：sys_image表的url字段，存 1.jpg  or  项目id/1.jpg
+# 在本地硬盘的保存路径
+#     如：D:\zhny2\filepath\image\1.jpg(存储根路径文件夹 下的 不同前缀文件夹)
+# 读取的时候，需要将前缀拼上返回
+#     如 localhost/filepath/image/1.jpg（url + 不同前缀 + 文件名）
+location:
+  # 显示图片的url前缀
+  url: ${server.url}:${server.port}/filepath/
+  # 存储根路径
+  path: /zhny2/filepath/
+  # 背景图文件夹
+  background: background-img
+  # 拓扑图节点文件夹（需要分系统）
+  node: node-img
+  # 拓扑图文件夹（需要分项目）
+  topology: topology-img
+  # 设备图片（需要分项目）
+  device: device-img
+  # 二维码（需要分项目）
+  qrcode: qrcode-img

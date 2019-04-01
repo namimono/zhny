@@ -29,7 +29,7 @@ public interface CommonService {
      * @param projectId
      * @return
      */
-    List<BusDevice> queryDevices(String projectId);
+    List<BusDevice> queryDevices(String projectId, String typeFirstId);
 
     /**
      * 查询设备的一级参数

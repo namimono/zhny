@@ -44,8 +44,8 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    public List<BusDevice> queryDevices(String projectId) {
-        return commonDao.queryDevices(projectId);
+    public List<BusDevice> queryDevices(String projectId, String typeFirstId) {
+        return commonDao.queryDevices(projectId, typeFirstId);
     }
 
     @Override

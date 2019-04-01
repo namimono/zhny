@@ -64,7 +64,7 @@
     </springProfile>
 
     <springProfile name="prod">
-        <root level="debug">
+        <root level="error">
             <appender-ref ref="consoleLog" />
             <appender-ref ref="fileInfoLog" />
             <appender-ref ref="fileErrorLog" />

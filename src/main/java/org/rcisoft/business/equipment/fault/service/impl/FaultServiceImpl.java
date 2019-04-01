@@ -16,6 +16,7 @@ import org.rcisoft.dao.BusMalfunctionDao;
 import org.rcisoft.entity.BusMalfunction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,6 +55,7 @@ public class FaultServiceImpl implements FaultService {
         return PageUtil.pageResult(list);
     }
 
+    @Transactional
     @Override
     public int updateMalfunction(BusMalfunction busMalfunction) {
         return busMalfunctionDao.updateByPrimaryKeySelective(busMalfunction);
