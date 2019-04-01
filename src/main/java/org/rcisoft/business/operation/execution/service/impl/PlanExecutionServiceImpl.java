@@ -2,6 +2,7 @@ package org.rcisoft.business.operation.execution.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.rcisoft.base.util.ZhnyUtils;
 import org.rcisoft.business.operation.establishment.dao.DevicePlanningRepository;
 import org.rcisoft.business.operation.establishment.entity.ConditionDto;
 import org.rcisoft.business.operation.establishment.entity.DevicePlanningFromDb;
@@ -18,8 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
-
-import static org.rcisoft.business.operation.establishment.service.impl.EnergyPlanningServiceImpl.groupDevicePlanningFromDb;
 
 /**
  * @author GaoLiwei
@@ -97,7 +96,7 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
                 if (devicePlanningFromDbList.size() > 0) {
 
                     //把得到的计划编制信息按照设备进行分组
-                    Map<String, List<DevicePlanningFromDb>> groupDevicePlanningFromDb = groupDevicePlanningFromDb(devicePlanningFromDbList);
+                    Map<Object, List> groupDevicePlanningFromDb = ZhnyUtils.groupListByName(devicePlanningFromDbList,"deviceId");
 
                     //拿到某个设备的计划编制信息
                     List<DevicePlanningFromDb> devicePlanning = groupDevicePlanningFromDb.get(device.getDeviceId());

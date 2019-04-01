@@ -50,7 +50,7 @@ public class EnergyPlanningServiceImpl implements EnergyPlanningService {
         List<DevicePlanningFromDb> devicePlanningFromDbList = devicePlanningRepository.listDevicePlanningFromDb(conditionDto);
 
         //根据设备Id,对查出来的计划编制信息进行分组
-        Map<String, List<DevicePlanningFromDb>> groupDevicePlanningFromDb = groupDevicePlanningFromDb(devicePlanningFromDbList);
+        Map<Object, List> groupDevicePlanningFromDb = ZhnyUtils.groupListByName(devicePlanningFromDbList,"deviceId");
 
         if (energyPlanningDeviceList.size() > 0) {
             //循环计划编制设备，分别对每个设备当天计划进行处理
@@ -309,27 +309,4 @@ public class EnergyPlanningServiceImpl implements EnergyPlanningService {
 
     }
 
-
-    /**
-     * 将查出的所有EnergyPlanningRecord数据，根据他的设备Id进行分组
-     *
-     * @author GaoLiWei
-     * @date 10:57 2019/3/8
-     **/
-    public static Map<String, List<DevicePlanningFromDb>> groupDevicePlanningFromDb(List<DevicePlanningFromDb> energyPlanningDeviceList) {
-        Map<String, List<DevicePlanningFromDb>> resultMap = new HashMap<>();
-        if (energyPlanningDeviceList.size() > 0) {
-            for (DevicePlanningFromDb energyPlanningDevice : energyPlanningDeviceList) {
-                //如果map中已经存在了key，则直接将这个数据归到这个分组下
-                if (resultMap.containsKey(energyPlanningDevice.getDeviceId())) {
-                    resultMap.get(energyPlanningDevice.getDeviceId()).add(energyPlanningDevice);
-                } else {//如果这个设备ID不再map的key中，则说明没有这个设备id的分组，新建一个分组，将数据放进去
-                    List<DevicePlanningFromDb> list = new ArrayList<>();
-                    list.add(energyPlanningDevice);
-                    resultMap.put(energyPlanningDevice.getDeviceId(), list);
-                }
-            }
-        }
-        return resultMap;
-    }
 }
