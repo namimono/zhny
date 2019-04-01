@@ -19,11 +19,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 土豆儿
@@ -46,6 +44,20 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
     private SysDataDao sysDataDao;
 
     /**
+     * 获取当前系统时间
+     */
+    private Date getNowTime(){
+        SimpleDateFormat fdate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date nowTime = null;
+        try {
+            nowTime = fdate.parse(fdate.format(new Date()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return nowTime;
+    }
+
+    /**
      * 根据项目ID查询公式信息
      */
     @Override
@@ -59,6 +71,7 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
     @Override
     public int addFormula(BusFormula busFormula){
         busFormula.setId(UuidUtil.create32());
+        busFormula.setCreateTime(this.getNowTime());
         return busFormulaDao.insertSelective(busFormula);
     }
 
@@ -99,6 +112,7 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
      */
     @Override
     public int addVariable(BusVariable busVariable){
+        busVariable.setCreateTime(this.getNowTime());
         busVariable.setId(UuidUtil.create32());
         return busVariableDao.insertSelective(busVariable);
     }

@@ -31,9 +31,9 @@ public class OverviewController {
         return Result.result(overviewServiceImpl.queryPriceAndRank(projectId));
     }
 
-    @ApiOperation(value="今日、昨日分时运行费用", notes="1：水，2：电，3：气，总费用不需要传值；0：今日，-1：昨日")
+    @ApiOperation(value="今日、昨日分时运行费用", notes="1：水，2：电，3：气，总费用传0")
     @GetMapping("/queryPriceForDay/{projectId}/{energyType}")
-    public Result queryPriceForDay(@PathVariable String projectId, @PathVariable(required = false) Integer energyType) {
+    public Result queryPriceForDay(@PathVariable String projectId, @PathVariable Integer energyType) {
         return Result.result(overviewServiceImpl.queryPriceForDay(projectId, energyType));
     }
 

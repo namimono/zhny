@@ -4,10 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.poi.hssf.usermodel.*;
 import org.rcisoft.business.equipment.report.dao.DeviceReportDao;
-import org.rcisoft.business.equipment.report.entity.MidAndParamFirst;
 import org.rcisoft.business.equipment.report.service.DeviceReportService;
-//import org.rcisoft.dao.BusParamSecondDao;
-//import org.rcisoft.dao.MidDeviceParamFirstDao;
+import org.rcisoft.dao.BusParamSecondDao;
 import org.rcisoft.dao.SysDataDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,10 +27,8 @@ public class DeviceReportServiceImpl implements DeviceReportService {
 
     @Autowired
     private DeviceReportDao deviceReportDao;
-//    @Autowired
-//    private MidDeviceParamFirstDao midDeviceParamFirstDao;
-//    @Autowired
-//    private BusParamSecondDao busParamSecondDao;
+    @Autowired
+    private BusParamSecondDao busParamSecondDao;
     @Autowired
     private SysDataDao sysDataDao;
 

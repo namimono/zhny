@@ -86,5 +86,7 @@ public class EnergyDistribution {
 	 * 气费用
 	 */
 	private BigDecimal sumGas;
+	
+
 
 }

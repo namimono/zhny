@@ -3,6 +3,7 @@ package org.rcisoft.dao;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
+import org.rcisoft.base.util.SpecialBatchMapper;
 import org.rcisoft.entity.BusParamSecond;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
@@ -14,7 +15,7 @@ import java.util.List;
  * Time：2019/3/6 15:47
  **/
 @Repository
-public interface BusParamSecondDao extends Mapper<BusParamSecond> {
+public interface BusParamSecondDao extends Mapper<BusParamSecond>, SpecialBatchMapper<BusParamSecond> {
 
     /**
      * 查询二级参数信息
@@ -29,7 +30,7 @@ public interface BusParamSecondDao extends Mapper<BusParamSecond> {
     List<BusParamSecond> queryParamSecondInfo(BusParamSecond busParamSecond);
 
     /**
-     * 根据项目ID和参数来源查询二级参数信息
+     * 根据项目ID查询二级参数信息
      */
     @Select("SELECT * FROM bus_param_second WHERE \n" +
             "project_id = #{projectId} \n" +
@@ -44,4 +45,11 @@ public interface BusParamSecondDao extends Mapper<BusParamSecond> {
     @Select("SELECT * FROM bus_param_second WHERE param_first_id in (${paramFirstIds})")
     @ResultType(BusParamSecond.class)
     List<BusParamSecond> queryParamSecondByIds(@Param("paramFirstIds") String paramFirstIds);
+
+    /**
+     * 根据设备ID查询一级参数信息
+     */
+    @Select("SELECT * FROM bus_param_second WHERE device_id = #{deviceId};")
+    @ResultType(BusParamSecond.class)
+    List<BusParamSecond> queryParamSecondByDevId(@Param("deviceId") String deviceId);
 }

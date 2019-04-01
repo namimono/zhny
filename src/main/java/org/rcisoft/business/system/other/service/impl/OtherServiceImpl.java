@@ -30,7 +30,7 @@ public class OtherServiceImpl implements OtherService {
     @Value("${location.path}")
     String path;
     /** 背景图文件夹 */
-    @Value("${location.image}")
+    @Value("${location.background}")
     String image;
     /** 访问路径 */
     @Value("${location.url}")

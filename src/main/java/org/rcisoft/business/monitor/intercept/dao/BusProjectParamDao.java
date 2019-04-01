@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.monitor.intercept.entity.BusProjectParam;
 import org.rcisoft.business.monitor.intercept.entity.DeviceFixValue;
 import org.rcisoft.business.monitor.intercept.entity.EnergyParam;
+import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * @Description:
  * @Date: Created in 11:30 2019/3/18
  */
+@Repository
 public interface BusProjectParamDao extends Mapper<BusProjectParam> {
     /**
      * 查询设备一二级参数
@@ -34,9 +36,9 @@ public interface BusProjectParamDao extends Mapper<BusProjectParam> {
      * @param deviceId
      * @return
      */
-    @Select("<script>select ec.elec_type as elecType,bpf.coding as codingFirst,bps.coding as codingSecond " +
-            "from energy_config ec,bus_param_first bpf,bus_param_second bps " +
-            "WHERE ec.param_first_id = bpf.id and ec.param_second_id = bps.id and ec.energy_type_id = 2 and ec.device_id = #{deviceId}</script>")
+    @Select("<script>select bps.elec_type as elecType,bpf.coding as codingFirst,bps.coding as codingSecond " +
+            "from bus_param_first bpf,bus_param_second bps " +
+            "where bpf.id = bps.param_first_id and bps.elec_type = 2 and bps.device_id = #{deviceId}</script>")
     List<EnergyParam> queryEnergyParam(String deviceId);
 
     @Select("<script>select name,coding,unit,fix_value as fixValue from bus_param_fixed where device_id = #{deviceId}</script>")

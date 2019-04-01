@@ -1,7 +1,7 @@
 package org.rcisoft.business.system.project.service;
 
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
-import org.rcisoft.business.system.project.entity.TypeFirstAndSecond;
+import org.rcisoft.business.system.project.entity.ParamFirstContainSecond;
 import org.rcisoft.entity.*;
 
 import java.util.List;
@@ -35,19 +35,24 @@ public interface DeviceConfigService {
     List<BusDevice> queryDeviceInfo(String deviceId);
 
     /**
-     * 查询设备简要信息
+     * 查询设备简要信息（设备配置）
      */
-    List<DeviceBriefInfo> queryDeviceBriefInfo(DeviceBriefInfo deviceBriefInfo);
+    List<DeviceBriefInfo> queryDeviceBriefInfo(String systemId,String projectId);
 
     /**
-     * 根据项目ID和子系统ID查询未关联一级参数信息
+     * 查询系统类型
      */
-    List<BusParamFirst> queryParamFirstInfoBySysId(BusParamFirst busParamFirst);
+    List<SysSystem> querySystem();
 
     /**
-     * 根据系统类型ID和一级设备类型ID查询二级设备类型信息
+     * 查询参数来源
      */
-    List<TypeFirstAndSecond> queryTypeSecondInfo(String systemId);
+    List<SysSource> querySource();
+
+    /**
+     * 查询能耗分类
+     */
+    List<EnergyType> queryEnergyType();
 
     /**
      * 处理一、二级设备类型下拉菜单级联格式
@@ -55,54 +60,53 @@ public interface DeviceConfigService {
     List<Map<String,Object>> processTypeFormat(String systemId);
 
 //    /**
-//     * 添加固定参数表信息
+//     * 删除一级参数信息
 //     */
-//    int addParamFixed(BusParamFixed busParamFixed);
+//    int deleteParamFirst(String paramFirstId);
 //
 //    /**
-//     * 根据项目、设备、系统ID查询固定参数信息
+//     * 删除二级参数信息
 //     */
-//    List<BusParamFixed> queryParamFixed(BusParamFixed busParamFixed);
-//
-//    /**
-//     * 修改固定参数表信息
-//     */
-//    int updateParamFixed(BusParamFixed busParamFixed);
-//
-//    /**
-//     * 删除固定参数表信息
-//     */
-//    int deleteParamFixed(BusParamFixed busParamFixed);
-//
-//    /**
-//     * 增加设备一级参数中间表信息
-//     */
-//    int addMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst);
-//
-//    /**
-//     * 删除设备一级参数中间表信息
-//     */
-//    int deleteMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst);
-//
-//    /**
-//     * 增加设备二级参数中间表信息
-//     */
-//    int addMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond);
-//
-//    /**
-//     * 删除设备二级参数中间表信息
-//     */
-//    int deleteMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond);
-//
-//    /**
-//     * 修改设备一级参数中间表信息
-//     */
-//    int updateMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst);
-//
-//    /**
-//     * 修改设备二级参数中间表信息
-//     */
-//    int updateMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond);
+//    int deleteParamSecond(String paramSecondId);
 
+//    /**
+//     * 修改一级参数信息
+//     */
+//    int updateParamFirst(BusParamFirst busParamFirst);
+
+//    /**
+//     * 批量更新一级参数
+//     */
+//    int updateAllParamFirst(List<BusParamFirst> list);
+
+//    /**
+//     * 修改二级参数信息
+//     */
+//    int updateParamSecond(BusParamSecond busParamSecond);
+
+//    /**
+//     * 批量更新二级参数
+//     */
+//    int updateAllParamSecond(List<BusParamSecond> list);
+
+//    /**
+//     * 新增一二级参数信息
+//     */
+//    int addParamInfo(BusParamFirst busParamFirst,BusParamSecond busParamSecond);
+//
+//    /**
+//     * 新增二级参数信息
+//     */
+//    int addParamSecond(BusParamSecond busParamSecond);
+
+    /**
+     * 查询一二级参数信息
+     */
+    List<ParamFirstContainSecond> queryParamInfo(String deviceId);
+
+    /**
+     * 批量增删改一二级参数信息
+     */
+    int batchOperationParams(List<ParamFirstContainSecond> list,String paramFirstIds,String paramSecondIds);
 
 }

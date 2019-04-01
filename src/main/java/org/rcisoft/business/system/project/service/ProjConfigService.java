@@ -142,4 +142,9 @@ public interface ProjConfigService {
      */
     List<ProjectConfigInfo> queryProjectConfigInfo(String projectId);
 
+    /**
+     * 查询系统类型
+     */
+    List<SysSystem> querySystemType();
+
 }

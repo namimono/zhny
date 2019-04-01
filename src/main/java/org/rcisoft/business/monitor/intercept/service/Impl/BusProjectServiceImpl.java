@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.rcisoft.base.redis.RedisService;
 import org.rcisoft.business.monitor.intercept.dao.BusProjectParamDao;
+import org.rcisoft.business.monitor.intercept.dao.DeviceDetailDao;
 import org.rcisoft.business.monitor.intercept.dao.DeviceParamDao;
 import org.rcisoft.business.monitor.intercept.entity.*;
 import org.rcisoft.business.monitor.intercept.service.BusProjectService;
@@ -33,6 +34,8 @@ public class BusProjectServiceImpl implements BusProjectService {
     private DeviceParamDao deviceParamDao;
     @Autowired
     private BusProjectParamDao busProjectParamDao;
+    @Autowired
+    private DeviceDetailDao deviceDetailDao;
 
 
     @Override
@@ -123,6 +126,8 @@ public class BusProjectServiceImpl implements BusProjectService {
         Map<String,Object> map = new HashMap<>();
         List<TimeJson> list_data = deviceParamDao.queryData();
         List<EnergyEcharts> list = deviceParamDao.queryEnergyEchart(titleId);
+        System.out.println(list_data);
+        System.out.println(list);
         for (int i = 0; i < list.size(); i++){
             int resultData[] = new int[24];
             for(int j = 0; j < list_data.size(); j++){
@@ -146,5 +151,24 @@ public class BusProjectServiceImpl implements BusProjectService {
     @Override
     public List<DeviceFixValue> queryDeviceFixValue(String deviceId) {
         return busProjectParamDao.queryDeviceFixParam(deviceId);
+    }
+
+    @Override
+    public List<DeviceDetail> queryDeviceDetail(String deviceId) {
+        return deviceDetailDao.queryDeviceDetail(deviceId);
+    }
+
+    @Override
+    public List<String> queryJsonByProId(String ProId) {
+        List<String> jsonList = new ArrayList<>();
+        String phoneList = redisService.get(ProId);
+        String phone[] = phoneList.split(",");
+        System.out.println(phone);
+        for (int i = 0;i < phone.length; i++){
+            jsonList.add(redisService.get(phone[i]));
+        }
+
+        System.out.println(jsonList);
+        return jsonList;
     }
 }

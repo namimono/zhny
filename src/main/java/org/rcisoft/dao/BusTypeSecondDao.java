@@ -18,14 +18,7 @@ import java.util.List;
 public interface BusTypeSecondDao extends Mapper<BusTypeSecond> {
 
     /**
-     * 查询二级设备类型列表
-     */
-    @Select("SELECT * FROM bus_type_second;")
-    @ResultType(BusTypeSecond.class)
-    List<BusTypeSecond> queryTypeSecond();
-
-    /**
-     * 根据系统类型ID和一级设备类型ID查询二级设备类型信息
+     * 根据系统类型ID和一级设备类型ID查询二级设备类型信息(处理一、二级设备类型下拉菜单级联格式使用)
      */
     @Select("select a.id AS 'firstId',a.name AS 'firstName',\n" +
             "b.id AS 'secondId',b.name AS 'secondName',b.url,\n" +

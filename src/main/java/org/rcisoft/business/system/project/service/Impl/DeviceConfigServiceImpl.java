@@ -3,12 +3,15 @@ package org.rcisoft.business.system.project.service.Impl;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.dao.DeviceConfigDao;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
+import org.rcisoft.business.system.project.entity.ParamFirstContainSecond;
 import org.rcisoft.business.system.project.entity.TypeFirstAndSecond;
 import org.rcisoft.dao.*;
 import org.rcisoft.entity.*;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,19 +32,23 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     private BusTypeSecondDao busTypeSecondDao;
     @Autowired
     private BusParamFirstDao busParamFirstDao;
-//    @Autowired
-//    private BusParamFixedDao busParamFixedDao;
-//    @Autowired
-//    private MidDeviceParamFirstDao midDeviceParamFirstDao;
-//    @Autowired
-//    private MidDeviceParamSecondDao midDeviceParamSecondDao;
+    @Autowired
+    private BusParamSecondDao busParamSecondDao;
+    @Autowired
+    private SysSystemDao sysSystemDao;
+    @Autowired
+    private EnergyTypeDao energyTypeDao;
+    @Autowired
+    private SysSourceDao sysSourceDao;
+    @Autowired
+    private BusVariableDao busVariableDao;
+    @Autowired
+    private BusTitleParamDao busTitleParamDao;
 
     /**
-     * 新增设备配置信息
+     * 获取当前系统时间
      */
-    @Override
-    public int addDeviceConfigInfo(BusDevice busDevice){
-        busDevice.setId(UuidUtil.create32());
+    private Date getNowTime(){
         SimpleDateFormat fdate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date nowTime = null;
         try {
@@ -49,7 +56,16 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        busDevice.setCreateTime(nowTime);
+        return nowTime;
+    }
+
+    /**
+     * 新增设备配置信息
+     */
+    @Override
+    public int addDeviceConfigInfo(BusDevice busDevice){
+        busDevice.setId(UuidUtil.create32());
+        busDevice.setCreateTime(this.getNowTime());
         return busDeviceDao.insertSelective(busDevice);
     }
 
@@ -78,27 +94,23 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     }
 
     /**
-     * 查询设备简要信息
+     * 查询设备简要信息（设备配置）
      */
     @Override
-    public List<DeviceBriefInfo> queryDeviceBriefInfo(DeviceBriefInfo deviceBriefInfo){
-        return busDeviceDao.queryDeviceBriefInfo(deviceBriefInfo);
+    public List<DeviceBriefInfo> queryDeviceBriefInfo(String systemId,String projectId){
+        if ("0".equals(systemId)){
+            return busDeviceDao.queryDeviceBriefByProID(projectId);
+        }else {
+            return busDeviceDao.queryDeviceBriefInfo(systemId,projectId);
+        }
     }
 
     /**
-     * 根据项目ID和子系统ID查询未关联一级参数信息
+     * 查询系统类型
      */
     @Override
-    public List<BusParamFirst> queryParamFirstInfoBySysId(BusParamFirst busParamFirst){
-        return busParamFirstDao.queryParamFirstInfoBySysId(busParamFirst);
-    }
-
-    /**
-     * 根据系统类型ID和一级设备类型ID查询二级设备类型信息
-     */
-    @Override
-    public List<TypeFirstAndSecond> queryTypeSecondInfo(String systemId){
-      return busTypeSecondDao.queryTypeSecondInfo(systemId);
+    public List<SysSystem> querySystem(){
+        return sysSystemDao.querySysSystemInfo();
     }
 
     /**
@@ -121,8 +133,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
                 resultMap.put(typeFirstAndSecond.getFirstId(),list);
             }
         }
-        /*SET @projectId=21;
-CALL delete_AllByProId(@projectId) ;
+        /*
         对每组数据进行进一步格式处理
          */
         for(String key : resultMap.keySet()){
@@ -141,89 +152,234 @@ CALL delete_AllByProId(@projectId) ;
         }
         return data;
     }
-//
+
+    /**
+     * 查询参数来源
+     */
+    @Override
+    public List<SysSource> querySource(){
+        return sysSourceDao.querySourceInfo();
+    }
+
+    /**
+     * 查询能耗分类
+     */
+    @Override
+    public List<EnergyType> queryEnergyType(){
+        return energyTypeDao.queryEnergyType();
+    }
+
+    /**
+     * 删除一级参数信息
+     */
+    //@Override
+    private int deleteParamFirst(String paramFirstId){
+        //删除一级参数关联的二级参数
+        Example paramExample = new Example(BusParamSecond.class);
+        Example.Criteria paramCriteria = paramExample.createCriteria();
+        paramCriteria.andEqualTo("paramFirstId",paramFirstId);
+        busParamSecondDao.deleteByExample(paramExample);
+
+        //删除一级参数关联的变量
+        Example variableExample = new Example(BusVariable.class);
+        Example.Criteria variableCriteria = variableExample.createCriteria();
+        variableCriteria.andEqualTo("paramFirstId",paramFirstId);
+        busVariableDao.deleteByExample(variableExample);
+
+        //删除一级参数关联的自定义参数
+        Example example = new Example(BusVariable.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("paramFirstId",paramFirstId);
+        busTitleParamDao.deleteByExample(example);
+
+        //删除一级参数
+        return busParamFirstDao.deleteByPrimaryKey(paramFirstId);
+    }
+
+    /**
+     * 删除二级参数信息
+     */
+    //@Override
+    private int deleteParamSecond(String paramSecondId){
+        //删除二级参数关联的变量
+        Example variableExample = new Example(BusVariable.class);
+        Example.Criteria variableCriteria = variableExample.createCriteria();
+        variableCriteria.andEqualTo("paramSecondId",paramSecondId);
+        busVariableDao.deleteByExample(variableExample);
+
+        //删除一级参数关联的自定义参数
+        Example example = new Example(BusVariable.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("paramSecondId",paramSecondId);
+        busTitleParamDao.deleteByExample(example);
+
+        //删除二级参数
+        return busParamSecondDao.deleteByPrimaryKey(paramSecondId);
+    }
+
 //    /**
-//     * 添加固定参数表信息
+//     * 修改一级参数信息
 //     */
 //    @Override
-//    public int addParamFixed(BusParamFixed busParamFixed){
-//        busParamFixed.setId(UuidUtil.create32());
-//        return busParamFixedDao.insert(busParamFixed);
-//    }
-//
-//    /**
-//     * 根据项目、设备、系统ID查询固定参数信息
-//     */
-//    @Override
-//    public List<BusParamFixed> queryParamFixed(BusParamFixed busParamFixed){
-//        return busParamFixedDao.queryParamFixed(busParamFixed);
-//    }
-//
-//    /**
-//     * 修改固定参数表信息
-//     */
-//    @Override
-//    public int updateParamFixed(BusParamFixed busParamFixed){
-//        return busParamFixedDao.updateByPrimaryKeySelective(busParamFixed);
-//    }
-//
-//    /**
-//     * 删除固定参数表信息
-//     */
-//    @Override
-//    public int deleteParamFixed(BusParamFixed busParamFixed){
-//        return busParamFixedDao.deleteByPrimaryKey(busParamFixed);
-//    }
-//
-//    /**
-//     * 增加设备一级参数中间表信息
-//     */
-//    @Override
-//    public int addMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst){
-//        midDeviceParamFirst.setId(UuidUtil.create32());
-//        return midDeviceParamFirstDao.insertSelective(midDeviceParamFirst);
-//    }
-//
-//    /**
-//     * 删除设备一级参数中间表信息
-//     */
-//    @Override
-//    public int deleteMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst){
-//        return midDeviceParamFirstDao.deleteByPrimaryKey(midDeviceParamFirst);
-//    }
-//
-//    /**
-//     * 增加设备二级参数中间表信息
-//     */
-//    @Override
-//    public int addMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond){
-//        midDeviceParamSecond.setId(UuidUtil.create32());
-//        return midDeviceParamSecondDao.insertSelective(midDeviceParamSecond);
-//    }
-//
-//    /**
-//     * 删除设备二级参数中间表信息
-//     */
-//    @Override
-//    public int deleteMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond){
-//        return midDeviceParamSecondDao.deleteByPrimaryKey(midDeviceParamSecond);
-//    }
-//
-//    /**
-//     * 修改设备一级参数中间表信息
-//     */
-//    @Override
-//    public int updateMidDeviceFirstInfo(MidDeviceParamFirst midDeviceParamFirst){
-//        return midDeviceParamFirstDao.updateByPrimaryKeySelective(midDeviceParamFirst);
-//    }
-//
-//    /**
-//     * 修改设备二级参数中间表信息
-//     */
-//    @Override
-//    public int updateMidDeviceSecondInfo(MidDeviceParamSecond midDeviceParamSecond){
-//        return midDeviceParamSecondDao.updateByPrimaryKeySelective(midDeviceParamSecond);
+//    public int updateParamFirst(BusParamFirst busParamFirst){
+//        return busParamFirstDao.updateByPrimaryKeySelective(busParamFirst);
 //    }
 
+    /**
+     * 批量更新一级参数
+     */
+    //@Override
+    private int updateAllParamFirst(List<BusParamFirst> list){
+        return deviceConfigDao.updateAllParamFirst(list);
+    }
+
+//    /**
+//     * 修改二级参数信息
+//     */
+//    @Override
+//    public int updateParamSecond(BusParamSecond busParamSecond){
+//        return busParamSecondDao.updateByPrimaryKeySelective(busParamSecond);
+//    }
+
+    /**
+     * 批量更新二级参数
+     */
+    //@Override
+    private int updateAllParamSecond(List<BusParamSecond> list){
+        list.forEach(busParamSecond -> {
+            if (busParamSecond.getFaultStatus() == null){ busParamSecond.setFaultStatus(0);}
+            if (busParamSecond.getEnergyTypeId() == null){ busParamSecond.setEnergyTypeId(0);}
+            if (busParamSecond.getElecType() == null){ busParamSecond.setElecType(0);}
+            if (busParamSecond.getFirstSign() == null){ busParamSecond.setFirstSign(0);}
+
+        });
+        return deviceConfigDao.updateAllParamSecond(list);
+    }
+
+//    /**
+//     * 新增一二级参数信息
+//     */
+//    @Override
+//    public int addParamInfo(BusParamFirst busParamFirst,BusParamSecond busParamSecond){
+//        String id = UuidUtil.create32();
+//        busParamFirst.setId(id);
+//        busParamFirstDao.insertSelective(busParamFirst);
+//
+//        busParamSecond.setId(UuidUtil.create32());
+//        busParamSecond.setParamFirstId(id);
+//        return busParamSecondDao.insertSelective(busParamSecond);
+//    }
+//
+//    /**
+//     * 新增二级参数信息
+//     */
+//    @Override
+//    public int addParamSecond(BusParamSecond busParamSecond){
+//        busParamSecond.setId(UuidUtil.create32());
+//        return busParamSecondDao.insertSelective(busParamSecond);
+//    }
+
+    /**
+     * 查询一二级参数信息
+     */
+    @Override
+    public List<ParamFirstContainSecond> queryParamInfo(String deviceId){
+        List<ParamFirstContainSecond> paramFirstContainSecondList = new ArrayList<>();
+        List<BusParamFirst> paramFirstList = busParamFirstDao.queryParamFirstByDevId(deviceId);
+        List<BusParamSecond> paramSecondList = busParamSecondDao.queryParamSecondByDevId(deviceId);
+        //分组存储二级参数信息
+        Map<String,List<BusParamSecond>> resultMap = new HashMap<>(16);
+        /*
+        将所有二级参数信息通过一级参数ID进行分组，存于resultMap中
+         */
+        for(BusParamSecond busParamSecond : paramSecondList){
+            if (resultMap.containsKey(busParamSecond.getParamFirstId())){
+                resultMap.get(busParamSecond.getParamFirstId()).add(busParamSecond);
+            }else {
+                List<BusParamSecond> list = new ArrayList<>();
+                list.add(busParamSecond);
+                resultMap.put(busParamSecond.getParamFirstId(),list);
+            }
+        }
+        //循环将一级参数和其对应的二级参数装入paramFirstContainSecondList
+        for(String key : resultMap.keySet()){
+            paramFirstList.forEach(busParamFirst -> {
+                if (busParamFirst.getId().equals(key)){
+                    ParamFirstContainSecond paramFirstContainSecond = new ParamFirstContainSecond();
+                    paramFirstContainSecond.setBusParamFirst(busParamFirst);
+                    paramFirstContainSecond.setSecondary(resultMap.get(key));
+                    paramFirstContainSecondList.add(paramFirstContainSecond);
+                }
+            });
+        }
+        return paramFirstContainSecondList;
+    }
+
+    /**
+     * 批量增删改一二级参数信息
+     */
+    @Transactional(rollbackFor=Exception.class)
+    @Override
+    public int batchOperationParams(List<ParamFirstContainSecond> list,String paramFirstIds,String paramSecondIds){
+        int sum = 0;
+        //批量删除
+        String[] firstIds = paramFirstIds.split(",");
+        String[] secondIds = paramSecondIds.split(",");
+        if (!"0".equals(firstIds[0])){
+            for (String firstId : firstIds) {
+                sum += this.deleteParamFirst(firstId);
+            }
+        }
+        if (!"0".equals(secondIds[0])){
+            for (String secondId : secondIds) {
+                sum += this.deleteParamSecond(secondId);
+            }
+        }
+        //批量修改或新增一二级参数
+        List<BusParamFirst> addParamFirstList = new ArrayList<>();
+        List<BusParamSecond> addParamSecondList = new ArrayList<>();
+        List<BusParamFirst> updateParamFirstList = new ArrayList<>();
+        List<BusParamSecond> updateParamSecondList = new ArrayList<>();
+        if(list.size() > 0){
+            list.forEach(paramFirstContainSecond -> {
+                if (paramFirstContainSecond.getBusParamFirst().getId() == null || "".equals(paramFirstContainSecond.getBusParamFirst().getId())){
+                    String id = UuidUtil.create32();
+                    paramFirstContainSecond.getBusParamFirst().setId(id);
+                    addParamFirstList.add(paramFirstContainSecond.getBusParamFirst());
+                    //循环添加二级参数id和其一级参数id字段信息
+                    paramFirstContainSecond.getSecondary().forEach(busParamSecond -> {
+                        busParamSecond.setId(UuidUtil.create32());
+                        busParamSecond.setParamFirstId(id);
+                        addParamSecondList.add(busParamSecond);
+                    });
+                }else {
+                    paramFirstContainSecond.getSecondary().forEach(busParamSecond -> {
+                        if (busParamSecond.getId() == null || "".equals(busParamSecond.getId())){
+                            busParamSecond.setId(UuidUtil.create32());
+                            addParamSecondList.add(busParamSecond);
+                        }else {
+                            updateParamSecondList.add(busParamSecond);
+                        }
+                    });
+                    updateParamFirstList.add(paramFirstContainSecond.getBusParamFirst());
+                }
+            });
+        }
+        //执行批量更新操作
+        if(updateParamFirstList.size() > 0){
+            sum += updateAllParamFirst(updateParamFirstList);
+        }
+        if (updateParamSecondList.size() > 0){
+            sum += updateAllParamSecond(updateParamSecondList);
+        }
+        //执行批量新增操作
+        if(addParamFirstList.size() > 0){
+            sum += busParamFirstDao.insertListUseAllCols(addParamFirstList);
+        }
+        if (addParamSecondList.size() > 0){
+            sum += busParamSecondDao.insertListUseAllCols(addParamSecondList);
+        }
+        return sum;
+    }
 
 }

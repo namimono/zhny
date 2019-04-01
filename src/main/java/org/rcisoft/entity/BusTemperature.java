@@ -3,6 +3,9 @@ package org.rcisoft.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import org.springframework.data.annotation.Transient;
+
 import javax.persistence.Id;
 
 import lombok.Data;
@@ -55,5 +58,11 @@ public class BusTemperature {
 	 */
    	@Column(name = "wind" )
 	private String wind;
+
+	/**
+	 * 湿度百分比
+	 */
+	@Transient
+	private transient String humidityPercent;
 
 }

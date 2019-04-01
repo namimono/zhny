@@ -1,6 +1,7 @@
 server:
   servlet:
     context-path: /zhny2
+  url: localhost
   port: 8080
   tomcat:
     max-threads: 300
@@ -13,7 +14,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
     platform: mysql
-    url: jdbc:mysql://10.96.129.56:3308/zhny-2nd?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+    url: jdbc:mysql://10.96.129.56:3308/zhny-2nd-change?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
     username: root
     password: 123456
     druid:
@@ -92,19 +93,16 @@ logging:
 #     如 localhost/filepath/image/1.jpg（url + 不同前缀 + 文件名）
 location:
   # 显示图片的url前缀
-  url: ${serverUrl}/filepath/
+  url: ${server.url}:${server.port}/filepath/
   # 存储根路径
   path: D:\zhny2\filepath\
   # 背景图文件夹
-  image: image
+  background: background-img
   # 拓扑图节点文件夹（需要分系统）
-  node: node
+  node: node-img
   # 拓扑图文件夹（需要分项目）
-  topology: topology
+  topology: topology-img
   # 设备图片（需要分项目）
-  device: device
+  device: device-img
   # 二维码（需要分项目）
-  qrcode: qrcode
-
-# 项目url
-serverUrl: localhost:8080
+  qrcode: qrcode-img

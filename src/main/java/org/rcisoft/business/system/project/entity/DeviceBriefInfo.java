@@ -18,12 +18,12 @@ public class DeviceBriefInfo {
     /**
      * 设备ID
      */
-    private String id;
+    private String deviceId;
 
     /**
      * 设备名称
      */
-    private String name;
+    private String deviceName;
 
     /**
      * 设备类型
@@ -46,9 +46,9 @@ public class DeviceBriefInfo {
     private String location;
 
     /**
-     * 项目ID
+     * 系统名称
      */
-    private String projectId;
+    private String systemName;
 
     /**
      * 系统ID

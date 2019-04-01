@@ -49,7 +49,7 @@ public class BusProjectController {
         return Result.result(1,busProjectService.queryParam(id));
     }
 
-    @ApiOperation(value = "查询设备参数",notes = "查询设备参数")
+    @ApiOperation(value = "查询设备一二级参数及二级名称",notes = "查询设备一二级参数及二级名称")
     @GetMapping(value = "queryDeviceParam/{id}")
     public Result queryDeviceParam(@PathVariable String id){
         return Result.result(1,busProjectService.queryDeviceParam(id));
@@ -90,4 +90,17 @@ public class BusProjectController {
     public Result queryDeviceFixValue(@PathVariable String deviceId){
         return Result.result(1,busProjectService.queryDeviceFixValue(deviceId));
     }
+    
+    @ApiOperation(value = "查询设备实时参数，并判断状态",notes = "查询设备实时参数，并判断状态")
+    @GetMapping(value = "DeviceDetail/{deviceId}")
+    public Result queryDeviceDetail(@PathVariable String deviceId) {
+    	return Result.result(1, busProjectService.queryDeviceDetail(deviceId));
+    }
+
+    @ApiOperation(value = "获取项目id，取出json串",notes = "获取项目id，取出json串")
+    @GetMapping(value = "getProId/{proId}")
+    public Result getProId(@PathVariable String proId){
+        return  Result.result(1,busProjectService.queryJsonByProId(proId));
+    }
+
 }

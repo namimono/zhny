@@ -5,6 +5,8 @@ import org.rcisoft.business.monitor.intercept.entity.DeviceInfo;
 import org.rcisoft.business.monitor.intercept.entity.DeviceParam;
 import org.rcisoft.business.monitor.intercept.entity.EnergyEcharts;
 import org.rcisoft.business.monitor.intercept.entity.TimeJson;
+import org.springframework.stereotype.Repository;
+
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -14,14 +16,15 @@ import java.util.List;
  * @Description:
  * @Date: Created in 14:57 2019/3/21
  */
+@Repository
 public interface DeviceParamDao extends Mapper<DeviceParam> {
     /**
      * 查询设备一二级参数及二级名称
      * @param device_id
      * @return
      */
-    @Select("<script>select bps.coding as coding_second ,bps.name as name_second,bpf.coding as coding_first from mid_device_param_second mdps,bus_param_second bps,bus_param_first bpf " +
-            "where mdps.device_id = #{device_id} and mdps.param_second_id = bps.id and bps.param_first_id = bpf.id limit 4</script>")
+    @Select("<script>select bps.coding as coding_second ,bps.name as name_second,bpf.coding as coding_first from bus_param_second bps,bus_param_first bpf " +
+            " where bps.device_id = #{device_id} and bps.param_first_id = bpf.id limit 4 </script>")
     List<DeviceParam> queryDeviceParam(String device_id);
 
     /**

@@ -45,6 +45,22 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     private SysAuthenticatorDao sysAuthenticatorDao;
     @Autowired
     private ProConfigDao proConfigDao;
+    @Autowired
+    private SysSystemDao sysSystemDao;
+
+    /**
+     * 获取当前系统时间
+     */
+    private Date getNowTime(){
+        SimpleDateFormat fdate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date nowTime = null;
+        try {
+            nowTime = fdate.parse(fdate.format(new Date()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return nowTime;
+    }
 
     /**
      * 查询全部项目表信息
@@ -61,14 +77,7 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     public ServiceResult addProjConfig(BusProject busProject){
         String id = UuidUtil.create32();
         busProject.setId(id);
-        SimpleDateFormat fdate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date nowTime = null;
-        try {
-            nowTime = fdate.parse(fdate.format(new Date()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        busProject.setCreateTime(nowTime);
+        busProject.setCreateTime(this.getNowTime());
         int i = busProjectDao.insertSelective(busProject);
         return new ServiceResult(i, id);
     }
@@ -294,6 +303,14 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     @Override
     public int deleteAllByProId(String projectId){
         return proConfigDao.deleteAllByProId(projectId);
+    }
+
+    /**
+     * 查询系统类型
+     */
+    @Override
+    public List<SysSystem> querySystemType(){
+        return sysSystemDao.querySysSystemInfo();
     }
 
 }

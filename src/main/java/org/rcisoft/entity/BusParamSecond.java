@@ -74,6 +74,12 @@ public class BusParamSecond {
 	private String unit;
 
 	/**
+	 * 固定参数的值
+	 */
+	@Column(name = "value" )
+	private BigDecimal value;
+
+	/**
 	 * 一级id相同时的排序字段
 	 */
    	@Column(name = "sequence" )

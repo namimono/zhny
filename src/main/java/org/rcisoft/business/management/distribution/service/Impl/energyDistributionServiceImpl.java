@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Minghui Xu
@@ -29,18 +31,19 @@ public class energyDistributionServiceImpl implements energyDistributionService 
      * @return
      */
     @Override
-    public List<EnergyDistribution> queryEnergyDistributed(int timeYear,String Month) {
+    public Map<String,Object> queryEnergyDistributed(int timeYear,String Month) {
+    	Map<String,Object> resultMap = new HashMap();
         EnergyDistribution energyDistribution = new EnergyDistribution();
         Calendar cal = Calendar.getInstance();
-        //获取当前月份
-        int timeMonth = cal .get(Calendar.MONTH) + 1;
-        List<EnergyDistribution> list = energyDistributionDao.queryEnergyDistributed(timeYear,Month,timeMonth);
+        List buildingType = new ArrayList<>(); 
+        List<EnergyDistribution> list = energyDistributionDao.queryEnergyDistributed(timeYear,Month);
         for(EnergyDistribution ed:list) {
             //计算水气电所有费用总和
             BigDecimal sum = ed.getSumElec().add(ed.getSumGas()).add(ed.getSumWater());
             //计算能耗水平
             BigDecimal energyNum = sum.divide(ed.getBuildingArea(), 2, BigDecimal.ROUND_HALF_UP);
             ed.setEnergyNum(energyNum);
+            buildingType.add(ed.getBuildingType());
             try{
                 //截取年份存入年份字段
                 Calendar c = Calendar.getInstance();
@@ -52,7 +55,9 @@ public class energyDistributionServiceImpl implements energyDistributionService 
                 e.getStackTrace();
             }
         }
+        resultMap.put("baiduMap",list);
+        resultMap.put("buildingType", buildingType);
         System.out.println(list);
-        return list;
+        return resultMap;
     }
 }
