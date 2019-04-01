@@ -59,44 +59,54 @@ public interface DeviceConfigService {
      */
     List<Map<String,Object>> processTypeFormat(String systemId);
 
-    /**
-     * 删除一级参数信息
-     */
-    int deleteParamFirst(String paramFirstId);
+//    /**
+//     * 删除一级参数信息
+//     */
+//    int deleteParamFirst(String paramFirstId);
+//
+//    /**
+//     * 删除二级参数信息
+//     */
+//    int deleteParamSecond(String paramSecondId);
 
-    /**
-     * 删除二级参数信息
-     */
-    int deleteParamSecond(String paramSecondId);
+//    /**
+//     * 修改一级参数信息
+//     */
+//    int updateParamFirst(BusParamFirst busParamFirst);
 
-    /**
-     * 修改一级参数信息
-     */
-    int updateParamFirst(BusParamFirst busParamFirst);
+//    /**
+//     * 批量更新一级参数
+//     */
+//    int updateAllParamFirst(List<BusParamFirst> list);
 
-    /**
-     * 批量更新一级参数
-     */
-    int updateAllParamFirst(List<BusParamFirst> list);
+//    /**
+//     * 修改二级参数信息
+//     */
+//    int updateParamSecond(BusParamSecond busParamSecond);
 
-    /**
-     * 修改二级参数信息
-     */
-    int updateParamSecond(BusParamSecond busParamSecond);
+//    /**
+//     * 批量更新二级参数
+//     */
+//    int updateAllParamSecond(List<BusParamSecond> list);
 
-    /**
-     * 新增一二级参数信息
-     */
-    int addParamInfo(BusParamFirst busParamFirst,BusParamSecond busParamSecond);
-
-    /**
-     * 新增二级参数信息
-     */
-    int addParamSecond(BusParamSecond busParamSecond);
+//    /**
+//     * 新增一二级参数信息
+//     */
+//    int addParamInfo(BusParamFirst busParamFirst,BusParamSecond busParamSecond);
+//
+//    /**
+//     * 新增二级参数信息
+//     */
+//    int addParamSecond(BusParamSecond busParamSecond);
 
     /**
      * 查询一二级参数信息
      */
     List<ParamFirstContainSecond> queryParamInfo(String deviceId);
+
+    /**
+     * 批量增删改一二级参数信息
+     */
+    String batchOperationParams(List<ParamFirstContainSecond> list,String paramFirstIds,String paramSecondIds);
 
 }

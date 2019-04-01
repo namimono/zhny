@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
+import org.rcisoft.business.system.project.entity.ParamFirstContainSecond;
 import org.rcisoft.entity.*;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,47 +79,53 @@ public class DeviceConfigController {
         return Result.result(deviceConfigServiceImpl.processTypeFormat(systemId));
     }
 
-    @ApiOperation(value="删除一级参数信息", notes="删除一级参数信息")
-    @DeleteMapping("/deleteParamFirst/{paramFirstId}")
-    public Result deleteParamFirst(@PathVariable String paramFirstId){
-        return Result.result(deviceConfigServiceImpl.deleteParamFirst(paramFirstId),"删除一级参数信息成功","删除一级参数信息失败");
-    }
+//    @ApiOperation(value="删除一级参数信息", notes="删除一级参数信息")
+//    @DeleteMapping("/deleteParamFirst/{paramFirstId}")
+//    public Result deleteParamFirst(@PathVariable String paramFirstId){
+//        return Result.result(deviceConfigServiceImpl.deleteParamFirst(paramFirstId),"删除一级参数信息成功","删除一级参数信息失败");
+//    }
+//
+//    @ApiOperation(value="删除二级参数信息", notes="删除二级参数信息")
+//    @DeleteMapping("/deleteParamSecond/{paramSecondId}")
+//    public Result deleteParamSecond(@PathVariable String paramSecondId){
+//        return Result.result(deviceConfigServiceImpl.deleteParamSecond(paramSecondId),"删除二级参数信息成功","删除二级参数信息失败");
+//    }
 
-    @ApiOperation(value="删除二级参数信息", notes="删除二级参数信息")
-    @DeleteMapping("/deleteParamSecond/{paramSecondId}")
-    public Result deleteParamSecond(@PathVariable String paramSecondId){
-        return Result.result(deviceConfigServiceImpl.deleteParamSecond(paramSecondId),"删除二级参数信息成功","删除二级参数信息失败");
-    }
+//    @ApiOperation(value="批量更新一级参数", notes="批量更新一级参数")
+//    @PutMapping("/updateAllParamFirst")
+//    public Result updateAllParamFirst(@RequestBody List<BusParamFirst> list){
+//        return Result.result(deviceConfigServiceImpl.updateAllParamFirst(list),"批量更新一级参数成功","批量更新一级参数失败");
+//    }
 
-    @ApiOperation(value="批量更新一级参数", notes="批量更新一级参数")
-    @PutMapping("/updateAllParamFirst")
-    public Result updateAllParamFirst(@RequestBody List<BusParamFirst> list){
-        return Result.result(deviceConfigServiceImpl.updateAllParamFirst(list),"批量更新一级参数成功","批量更新一级参数失败");
-    }
+//    @ApiOperation(value="修改一级参数信息", notes="修改一级参数信息")
+//    @PutMapping("/updateParamFirst")
+//    public Result updateParamFirst(@RequestBody BusParamFirst busParamFirst){
+//        return Result.result(deviceConfigServiceImpl.updateParamFirst(busParamFirst),"修改一级参数信息成功","修改一级参数信息失败");
+//    }
 
-    @ApiOperation(value="修改一级参数信息", notes="修改一级参数信息")
-    @PutMapping("/updateParamFirst")
-    public Result updateParamFirst(@RequestBody BusParamFirst busParamFirst){
-        return Result.result(deviceConfigServiceImpl.updateParamFirst(busParamFirst),"修改一级参数信息成功","修改一级参数信息失败");
-    }
+//    @ApiOperation(value="批量更新二级参数", notes="批量更新二级参数")
+//    @PutMapping("/updateAllParamSecond")
+//    public Result updateAllParamSecond(@RequestBody List<BusParamSecond> list){
+//        return Result.result(deviceConfigServiceImpl.updateAllParamSecond(list),"批量更新二级参数成功","批量更新二级参数失败");
+//    }
 
-    @ApiOperation(value="修改二级参数信息", notes="修改二级参数信息")
-    @PutMapping("/updateParamSecond")
-    public Result updateParamSecond(@RequestBody BusParamSecond busParamSecond){
-        return Result.result(deviceConfigServiceImpl.updateParamSecond(busParamSecond),"修改二级参数信息成功","修改二级参数信息失败");
-    }
+//    @ApiOperation(value="修改二级参数信息", notes="修改二级参数信息")
+//    @PutMapping("/updateParamSecond")
+//    public Result updateParamSecond(@RequestBody BusParamSecond busParamSecond){
+//        return Result.result(deviceConfigServiceImpl.updateParamSecond(busParamSecond),"修改二级参数信息成功","修改二级参数信息失败");
+//    }
 
-    @ApiOperation(value="新增一二级参数信息（第一次同时新增一二级参数）", notes="新增一二级参数信息（第一次同时新增一二级参数）")
-    @PostMapping("/addParamInfo")
-    public Result addParamInfo(@RequestBody BusParamFirst busParamFirst,@RequestBody BusParamSecond busParamSecond){
-        return Result.result(deviceConfigServiceImpl.addParamInfo(busParamFirst,busParamSecond),"新增一二级参数信息成功","新增一二级参数信息失败");
-    }
-
-    @ApiOperation(value="新增二级参数信息（单独新增二级参数）", notes="新增二级参数信息（单独新增二级参数）")
-    @PostMapping("/addParamSecond")
-    public Result addParamSecond(@RequestBody BusParamSecond busParamSecond){
-        return Result.result(deviceConfigServiceImpl.addParamSecond(busParamSecond),"新增二级参数信息成功","新增二级参数信息失败");
-    }
+//    @ApiOperation(value="新增一二级参数信息（第一次同时新增一二级参数）", notes="新增一二级参数信息（第一次同时新增一二级参数）")
+//    @PostMapping("/addParamInfo")
+//    public Result addParamInfo(@RequestBody BusParamFirst busParamFirst,@RequestBody BusParamSecond busParamSecond){
+//        return Result.result(deviceConfigServiceImpl.addParamInfo(busParamFirst,busParamSecond),"新增一二级参数信息成功","新增一二级参数信息失败");
+//    }
+//
+//    @ApiOperation(value="新增二级参数信息（单独新增二级参数）", notes="新增二级参数信息（单独新增二级参数）")
+//    @PostMapping("/addParamSecond")
+//    public Result addParamSecond(@RequestBody BusParamSecond busParamSecond){
+//        return Result.result(deviceConfigServiceImpl.addParamSecond(busParamSecond),"新增二级参数信息成功","新增二级参数信息失败");
+//    }
 
     @ApiOperation(value="查询一二级参数信息", notes="查询一二级参数信息")
     @GetMapping("/queryParamInfo/{deviceId}")
@@ -126,4 +133,9 @@ public class DeviceConfigController {
         return Result.result(deviceConfigServiceImpl.queryParamInfo(deviceId));
     }
 
+    @ApiOperation(value="批量增删改一二级参数信息", notes="批量增删改一二级参数信息")
+    @PostMapping("/batchOperationParams/{paramFirstIds}/{paramSecondIds}")
+    public Result batchOperationParams(@RequestBody List<ParamFirstContainSecond> list,@PathVariable String paramFirstIds,@PathVariable String paramSecondIds){
+        return Result.result(deviceConfigServiceImpl.batchOperationParams(list,paramFirstIds,paramSecondIds));
+    }
 }
