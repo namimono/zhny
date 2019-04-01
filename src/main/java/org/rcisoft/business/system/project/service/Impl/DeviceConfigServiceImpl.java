@@ -10,6 +10,7 @@ import org.rcisoft.entity.*;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.text.ParseException;
@@ -317,28 +318,22 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     /**
      * 批量增删改一二级参数信息
      */
+    @Transactional(rollbackFor=Exception.class)
     @Override
-    public String batchOperationParams(List<ParamFirstContainSecond> list,String paramFirstIds,String paramSecondIds){
-        //操作状态提示信息
-        StringBuilder message= new StringBuilder();
+    public int batchOperationParams(List<ParamFirstContainSecond> list,String paramFirstIds,String paramSecondIds){
+        int sum = 0;
         //批量删除
         String[] firstIds = paramFirstIds.split(",");
         String[] secondIds = paramSecondIds.split(",");
         if (!"0".equals(firstIds[0])){
-            int sum = 0;
             for (String firstId : firstIds) {
                 sum += this.deleteParamFirst(firstId);
             }
-            if (sum > 0){message.append("一级参数删除成功！");}
-            else {message.append("一级参数删除失败！");}
         }
         if (!"0".equals(secondIds[0])){
-            int sum = 0;
             for (String secondId : secondIds) {
                 sum += this.deleteParamSecond(secondId);
             }
-            if (sum > 0){message.append("二级参数删除成功！");}
-            else {message.append("二级参数删除失败！");}
         }
         //批量修改或新增一二级参数
         List<BusParamFirst> addParamFirstList = new ArrayList<>();
@@ -372,23 +367,19 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
         }
         //执行批量更新操作
         if(updateParamFirstList.size() > 0){
-            if(updateAllParamFirst(updateParamFirstList) > 0){message.append("一级参数修改成功！");}
-            else {message.append("一级参数修改失败！");}
+            sum += updateAllParamFirst(updateParamFirstList);
         }
         if (updateParamSecondList.size() > 0){
-            if(updateAllParamSecond(updateParamSecondList) > 0){message.append("二级参数修改成功！");}
-            else {message.append("二级参数修改失败！");}
+            sum += updateAllParamSecond(updateParamSecondList);
         }
         //执行批量新增操作
         if(addParamFirstList.size() > 0){
-            if(busParamFirstDao.insertListUseAllCols(addParamFirstList) > 0){message.append("一级参数新增成功！");}
-            else {message.append("一级参数新增成功！");}
+            sum += busParamFirstDao.insertListUseAllCols(addParamFirstList);
         }
         if (addParamSecondList.size() > 0){
-            if(busParamSecondDao.insertListUseAllCols(addParamSecondList) > 0){message.append("二级参数新增成功！");}
-            else {message.append("一级参数新增失败！");}
+            sum += busParamSecondDao.insertListUseAllCols(addParamSecondList);
         }
-        return message.toString();
+        return sum;
     }
 
 }

@@ -107,6 +107,6 @@ public interface DeviceConfigService {
     /**
      * 批量增删改一二级参数信息
      */
-    String batchOperationParams(List<ParamFirstContainSecond> list,String paramFirstIds,String paramSecondIds);
+    int batchOperationParams(List<ParamFirstContainSecond> list,String paramFirstIds,String paramSecondIds);
 
 }
