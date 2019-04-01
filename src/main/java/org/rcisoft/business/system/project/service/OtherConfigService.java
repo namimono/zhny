@@ -15,17 +15,15 @@ import java.util.List;
 
 public interface OtherConfigService {
 
+    /**
+     * 导出模板（项目维护-其他配置-参数库）
+     */
+    void downloadLibraryTemplate(HttpServletResponse response,String deviceId,String deviceName);
 
-//
-//    /**
-//     * 导出模板（项目维护-其他配置-参数库）
-//     */
-//    void downloadLibraryTemplate(HttpServletResponse response,String year,String model,BusParamSecond busParamSecond);
-//
-//    /**
-//     * 导入参数库模板数据
-//     */
-//    int importData(MultipartFile file, String deviceId, String projectId);
+    /**
+     * 导入参数库模板数据
+     */
+    int importData(MultipartFile file, String deviceId, String projectId);
 
     /**
      * 增加自定义标题信息

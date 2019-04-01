@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface DeviceReportService {
 
-//    /**
-//     * 导出当日设备信息excel
-//     * @param response
-//     * @param deviceId
-//     * @param proId
-//     * @param date
-//     */
-//    void downloadDeviceTodayData(HttpServletResponse response, String deviceId, String proId, String date);
+    /**
+     * 导出当日设备信息excel
+     * @param response
+     * @param deviceId
+     * @param proId
+     * @param date
+     */
+    void downloadDeviceTodayData(HttpServletResponse response, String deviceId, String proId, String date);
 }

@@ -8,6 +8,7 @@ import org.rcisoft.business.system.project.service.OtherConfigService;
 import org.rcisoft.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,11 +24,17 @@ public class OtherConfigController {
     @Autowired
     private OtherConfigService otherConfigServiceImpl;
 
-//    @ApiOperation(value="导入参数库模板数据", notes="导入参数库模板数据")
-//    @PostMapping("/importData")
-//    public void importData(MultipartFile file, String deviceId, String projectId){
-//        otherConfigServiceImpl.importData(file,deviceId,projectId);
-//    }
+    @ApiOperation(value="导出参数库模板", notes="导出参数库模板",produces="application/octet-stream")
+    @GetMapping("/downloadLibraryTemplate/{deviceId}/{deviceName}")
+    public void downloadLibraryTemplate(HttpServletResponse response,@PathVariable String deviceId,@PathVariable String deviceName){
+        otherConfigServiceImpl.downloadLibraryTemplate(response,deviceId,deviceName);
+    }
+
+    @ApiOperation(value="导入参数库模板数据", notes="导入参数库模板数据")
+    @PostMapping("/importData")
+    public void importData(MultipartFile file, String deviceId, String projectId){
+        otherConfigServiceImpl.importData(file,deviceId,projectId);
+    }
 
     @ApiOperation(value="增加自定义标题信息", notes="增加自定义标题信息")
     @PostMapping("/addTitleInfo")
