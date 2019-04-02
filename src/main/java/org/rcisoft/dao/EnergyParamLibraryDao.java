@@ -1,5 +1,6 @@
 package org.rcisoft.dao;
 
+import org.rcisoft.base.util.SpecialBatchMapper;
 import org.rcisoft.entity.EnergyParamLibrary;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
@@ -9,9 +10,6 @@ import tk.mybatis.mapper.common.Mapper;
  * @date 2019/3/14 14:47
  **/
 @Repository
-public interface EnergyParamLibraryDao extends Mapper<EnergyParamLibrary> {
+public interface EnergyParamLibraryDao extends Mapper<EnergyParamLibrary>, SpecialBatchMapper<EnergyParamLibrary> {
 
-    /**
-     *
-     */
 }

@@ -1,13 +1,11 @@
 package org.rcisoft.business.system.project.service.Impl;
 
+import com.mysql.jdbc.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.dao.OtherConfigDao;
-import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.TitleParamAndParam;
 import org.rcisoft.business.system.project.service.OtherConfigService;
 import org.rcisoft.dao.*;
@@ -19,9 +17,10 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author 土豆儿
@@ -52,10 +51,18 @@ public class OtherConfigServiceImpl implements OtherConfigService {
         HSSFDataFormat format = workbook.createDataFormat();
         textStyle.setDataFormat(format.getFormat("@"));
         //设置单元格格式为"文本" cell.setCellStyle(textStyle);
+        sheet.setDefaultColumnStyle(0,textStyle);
+        sheet.setDefaultColumnStyle(1,textStyle);
+        sheet.setDefaultColumnStyle(2,textStyle);
+        sheet.setDefaultColumnStyle(3,textStyle);
+        sheet.setDefaultColumnStyle(4,textStyle);
+        sheet.setDefaultColumnStyle(5,textStyle);
+        sheet.setDefaultColumnStyle(6,textStyle);
+        sheet.setDefaultColumnStyle(7,textStyle);
 
         List<BusParamSecond> paramSecondList = otherConfigDao.queryParamsSecondByDevId(deviceId);
         //设置要导出的文件的名字
-        String fileName = deviceName;
+        String fileName = deviceName + "模板";
         String[] header1 = {"设备型号"," "};
         String[] header2 = {"参数","二级参数名称","二级参数编码","来源","类型"};
         String[] header3 = {"主参数"," ","其他参数"};
@@ -131,12 +138,12 @@ public class OtherConfigServiceImpl implements OtherConfigService {
             HSSFRichTextString text = new HSSFRichTextString(header4[i]);
             cell.setCellValue(text);
         }
-        HSSFRow row5 = sheet.createRow(10);
-        for(int i=0;i<8;i++){
-            HSSFCell cell = row5.createCell(i);
-            cell.setCellValue(" ");
-            cell.setCellStyle(textStyle);
-        }
+//        HSSFRow row5 = sheet.createRow(10);
+//        for(int i=0;i<8;i++){
+//            HSSFCell cell = row5.createCell(i);
+//            cell.setCellValue("");
+//            cell.setCellStyle(textStyle);
+//        }
         response.setContentType("application/octet-stream");
         try {
             response.setHeader("Content-disposition", "attachment;filename=" + new String(fileName.getBytes("gbk"), "iso8859-1") + ".xls");
@@ -156,7 +163,7 @@ public class OtherConfigServiceImpl implements OtherConfigService {
         Workbook wb = null;
         try
         {
-            if (file.getOriginalFilename().endsWith("xls")) {
+            if (Objects.requireNonNull(file.getOriginalFilename()).endsWith("xls")) {
                 wb = new HSSFWorkbook(file.getInputStream());
             } else {
                 wb = new XSSFWorkbook(file.getInputStream());
@@ -168,36 +175,64 @@ public class OtherConfigServiceImpl implements OtherConfigService {
 
             return 0;
         }
-        //获取第一张表
+        //获取sheet
         Sheet sheet = wb.getSheetAt(0);
+        List<EnergyParamLibrary> paramLibraryList = new ArrayList<>();
+//        for (Row rows : sheet) {
+//            for (Cell cell : rows) {
+//                cell.setCellType(CellType.STRING);
+//            }
+//        }
+        for(int i = 10;i <= sheet.getLastRowNum();i++){
+            Row row = sheet.getRow(i);
+            if (row == null) {
+                continue;
+            } else if (row.getCell(0) == null ||
+                    StringUtils.isNullOrEmpty(row.getCell(0).getStringCellValue())) {
+                continue;
+            }
 
-        EnergyParamLibrary energyParamLibrary = new EnergyParamLibrary();
-        energyParamLibrary.setId(UuidUtil.create32());
-        energyParamLibrary.setDeviceId(deviceId);
-        energyParamLibrary.setProjectId(projectId);
+            EnergyParamLibrary energyParamLibrary = new EnergyParamLibrary();
+            energyParamLibrary.setId(UuidUtil.create32());
+            energyParamLibrary.setDeviceId(deviceId);
+            energyParamLibrary.setProjectId(projectId);
 
-        //获取索引为i的行，以0开始
-        Row row = sheet.getRow(10);
-        energyParamLibrary.setMainValue(new BigDecimal(row.getCell(0).getStringCellValue()));
-        if (!" ".equals(row.getCell(1).getStringCellValue())) {
-            energyParamLibrary.setMainValue2(new BigDecimal(row.getCell(1).getStringCellValue()));
+            //参数值1
+            if (!StringUtils.isNullOrEmpty(row.getCell(0).getStringCellValue())) {
+                energyParamLibrary.setMainValue(new BigDecimal(row.getCell(0).getStringCellValue()));
+            }
+            //参数值2
+            if (!StringUtils.isNullOrEmpty(row.getCell(1).getStringCellValue())) {
+                energyParamLibrary.setMainValue2(new BigDecimal(row.getCell(1).getStringCellValue()));
+            }
+            //参数值3
+            if (!StringUtils.isNullOrEmpty(row.getCell(2).getStringCellValue())) {
+                energyParamLibrary.setParamValue(new BigDecimal(row.getCell(2).getStringCellValue()));
+            }
+            //参数值4
+            if (!StringUtils.isNullOrEmpty(row.getCell(3).getStringCellValue())) {
+                energyParamLibrary.setParamValue2(new BigDecimal(row.getCell(3).getStringCellValue()));
+            }
+            //功率
+            if (!StringUtils.isNullOrEmpty(row.getCell(4).getStringCellValue())) {
+                energyParamLibrary.setEnergyElec(new BigDecimal(row.getCell(4).getStringCellValue()));
+            }
+            //用气速率
+            if (!StringUtils.isNullOrEmpty(row.getCell(5).getStringCellValue())) {
+                energyParamLibrary.setEnergyGas(new BigDecimal(row.getCell(5).getStringCellValue()));
+            }
+            //电费用
+            if (!StringUtils.isNullOrEmpty(row.getCell(6).getStringCellValue())) {
+                energyParamLibrary.setMoneyElec(new BigDecimal(row.getCell(6).getStringCellValue()));
+            }
+            //气费用
+            if (!StringUtils.isNullOrEmpty(row.getCell(7).getStringCellValue())) {
+                energyParamLibrary.setMoneyGas(new BigDecimal(row.getCell(7).getStringCellValue()));
+            }
+            paramLibraryList.add(energyParamLibrary);
+
         }
-        energyParamLibrary.setParamValue(new BigDecimal(row.getCell(2).getStringCellValue()));
-        if (!" ".equals(row.getCell(3).getStringCellValue())) {
-            energyParamLibrary.setParamValue2(new BigDecimal(row.getCell(3).getStringCellValue()));
-        }
-        if (!" ".equals(row.getCell(4).getStringCellValue())) {
-            energyParamLibrary.setEnergyElec(new BigDecimal(row.getCell(4).getStringCellValue()));
-        }
-        if (!" ".equals(row.getCell(5).getStringCellValue())) {
-            energyParamLibrary.setEnergyGas(new BigDecimal(row.getCell(5).getStringCellValue()));
-        }
-        if (!" ".equals(row.getCell(6).getStringCellValue())) {
-            energyParamLibrary.setMoneyElec(new BigDecimal(row.getCell(6).getStringCellValue()));
-        }
-        if (!" ".equals(row.getCell(6).getStringCellValue())) {
-            energyParamLibrary.setMoneyGas(new BigDecimal(row.getCell(7).getStringCellValue()));
-        }
+
         try
         {
             wb.close();
@@ -211,7 +246,7 @@ public class OtherConfigServiceImpl implements OtherConfigService {
         criteria.andEqualTo("projectId",projectId);
         criteria.andEqualTo("deviceId",deviceId);
         energyParamLibraryDao.deleteByExample(example);
-        return energyParamLibraryDao.insertSelective(energyParamLibrary);
+        return energyParamLibraryDao.insertListUseAllCols(paramLibraryList);
     }
 
     /**
