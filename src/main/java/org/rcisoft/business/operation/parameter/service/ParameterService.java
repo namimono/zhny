@@ -13,6 +13,11 @@ import java.util.List;
 public interface ParameterService {
 
     /**
+     * 查询设备简要信息（参数库）
+     */
+    List<DeviceBriefInfo> queryDeviceBriefByType(String systemId,String projectId,String typeFirstId);
+
+    /**
      * 导出参数库数据
      */
     void downloadParameter(HttpServletResponse response, String deviceId, String deviceName);

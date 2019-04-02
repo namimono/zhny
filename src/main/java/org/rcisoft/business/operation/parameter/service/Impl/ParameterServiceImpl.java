@@ -1,11 +1,17 @@
 package org.rcisoft.business.operation.parameter.service.Impl;
 
 import org.apache.poi.hssf.usermodel.*;
+import org.rcisoft.business.operation.parameter.dao.ParameterDao;
 import org.rcisoft.business.operation.parameter.service.ParameterService;
 import org.rcisoft.business.system.project.dao.OtherConfigDao;
+import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
+import org.rcisoft.dao.BusDeviceDao;
+import org.rcisoft.dao.EnergyParamLibraryDao;
 import org.rcisoft.entity.BusParamSecond;
+import org.rcisoft.entity.EnergyParamLibrary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -20,6 +26,28 @@ public class ParameterServiceImpl implements ParameterService {
 
     @Autowired
     private OtherConfigDao otherConfigDao;
+    @Autowired
+    private EnergyParamLibraryDao energyParamLibraryDao;
+    @Autowired
+    private ParameterDao parameterDao;
+    @Autowired
+    private BusDeviceDao busDeviceDao;
+
+    /**
+     * 查询设备简要信息（参数库）
+     */
+    @Override
+    public List<DeviceBriefInfo> queryDeviceBriefByType(String systemId,String projectId,String typeFirstId){
+        if ("0".equals(systemId) && "0".equals(typeFirstId)){
+            return busDeviceDao.queryDeviceBriefByProID(projectId);
+        }else {
+            if (!"0".equals(systemId) && "0".equals(typeFirstId)){
+                return busDeviceDao.queryDeviceBriefInfo(systemId,projectId);
+            }else {
+                return parameterDao.queryDeviceBriefByType(systemId,projectId,typeFirstId);
+            }
+        }
+    }
 
     /**
      * 导出参数库数据
@@ -80,6 +108,7 @@ public class ParameterServiceImpl implements ParameterService {
         int index = 1;
         String souce = "";
         String type = "";
+        //循环插入二级参数数据
         for (BusParamSecond busParamSecond : paramSecondList) {
             if (busParamSecond.getSourceId() == 1){
                 souce = "设备";
@@ -107,7 +136,7 @@ public class ParameterServiceImpl implements ParameterService {
             rowNum++;
         }
         //添加第三行表头
-        HSSFRow row3 = sheet.createRow(8);
+        HSSFRow row3 = sheet.createRow(rowNum + 1);
         //在excel表中添加表头
         for(int i=0;i<header3.length;i++){
             HSSFCell cell = row3.createCell(i);
@@ -115,18 +144,32 @@ public class ParameterServiceImpl implements ParameterService {
             cell.setCellValue(text);
         }
         //添加第四行表头
-        HSSFRow row4 = sheet.createRow(9);
+        HSSFRow row4 = sheet.createRow(rowNum + 2);
         for(int i=0;i<header4.length;i++){
             HSSFCell cell = row4.createCell(i);
             HSSFRichTextString text = new HSSFRichTextString(header4[i]);
             cell.setCellValue(text);
         }
-//        HSSFRow row5 = sheet.createRow(10);
-//        for(int i=0;i<8;i++){
-//            HSSFCell cell = row5.createCell(i);
-//            cell.setCellValue("");
-//            cell.setCellStyle(textStyle);
-//        }
+        //根据设备ID获取参数库数据
+        Example example = new Example(EnergyParamLibrary.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("deviceId",deviceId);
+        List<EnergyParamLibrary> paramLibraryList = energyParamLibraryDao.selectByExample(example);
+        int rowsNum = rowNum + 3;
+        //循环填入参数库数据
+        for (EnergyParamLibrary energyParamLibrary : paramLibraryList){
+            HSSFRow row5 = sheet.createRow(rowsNum);
+            row5.createCell(0).setCellValue(energyParamLibrary.getMainValue().toString());
+            row5.createCell(1).setCellValue(energyParamLibrary.getMainValue2().toString());
+            row5.createCell(2).setCellValue(energyParamLibrary.getParamValue().toString());
+            row5.createCell(3).setCellValue(energyParamLibrary.getParamValue2().toString());
+            row5.createCell(4).setCellValue(energyParamLibrary.getEnergyElec().toString());
+            row5.createCell(5).setCellValue(energyParamLibrary.getEnergyGas().toString());
+            row5.createCell(6).setCellValue(energyParamLibrary.getMoneyElec().toString());
+            row5.createCell(7).setCellValue(energyParamLibrary.getMoneyGas().toString());
+            rowsNum++;
+        }
+
         response.setContentType("application/octet-stream");
         try {
             response.setHeader("Content-disposition", "attachment;filename=" + new String(fileName.getBytes("gbk"), "iso8859-1") + ".xls");

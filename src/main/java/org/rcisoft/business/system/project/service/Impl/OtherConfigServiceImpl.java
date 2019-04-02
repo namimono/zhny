@@ -97,6 +97,7 @@ public class OtherConfigServiceImpl implements OtherConfigService {
         int index = 1;
         String souce = "";
         String type = "";
+        //循环插入二级参数数据
         for (BusParamSecond busParamSecond : paramSecondList) {
             if (busParamSecond.getSourceId() == 1){
                 souce = "设备";
@@ -124,7 +125,7 @@ public class OtherConfigServiceImpl implements OtherConfigService {
             rowNum++;
         }
         //添加第三行表头
-        HSSFRow row3 = sheet.createRow(8);
+        HSSFRow row3 = sheet.createRow(rowNum+1);
         //在excel表中添加表头
         for(int i=0;i<header3.length;i++){
             HSSFCell cell = row3.createCell(i);
@@ -132,7 +133,7 @@ public class OtherConfigServiceImpl implements OtherConfigService {
             cell.setCellValue(text);
         }
         //添加第四行表头
-        HSSFRow row4 = sheet.createRow(9);
+        HSSFRow row4 = sheet.createRow(rowNum+2);
         for(int i=0;i<header4.length;i++){
             HSSFCell cell = row4.createCell(i);
             HSSFRichTextString text = new HSSFRichTextString(header4[i]);
@@ -183,54 +184,71 @@ public class OtherConfigServiceImpl implements OtherConfigService {
 //                cell.setCellType(CellType.STRING);
 //            }
 //        }
-        for(int i = 10;i <= sheet.getLastRowNum();i++){
+        for(int i = 8;i <= sheet.getLastRowNum();i++){
             Row row = sheet.getRow(i);
-            if (row == null) {
+//            if (row == null) {
+//                continue;
+//            } else if (row.getCell(0) == null ||
+//                    StringUtils.isNullOrEmpty(row.getCell(0).getStringCellValue())) {
+//                continue;
+//            }
+            if(!"参数1值".equals(row.getCell(0).getStringCellValue()) && !"主参数".equals(row.getCell(0).getStringCellValue())){
+                EnergyParamLibrary energyParamLibrary = new EnergyParamLibrary();
+                energyParamLibrary.setId(UuidUtil.create32());
+                energyParamLibrary.setDeviceId(deviceId);
+                energyParamLibrary.setProjectId(projectId);
+                //参数值1
+                if (row.getCell(0) != null) {
+                    if (!StringUtils.isNullOrEmpty(row.getCell(0).getStringCellValue())) {
+                        energyParamLibrary.setMainValue(new BigDecimal(row.getCell(0).getStringCellValue()));
+                    }
+                }
+                //参数值2
+                if (row.getCell(1) != null) {
+                    if (!StringUtils.isNullOrEmpty(row.getCell(1).getStringCellValue())) {
+                        energyParamLibrary.setMainValue2(new BigDecimal(row.getCell(1).getStringCellValue()));
+                    }
+                }
+                //参数值3
+                if (row.getCell(2) != null) {
+                    if (!StringUtils.isNullOrEmpty(row.getCell(2).getStringCellValue())) {
+                        energyParamLibrary.setParamValue(new BigDecimal(row.getCell(2).getStringCellValue()));
+                    }
+                }
+                //参数值4
+                if (row.getCell(3) != null) {
+                    if (!StringUtils.isNullOrEmpty(row.getCell(3).getStringCellValue())) {
+                        energyParamLibrary.setParamValue2(new BigDecimal(row.getCell(3).getStringCellValue()));
+                    }
+                }
+                //功率
+                if (row.getCell(4) != null) {
+                    if (!StringUtils.isNullOrEmpty(row.getCell(4).getStringCellValue())) {
+                        energyParamLibrary.setEnergyElec(new BigDecimal(row.getCell(4).getStringCellValue()));
+                    }
+                }
+                //用气速率
+                if (row.getCell(5) != null) {
+                    if (!StringUtils.isNullOrEmpty(row.getCell(5).getStringCellValue())) {
+                        energyParamLibrary.setEnergyGas(new BigDecimal(row.getCell(5).getStringCellValue()));
+                    }
+                }
+                //电费用
+                if (row.getCell(6) != null) {
+                    if (!StringUtils.isNullOrEmpty(row.getCell(6).getStringCellValue())) {
+                        energyParamLibrary.setMoneyElec(new BigDecimal(row.getCell(6).getStringCellValue()));
+                    }
+                }
+                //气费用
+                if (row.getCell(7) != null) {
+                    if (!StringUtils.isNullOrEmpty(row.getCell(7).getStringCellValue())) {
+                        energyParamLibrary.setMoneyGas(new BigDecimal(row.getCell(7).getStringCellValue()));
+                    }
+                }
+                paramLibraryList.add(energyParamLibrary);
+            }else {
                 continue;
-            } else if (row.getCell(0) == null ||
-                    StringUtils.isNullOrEmpty(row.getCell(0).getStringCellValue())) {
-                continue;
             }
-
-            EnergyParamLibrary energyParamLibrary = new EnergyParamLibrary();
-            energyParamLibrary.setId(UuidUtil.create32());
-            energyParamLibrary.setDeviceId(deviceId);
-            energyParamLibrary.setProjectId(projectId);
-
-            //参数值1
-            if (!StringUtils.isNullOrEmpty(row.getCell(0).getStringCellValue())) {
-                energyParamLibrary.setMainValue(new BigDecimal(row.getCell(0).getStringCellValue()));
-            }
-            //参数值2
-            if (!StringUtils.isNullOrEmpty(row.getCell(1).getStringCellValue())) {
-                energyParamLibrary.setMainValue2(new BigDecimal(row.getCell(1).getStringCellValue()));
-            }
-            //参数值3
-            if (!StringUtils.isNullOrEmpty(row.getCell(2).getStringCellValue())) {
-                energyParamLibrary.setParamValue(new BigDecimal(row.getCell(2).getStringCellValue()));
-            }
-            //参数值4
-            if (!StringUtils.isNullOrEmpty(row.getCell(3).getStringCellValue())) {
-                energyParamLibrary.setParamValue2(new BigDecimal(row.getCell(3).getStringCellValue()));
-            }
-            //功率
-            if (!StringUtils.isNullOrEmpty(row.getCell(4).getStringCellValue())) {
-                energyParamLibrary.setEnergyElec(new BigDecimal(row.getCell(4).getStringCellValue()));
-            }
-            //用气速率
-            if (!StringUtils.isNullOrEmpty(row.getCell(5).getStringCellValue())) {
-                energyParamLibrary.setEnergyGas(new BigDecimal(row.getCell(5).getStringCellValue()));
-            }
-            //电费用
-            if (!StringUtils.isNullOrEmpty(row.getCell(6).getStringCellValue())) {
-                energyParamLibrary.setMoneyElec(new BigDecimal(row.getCell(6).getStringCellValue()));
-            }
-            //气费用
-            if (!StringUtils.isNullOrEmpty(row.getCell(7).getStringCellValue())) {
-                energyParamLibrary.setMoneyGas(new BigDecimal(row.getCell(7).getStringCellValue()));
-            }
-            paramLibraryList.add(energyParamLibrary);
-
         }
 
         try

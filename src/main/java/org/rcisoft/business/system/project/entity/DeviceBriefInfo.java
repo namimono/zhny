@@ -60,10 +60,10 @@ public class DeviceBriefInfo {
      */
     private String systemName;
 
-    /**
-     * 系统ID
-     */
-    private String systemId;
+//    /**
+//     * 系统ID
+//     */
+//    private String systemId;
 
 
 }

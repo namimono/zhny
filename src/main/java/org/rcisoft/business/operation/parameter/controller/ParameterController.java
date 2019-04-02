@@ -24,13 +24,11 @@ public class ParameterController {
 
     @Autowired
     private ParameterService parameterServiceImpl;
-    @Autowired
-    private DeviceConfigService deviceConfigServiceImpl;
 
     @ApiOperation(value="查询设备简要信息（参数库）", notes="查询设备简要信息（参数库）")
-    @GetMapping("/queryDeviceBriefInfo/{systemId}/{projectId}")
-    public Result queryDeviceBriefInfo(@PathVariable String systemId, @PathVariable String projectId){
-        return Result.result(deviceConfigServiceImpl.queryDeviceBriefInfo(systemId,projectId));
+    @GetMapping("/queryDeviceBriefByType/{systemId}/{projectId}/{typeFirstId}")
+    public Result queryDeviceBriefByType(@PathVariable String systemId,@PathVariable String projectId,@PathVariable String typeFirstId){
+        return Result.result(parameterServiceImpl.queryDeviceBriefByType(systemId,projectId,typeFirstId));
     }
 
     @ApiOperation(value="导出参数库数据", notes="导出参数库数据",produces="application/octet-stream")
