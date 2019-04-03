@@ -47,9 +47,9 @@ public interface CommonDao {
      * @param projectId
      * @return
      */
-    @Select("<script>select id, name, coding from bus_param_first where project_id = #{projectId} order by source_id asc</script>")
+    @Select("<script>select id, name, coding from bus_param_first where project_id = #{projectId} <if test = \"sourceId != null\">and source_id = #{sourceId}</if> order by source_id asc</script>")
     @ResultType(BusParamFirst.class)
-    List<BusParamFirst> queryParamFirsts(@Param("projectId") String projectId);
+    List<BusParamFirst> queryParamFirsts(@Param("projectId") String projectId, @Param("sourceId") String sourceId);
 
     /**
      * 查询一级参数的二级参数
