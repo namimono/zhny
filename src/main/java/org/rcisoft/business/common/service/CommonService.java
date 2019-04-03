@@ -32,11 +32,11 @@ public interface CommonService {
     List<BusDevice> queryDevices(String projectId, String typeFirstId);
 
     /**
-     * 查询设备的一级参数
-     * @param deviceId
+     * 查询项目所有的一级参数
+     * @param projectId
      * @return
      */
-    List<BusParamFirst> queryParamFirsts(String deviceId);
+    List<BusParamFirst> queryParamFirsts(String projectId);
 
     /**
      * 查询一级参数的二级参数
