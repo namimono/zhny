@@ -34,9 +34,10 @@ public interface CommonService {
     /**
      * 查询项目所有的一级参数
      * @param projectId
+     * @param sourceId
      * @return
      */
-    List<BusParamFirst> queryParamFirsts(String projectId);
+    List<BusParamFirst> queryParamFirsts(String projectId, String sourceId);
 
     /**
      * 查询一级参数的二级参数
