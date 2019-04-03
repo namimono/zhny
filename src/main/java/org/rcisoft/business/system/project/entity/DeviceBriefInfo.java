@@ -36,6 +36,16 @@ public class DeviceBriefInfo {
     private String info;
 
     /**
+     * 型号
+     */
+    private String model;
+
+    /**
+     * 安装日期
+     */
+    private String installTime;
+
+    /**
      * 设备厂家
      */
     private String factoryName;
@@ -50,10 +60,10 @@ public class DeviceBriefInfo {
      */
     private String systemName;
 
-    /**
-     * 系统ID
-     */
-    private String systemId;
+//    /**
+//     * 系统ID
+//     */
+//    private String systemId;
 
 
 }

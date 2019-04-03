@@ -43,20 +43,20 @@ public interface CommonDao {
     List<BusDevice> queryDevices(@Param("projectId") String projectId, @Param("typeFirstId") String typeFirstId);
 
     /**
-     * 查询设备的一级参数
-     * @param deviceId
+     * 查询项目所有的一级参数
+     * @param projectId
      * @return
      */
-    @Select("<script>select id, name from bus_param_first where device_id = #{deviceId} order by source_id asc</script>")
+    @Select("<script>select id, name, coding from bus_param_first where project_id = #{projectId} <if test = \"sourceId != null\">and source_id = #{sourceId}</if> order by source_id asc</script>")
     @ResultType(BusParamFirst.class)
-    List<BusParamFirst> queryParamFirsts(@Param("deviceId") String deviceId);
+    List<BusParamFirst> queryParamFirsts(@Param("projectId") String projectId, @Param("sourceId") String sourceId);
 
     /**
      * 查询一级参数的二级参数
      * @param paramFirstId
      * @return
      */
-    @Select("<script>select id, name from bus_param_second where param_first_id = #{paramFirstId}</script>")
+    @Select("<script>select id, name, coding from bus_param_second where param_first_id = #{paramFirstId}</script>")
     @ResultType(BusParamSecond.class)
     List<BusParamSecond> queryParamSeconds(@Param("paramFirstId") String paramFirstId);
 

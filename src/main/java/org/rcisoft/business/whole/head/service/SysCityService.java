@@ -1,6 +1,9 @@
 package org.rcisoft.business.whole.head.service;
 
 import org.rcisoft.entity.BusTemperature;
+import org.rcisoft.entity.SysCity;
+
+import java.util.List;
 
 /**
  * @Author Minghui Xu
@@ -14,4 +17,5 @@ public interface SysCityService {
      * @return
      */
     BusTemperature queryCityByName(String city);
+    public Integer queryCityWeather();
 }

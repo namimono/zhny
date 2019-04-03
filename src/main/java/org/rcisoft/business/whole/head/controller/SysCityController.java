@@ -14,7 +14,7 @@ import java.util.Map;
  * @Description:
  * @Date: Created in 11:27 2019/3/8
  */
-@Api(tags = "项目编辑-获取天气")
+@Api(tags = "项目管理-获取天气")
 @RestController
 @RequestMapping("sysCity")
 public class SysCityController {
@@ -27,4 +27,6 @@ public class SysCityController {
         System.out.println(city);
         return Result.result(1,sysCityService.queryCityByName(city));
     }
+
+
 }

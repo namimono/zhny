@@ -31,16 +31,16 @@ public class CommonController {
         return Result.result(commonServiceImpl.querySystemForProject(projectId));
     }
 
-    @ApiOperation(value="查询项目下所有设备", notes="typeFirstId：一级设备类型id，在养护计划模块用到，非必填")
+    @ApiOperation(value="查询项目下所有设备", notes="typeFirstId：一级设备类型id，非必填")
     @PostMapping("/queryDevices")
     public Result queryDevices(@RequestParam String projectId, @RequestParam(required = false) String typeFirstId) {
         return Result.result(commonServiceImpl.queryDevices(projectId, typeFirstId));
     }
 
-    @ApiOperation(value="查询设备的一级参数", notes="查询设备的一级参数")
-    @GetMapping("/queryParamFirsts/{deviceId}")
-    public Result queryParamFirsts(@PathVariable String deviceId) {
-        return Result.result(commonServiceImpl.queryParamFirsts(deviceId));
+    @ApiOperation(value="查询项目所有的一级参数", notes="sourceId：1：设备，2：计量表，3：传感器，非必填")
+    @PostMapping("/queryParamFirsts")
+    public Result queryParamFirsts(@RequestParam String projectId, @RequestParam(required = false) String sourceId) {
+        return Result.result(commonServiceImpl.queryParamFirsts(projectId, sourceId));
     }
 
     @ApiOperation(value="查询一级参数的二级参数", notes="查询一级参数的二级参数")

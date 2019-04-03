@@ -49,8 +49,8 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    public List<BusParamFirst> queryParamFirsts(String deviceId) {
-        return commonDao.queryParamFirsts(deviceId);
+    public List<BusParamFirst> queryParamFirsts(String projectId, String sourceId) {
+        return commonDao.queryParamFirsts(projectId, sourceId);
     }
 
     @Override

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Description:
  * @Date: Created in 15:49 2019/3/29
  */
-@Api(tags = "系统检测-室内温度")
+@Api(tags = "系统检测-室内环境")
 @RestController
 @RequestMapping("indoor")
 public class IndoorController {
@@ -33,5 +33,17 @@ public class IndoorController {
     @GetMapping(value = "queryDoor/{floor}")
     public Result queryDoor(@PathVariable int floor){
         return Result.result(1,indoorService.queryDoor(floor));
+    }
+
+    @ApiOperation(value = "查询室内环境参数",notes = "查询室内环境参数")
+    @GetMapping(value = "queryBusIndoorParam/{indoorParam}/{proId}/{city}")
+    public Result queryBusIndoorParam(@PathVariable String indoorParam,@PathVariable String proId,@PathVariable String city){
+        return Result.result(1,indoorService.queryIndoorParam(indoorParam,proId,city));
+    }
+
+    @ApiOperation(value = "查询一二级参数24小时",notes = "查询一二级参数24小时")
+    @GetMapping(value = "queryParamHour/{proId}/{type}/{coding}/{indoorId}")
+    public Result queryParamHour(@PathVariable String proId,@PathVariable int type,@PathVariable String coding,@PathVariable String indoorId){
+        return Result.result(1,indoorService.queryJsonIndoor(proId,type,coding,indoorId));
     }
 }
