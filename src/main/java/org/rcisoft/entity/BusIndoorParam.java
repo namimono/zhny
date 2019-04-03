@@ -54,10 +54,5 @@ public class BusIndoorParam {
    	@Column(name = "type" )
 	private Integer type;
 
-	/**
-	 * 1：室内，2：室外
-	 */
-   	@Column(name = "side" )
-	private Integer side;
 
 }
