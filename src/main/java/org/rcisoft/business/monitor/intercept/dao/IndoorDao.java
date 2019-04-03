@@ -1,9 +1,9 @@
 package org.rcisoft.business.monitor.intercept.dao;
 
 import org.apache.ibatis.annotations.Select;
-import org.rcisoft.entity.BusIndoor;
-import org.rcisoft.entity.BusIndoorParam;
-import org.rcisoft.entity.SysData;
+import org.rcisoft.business.monitor.intercept.entity.BusParamOutsideAndInside;
+import org.rcisoft.business.monitor.intercept.entity.BusParamType;
+import org.rcisoft.entity.*;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -32,12 +32,21 @@ public interface IndoorDao{
     List<BusIndoor> queryDoor(int floor);
 
     /**
-     * 根据门牌号查询室内室外温度
+     * 根据门牌号查询室内参数
      * @param indoorId
      * @return
      */
-    @Select("<script>select * from bus_indoor_param where indoor_id = #{indoorId} and project_id = #{proId}</script>")
-    List<BusIndoorParam> queryBusIndoorParam(String indoorId,String proId);
+    @Select("<script>select bpf.coding as codingFirst,bps.coding as codingSecond,bip.type   from bus_indoor_param bip,bus_param_first bpf,bus_param_second bps \n" +
+            "                        where  bip.indoor_id = #{indoorId} and bip.param_first_id = bpf.id and bip.param_second_id = bps.id and bip.project_id = #{proId}</script>")
+    List<BusParamType> queryBusIndoorParamInside(String indoorId, String proId);
+
+    /**
+     * 根据门牌号查询室外参数
+     * @return
+     */
+    @Select("<script>select bpf.coding as codingFirst,bps.coding as codingSecond,bo.type   from bus_outdoor bo,bus_param_first bpf,bus_param_second bps " +
+            " where   bo.param_first_id = bpf.id and bo.param_second_id = bps.id and bo.project_id = #{proId}</script>")
+    List<BusParamType> queryBusIndoorParamOutside(String proId);
 
     /**
      * 查询当天最新一条json数据
@@ -67,8 +76,28 @@ public interface IndoorDao{
      List<SysData> queryJsonIndoor(String proId);
 
     /**
-     * 查询一二级参数24小时
+     * 查询室内一二级参数24小时
      */
-    @Select("<script>select * from bus_indoor_param where type = #{type} and indoor_id = #{indoorId}</script>")
-    List<BusIndoorParam> queryParamHours(int type,String indoorId);
+    @Select("<script>select bpf.coding as codingFirst,bps.coding as codingSecond from bus_indoor_param bip,bus_param_first bpf,bus_param_second bps " +
+            "where bip.type = #{type} and bip.indoor_id = #{indoorId} and bip.param_first_id = bpf.id and bip.param_second_id = bps.id</script>")
+    BusParamOutsideAndInside queryParamHoursInside(int type, String indoorId);
+
+    /**
+     * 查询室外一二级参数24小时（pm2.5和CO2）
+     */
+    @Select("<script>select bpf.coding as codingFirst,bps.coding as codingSecond from bus_outdoor bo,bus_param_first bpf,bus_param_second bps " +
+            "where bo.type = #{type} and  bo.param_first_id = bpf.id and bo.param_second_id = bps.id and bo.project_id = #{proId}</script>")
+    BusParamOutsideAndInside queryParamHoursOutside(int type,String proId);
+
+    /**
+     * 查询室外一二级参数24小时（温度）
+     */
+    @Select("<script>select * from bus_temperature where TO_DAYS(create_time)=TO_DAYS(NOW()) and RIGHT(create_time,5)='00:00' and coding = #{coding}</script>")
+    List<BusTemperature> queryTempHours(String coding);
+
+    /**
+     * 查询室外一二级参数24小时（湿度）
+     */
+    @Select("<script>select * from bus_temperature where TO_DAYS(create_time)=TO_DAYS(NOW()) and RIGHT(create_time,5)='00:00' and coding = #{coding}</script>")
+    List<BusTemperature> queryHumidityHours(String coding);
 }

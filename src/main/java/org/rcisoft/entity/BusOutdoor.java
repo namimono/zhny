@@ -31,7 +31,7 @@ public class BusOutdoor {
      * 项目id
      */
     @Column(name = "project_id")
-    private String project_id;
+    private String projectId;
 
     /**
      * 一级参数id

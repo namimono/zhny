@@ -36,9 +36,9 @@ public class IndoorController {
     }
 
     @ApiOperation(value = "查询室内环境参数",notes = "查询室内环境参数")
-    @GetMapping(value = "queryBusIndoorParam/{indoorParam}/{proId}/{city}")
-    public Result queryBusIndoorParam(@PathVariable String indoorParam,@PathVariable String proId,@PathVariable String city){
-        return Result.result(1,indoorService.queryIndoorParam(indoorParam,proId,city));
+    @GetMapping(value = "queryBusIndoorParam/{indoorParam}/{proId}/{coding}")
+    public Result queryBusIndoorParam(@PathVariable String indoorParam,@PathVariable String proId,@PathVariable String coding){
+        return Result.result(1,indoorService.queryIndoorParam(indoorParam,proId,coding));
     }
 
     @ApiOperation(value = "查询一二级参数24小时",notes = "查询一二级参数24小时")

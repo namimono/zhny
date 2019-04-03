@@ -16,6 +16,6 @@ import java.util.Map;
 public interface IndoorService {
     List<String> queryFloor();
     List<BusIndoor> queryDoor(int floor);
-    OutsideAndInsideTemp queryIndoorParam(String indoorId, String ProId,String city);
+    OutsideAndInsideTemp queryIndoorParam(String indoorId, String ProId,String coding);
     Map<String,Object> queryJsonIndoor(String proId, int type, String coding,String indoor);
 }

@@ -17,9 +17,9 @@ public class WeatherTask {
 
     /**
      * 定时获取天气
-     * 每小时第53分钟执行一次
+     * 每小时整点执行一次
      */
-    @Scheduled(cron = "0 09 * * * ?")
+    @Scheduled(cron = "0 00 * * * ?")
     public void temperature(){
         sysCityService.queryCityWeather();
     }
