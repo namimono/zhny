@@ -39,14 +39,14 @@ public class BusIndoorParam {
 	/**
 	 * 一级参数编码
 	 */
-   	@Column(name = "coding_first" )
-	private String codingFirst;
+   	@Column(name = "param_first_id" )
+	private String paramFirstId;
 
 	/**
 	 * 二级参数编码
 	 */
-   	@Column(name = "coding_second" )
-	private String codingSecond;
+   	@Column(name = "param_second_id" )
+	private String paramSecondId;
 
 	/**
 	 * 类型：1：温度，2：湿度，3：PM2.5，4：CO2
