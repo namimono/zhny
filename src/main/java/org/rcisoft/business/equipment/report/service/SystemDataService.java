@@ -2,6 +2,7 @@ package org.rcisoft.business.equipment.report.service;
 
 import org.rcisoft.entity.BusParamSecond;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -11,8 +12,17 @@ import java.util.List;
 
 public interface SystemDataService {
 
+//    /**
+//     * 根据参数来源查询二级参数
+//     */
+//    List<BusParamSecond> queryParamSecondBySource(String proId, String sourceId);
+
     /**
-     * 根据参数来源查询二级参数
+     * 下载数据文档
      */
-    List<BusParamSecond> queryParamSecondBySource(String proId, String sourceId);
+    void downlDataDocument(HttpServletResponse response, String paramSecondIds, String proId, String beginTime, String endTime);
+
+    /**
+     * 查询图表数据
+     */
 }

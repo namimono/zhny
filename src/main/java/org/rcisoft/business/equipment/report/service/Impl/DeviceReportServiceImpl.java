@@ -93,8 +93,6 @@ public class DeviceReportServiceImpl implements DeviceReportService {
                     resultMap.get(key).forEach(busParamSecond -> {
                         headlist.add(busParamSecond.getName());
                     });
-                }else {
-                    break;
                 }
             }
             headlist.add("运行时长");
@@ -124,8 +122,6 @@ public class DeviceReportServiceImpl implements DeviceReportService {
                             row1.createCell(k).setCellValue(paramSecond.getString(busParamSecond.getCoding()));
                             k++;
                         }
-                    }else {
-                        break;
                     }
                 }
                 rowNum++;
