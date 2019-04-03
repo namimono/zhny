@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.business.operation.parameter.service.ParameterService;
-import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

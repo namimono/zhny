@@ -44,7 +44,11 @@ public class ParameterServiceImpl implements ParameterService {
             if (!"0".equals(systemId) && "0".equals(typeFirstId)){
                 return busDeviceDao.queryDeviceBriefInfo(systemId,projectId);
             }else {
-                return parameterDao.queryDeviceBriefByType(systemId,projectId,typeFirstId);
+                if("0".equals(systemId) && !"0".equals(typeFirstId)){
+                   return parameterDao.queryDeviceBriefByType(projectId,typeFirstId);
+                }else{
+                    return parameterDao.queryDeviceBriefBySys(systemId,projectId,typeFirstId);
+                }
             }
         }
     }
@@ -169,7 +173,7 @@ public class ParameterServiceImpl implements ParameterService {
             row5.createCell(7).setCellValue(energyParamLibrary.getMoneyGas().toString());
             rowsNum++;
         }
-
+        
         response.setContentType("application/octet-stream");
         try {
             response.setHeader("Content-disposition", "attachment;filename=" + new String(fileName.getBytes("gbk"), "iso8859-1") + ".xls");
