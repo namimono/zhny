@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.List;
-
-import static java.math.RoundingMode.HALF_EVEN;
 
 /**
  * @author GaoLiwei
@@ -120,13 +117,13 @@ public class EnergyPlanningRecordServiceImpl implements EnergyPlanningRecordServ
         if (energyPlanningRecordList.size() > 0){
 
             //电费用的总和
-            BigDecimal sumMoneyElec = new BigDecimal(0,new MathContext(2, HALF_EVEN));
+            BigDecimal sumMoneyElec = new BigDecimal(0);
             //电能耗的总和
-            BigDecimal sumEnergyElec = new BigDecimal(0,new MathContext(2, HALF_EVEN));
+            BigDecimal sumEnergyElec = new BigDecimal(0);
             //气费用的总和
-            BigDecimal sumMoneyGas = new BigDecimal(0,new MathContext(2, HALF_EVEN));
+            BigDecimal sumMoneyGas = new BigDecimal(0);
             //气能耗的总和
-            BigDecimal sumEnergyGas = new BigDecimal(0,new MathContext(2, HALF_EVEN));
+            BigDecimal sumEnergyGas = new BigDecimal(0);
 
             for (EnergyPlanningRecord record : energyPlanningRecordList){
                 //开始时间
@@ -140,16 +137,16 @@ public class EnergyPlanningRecordServiceImpl implements EnergyPlanningRecordServ
                 //经过了几个小时
                 long hour = useTime / hourMillisecond;
                 //这个计划编制预计消耗的电费用
-                BigDecimal moneyElec = record.getMoneyElec().multiply(new BigDecimal(hour));
+                BigDecimal moneyElec = record.getMoneyElec().multiply(new BigDecimal(hour)).setScale(2,BigDecimal.ROUND_HALF_UP);
                 //这个计划编制预计消耗的气费用
-                BigDecimal moneyGas = record.getMoneyGas().multiply(new BigDecimal(hour));
+                BigDecimal moneyGas = record.getMoneyGas().multiply(new BigDecimal(hour)).setScale(2,BigDecimal.ROUND_HALF_UP);
                 //算和
                 sumMoneyElec = sumMoneyElec.add(moneyElec);
                 sumMoneyGas = sumMoneyGas.add(moneyGas);
                 //这个计划编制预计消耗的电能耗
-                BigDecimal energyElec = record.getEnergyElec().multiply(new BigDecimal(hour));
+                BigDecimal energyElec = record.getEnergyElec().multiply(new BigDecimal(hour)).setScale(2,BigDecimal.ROUND_HALF_UP);
                 //这个计划编制预计消耗的气能耗
-                BigDecimal energyGas = record.getEnergyGas().multiply(new BigDecimal(hour));
+                BigDecimal energyGas = record.getEnergyGas().multiply(new BigDecimal(hour)).setScale(2,BigDecimal.ROUND_HALF_UP);
                 //算和
                 sumEnergyElec = sumEnergyElec.add(energyElec);
                 sumEnergyGas = sumEnergyGas.add(energyGas);
