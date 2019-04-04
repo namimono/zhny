@@ -35,4 +35,10 @@ public class ParameterController {
     public void downloadParameter(HttpServletResponse response, @PathVariable String deviceId, @PathVariable String deviceName){
         parameterServiceImpl.downloadParameter(response,deviceId,deviceName);
     }
+
+    @ApiOperation(value="查询参数库参数数据", notes="查询参数库参数数据")
+    @GetMapping("/queryParamLibrary/{deviceId}")
+    public Result queryParamLibrary(@PathVariable String deviceId){
+        return Result.result(parameterServiceImpl.queryParamLibrary(deviceId));
+    }
 }

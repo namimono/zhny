@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.rcisoft.base.util.FormulaUtil;
 import org.rcisoft.base.util.UuidUtil;
+import org.rcisoft.base.util.ZhnyUtils;
 import org.rcisoft.business.equipment.report.entity.VariableAndParam;
 import org.rcisoft.business.equipment.report.service.FormulaOperationService;
 import org.rcisoft.business.system.project.dao.FormulaDao;
@@ -213,7 +214,7 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
         }
         //添加第三行表头
         HSSFRow row3 = sheet.createRow(2);
-        for(int i=0;i<2;i++){
+        for(int i = 0;i < 2;i++){
             HSSFCell cell = row3.createCell(i);
             HSSFRichTextString text = new HSSFRichTextString(header[i+2]);
             cell.setCellValue(text);
@@ -242,8 +243,8 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
 
         //新增数据行（从表格第四行开始），并且设置单元格数据
         int rowNum = 3;
-//        // 公式计算类
-//        FelEngine fel = new FelEngineImpl();
+        //公式计算类
+        FelEngine fel = new FelEngineImpl();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //在表中存放查询到的数据放入对应的列
         for (SysData sysData : sysDataList) {
@@ -258,8 +259,7 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
                 for (FormulaVariableData formulaVariableData : resultMap.get(key)){
                     formula = this.fillValues(formula,formulaVariableData,jsonObject);
                 }
-                //row4.createCell(i).setCellValue(this.getResult(formula,fel));
-                row4.createCell(i).setCellValue(FormulaUtil.getResult(formula));
+                row4.createCell(i).setCellValue(FormulaUtil.calculate(formula,fel));
                 i++;
             }
             rowNum++;
@@ -297,33 +297,50 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
         return formula;
     }
 
-//    /**
-//     * 通过Fel公式计算引擎计算出最终结果
-//     * @param formula
-//     * @param fel
-//     * @return 表达式计算后的结果
-//     */
-//    private String getResult(String formula, FelEngine fel) {
-//        // 结果
-//        String eval = "";
-//        // 判断表达式是否由数字和运算符号组成
-//        boolean flag = true;
-//        String[] split = formula.split("");
-//        for (String s : split) {
-//            if (!s.matches("\\d|\\(|\\)|\\+|\\-|\\*|/|%|\\.")) {
-//                flag = false;
-//                break;
-//            }
-//        }
-//        // 计算出公式的最终结果
-//        if (flag) {
-//            Object result = fel.eval(formula);
-//            if (result != null) {
-//                eval = result.toString();
-//            }
-//        }else {
-//            eval = null;
-//        }
-//        return eval;
-//    }
+    /**
+     * 查询计算公式结果
+     */
+    @Override
+    public List<String> queryResult(String proId,String beginTime,String endTime){
+        //公式计算类
+        FelEngine fel = new FelEngineImpl();
+        //获取JSON数据
+        beginTime = beginTime + " 00:00:00";
+        endTime = endTime + " 23:59:59";
+        List<SysData> dataList = sysDataDao.queryDataByProIdAndTime(proId,beginTime,endTime);
+        List<String> resultList = new ArrayList();
+        //存储公式信息，并获得公式ID组合串
+        List<BusFormula> formulaList = busFormulaDao.queryFormula(proId);
+        StringBuilder formulaIds = new StringBuilder();
+        formulaList.forEach(busFormula -> {
+            formulaIds.append("'");
+            formulaIds.append(busFormula.getId());
+            formulaIds.append("'");
+            formulaIds.append(",");
+        });
+        //删除末尾的逗号
+        formulaIds.deleteCharAt(formulaIds.length()-1);
+        //查询出变量相应的二级参数代码
+        List<FormulaVariableData> formulaVariableDataList = formulaDao.queryParamsByFormula(formulaIds.toString());
+        //将数据根据公式ID进行分组
+        Map<Object,List> resultMap = ZhnyUtils.groupListByName(formulaVariableDataList,"formulaId");
+        //将计算出的数值存入resultList
+        for (SysData sysData : dataList) {
+            JSONObject jsonObject = JSON.parseObject(sysData.getJson());
+            //通过公式的数量进行循环
+            int i = 1;
+            for (Object key : resultMap.keySet()){
+                String formula = formulaList.get(i-1).getFormula();
+                //通过每个公式对应的变量数循环
+                List<FormulaVariableData> variableDataList = resultMap.get(key);
+                for (FormulaVariableData formulaVariableData : variableDataList){
+                    formula = this.fillValues(formula,formulaVariableData,jsonObject);
+                }
+                resultList.add(FormulaUtil.calculate(formula,fel));
+                i++;
+            }
+        }
+        return resultList;
+    }
+
 }

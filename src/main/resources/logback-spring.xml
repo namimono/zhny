@@ -54,6 +54,8 @@
     <logger name="com.minlia" level="DEBUG"/>
     <logger name="org.springframework.data.mybatis" level="DEBUG"/>
     <logger name="org.springframework.aop.aspectj" level="ERROR"/>
+    <!-- 修复Could not find default TaskScheduler bean异常 -->
+    <logger name="org.springframework.scheduling" level="info"/>
 
     <springProfile name="dev">
         <root level="debug">

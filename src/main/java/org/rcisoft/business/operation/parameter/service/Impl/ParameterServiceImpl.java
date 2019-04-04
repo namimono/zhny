@@ -183,4 +183,15 @@ public class ParameterServiceImpl implements ParameterService {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 查询参数库参数数据
+     */
+    @Override
+    public List<EnergyParamLibrary> queryParamLibrary(String deviceId){
+        Example example = new Example(EnergyParamLibrary.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("deviceId",deviceId);
+        return energyParamLibraryDao.selectByExample(example);
+    }
 }

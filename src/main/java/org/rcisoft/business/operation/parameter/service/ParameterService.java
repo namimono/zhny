@@ -1,6 +1,7 @@
 package org.rcisoft.business.operation.parameter.service;
 
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
+import org.rcisoft.entity.EnergyParamLibrary;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -21,4 +22,9 @@ public interface ParameterService {
      * 导出参数库数据
      */
     void downloadParameter(HttpServletResponse response, String deviceId, String deviceName);
+
+    /**
+     * 查询参数库参数数据
+     */
+    List<EnergyParamLibrary> queryParamLibrary(String deviceId);
 }
