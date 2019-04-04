@@ -1,10 +1,9 @@
 package org.rcisoft.business.operation.adaptive.service;
 
-import org.rcisoft.business.operation.adaptive.entity.AdaptiveParam;
-import org.rcisoft.business.operation.adaptive.entity.BuildingAdaptation;
-import org.rcisoft.business.operation.adaptive.entity.ClimateAdaptation;
+import org.rcisoft.business.operation.adaptive.entity.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author 土豆儿
@@ -27,4 +26,17 @@ public interface AdaptiveService {
 //     * 计算建筑负荷最优供水温度
 //     */
 //    List<Object> buildingList(AdaptiveParam adaptiveParam);
+
+    /**
+     * 建筑负荷
+     * @param buildingParam
+     * @return
+     */
+    BuildingResult queryBuilding(BuildingParam buildingParam);
+
+    /**
+     * 建筑负荷excel下载
+     * @param buildingParam
+     */
+    void downloadBuilding(HttpServletRequest request, HttpServletResponse response, BuildingParam buildingParam);
 }

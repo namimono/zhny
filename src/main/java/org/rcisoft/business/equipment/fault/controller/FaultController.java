@@ -41,7 +41,6 @@ public class FaultController {
     }
 
     @ApiOperation(value="故障内容下载", notes="全部设备时，typeFirstId=0")
-    @ResponseBody
     @GetMapping("/downloadFaults/{projectId}/{typeFirstId}/{year}/{month}")
     public void downloadFaults(HttpServletRequest request, HttpServletResponse response, @PathVariable String projectId, @PathVariable String typeFirstId, @PathVariable Integer year, @PathVariable Integer month) {
         faultServiceimpl.downloadFaults(request, response, projectId, typeFirstId, year, month);
