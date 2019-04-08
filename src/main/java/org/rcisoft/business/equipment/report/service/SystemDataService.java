@@ -12,17 +12,13 @@ import java.util.List;
 
 public interface SystemDataService {
 
-//    /**
-//     * 根据参数来源查询二级参数
-//     */
-//    List<BusParamSecond> queryParamSecondBySource(String proId, String sourceId);
-
     /**
      * 下载数据文档
      */
-    void downlDataDocument(HttpServletResponse response, String paramSecondIds, String proId, String beginTime, String endTime);
+    void downlDataDocument(HttpServletResponse response,String paramSecondIds,String proId,String date);
 
     /**
      * 查询图表数据
      */
+    List<Object> queryEchartData(String paramSecondIds,String proId,String date);
 }

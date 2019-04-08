@@ -147,7 +147,7 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
      * 导出公式数据
      */
     @Override
-    public void downloadFormulaData(HttpServletResponse response,String projectId,String beginTime,String endTime,List<BusFormula> formulaList){
+    public void downloadFormulaData(HttpServletResponse response,String projectId,String date,List<BusFormula> formulaList){
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("公式数据");
 
@@ -223,8 +223,8 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
         //查询出变量相应的二级参数代码
         List<FormulaVariableData> formulaVariableDataList = formulaDao.queryParamsByFormula(formulaIds.toString());
         //获取JSON数据
-        beginTime = beginTime + " 00:00:00";
-        endTime = endTime + " 23:59:59";
+        String beginTime = date + " 00:00:00";
+        String endTime = date + " 23:59:59";
         List<SysData> sysDataList = sysDataDao.queryDataByProIdAndTime(projectId,beginTime,endTime);
         //分组存储公式变量信息
         Map<String,List<FormulaVariableData>> resultMap = new HashMap<>(16);
@@ -301,14 +301,15 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
      * 查询计算公式结果
      */
     @Override
-    public List<String> queryResult(String proId,String beginTime,String endTime){
+    public List<Object> queryResult(String proId,String date){
         //公式计算类
         FelEngine fel = new FelEngineImpl();
         //获取JSON数据
-        beginTime = beginTime + " 00:00:00";
-        endTime = endTime + " 23:59:59";
-        List<SysData> dataList = sysDataDao.queryDataByProIdAndTime(proId,beginTime,endTime);
-        List<String> resultList = new ArrayList();
+        String beginTime = date + " 00:00:00";
+        String endTime = date + " 23:59:59";
+        List<SysData> dataList = sysDataDao.queryDataByTime(proId,beginTime,endTime);
+        //存储所有公式的统计数据
+        List<Object> resultsList = new ArrayList<>();
         //存储公式信息，并获得公式ID组合串
         List<BusFormula> formulaList = busFormulaDao.queryFormula(proId);
         StringBuilder formulaIds = new StringBuilder();
@@ -321,26 +322,44 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
         //删除末尾的逗号
         formulaIds.deleteCharAt(formulaIds.length()-1);
         //查询出变量相应的二级参数代码
-        List<FormulaVariableData> formulaVariableDataList = formulaDao.queryParamsByFormula(formulaIds.toString());
+        List<FormulaVariableData> variablesDataList = formulaDao.queryParamsByFormula(formulaIds.toString());
         //将数据根据公式ID进行分组
-        Map<Object,List> resultMap = ZhnyUtils.groupListByName(formulaVariableDataList,"formulaId");
+        Map<Object,List> resultMap = ZhnyUtils.groupListByName(variablesDataList,"formulaId");
+        //日期进行操作的类
+        Calendar cal = Calendar.getInstance();
         //将计算出的数值存入resultList
-        for (SysData sysData : dataList) {
-            JSONObject jsonObject = JSON.parseObject(sysData.getJson());
-            //通过公式的数量进行循环
-            int i = 1;
-            for (Object key : resultMap.keySet()){
-                String formula = formulaList.get(i-1).getFormula();
+        StringBuilder formulaName = new StringBuilder();
+        //通过公式的数量进行循环
+        int i = 0;
+        for (Object key : resultMap.keySet()){
+            //存储单条公式24小时的数据
+            List<Object> resultList = Arrays.asList(new Object[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+            for (SysData sysData : dataList) {
+                JSONObject jsonObject = JSON.parseObject(sysData.getJson());
+                cal.setTime(sysData.getCreateTime());
+                String formula = formulaList.get(i).getFormula();
                 //通过每个公式对应的变量数循环
                 List<FormulaVariableData> variableDataList = resultMap.get(key);
-                for (FormulaVariableData formulaVariableData : variableDataList){
-                    formula = this.fillValues(formula,formulaVariableData,jsonObject);
+                if (formulaList.get(i).getName().equals(variableDataList.get(0).getFormulaName())){
+                    for (FormulaVariableData formulaVariableData : variableDataList){
+                        formula = this.fillValues(formula,formulaVariableData,jsonObject);
+                    }
+                    //整点数据
+                    int hour = cal.get(Calendar.HOUR_OF_DAY);
+                    //参数数值
+                    String formulaResult = FormulaUtil.calculate(formula,fel);
+                    resultList.set(hour,formulaResult);
                 }
-                resultList.add(FormulaUtil.calculate(formula,fel));
-                i++;
             }
+            formulaName.append(formulaList.get(i).getName());
+            formulaName.append(",");
+            resultsList.add(resultList);
+            i++;
         }
-        return resultList;
+        //删除末尾的逗号
+        formulaName.deleteCharAt(formulaName.length()-1);
+        resultsList.add(formulaName.toString());
+        return resultsList;
     }
 
 }

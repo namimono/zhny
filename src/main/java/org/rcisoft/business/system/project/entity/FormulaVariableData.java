@@ -15,10 +15,10 @@ import java.util.Date;
 @AllArgsConstructor
 public class FormulaVariableData {
 
-//    /**
-//     * 公式名称
-//     */
-//    private String name;
+    /**
+     * 公式名称
+     */
+    private String formulaName;
 //
 //    /**
 //     * 公式内容

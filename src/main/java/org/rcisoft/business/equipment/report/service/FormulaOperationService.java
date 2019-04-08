@@ -69,10 +69,10 @@ public interface FormulaOperationService {
     /**
      * 导出公式数据
      */
-    void downloadFormulaData(HttpServletResponse response,String projectId,String beginTime,String endTime,List<BusFormula> formulaList);
+    void downloadFormulaData(HttpServletResponse response,String projectId,String date,List<BusFormula> formulaList);
 
     /**
      * 查询计算公式结果
      */
-    List queryResult(String proId,String beginTime,String endTime);
+    List<Object> queryResult(String proId,String date);
 }
