@@ -121,7 +121,7 @@ public class ProjConfigController {
     }
 
     @ApiOperation(value="新增建筑分区(气候分区)", notes="新增建筑分区(气候分区)")
-    @DeleteMapping("/insertBuildZone")
+    @PostMapping("/insertBuildZone")
     public Result insertBuildZone(@RequestBody BusBuildingZone busBuildingZone){
         return Result.result(projConfigServiceImpl.insertBuildZone(busBuildingZone), "新增建筑分区(气候分区)成功", "新增建筑分区(气候分区)失败");
     }
