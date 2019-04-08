@@ -34,8 +34,8 @@ public class BasicDataController {
     }
 
     @ApiOperation(value="修改水电气24小时单价信息", notes="修改水电气24小时单价信息")
-    @PutMapping("/updetePerHourPrice")
-    public Result updetePerHourPrice(@RequestBody List<EnergyPrice> list){
+    @PutMapping("/updatePerHourPrice")
+    public Result updatePerHourPrice(@RequestBody List<EnergyPrice> list){
         return Result.result(basicDataServiceImpl.updatePerHourPrice(list),"修改水电气24小时单价信息成功","修改水电气24小时单价信息失败");
     }
 
@@ -57,7 +57,7 @@ public class BasicDataController {
         return Result.result(basicDataServiceImpl.updateEnergyStandard(list),"修改能源标准成功","修改能源标准失败");
     }
 
-    @ApiOperation(value="查询水电气24小时单价信息", notes="查询水电气24小时单价信息")
+    @ApiOperation(value="查询能源标准", notes="查询能源标准")
     @GetMapping("/queryEnergyStandard/{proId}")
     public Result queryEnergyStandard(@PathVariable String proId){
         return Result.result(basicDataServiceImpl.queryEnergyStandard(proId));

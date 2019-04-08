@@ -308,10 +308,16 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
         String beginTime = date + " 00:00:00";
         String endTime = date + " 23:59:59";
         List<SysData> dataList = sysDataDao.queryDataByTime(proId,beginTime,endTime);
+        if (dataList.size() <= 0){
+            return null;
+        }
         //存储所有公式的统计数据
         List<Object> resultsList = new ArrayList<>();
         //存储公式信息，并获得公式ID组合串
         List<BusFormula> formulaList = busFormulaDao.queryFormula(proId);
+        if (formulaList.size() <= 0){
+            return null;
+        }
         StringBuilder formulaIds = new StringBuilder();
         formulaList.forEach(busFormula -> {
             formulaIds.append("'");
@@ -323,6 +329,9 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
         formulaIds.deleteCharAt(formulaIds.length()-1);
         //查询出变量相应的二级参数代码
         List<FormulaVariableData> variablesDataList = formulaDao.queryParamsByFormula(formulaIds.toString());
+        if (variablesDataList.size() <= 0){
+            return null;
+        }
         //将数据根据公式ID进行分组
         Map<Object,List> resultMap = ZhnyUtils.groupListByName(variablesDataList,"formulaId");
         //日期进行操作的类
@@ -341,6 +350,9 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
                     String formula = formulaList.get(i).getFormula();
                     //通过每个公式对应的变量数循环
                     List<FormulaVariableData> variableDataList = resultMap.get(key);
+                    if (variableDataList.size() <= 0){
+                        return null;
+                    }
                     if (formulaList.get(i).getName().equals(variableDataList.get(0).getFormulaName())){
                         for (FormulaVariableData formulaVariableData : variableDataList){
                             formula = this.fillValues(formula,formulaVariableData,jsonObject);
