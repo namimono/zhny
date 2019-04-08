@@ -148,8 +148,7 @@ public class DeviceConfigController {
     @ApiOperation(value="删除厂家信息", notes="删除厂家信息")
     @DeleteMapping("/deleteFactory/{factoryId}")
     public Result deleteFactory(@PathVariable String factoryId){
-        int i = deviceConfigServiceImpl.deleteFactory(factoryId);
-        return Result.result(i,"删除厂家信息成功","删除厂家信息失败",i);
+        return Result.result(deviceConfigServiceImpl.deleteFactory(factoryId),"删除厂家信息成功","删除厂家信息失败");
     }
 
     @ApiOperation(value="修改厂家信息", notes="修改厂家信息")
