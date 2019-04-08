@@ -2,6 +2,7 @@ package org.rcisoft.business.equipment.report.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.rcisoft.base.result.Result;
 import org.rcisoft.business.equipment.report.service.SystemDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +26,8 @@ public class SystemDataController {
 
     @ApiOperation(value="查询图表数据",notes="查询图表数据")
     @GetMapping("/queryEchartData/{paramSecondIds}/{proId}/{date}")
-    public void queryEchartData(@PathVariable String paramSecondIds,@PathVariable String proId,@PathVariable String date){
-        systemDataServiceImpl.queryEchartData(paramSecondIds,proId,date);
+    public Result queryEchartData(@PathVariable String paramSecondIds, @PathVariable String proId, @PathVariable String date){
+        return Result.result(systemDataServiceImpl.queryEchartData(paramSecondIds,proId,date));
     }
 
     @ApiOperation(value="下载数据文档",notes="下载数据文档",produces="application/octet-stream")

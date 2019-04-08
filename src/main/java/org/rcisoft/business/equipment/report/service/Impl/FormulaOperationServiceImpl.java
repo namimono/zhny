@@ -328,37 +328,36 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
         //日期进行操作的类
         Calendar cal = Calendar.getInstance();
         //将计算出的数值存入resultList
-        StringBuilder formulaName = new StringBuilder();
+        List<String> formulaName = null;
         //通过公式的数量进行循环
         int i = 0;
-        for (Object key : resultMap.keySet()){
-            //存储单条公式24小时的数据
-            List<Object> resultList = Arrays.asList(new Object[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
-            for (SysData sysData : dataList) {
-                JSONObject jsonObject = JSON.parseObject(sysData.getJson());
-                cal.setTime(sysData.getCreateTime());
-                String formula = formulaList.get(i).getFormula();
-                //通过每个公式对应的变量数循环
-                List<FormulaVariableData> variableDataList = resultMap.get(key);
-                if (formulaList.get(i).getName().equals(variableDataList.get(0).getFormulaName())){
-                    for (FormulaVariableData formulaVariableData : variableDataList){
-                        formula = this.fillValues(formula,formulaVariableData,jsonObject);
+        if(resultMap.size() > 0){
+            for (Object key : resultMap.keySet()){
+                //存储单条公式24小时的数据
+                List<Object> resultList = Arrays.asList(new Object[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+                for (SysData sysData : dataList) {
+                    JSONObject jsonObject = JSON.parseObject(sysData.getJson());
+                    cal.setTime(sysData.getCreateTime());
+                    String formula = formulaList.get(i).getFormula();
+                    //通过每个公式对应的变量数循环
+                    List<FormulaVariableData> variableDataList = resultMap.get(key);
+                    if (formulaList.get(i).getName().equals(variableDataList.get(0).getFormulaName())){
+                        for (FormulaVariableData formulaVariableData : variableDataList){
+                            formula = this.fillValues(formula,formulaVariableData,jsonObject);
+                        }
+                        //整点数据
+                        int hour = cal.get(Calendar.HOUR_OF_DAY);
+                        //参数数值
+                        String formulaResult = FormulaUtil.calculate(formula,fel);
+                        resultList.set(hour,formulaResult);
                     }
-                    //整点数据
-                    int hour = cal.get(Calendar.HOUR_OF_DAY);
-                    //参数数值
-                    String formulaResult = FormulaUtil.calculate(formula,fel);
-                    resultList.set(hour,formulaResult);
                 }
+                formulaName.add(formulaList.get(i).getName());
+                resultsList.add(resultList);
+                i++;
             }
-            formulaName.append(formulaList.get(i).getName());
-            formulaName.append(",");
-            resultsList.add(resultList);
-            i++;
         }
-        //删除末尾的逗号
-        formulaName.deleteCharAt(formulaName.length()-1);
-        resultsList.add(formulaName.toString());
+        resultsList.add(formulaName);
         return resultsList;
     }
 

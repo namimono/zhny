@@ -105,7 +105,6 @@ public class SystemDataServiceImpl implements SystemDataService {
     @Override
     public List<Object> queryEchartData(String paramSecondIds,String proId,String date){
         List<Object> resultList = new ArrayList<>();
-        List<Object> list = Arrays.asList(new Object[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,"null"});
         //处理二级参数id格式
         StringBuilder secondIds = new StringBuilder();
         String[] ids = paramSecondIds.split(",");
@@ -120,21 +119,21 @@ public class SystemDataServiceImpl implements SystemDataService {
         //获取参数信息
         List<ParamSecondWithFirst> secondWithFirstList = systemDataDao.querySecondWithFirst(secondIds.toString());
         //获取data数据
-        String beginTime = date + "00:00:00";
-        String endTime = date + "23:59:59";
+        String beginTime = date + " 00:00:00";
+        String endTime = date + " 23:59:59";
         //从sys_data表查询对应日期的所有记录
         List<SysData> sysDataList = sysDataDao.queryDataByTime(proId,beginTime,endTime);
         //日期进行操作的类
         Calendar cal = Calendar.getInstance();
-        for (SysData sysData : sysDataList) {
-            List<String> nameList = null;
-            //得到json对象
-            JSONObject jsonObject = JSONObject.parseObject(sysData.getJson());
-            cal.setTime(sysData.getCreateTime());
-            for (ParamSecondWithFirst paramSecondWithFirst : secondWithFirstList) {
+        List<String> nameList = new ArrayList<>();
+        for (ParamSecondWithFirst paramSecondWithFirst : secondWithFirstList) {
+            List<Object> list = Arrays.asList(new Object[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+            for (SysData sysData : sysDataList) {
+                //得到json对象
+                JSONObject jsonObject = JSONObject.parseObject(sysData.getJson());
+                cal.setTime(sysData.getCreateTime());
                 JSONObject paramFirst = jsonObject.getJSONObject(paramSecondWithFirst.getFirstCode());
                 JSONObject paramSecond = paramFirst.getJSONObject("REG_VAL");
-                nameList.add(paramSecondWithFirst.getFirstName());
                 //整点数据
                 if (cal.get(Calendar.MINUTE) == 0) {
                     //得到小时
@@ -144,10 +143,10 @@ public class SystemDataServiceImpl implements SystemDataService {
                     list.set(hour,paramValue);
                 }
             }
-            if (nameList != null) {
-                list.set(25, nameList);
-            }
+            resultList.add(list);
+            nameList.add(paramSecondWithFirst.getSecondName());
         }
+        resultList.add(nameList);
         return resultList;
     }
 }
