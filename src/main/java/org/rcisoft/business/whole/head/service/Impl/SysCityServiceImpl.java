@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.base.util.UuidUtil;
+import org.rcisoft.business.whole.head.dao.HeadDao;
 import org.rcisoft.business.whole.head.service.SysCityService;
 import org.rcisoft.dao.SysCityDao;
+import org.rcisoft.entity.BusProject;
 import org.rcisoft.entity.BusTemperature;
 import org.rcisoft.entity.SysCity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,8 @@ import java.util.UUID;
 public class SysCityServiceImpl implements SysCityService {
     @Autowired
     SysCityDao sysCityDao;
+    @Autowired
+    HeadDao headDao;
 
     /**
      * 根据城市名称获取城市天气信息
@@ -115,7 +119,7 @@ public class SysCityServiceImpl implements SysCityService {
                 JSONObject weatherJson = this.getWeatherMessage(code);
                 //湿度
                 String sd =  (String)weatherJson.get("SD");
-                Integer Humidity = Integer.parseInt(sd.replaceAll("%", ""));
+                Integer Humidity = Integer.parseInt(sd.replaceAll("%", " "));
                 //温度
                 String wd = (String)weatherJson.get("temp");
                 //风速
@@ -140,4 +144,8 @@ public class SysCityServiceImpl implements SysCityService {
         return 0;
     }
 
+    @Override
+    public List<BusProject> queryAllProj() {
+        return headDao.queryAllProj();
+    }
 }

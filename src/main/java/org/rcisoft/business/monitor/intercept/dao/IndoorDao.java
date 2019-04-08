@@ -100,4 +100,10 @@ public interface IndoorDao{
      */
     @Select("<script>select * from bus_temperature where TO_DAYS(create_time)=TO_DAYS(NOW()) and RIGHT(create_time,5)='00:00' and coding = #{coding}</script>")
     List<BusTemperature> queryHumidityHours(String coding);
+
+    /**
+     * 根据年份月份查询json数据
+     */
+    @Select("<script>select json from sys_data where YEAR(create_time) = #{year} and MONTH(create_time) = #{month}</script>")
+    List<String> queryJsonByData(int year,int month);
 }

@@ -1,5 +1,6 @@
 package org.rcisoft.business.whole.head.service;
 
+import org.rcisoft.entity.BusProject;
 import org.rcisoft.entity.BusTemperature;
 import org.rcisoft.entity.SysCity;
 
@@ -17,5 +18,16 @@ public interface SysCityService {
      * @return
      */
     BusTemperature queryCityByName(String city);
-    public Integer queryCityWeather();
+
+    /**
+     * 查询城市天气
+     * @return
+     */
+    Integer queryCityWeather();
+
+    /**
+     * 查询所有项目
+     * @return
+     */
+    List<BusProject> queryAllProj();
 }
