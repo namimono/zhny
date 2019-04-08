@@ -138,4 +138,29 @@ public class DeviceConfigController {
     public Result batchOperationParams(@RequestBody List<ParamFirstContainSecond> list,@PathVariable String paramFirstIds,@PathVariable String paramSecondIds){
         return Result.result(deviceConfigServiceImpl.batchOperationParams(list,paramFirstIds,paramSecondIds),"操作成功","操作失败");
     }
+
+    @ApiOperation(value="新增厂家信息", notes="新增厂家信息")
+    @PostMapping("/addFactory")
+    public Result addFactory(@RequestBody BusFactory busFactory){
+        return Result.result(deviceConfigServiceImpl.addFactory(busFactory),"新增厂家信息成功","新增厂家信息失败");
+    }
+
+    @ApiOperation(value="删除厂家信息", notes="删除厂家信息")
+    @DeleteMapping("/deleteFactory/{factoryId}")
+    public Result deleteFactory(@PathVariable String factoryId){
+        int i = deviceConfigServiceImpl.deleteFactory(factoryId);
+        return Result.result(i,"删除厂家信息成功","删除厂家信息失败",i);
+    }
+
+    @ApiOperation(value="修改厂家信息", notes="修改厂家信息")
+    @PutMapping("/updateFactory")
+    public Result updateFactory(@RequestBody BusFactory busFactory){
+        return Result.result(deviceConfigServiceImpl.updateFactory(busFactory),"修改厂家信息成功","修改厂家信息失败");
+    }
+
+    @ApiOperation(value="查询厂家信息", notes="查询厂家信息")
+    @GetMapping("/queryFactory")
+    public Result queryFactory (){
+        return Result.result(deviceConfigServiceImpl.queryFactory());
+    }
 }

@@ -44,6 +44,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     private BusVariableDao busVariableDao;
     @Autowired
     private BusTitleParamDao busTitleParamDao;
+    @Autowired
+    private BusFactoryDao busFactoryDao;
 
     /**
      * 获取当前系统时间
@@ -382,4 +384,36 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
         return sum;
     }
 
+    /**
+     * 新增厂家信息
+     */
+    @Override
+    public int addFactory(BusFactory busFactory){
+        busFactory.setId(UuidUtil.create32());
+        return busFactoryDao.insertSelective(busFactory);
+    }
+
+    /**
+     * 删除厂家信息
+     */
+    @Override
+    public int deleteFactory(String factoryId){
+        return busFactoryDao.deleteByPrimaryKey(factoryId);
+    }
+
+    /**
+     * 修改厂家信息
+     */
+    @Override
+    public int updateFactory(BusFactory busFactory){
+        return busFactoryDao.updateByPrimaryKeySelective(busFactory);
+    }
+
+    /**
+     * 查询厂家信息
+     */
+    @Override
+    public List<BusFactory> queryFactory(){
+        return busFactoryDao.selectAll();
+    }
 }
