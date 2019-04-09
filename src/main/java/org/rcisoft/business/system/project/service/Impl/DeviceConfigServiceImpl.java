@@ -353,7 +353,9 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
                     //循环添加二级参数id和其一级参数id字段信息
                     paramFirstContainSecond.getSecondary().forEach(busParamSecond -> {
                         busParamSecond.setId(UuidUtil.create32());
-                        busParamSecond.setParamFirstId(id);
+                        if (busParamSecond.getSourceId() != 4) {
+                            busParamSecond.setParamFirstId(id);
+                        }
                         addParamSecondList.add(busParamSecond);
                     });
                 }else {
