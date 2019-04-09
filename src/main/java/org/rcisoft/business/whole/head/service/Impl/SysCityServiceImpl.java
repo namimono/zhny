@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.whole.head.dao.HeadDao;
+import org.rcisoft.business.whole.head.entity.CityInfo;
 import org.rcisoft.business.whole.head.service.SysCityService;
 import org.rcisoft.dao.SysCityDao;
 import org.rcisoft.entity.BusProject;
@@ -41,17 +42,15 @@ public class SysCityServiceImpl implements SysCityService {
      * @return
      */
     @Override
-    public BusTemperature queryCityByName(String code) {
+    public BusTemperature queryCityByName(String proId) {
         BusTemperature busTemperature = new BusTemperature();
         try{
-            String cityCode = StringUtils.isEmpty(code)?null:StringUtils.substring(code,0,code.length());
-            System.out.println(code);
+            String cityCode = StringUtils.isEmpty(proId)?null:StringUtils.substring(proId,0,proId.length());
             if(cityCode == null) return  busTemperature;
-            /*
-            SysCity sysCity = new SysCity();
-            sysCity = sysCityDao.queryCityInfoByName(cityName);
-            String code = sysCity.getCoding();
-            */
+            CityInfo cityInfo = new CityInfo();
+            cityInfo = sysCityDao.queryCityInfoByName(proId);
+            String code = cityInfo.getCode();
+            String cityName = cityInfo.getCityName();
             JSONObject weatherJson = this.getWeatherMessage(code);
             //湿度
             String sd =  (String)weatherJson.get("SD");
@@ -61,11 +60,12 @@ public class SysCityServiceImpl implements SysCityService {
             //风速
             String fs = (String)weatherJson.get("WD") + (String) weatherJson.get("WS");
             BigDecimal temp = new BigDecimal(wd);
-           busTemperature.setWind(fs);
-           busTemperature.setTemperature(temp);
-           busTemperature.setHumidity(Humidity);
-           busTemperature.setHumidityPercent(sd);
-           busTemperature.setCoding(code);
+            busTemperature.setWind(fs);
+            busTemperature.setTemperature(temp);
+            busTemperature.setHumidity(Humidity);
+            busTemperature.setHumidityPercent(sd);
+            busTemperature.setCoding(code);
+            busTemperature.setCityName(cityName);
         }catch(Exception e){
             e.printStackTrace();
         }

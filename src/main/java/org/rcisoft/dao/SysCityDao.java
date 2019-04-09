@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
+import org.rcisoft.business.whole.head.entity.CityInfo;
 import org.rcisoft.entity.BusTemperature;
 import org.rcisoft.entity.SysCity;
 import org.springframework.stereotype.Repository;
@@ -27,12 +28,12 @@ public interface SysCityDao extends Mapper<SysCity> {
     List<Map<String,Object>> queryCityInfo(@Param("provinceId") String provinceId);
 
     /**
-     * 根据城市名称查询城市信息
+     * 根据项目id查询城市代码
      * @param name
      */
-    @Select("SELECT * FROM sys_city WHERE name=#{name};")
-    @ResultType(SysCity.class)
-    SysCity queryCityInfoByName(@Param("name") String name);
+    @Select("<script>SELECT bp.code,sc.name as cityName FROM bus_project bp,sys_city sc " +
+            "WHERE bp.id=#{proId} and bp.code = sc.coding</script>")
+    CityInfo queryCityInfoByName(@Param("proId") String proId);
 
     /**
      * 查询所有城市code

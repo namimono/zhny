@@ -64,5 +64,9 @@ public class BusTemperature {
 	 */
 	@Transient
 	private transient String humidityPercent;
-
+	/**
+	 * 城市名称
+	 */
+	@Transient
+	private transient String cityName;
 }
