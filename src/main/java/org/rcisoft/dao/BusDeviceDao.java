@@ -28,7 +28,7 @@ public interface BusDeviceDao extends Mapper<BusDevice> {
      * 查询设备简要信息（根据系统ID）
      */
     @Select("SELECT a.id as 'deviceId',a.name as 'deviceName',a.info,a.location,a.model,a.install_time as 'installTime',\n" +
-            "b.name AS 'type',c.name AS 'factoryName',d.name as 'systemName'\n" +
+            "a.system_id as 'systemId',b.name AS 'type',c.name AS 'factoryName',d.name as 'systemName'\n" +
             "FROM bus_device a,bus_type_first b,bus_factory c,sys_system d\n" +
             "where a.system_id = #{systemId} AND a.project_id = #{projectId}\n" +
             "AND a.type_first_id = b.id AND a.factory_id = c.id and a.system_id = d.id")
@@ -40,7 +40,7 @@ public interface BusDeviceDao extends Mapper<BusDevice> {
      * 查询设备简要信息（根据项目ID）
      */
     @Select("SELECT a.id as 'deviceId',a.name as 'deviceName',a.info,a.location,a.model,a.install_time as 'installTime',\n" +
-            "b.name AS 'type',c.name AS 'factoryName',d.name as 'systemName'\n" +
+            "a.system_id as 'systemId',b.name AS 'type',c.name AS 'factoryName',d.name as 'systemName'\n" +
             "FROM bus_device a,bus_type_first b,bus_factory c,sys_system d\n" +
             "where a.project_id = #{projectId} and a.system_id = d.id\n" +
             "AND a.type_first_id = b.id AND a.factory_id = c.id")
