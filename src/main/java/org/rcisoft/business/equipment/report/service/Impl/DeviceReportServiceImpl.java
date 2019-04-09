@@ -56,8 +56,18 @@ public class DeviceReportServiceImpl implements DeviceReportService {
         if (deviceList.size() <= 0){
             return;
         }
+        //获取data数据
+        String beginTime = date + " 00:00:00";
+        String endTime = date + " 23:59:59";
+        List<SysData> sysDataList = sysDataDao.queryDataByProIdAndTime(proId,beginTime,endTime);
+        if (sysDataList.size() <= 0){
+            return;
+        }
         for (BusDevice busDevice : deviceList) {
             List<BusParamFirst> paramFirstList = busParamFirstDao.queryParamFirstByDevId(busDevice.getId());
+            if (paramFirstList.size() <= 0){
+                break;
+            }
             //将一级参数id合并到一个字符串
             StringBuffer paramFirstIds = new StringBuffer();
             paramFirstList.forEach(busParamFirst -> {
@@ -68,12 +78,11 @@ public class DeviceReportServiceImpl implements DeviceReportService {
             });
             //删除末尾的逗号
             paramFirstIds.deleteCharAt(paramFirstIds.length() - 1);
-            //获取data数据
-            String beginTime = date + "00:00:00";
-            String endTime = date + "23:59:59";
-            List<SysData> sysDataList = sysDataDao.queryDataByProIdAndTime(proId, beginTime, endTime);
             //获取二级参数信息
             List<BusParamSecond> busParamSecondList = busParamSecondDao.queryParamSecondByIds(paramFirstIds.toString());
+            if (busParamSecondList.size() <= 0){
+                break;
+            }
             //分组存储二级参数信息
             Map<String, List<BusParamSecond>> resultMap = new HashMap<>(16);
             /*
@@ -88,52 +97,76 @@ public class DeviceReportServiceImpl implements DeviceReportService {
                     resultMap.put(busParamSecond.getParamFirstId(), list);
                 }
             }
+            String sheetName = busDevice.getName();
+            //创建分页名
+            HSSFSheet sheet = workbook.createSheet(sheetName);
+            //设置默认列宽
+            sheet.setDefaultColumnWidth(13);
+            //设置列宽
+            sheet.setColumnWidth(0,5200);
             //根据一级参数条数建立分页循环导入数据
+            int rowNum = 0;
+            int flag = 0;
             for (BusParamFirst busParamFirst : paramFirstList) {
-                String sheetName = busDevice.getName();
-                //创建分页名
-                HSSFSheet sheet = workbook.createSheet(sheetName);
-                List<String> headlist = new ArrayList<>();
-                headlist.add("时间");
+                String[] header = {"一级参数名称",""};
+                header[1] = busParamFirst.getName();
+                List<String> headList = new ArrayList<>();
+                headList.add("时间");
                 for (String key : resultMap.keySet()) {
                     //循环插入二级参数名称作为表头
                     if (key.equals(busParamFirst.getId())) {
                         resultMap.get(key).forEach(busParamSecond -> {
-                            headlist.add(busParamSecond.getName());
+                            headList.add(busParamSecond.getName());
                         });
                     }
                 }
-                headlist.add("运行时长");
-
-                HSSFRow row = sheet.createRow(0);
+                //headList.add("运行时长");
                 //在excel表中添加表头
-                for (int i = 0; i < headlist.size(); i++) {
-                    HSSFCell cell = row.createCell(i);
-                    HSSFRichTextString text = new HSSFRichTextString(headlist.get(i));
+                if (flag > 0){
+                   rowNum += 2;
+                }
+                HSSFRow row0 = sheet.createRow(rowNum);
+                for (int i = 0;i < header.length;i++){
+                    HSSFCell cell = row0.createCell(i);
+                    HSSFRichTextString text = new HSSFRichTextString(header[i]);
                     cell.setCellValue(text);
                 }
-                //新增数据行，并且设置单元格数据
-                int rowNum = 1;
+                rowNum++;
+                HSSFRow row1 = sheet.createRow(rowNum);
+                for (int i = 0; i < headList.size(); i++) {
+                    HSSFCell cell = row1.createCell(i);
+                    HSSFRichTextString text = new HSSFRichTextString(headList.get(i));
+                    cell.setCellValue(text);
+                }
                 //在表中存放查询到的数据放入对应的列
-                SimpleDateFormat fdates = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                for (int i = 0; i < sysDataList.size(); i++) {
-                    HSSFRow row1 = sheet.createRow(rowNum);
-                    JSONObject jsonObject = JSON.parseObject(sysDataList.get(i).getJson());
+                SimpleDateFormat formatDates = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                for (SysData sysData : sysDataList) {
+                    rowNum++;
+                    HSSFRow row2 = sheet.createRow(rowNum);
+                    JSONObject jsonObject = JSON.parseObject(sysData.getJson());
                     JSONObject paramFirst = jsonObject.getJSONObject(busParamFirst.getCoding());
+                    if (paramFirst == null) {
+                        rowNum--;
+                        continue;
+                    }
                     JSONObject paramSecond = paramFirst.getJSONObject("REG_VAL");
-                    row1.createCell(0).setCellValue(fdates.format(sysDataList.get(i).getCreateTime()));
+                    row2.createCell(0).setCellValue(formatDates.format(sysData.getCreateTime()));
                     for (String key : resultMap.keySet()) {
                         //循环插入json中对应的二级参数数值
                         int k = 1;
                         if (key.equals(busParamFirst.getId())) {
                             for (BusParamSecond busParamSecond : resultMap.get(key)) {
-                                row1.createCell(k).setCellValue(paramSecond.getString(busParamSecond.getCoding()));
+                                if (paramSecond.getString(busParamSecond.getCoding()) == null) {
+                                    k++;
+                                    continue;
+                                }
+                                row2.createCell(k).setCellValue(paramSecond.getString(busParamSecond.getCoding()));
                                 k++;
                             }
                         }
                     }
-                    rowNum++;
                 }
+                flag++;
             }
         }
         response.setContentType("application/octet-stream");
