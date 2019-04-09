@@ -22,12 +22,12 @@ public class SysCityController {
     SysCityService sysCityService;
 
     @ApiOperation(value = "获取城市天气",notes = "获取城市天气")
-    @GetMapping(value = "/weatherInfo/{city}")
-    public Result weather(@PathVariable String city){
-        return Result.result(1,sysCityService.queryCityByName(city));
+    @GetMapping(value = "/weatherInfo/{code}")
+    public Result weather(@PathVariable String code){
+        return Result.result(1,sysCityService.queryCityByName(code));
     }
 
-    @ApiOperation(value = "",notes = "")
+    @ApiOperation(value = "头部项目列表",notes = "头部项目列表")
     @GetMapping("queryAllProj")
     public Result queryAllProj(){
         return  Result.result(1,sysCityService.queryAllProj());

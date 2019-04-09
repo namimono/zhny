@@ -17,7 +17,7 @@ public interface SysCityService {
      * @param name
      * @return
      */
-    BusTemperature queryCityByName(String city);
+    BusTemperature queryCityByName(String code);
 
     /**
      * 查询城市天气

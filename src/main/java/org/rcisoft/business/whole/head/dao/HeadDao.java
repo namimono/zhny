@@ -15,6 +15,6 @@ public interface HeadDao {
      * 查询所有项目
      * @return
      */
-    @Select("<script>select id,name from bus_project</script>")
+    @Select("<script>select id,name,code from bus_project</script>")
     List<BusProject> queryAllProj();
 }

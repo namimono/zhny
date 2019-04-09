@@ -41,15 +41,17 @@ public class SysCityServiceImpl implements SysCityService {
      * @return
      */
     @Override
-    public BusTemperature queryCityByName(String city) {
+    public BusTemperature queryCityByName(String code) {
         BusTemperature busTemperature = new BusTemperature();
         try{
-            String cityName = StringUtils.isEmpty(city)?null:StringUtils.substring(city,0,city.length());
-            System.out.println(cityName);
-            if(cityName == null) return  busTemperature;
+            String cityCode = StringUtils.isEmpty(code)?null:StringUtils.substring(code,0,code.length());
+            System.out.println(code);
+            if(cityCode == null) return  busTemperature;
+            /*
             SysCity sysCity = new SysCity();
             sysCity = sysCityDao.queryCityInfoByName(cityName);
             String code = sysCity.getCoding();
+            */
             JSONObject weatherJson = this.getWeatherMessage(code);
             //湿度
             String sd =  (String)weatherJson.get("SD");
