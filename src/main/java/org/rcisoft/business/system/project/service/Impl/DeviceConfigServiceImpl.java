@@ -29,6 +29,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     @Autowired
     private DeviceConfigDao deviceConfigDao;
     @Autowired
+    private BusTypeFirstDao busTypeFirstDao;
+    @Autowired
     private BusTypeSecondDao busTypeSecondDao;
     @Autowired
     private BusParamFirstDao busParamFirstDao;
@@ -415,5 +417,38 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     @Override
     public List<BusFactory> queryFactory(){
         return busFactoryDao.selectAll();
+    }
+
+    /**
+     * 新增一级设备类型
+     */
+    @Override
+    public int addTypeFirst(BusTypeFirst busTypeFirst){
+        busTypeFirst.setId(UuidUtil.create32());
+        return busTypeFirstDao.insertSelective(busTypeFirst);
+    }
+
+    /**
+     * 删除一级设备类型
+     */
+    @Override
+    public int deleteTypeFirst(String typeFirstId){
+        return busTypeFirstDao.deleteByPrimaryKey(typeFirstId);
+    }
+
+    /**
+     * 修改一级设备类型
+     */
+    @Override
+    public int updateTypeFirst(BusTypeFirst busTypeFirst){
+        return busTypeFirstDao.updateByPrimaryKeySelective(busTypeFirst);
+    }
+
+    /**
+     * 查询一级设备类型
+     */
+    @Override
+    public List<BusTypeFirst> queryTypeFirst(){
+        return busTypeFirstDao.queryTypeFirst();
     }
 }

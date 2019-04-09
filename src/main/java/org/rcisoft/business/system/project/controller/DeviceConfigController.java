@@ -162,4 +162,28 @@ public class DeviceConfigController {
     public Result queryFactory (){
         return Result.result(deviceConfigServiceImpl.queryFactory());
     }
+
+    @ApiOperation(value="新增一级设备类型", notes="新增一级设备类型")
+    @PostMapping("/addTypeFirst")
+    public Result addTypeFirst(@RequestBody BusTypeFirst busTypeFirst){
+        return Result.result(deviceConfigServiceImpl.addTypeFirst(busTypeFirst),"新增设备类型成功","新增设备类型失败");
+    }
+
+    @ApiOperation(value="删除一级设备类型", notes="删除一级设备类型")
+    @DeleteMapping("/deleteTypeFirst/{typeFirstId}")
+    public Result deleteTypeFirst(@PathVariable String typeFirstId){
+        return Result.result(deviceConfigServiceImpl.deleteTypeFirst(typeFirstId),"删除设备类型成功","删除设备类型失败");
+    }
+
+    @ApiOperation(value="修改一级设备类型", notes="修改一级设备类型")
+    @PutMapping("/updateTypeFirst")
+    public Result updateTypeFirst(@RequestBody BusTypeFirst busTypeFirst){
+        return Result.result(deviceConfigServiceImpl.updateTypeFirst(busTypeFirst),"修改设备类型成功","修改设备类型失败");
+    }
+
+    @ApiOperation(value="查询一级设备类型", notes="查询一级设备类型")
+    @GetMapping("/queryTypeFirst")
+    public Result queryTypeFirst (){
+        return Result.result(deviceConfigServiceImpl.queryTypeFirst());
+    }
 }

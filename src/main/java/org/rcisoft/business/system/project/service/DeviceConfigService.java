@@ -129,4 +129,24 @@ public interface DeviceConfigService {
      */
     List<BusFactory> queryFactory();
 
+    /**
+     * 新增一级设备类型
+     */
+    int addTypeFirst(BusTypeFirst busTypeFirst);
+
+    /**
+     * 删除一级设备类型
+     */
+    int deleteTypeFirst(String typeFirstId);
+
+    /**
+     * 修改一级设备类型
+     */
+    int updateTypeFirst(BusTypeFirst busTypeFirst);
+
+    /**
+     * 查询一级设备类型
+     */
+    List<BusTypeFirst> queryTypeFirst();
+
 }
