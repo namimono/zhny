@@ -1,5 +1,6 @@
 package org.rcisoft.business.system.project.service.Impl;
 
+import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.dao.DeviceConfigDao;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
@@ -324,7 +325,18 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
      */
     @Transactional(rollbackFor=Exception.class)
     @Override
-    public int batchOperationParams(List<ParamFirstContainSecond> list,String paramFirstIds,String paramSecondIds){
+    public ServiceResult batchOperationParams(List<ParamFirstContainSecond> list, String paramFirstIds, String paramSecondIds){
+
+        //判断新增一级参数信息是否重复
+        for (ParamFirstContainSecond paramFirstContainSecond : list){
+            if (paramFirstContainSecond.getBusParamFirst().getId() == null || "".equals(paramFirstContainSecond.getBusParamFirst().getId())){
+                int flag = deviceConfigDao.queryRepeatNum(paramFirstContainSecond.getBusParamFirst().getName(),paramFirstContainSecond.getBusParamFirst().getCoding());
+                if(flag > 0){
+                    return new ServiceResult(flag,"error");
+                }
+            }
+        }
+
         int sum = 0;
         //批量删除
         String[] firstIds = paramFirstIds.split(",");
@@ -385,7 +397,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
         if (addParamSecondList.size() > 0){
             sum += busParamSecondDao.insertListUseAllCols(addParamSecondList);
         }
-        return sum;
+        return new ServiceResult(sum,"success");
     }
 
     /**

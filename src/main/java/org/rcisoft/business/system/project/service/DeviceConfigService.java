@@ -1,5 +1,6 @@
 package org.rcisoft.business.system.project.service;
 
+import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.ParamFirstContainSecond;
 import org.rcisoft.entity.*;
@@ -107,7 +108,7 @@ public interface DeviceConfigService {
     /**
      * 批量增删改一二级参数信息
      */
-    int batchOperationParams(List<ParamFirstContainSecond> list,String paramFirstIds,String paramSecondIds);
+    ServiceResult batchOperationParams(List<ParamFirstContainSecond> list, String paramFirstIds, String paramSecondIds);
 
     /**
      * 新增厂家信息
