@@ -3,8 +3,11 @@ package org.rcisoft.business.equipment.report.service.Impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.RegionUtil;
 import org.rcisoft.business.equipment.report.dao.DeviceReportDao;
 import org.rcisoft.business.equipment.report.service.DeviceReportService;
 import org.rcisoft.dao.BusDeviceDao;
@@ -61,6 +64,12 @@ public class DeviceReportServiceImpl implements DeviceReportService {
         //设置单元格内换行可识别\r\n
         HSSFCellStyle cellStyle=workbook.createCellStyle();
         cellStyle.setWrapText(true);
+
+        //设置边框
+        HSSFCellStyle setBorder = workbook.createCellStyle();
+        setBorder.setBorderBottom(BorderStyle.THIN);
+        setBorder.setBorderTop(BorderStyle.THIN);
+        setBorder.setBorderRight(BorderStyle.THIN);
 
         //获取设备一级参数信息
         List<BusDevice> deviceList = busDeviceDao.queryDeviceByProjectId(proId);
@@ -124,7 +133,6 @@ public class DeviceReportServiceImpl implements DeviceReportService {
 
             //设置默认列宽
             sheet.setDefaultColumnWidth(13);
-            //sheet.setDefaultRowHeight((short)400);
             //设置列宽
             sheet.setColumnWidth(0,5200);
 
@@ -153,6 +161,15 @@ public class DeviceReportServiceImpl implements DeviceReportService {
             cell0.setCellStyle(cellStyle);
             cell0.setCellValue(new HSSFRichTextString("                     参数名称\r\n 时间"));
 
+            //在excel表中添加第二行表头
+            HSSFRow row1 = sheet.createRow(1);
+            for (int i = 1; i <= headList.size(); i++) {
+                HSSFCell cell = row1.createCell(i);
+                HSSFRichTextString text = new HSSFRichTextString(headList.get(i-1));
+                cell.setCellValue(text);
+                cell.setCellStyle(setBorder);
+            }
+
             //合并单元格,并插入第一行表头
             int firstCol = 1;
             int lastCol = 0;
@@ -170,17 +187,16 @@ public class DeviceReportServiceImpl implements DeviceReportService {
                 cell.setCellStyle(styleMain);
                 //加载合并单元格对象
                 sheet.addMergedRegion(callRangeAddress);
+                //设置合并单元格边框
+                RegionUtil.setBorderRight(1,callRangeAddress,sheet);
                 firstCol += resultMap.get(key).size();
                 index++;
             }
 
-            //在excel表中添加第二行表头
-            HSSFRow row1 = sheet.createRow(1);
-            for (int i = 1; i <= headList.size(); i++) {
-                HSSFCell cell = row1.createCell(i);
-                HSSFRichTextString text = new HSSFRichTextString(headList.get(i-1));
-                cell.setCellValue(text);
-            }
+            //设置A1合并单元格边框
+            RegionUtil.setBorderBottom(1,callRangeAddress1,sheet);
+            RegionUtil.setBorderRight(1,callRangeAddress1,sheet);
+
 
             //将二级参数的数值循环插入表格
             int rowNum = 2;

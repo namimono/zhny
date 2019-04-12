@@ -135,7 +135,7 @@ public class BasicDataServiceImpl implements BasicDataService {
      */
     @Override
     public String downloadFile(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-        //"新建文本文档.txt";// 设置文件名，根据业务需要替换成要下载的文件名
+        // 设置文件名，根据业务需要替换成要下载的文件名
         String fileName = "碳排放量.xls";
         if (fileName != null) {
             //设置文件路径
