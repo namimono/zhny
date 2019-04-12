@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
+import com.mysql.jdbc.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -256,7 +257,18 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
             for (String key : resultMap.keySet()){
                 String formula = formulaList.get(i-1).getFormula();
                 //通过每个公式对应的变量数循环
-                for (FormulaVariableData formulaVariableData : resultMap.get(key)){
+                // 排序变量list
+                List<FormulaVariableData> variableDataList = resultMap.get(key);
+                Collections.sort(variableDataList, (o1, o2) -> {
+                    String o1V = o1.getParamSecondCoding();
+                    String o2V = o2.getParamSecondCoding();
+                    if (o1V.length() > o2V.length()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                });
+                for (FormulaVariableData formulaVariableData : variableDataList){
                     formula = this.fillValues(formula,formulaVariableData,jsonObject);
                 }
                 row4.createCell(i).setCellValue(FormulaUtil.calculate(formula,fel));
@@ -337,7 +349,7 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
         //日期进行操作的类
         Calendar cal = Calendar.getInstance();
         //将计算出的数值存入resultList
-        List<String> formulaName = null;
+        List<String> formulaName = new ArrayList<>();
         //通过公式的数量进行循环
         int i = 0;
         if(resultMap.size() > 0){
@@ -350,6 +362,15 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
                     String formula = formulaList.get(i).getFormula();
                     //通过每个公式对应的变量数循环
                     List<FormulaVariableData> variableDataList = resultMap.get(key);
+                    Collections.sort(variableDataList, (o1, o2) -> {
+                        String o1V = o1.getParamSecondCoding();
+                        String o2V = o2.getParamSecondCoding();
+                        if (o1V.length() > o2V.length()) {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    });
                     if (variableDataList.size() <= 0){
                         return null;
                     }
@@ -364,7 +385,11 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
                         resultList.set(hour,formulaResult);
                     }
                 }
-                formulaName.add(formulaList.get(i).getName());
+                if (StringUtils.isNullOrEmpty(formulaList.get(i).getName())){
+                    formulaName.add("null");
+                }else {
+                    formulaName.add(formulaList.get(i).getName());
+                }
                 resultsList.add(resultList);
                 i++;
             }

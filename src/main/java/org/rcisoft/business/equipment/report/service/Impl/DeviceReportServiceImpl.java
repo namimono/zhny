@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,9 +69,17 @@ public class DeviceReportServiceImpl implements DeviceReportService {
             return;
         }
         //获取data数据
-        String beginTime = date + " 00:00:00";
-        String endTime = date + " 23:59:59";
-        List<SysData> sysDataList = sysDataDao.queryDataByProIdAndTime(proId,beginTime,endTime);
+        List<SysData> sysDataList;
+        if (date.length() > 7){
+            String beginTime = date + " 00:00:00";
+            String endTime = date + " 23:59:59";
+            sysDataList = sysDataDao.queryDataByProIdAndTime(proId,beginTime,endTime);
+        }else {
+            String[] dates = date.split("-");
+            String year = dates[0];
+            String month = dates[1];
+            sysDataList = deviceReportDao.querySysDataByMonth(year,month,proId);
+        }
         if (sysDataList.size() <= 0){
             return;
         }
