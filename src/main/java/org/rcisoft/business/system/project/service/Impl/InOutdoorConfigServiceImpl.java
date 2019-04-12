@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,30 +39,26 @@ public class InOutdoorConfigServiceImpl implements InOutdoorConfigService {
      * 新增室内环境信息和室内环境参数
      */
     @Override
-    public ServiceResult addIndoorInfo(List<IndoorContainParam> list,String proId){
+    public ServiceResult addIndoorInfo(IndoorContainParam indoorContainParam){
         //判断新增室内环境信息是否重复
-        for (IndoorContainParam indoorContainParam : list){
-            int flag = inOutDoorConfigDao.queryIndoorRepeatNum(indoorContainParam.getBusIndoor().getFloor(),indoorContainParam.getBusIndoor().getDoor(),proId);
-            if(flag > 0){
-                return new ServiceResult(flag,"error");
-            }
+        int flag = inOutDoorConfigDao.queryIndoorRepeatNum(indoorContainParam.getBusIndoor().getFloor(),indoorContainParam.getBusIndoor().getDoor(),indoorContainParam.getBusIndoor().getProjectId());
+        if(flag > 0){
+            return new ServiceResult(flag,"error");
         }
 
         //批新增室内环境信息和室内环境参数
         List<BusIndoorParam> addIndoorParamList = new ArrayList<>();
-        list.forEach(indoorContainParam -> {
-            String id = UuidUtil.create32();
-            indoorContainParam.getBusIndoor().setId(id);
-            indoorContainParam.getIndoorParams().forEach(busIndoorParam -> {
-                busIndoorParam.setId(UuidUtil.create32());
-                busIndoorParam.setIndoorId(id);
-                addIndoorParamList.add(busIndoorParam);
-            });
+        String id = UuidUtil.create32();
+        indoorContainParam.getBusIndoor().setId(id);
+        indoorContainParam.getIndoorParams().forEach(busIndoorParam -> {
+            busIndoorParam.setId(UuidUtil.create32());
+            busIndoorParam.setIndoorId(id);
+            addIndoorParamList.add(busIndoorParam);
         });
         if (addIndoorParamList.size() > 0){
             busIndoorParamDao.insertListUseAllCols(addIndoorParamList);
         }
-        return new ServiceResult(busIndoorDao.insertSelective(list.get(0).getBusIndoor()),"success");
+        return new ServiceResult(busIndoorDao.insertSelective(indoorContainParam.getBusIndoor()),"success");
     }
 
     /**
@@ -80,22 +77,14 @@ public class InOutdoorConfigServiceImpl implements InOutdoorConfigService {
      * 修改室内环境信息和室内环境参数
      */
     @Override
-    public int updateIndoorInfo(List<IndoorContainParam> list){
+    public int updateIndoorInfo(IndoorContainParam indoorContainParam){
         //批新增室内环境信息和室内环境参数
         List<BusIndoorParam> updateIndoorParamList = new ArrayList<>();
-        list.forEach(indoorContainParam -> {
-            String id = UuidUtil.create32();
-            indoorContainParam.getBusIndoor().setId(id);
-            indoorContainParam.getIndoorParams().forEach(busIndoorParam -> {
-                busIndoorParam.setId(UuidUtil.create32());
-                busIndoorParam.setIndoorId(id);
-                updateIndoorParamList.add(busIndoorParam);
-            });
-        });
+        updateIndoorParamList.addAll(indoorContainParam.getIndoorParams());
         if (updateIndoorParamList.size() > 0){
             inOutDoorConfigDao.updateAllIndoorParam(updateIndoorParamList);
         }
-        return busIndoorDao.updateByPrimaryKeySelective(list.get(0).getBusIndoor());
+        return busIndoorDao.updateByPrimaryKeySelective(indoorContainParam.getBusIndoor());
     }
 
     /**
@@ -124,17 +113,17 @@ public class InOutdoorConfigServiceImpl implements InOutdoorConfigService {
      * 新增室外配置
      */
     @Override
-    public int addOutdoorInfo(BusOutdoor busOutdoor){
-        busOutdoor.setId(UuidUtil.create32());
-        return busOutdoorDao.insertSelective(busOutdoor);
+    public int addOutdoorInfo(List<BusOutdoor> busOutdoorList){
+        busOutdoorList.forEach(busOutdoor -> busOutdoor.setId(UuidUtil.create32()));
+        return busOutdoorDao.insertListUseAllCols(busOutdoorList);
     }
 
     /**
      * 修改室外配置
      */
     @Override
-    public int updateOutdoorInfo(BusOutdoor busOutdoor){
-        return busOutdoorDao.updateByPrimaryKeySelective(busOutdoor);
+    public int updateOutdoorInfo(List<BusOutdoor> busOutdoorList){
+        return inOutDoorConfigDao.updateAllOutdoorInfo(busOutdoorList);
     }
 
     /**

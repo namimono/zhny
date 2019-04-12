@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.rcisoft.entity.BusIndoorParam;
+import org.rcisoft.entity.BusOutdoor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,11 +23,20 @@ public interface InOutDoorConfigDao {
     int queryIndoorRepeatNum(@Param("floor") int floor,@Param("door")int door,@Param("proId")String proId);
 
     /**
-     * 批量更新室内环境参数
+     * 批量修改室内环境参数
      */
     @Update("<script><foreach collection=\"list\" item=\"list\" index=\"index\" open=\"\" close=\"\" separator=\";\">\n" +
             "UPDATE bus_indoor_param SET project_id = #{list.projectId},\n" +
             "indoor_id = #{list.indoorId},param_first_id = #{list.paramFirstId},param_second_id = #{list.paramSecondId},\n" +
             "type = #{list.type} WHERE id = #{list.id}</foreach></script>\n")
     int updateAllIndoorParam(List<BusIndoorParam> list);
+
+    /**
+     * 批量修改室外环境参数
+     */
+    @Update("<script><foreach collection=\"list\" item=\"list\" index=\"index\" open=\"\" close=\"\" separator=\";\">\n" +
+            "UPDATE bus_outdoor SET project_id = #{list.projectId},\n" +
+            "param_first_id = #{list.paramFirstId},param_second_id = #{list.paramSecondId},\n" +
+            "type = #{list.type} WHERE id = #{list.id}</foreach></script>\n")
+    int updateAllOutdoorInfo(List<BusOutdoor> list);
 }

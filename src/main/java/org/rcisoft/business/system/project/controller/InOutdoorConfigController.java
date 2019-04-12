@@ -26,9 +26,9 @@ public class InOutdoorConfigController {
     private InOutdoorConfigService inOutdoorConfigServiceImpl;
 
     @ApiOperation(value="新增室内环境信息和室内环境参数", notes="新增室内环境信息和室内环境参数")
-    @PostMapping("/addIndoorInfo/{proId}")
-    public Result addIndoorInfo(@RequestBody List<IndoorContainParam> list, @PathVariable String proId){
-        return Result.serviceResult(inOutdoorConfigServiceImpl.addIndoorInfo(list,proId),"新增室内环境信息成功","新增室内环境信息失败");
+    @PostMapping("/addIndoorInfo")
+    public Result addIndoorInfo(@RequestBody IndoorContainParam indoorContainParam){
+        return Result.serviceResult(inOutdoorConfigServiceImpl.addIndoorInfo(indoorContainParam),"新增室内环境信息成功","新增室内环境信息失败");
     }
 
     @ApiOperation(value="删除室内环境信息", notes="删除室内环境信息")
@@ -39,8 +39,8 @@ public class InOutdoorConfigController {
 
     @ApiOperation(value="修改室内环境信息和室内环境参数", notes="修改室内环境信息和室内环境参数")
     @PutMapping("/updateIndoorInfo")
-    public Result updateIndoorInfo(@RequestBody List<IndoorContainParam> list){
-        return Result.result(inOutdoorConfigServiceImpl.updateIndoorInfo(list),"修改室内环境信息成功","修改室内环境信息失败");
+    public Result updateIndoorInfo(@RequestBody IndoorContainParam indoorContainParam){
+        return Result.result(inOutdoorConfigServiceImpl.updateIndoorInfo(indoorContainParam),"修改室内环境信息成功","修改室内环境信息失败");
     }
 
     @ApiOperation(value="查询室内环境信息", notes="查询室内环境信息")
@@ -57,14 +57,14 @@ public class InOutdoorConfigController {
 
     @ApiOperation(value="新增室外配置", notes="新增室外配置")
     @PostMapping("/addOutdoorInfo")
-    public Result addOutdoorInfo(@RequestBody BusOutdoor busOutdoor){
-        return Result.result(inOutdoorConfigServiceImpl.addOutdoorInfo(busOutdoor),"新增室外配置成功","新增室外配置失败");
+    public Result addOutdoorInfo(@RequestBody List<BusOutdoor> busOutdoorList){
+        return Result.result(inOutdoorConfigServiceImpl.addOutdoorInfo(busOutdoorList),"新增室外配置成功","新增室外配置失败");
     }
 
     @ApiOperation(value="修改室外配置", notes="修改室外配置")
     @PutMapping("/updateOutdoorInfo")
-    public Result updateOutdoorInfo(@RequestBody BusOutdoor busOutdoor){
-        return Result.result(inOutdoorConfigServiceImpl.updateOutdoorInfo(busOutdoor),"修改室外配置成功","修改室外配置失败");
+    public Result updateOutdoorInfo(@RequestBody List<BusOutdoor> busOutdoorList){
+        return Result.result(inOutdoorConfigServiceImpl.updateOutdoorInfo(busOutdoorList),"修改室外配置成功","修改室外配置失败");
     }
 
     @ApiOperation(value="查询室外配置", notes="查询室外配置")

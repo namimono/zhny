@@ -1,5 +1,6 @@
 package org.rcisoft.dao;
 
+import org.rcisoft.base.util.SpecialBatchMapper;
 import org.rcisoft.entity.BusOutdoor;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
@@ -9,5 +10,5 @@ import tk.mybatis.mapper.common.Mapper;
  * @date 2019/4/11 16:55
  **/
 @Repository
-public interface BusOutdoorDao extends Mapper<BusOutdoor> {
+public interface BusOutdoorDao extends Mapper<BusOutdoor>, SpecialBatchMapper<BusOutdoor> {
 }

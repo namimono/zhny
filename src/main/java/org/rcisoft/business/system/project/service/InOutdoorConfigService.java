@@ -18,7 +18,7 @@ public interface InOutdoorConfigService {
     /**
      * 新增室内环境信息和室内环境参数
      */
-    ServiceResult addIndoorInfo(List<IndoorContainParam> list,String proId);
+    ServiceResult addIndoorInfo(IndoorContainParam indoorContainParam);
 
     /**
      * 删除室内环境信息
@@ -28,7 +28,7 @@ public interface InOutdoorConfigService {
     /**
      * 修改室内环境信息和室内环境参数
      */
-    int updateIndoorInfo(List<IndoorContainParam> list);
+    int updateIndoorInfo(IndoorContainParam indoorContainParam);
 
     /**
      * 查询室内环境信息
@@ -43,12 +43,12 @@ public interface InOutdoorConfigService {
     /**
      * 新增室外配置
      */
-    int addOutdoorInfo(BusOutdoor busOutdoor);
+    int addOutdoorInfo(List<BusOutdoor> busOutdoorList);
 
     /**
      * 修改室外配置
      */
-    int updateOutdoorInfo(BusOutdoor busOutdoor);
+    int updateOutdoorInfo(List<BusOutdoor> busOutdoorList);
 
     /**
      * 查询室外配置
