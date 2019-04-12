@@ -51,7 +51,8 @@ public class AdaptiveServiceImpl implements AdaptiveService {
         BigDecimal[] tempArray = result.getTempArray();
         // 查询室外温度
         String time = adaptiveParam.getTime();
-        List<BusTemperature> temperatureList = busTemperatureDao.queryTemp(time, adaptiveParam.getCode());
+        String code = busProjectDao.queryCityCode(adaptiveParam.getProjectId());
+        List<BusTemperature> temperatureList = busTemperatureDao.queryTemp(time, code);
         temperatureList.forEach(busTemperature -> {
             calendar.setTime(busTemperature.getCreateTime());
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
