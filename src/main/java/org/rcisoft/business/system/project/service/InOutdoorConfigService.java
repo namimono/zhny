@@ -14,9 +14,9 @@ import java.util.List;
 public interface InOutdoorConfigService {
 
     /**
-     * 新增室内环境信息
+     * 新增室内环境信息和室内环境参数
      */
-    int addIndoorInfo(BusIndoor busIndoor);
+    int addIndoorInfo(BusIndoor busIndoor,BusIndoorParam busIndoorParam);
 
     /**
      * 删除室内环境信息
@@ -24,29 +24,14 @@ public interface InOutdoorConfigService {
     int deleteIndoorInfo(String indoorId);
 
     /**
-     * 修改室内环境信息
+     * 修改室内环境信息和室内环境参数
      */
-    int updateIndoorInfo(BusIndoor busIndoor);
+    int updateIndoorInfo(BusIndoor busIndoor,BusIndoorParam busIndoorParam);
 
     /**
      * 查询室内环境信息
      */
     List<BusIndoor> queryIndoorInfo(String projectId);
-
-    /**
-     * 新增室内环境参数
-     */
-    int addIndoorParamInfo(BusIndoorParam busIndoorParam);
-
-    /**
-     * 删除室内环境参数
-     */
-    int deleteIndoorParamInfo(String indoorParamId);
-
-    /**
-     * 修改室内环境参数
-     */
-    int updateIndoorParamInfo(BusIndoorParam busIndoorParam);
 
     /**
      * 查询室内环境参数

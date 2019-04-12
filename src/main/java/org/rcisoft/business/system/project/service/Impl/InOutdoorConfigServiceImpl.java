@@ -29,27 +29,36 @@ public class InOutdoorConfigServiceImpl implements InOutdoorConfigService {
     private BusOutdoorDao busOutdoorDao;
 
     /**
-     * 新增室内环境信息
+     * 新增室内环境信息和室内环境参数
      */
     @Override
-    public int addIndoorInfo(BusIndoor busIndoor){
-        busIndoor.setId(UuidUtil.create32());
-        return busIndoorDao.insertSelective(busIndoor);
+    public int addIndoorInfo(BusIndoor busIndoor,BusIndoorParam busIndoorParam){
+        String id = UuidUtil.create32();
+        busIndoor.setId(id);
+        busIndoorParam.setId(UuidUtil.create32());
+        busIndoorParam.setIndoorId(id);
+        busIndoorDao.insertSelective(busIndoor);
+        return busIndoorParamDao.insertSelective(busIndoorParam);
     }
 
     /**
-     * 删除室内环境信息
+     * 删除室内环境信息（同时删除室内环境参数）
      */
     @Override
     public int deleteIndoorInfo(String indoorId){
+        Example example = new Example(BusIndoorParam.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("indoorId",indoorId);
+        busIndoorParamDao.deleteByExample(example);
         return busIndoorDao.deleteByPrimaryKey(indoorId);
     }
 
     /**
-     * 修改室内环境信息
+     * 修改室内环境信息和室内环境参数
      */
     @Override
-    public int updateIndoorInfo(BusIndoor busIndoor){
+    public int updateIndoorInfo(BusIndoor busIndoor,BusIndoorParam busIndoorParam){
+        busIndoorParamDao.updateByPrimaryKeySelective(busIndoorParam);
         return busIndoorDao.updateByPrimaryKeySelective(busIndoor);
     }
 
@@ -62,31 +71,6 @@ public class InOutdoorConfigServiceImpl implements InOutdoorConfigService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("projectId",projectId);
         return busIndoorDao.selectByExample(example);
-    }
-
-    /**
-     * 新增室内环境参数
-     */
-    @Override
-    public int addIndoorParamInfo(BusIndoorParam busIndoorParam){
-        busIndoorParam.setId(UuidUtil.create32());
-        return busIndoorParamDao.insertSelective(busIndoorParam);
-    }
-
-    /**
-     * 删除室内环境参数
-     */
-    @Override
-    public int deleteIndoorParamInfo(String indoorParamId){
-        return busIndoorParamDao.deleteByPrimaryKey(indoorParamId);
-    }
-
-    /**
-     * 修改室内环境参数
-     */
-    @Override
-    public int updateIndoorParamInfo(BusIndoorParam busIndoorParam){
-        return busIndoorParamDao.updateByPrimaryKeySelective(busIndoorParam);
     }
 
     /**
