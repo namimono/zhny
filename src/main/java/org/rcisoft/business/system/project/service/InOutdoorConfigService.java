@@ -1,5 +1,7 @@
 package org.rcisoft.business.system.project.service;
 
+import org.rcisoft.base.result.ServiceResult;
+import org.rcisoft.business.system.project.entity.IndoorContainParam;
 import org.rcisoft.entity.BusIndoor;
 import org.rcisoft.entity.BusIndoorParam;
 import org.rcisoft.entity.BusOutdoor;
@@ -16,7 +18,7 @@ public interface InOutdoorConfigService {
     /**
      * 新增室内环境信息和室内环境参数
      */
-    int addIndoorInfo(BusIndoor busIndoor,BusIndoorParam busIndoorParam);
+    ServiceResult addIndoorInfo(List<IndoorContainParam> list,String proId);
 
     /**
      * 删除室内环境信息
@@ -26,7 +28,7 @@ public interface InOutdoorConfigService {
     /**
      * 修改室内环境信息和室内环境参数
      */
-    int updateIndoorInfo(BusIndoor busIndoor,BusIndoorParam busIndoorParam);
+    int updateIndoorInfo(List<IndoorContainParam> list);
 
     /**
      * 查询室内环境信息

@@ -3,12 +3,15 @@ package org.rcisoft.business.system.project.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
+import org.rcisoft.business.system.project.entity.IndoorContainParam;
 import org.rcisoft.business.system.project.service.InOutdoorConfigService;
 import org.rcisoft.entity.BusIndoor;
 import org.rcisoft.entity.BusIndoorParam;
 import org.rcisoft.entity.BusOutdoor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author 土豆儿
@@ -23,9 +26,9 @@ public class InOutdoorConfigController {
     private InOutdoorConfigService inOutdoorConfigServiceImpl;
 
     @ApiOperation(value="新增室内环境信息和室内环境参数", notes="新增室内环境信息和室内环境参数")
-    @PostMapping("/addIndoorInfo")
-    public Result addIndoorInfo(@RequestBody BusIndoor busIndoor,@RequestBody BusIndoorParam busIndoorParam){
-        return Result.result(inOutdoorConfigServiceImpl.addIndoorInfo(busIndoor,busIndoorParam),"新增室内环境信息成功","新增室内环境信息失败");
+    @PostMapping("/addIndoorInfo/{proId}")
+    public Result addIndoorInfo(@RequestBody List<IndoorContainParam> list, @PathVariable String proId){
+        return Result.serviceResult(inOutdoorConfigServiceImpl.addIndoorInfo(list,proId),"新增室内环境信息成功","新增室内环境信息失败");
     }
 
     @ApiOperation(value="删除室内环境信息", notes="删除室内环境信息")
@@ -36,8 +39,8 @@ public class InOutdoorConfigController {
 
     @ApiOperation(value="修改室内环境信息和室内环境参数", notes="修改室内环境信息和室内环境参数")
     @PutMapping("/updateIndoorInfo")
-    public Result updateIndoorInfo(@RequestBody BusIndoor busIndoor,@RequestBody BusIndoorParam busIndoorParam){
-        return Result.result(inOutdoorConfigServiceImpl.updateIndoorInfo(busIndoor,busIndoorParam),"修改室内环境信息成功","修改室内环境信息失败");
+    public Result updateIndoorInfo(@RequestBody List<IndoorContainParam> list){
+        return Result.result(inOutdoorConfigServiceImpl.updateIndoorInfo(list),"修改室内环境信息成功","修改室内环境信息失败");
     }
 
     @ApiOperation(value="查询室内环境信息", notes="查询室内环境信息")

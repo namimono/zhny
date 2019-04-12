@@ -325,12 +325,12 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
      */
     @Transactional(rollbackFor=Exception.class)
     @Override
-    public ServiceResult batchOperationParams(List<ParamFirstContainSecond> list, String paramFirstIds, String paramSecondIds){
+    public ServiceResult batchOperationParams(List<ParamFirstContainSecond> list,String paramFirstIds,String paramSecondIds){
 
         //判断新增一级参数信息是否重复
         for (ParamFirstContainSecond paramFirstContainSecond : list){
             if (paramFirstContainSecond.getBusParamFirst().getId() == null || "".equals(paramFirstContainSecond.getBusParamFirst().getId())){
-                int flag = deviceConfigDao.queryRepeatNum(paramFirstContainSecond.getBusParamFirst().getName(),paramFirstContainSecond.getBusParamFirst().getCoding());
+                int flag = deviceConfigDao.queryRepeatNum(paramFirstContainSecond.getBusParamFirst().getName(),paramFirstContainSecond.getBusParamFirst().getCoding(),paramFirstContainSecond.getBusParamFirst().getProjectId());
                 if(flag > 0){
                     return new ServiceResult(flag,"error");
                 }
