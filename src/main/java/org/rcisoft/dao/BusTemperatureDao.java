@@ -29,4 +29,9 @@ public interface BusTemperatureDao extends Mapper<BusTemperature> {
             "AND RIGHT(create_time,5)='00:00' AND coding = #{coding} order by create_time asc")
     @ResultType(BusTemperature.class)
     List<BusTemperature> queryTemp(@Param("time") String time, @Param("coding") String coding);
+
+    @Select("SELECT create_time, temperature FROM bus_temperature WHERE date_format(create_time, \"%Y-%m-%d\") = #{time} " +
+            "AND RIGHT(create_time,5)='00:00' AND coding = #{coding} order by create_time asc")
+    @ResultType(BusTemperature.class)
+    List<BusTemperature> queryTempDate(@Param("time") String time, @Param("coding") String coding);
 }

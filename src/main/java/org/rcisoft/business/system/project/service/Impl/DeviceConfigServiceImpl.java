@@ -1,5 +1,6 @@
 package org.rcisoft.business.system.project.service.Impl;
 
+import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.dao.DeviceConfigDao;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
@@ -29,6 +30,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     @Autowired
     private DeviceConfigDao deviceConfigDao;
     @Autowired
+    private BusTypeFirstDao busTypeFirstDao;
+    @Autowired
     private BusTypeSecondDao busTypeSecondDao;
     @Autowired
     private BusParamFirstDao busParamFirstDao;
@@ -44,6 +47,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     private BusVariableDao busVariableDao;
     @Autowired
     private BusTitleParamDao busTitleParamDao;
+    @Autowired
+    private BusFactoryDao busFactoryDao;
 
     /**
      * 获取当前系统时间
@@ -320,7 +325,18 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
      */
     @Transactional(rollbackFor=Exception.class)
     @Override
-    public int batchOperationParams(List<ParamFirstContainSecond> list,String paramFirstIds,String paramSecondIds){
+    public ServiceResult batchOperationParams(List<ParamFirstContainSecond> list,String paramFirstIds,String paramSecondIds){
+
+        //判断新增一级参数信息是否重复
+        for (ParamFirstContainSecond paramFirstContainSecond : list){
+            if (paramFirstContainSecond.getBusParamFirst().getId() == null || "".equals(paramFirstContainSecond.getBusParamFirst().getId())){
+                int flag = deviceConfigDao.queryRepeatNum(paramFirstContainSecond.getBusParamFirst().getName(),paramFirstContainSecond.getBusParamFirst().getCoding(),paramFirstContainSecond.getBusParamFirst().getProjectId());
+                if(flag > 0){
+                    return new ServiceResult(flag,"error");
+                }
+            }
+        }
+
         int sum = 0;
         //批量删除
         String[] firstIds = paramFirstIds.split(",");
@@ -349,7 +365,9 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
                     //循环添加二级参数id和其一级参数id字段信息
                     paramFirstContainSecond.getSecondary().forEach(busParamSecond -> {
                         busParamSecond.setId(UuidUtil.create32());
-                        busParamSecond.setParamFirstId(id);
+                        if (busParamSecond.getSourceId() != 4) {
+                            busParamSecond.setParamFirstId(id);
+                        }
                         addParamSecondList.add(busParamSecond);
                     });
                 }else {
@@ -379,7 +397,72 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
         if (addParamSecondList.size() > 0){
             sum += busParamSecondDao.insertListUseAllCols(addParamSecondList);
         }
-        return sum;
+        return new ServiceResult(sum,"success");
     }
 
+    /**
+     * 新增厂家信息
+     */
+    @Override
+    public int addFactory(BusFactory busFactory){
+        busFactory.setId(UuidUtil.create32());
+        return busFactoryDao.insertSelective(busFactory);
+    }
+
+    /**
+     * 删除厂家信息
+     */
+    @Override
+    public int deleteFactory(String factoryId){
+        return busFactoryDao.deleteByPrimaryKey(factoryId);
+    }
+
+    /**
+     * 修改厂家信息
+     */
+    @Override
+    public int updateFactory(BusFactory busFactory){
+        return busFactoryDao.updateByPrimaryKeySelective(busFactory);
+    }
+
+    /**
+     * 查询厂家信息
+     */
+    @Override
+    public List<BusFactory> queryFactory(){
+        return busFactoryDao.selectAll();
+    }
+
+    /**
+     * 新增一级设备类型
+     */
+    @Override
+    public int addTypeFirst(BusTypeFirst busTypeFirst){
+        busTypeFirst.setId(UuidUtil.create32());
+        return busTypeFirstDao.insertSelective(busTypeFirst);
+    }
+
+    /**
+     * 删除一级设备类型
+     */
+    @Override
+    public int deleteTypeFirst(String typeFirstId){
+        return busTypeFirstDao.deleteByPrimaryKey(typeFirstId);
+    }
+
+    /**
+     * 修改一级设备类型
+     */
+    @Override
+    public int updateTypeFirst(BusTypeFirst busTypeFirst){
+        return busTypeFirstDao.updateByPrimaryKeySelective(busTypeFirst);
+    }
+
+    /**
+     * 查询一级设备类型
+     */
+    @Override
+    public List<BusTypeFirst> queryTypeFirst(){
+        return busTypeFirstDao.queryTypeFirst();
+    }
 }

@@ -18,4 +18,5 @@ public interface IndoorService {
     List<BusIndoor> queryDoor(int floor);
     OutsideAndInsideTemp queryIndoorParam(String indoorId, String ProId,String coding);
     Map<String,Object> queryJsonIndoor(String proId, int type, String coding,String indoor);
+    Map<String,Object> MonthParamContrast(String proId,int type,String coding,int year,int month,String indoor);
 }

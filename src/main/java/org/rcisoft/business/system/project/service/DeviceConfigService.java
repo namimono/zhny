@@ -1,5 +1,6 @@
 package org.rcisoft.business.system.project.service;
 
+import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.ParamFirstContainSecond;
 import org.rcisoft.entity.*;
@@ -107,6 +108,46 @@ public interface DeviceConfigService {
     /**
      * 批量增删改一二级参数信息
      */
-    int batchOperationParams(List<ParamFirstContainSecond> list,String paramFirstIds,String paramSecondIds);
+    ServiceResult batchOperationParams(List<ParamFirstContainSecond> list,String paramFirstIds,String paramSecondIds);
+
+    /**
+     * 新增厂家信息
+     */
+    int addFactory(BusFactory busFactory);
+
+    /**
+     * 删除厂家信息
+     */
+    int deleteFactory(String factoryId);
+
+    /**
+     * 修改厂家信息
+     */
+    int updateFactory(BusFactory busFactory);
+
+    /**
+     * 查询厂家信息
+     */
+    List<BusFactory> queryFactory();
+
+    /**
+     * 新增一级设备类型
+     */
+    int addTypeFirst(BusTypeFirst busTypeFirst);
+
+    /**
+     * 删除一级设备类型
+     */
+    int deleteTypeFirst(String typeFirstId);
+
+    /**
+     * 修改一级设备类型
+     */
+    int updateTypeFirst(BusTypeFirst busTypeFirst);
+
+    /**
+     * 查询一级设备类型
+     */
+    List<BusTypeFirst> queryTypeFirst();
 
 }

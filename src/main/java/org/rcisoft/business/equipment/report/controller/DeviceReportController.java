@@ -24,8 +24,8 @@ public class DeviceReportController {
     private DeviceReportService deviceReportServiceImpl;
 
     @ApiOperation(value="导出当日设备信息excel",notes="导出当日设备信息excel",produces="application/octet-stream")
-    @GetMapping("/downloadDeviceTodayData/{deviceId}/{proId}/{date}")
-    public void downloadDeviceTodayData(HttpServletResponse response, @PathVariable String deviceId, @PathVariable String proId, @PathVariable String date){
-        deviceReportServiceImpl.downloadDeviceTodayData(response,deviceId,proId,date);
+    @GetMapping("/downloadDeviceTodayData/{proId}/{date}")
+    public void downloadDeviceTodayData(HttpServletResponse response,@PathVariable String proId,@PathVariable String date){
+        deviceReportServiceImpl.downloadDeviceTodayData(response,proId,date);
     }
 }

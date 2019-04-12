@@ -85,8 +85,14 @@ public class FormulaOperationController {
     }
 
     @ApiOperation(value="导出公式数据",notes="导出公式数据",produces="application/octet-stream")
-    @PostMapping("/downloadFormulaData")
-    public void downloadFormulaData(HttpServletResponse response, String projectId, String beginTime, String endTime,@RequestBody List<BusFormula> formulaList){
-        formulaOperationServiceImpl.downloadFormulaData(response,projectId,beginTime,endTime,formulaList);
+    @PostMapping("/downloadFormulaData/{projectId}/{date}")
+    public void downloadFormulaData(HttpServletResponse response,@PathVariable String projectId,@PathVariable String date,@RequestBody List<BusFormula> formulaList){
+        formulaOperationServiceImpl.downloadFormulaData(response,projectId,date,formulaList);
+    }
+
+    @ApiOperation(value="查询计算公式结果", notes="查询计算公式结果")
+    @GetMapping("/queryResult/{proId}/{date}")
+    public Result queryResult(@PathVariable String proId,@PathVariable String date){
+        return Result.result(formulaOperationServiceImpl.queryResult(proId,date));
     }
 }

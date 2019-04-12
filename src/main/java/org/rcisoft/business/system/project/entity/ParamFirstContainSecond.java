@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author 土豆儿
  * @date 2019/3/28 16:10
- * 新增一二级参数时，一级参数包含二级参数对象list实体类
+ * 新增或编辑一二级参数时，一级参数包含二级参数对象list实体类
  **/
 @Data
 @NoArgsConstructor

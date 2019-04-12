@@ -4,8 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.base.util.UuidUtil;
+import org.rcisoft.business.whole.head.dao.HeadDao;
+import org.rcisoft.business.whole.head.entity.CityInfo;
 import org.rcisoft.business.whole.head.service.SysCityService;
 import org.rcisoft.dao.SysCityDao;
+import org.rcisoft.entity.BusProject;
 import org.rcisoft.entity.BusTemperature;
 import org.rcisoft.entity.SysCity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,8 @@ import java.util.UUID;
 public class SysCityServiceImpl implements SysCityService {
     @Autowired
     SysCityDao sysCityDao;
+    @Autowired
+    HeadDao headDao;
 
     /**
      * 根据城市名称获取城市天气信息
@@ -37,15 +42,15 @@ public class SysCityServiceImpl implements SysCityService {
      * @return
      */
     @Override
-    public BusTemperature queryCityByName(String city) {
+    public BusTemperature queryCityByName(String proId) {
         BusTemperature busTemperature = new BusTemperature();
         try{
-            String cityName = StringUtils.isEmpty(city)?null:StringUtils.substring(city,0,city.length());
-            System.out.println(cityName);
-            if(cityName == null) return  busTemperature;
-            SysCity sysCity = new SysCity();
-            sysCity = sysCityDao.queryCityInfoByName(cityName);
-            String code = sysCity.getCoding();
+            String cityCode = StringUtils.isEmpty(proId)?null:StringUtils.substring(proId,0,proId.length());
+            if(cityCode == null) return  busTemperature;
+            CityInfo cityInfo = new CityInfo();
+            cityInfo = sysCityDao.queryCityInfoByName(proId);
+            String code = cityInfo.getCode();
+            String cityName = cityInfo.getCityName();
             JSONObject weatherJson = this.getWeatherMessage(code);
             //湿度
             String sd =  (String)weatherJson.get("SD");
@@ -55,11 +60,12 @@ public class SysCityServiceImpl implements SysCityService {
             //风速
             String fs = (String)weatherJson.get("WD") + (String) weatherJson.get("WS");
             BigDecimal temp = new BigDecimal(wd);
-           busTemperature.setWind(fs);
-           busTemperature.setTemperature(temp);
-           busTemperature.setHumidity(Humidity);
-           busTemperature.setHumidityPercent(sd);
-           busTemperature.setCoding(code);
+            busTemperature.setWind(fs);
+            busTemperature.setTemperature(temp);
+            busTemperature.setHumidity(Humidity);
+            busTemperature.setHumidityPercent(sd);
+            busTemperature.setCoding(code);
+            busTemperature.setCityName(cityName);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -140,4 +146,8 @@ public class SysCityServiceImpl implements SysCityService {
         return 0;
     }
 
+    @Override
+    public List<BusProject> queryAllProj() {
+        return headDao.queryAllProj();
+    }
 }

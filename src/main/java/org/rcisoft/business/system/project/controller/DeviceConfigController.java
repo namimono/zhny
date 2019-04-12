@@ -3,10 +3,11 @@ package org.rcisoft.business.system.project.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
-import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.ParamFirstContainSecond;
-import org.rcisoft.entity.*;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
+import org.rcisoft.entity.BusDevice;
+import org.rcisoft.entity.BusFactory;
+import org.rcisoft.entity.BusTypeFirst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -136,6 +137,54 @@ public class DeviceConfigController {
     @ApiOperation(value="批量增删改一二级参数信息", notes="批量增删改一二级参数信息")
     @PostMapping("/batchOperationParams/{paramFirstIds}/{paramSecondIds}")
     public Result batchOperationParams(@RequestBody List<ParamFirstContainSecond> list,@PathVariable String paramFirstIds,@PathVariable String paramSecondIds){
-        return Result.result(deviceConfigServiceImpl.batchOperationParams(list,paramFirstIds,paramSecondIds),"操作成功","操作失败");
+        return Result.serviceResult(deviceConfigServiceImpl.batchOperationParams(list,paramFirstIds,paramSecondIds),"保存成功","操作失败");
+    }
+
+    @ApiOperation(value="新增厂家信息", notes="新增厂家信息")
+    @PostMapping("/addFactory")
+    public Result addFactory(@RequestBody BusFactory busFactory){
+        return Result.result(deviceConfigServiceImpl.addFactory(busFactory),"新增厂家信息成功","新增厂家信息失败");
+    }
+
+    @ApiOperation(value="删除厂家信息", notes="删除厂家信息")
+    @DeleteMapping("/deleteFactory/{factoryId}")
+    public Result deleteFactory(@PathVariable String factoryId){
+        return Result.result(deviceConfigServiceImpl.deleteFactory(factoryId),"删除厂家信息成功","删除厂家信息失败");
+    }
+
+    @ApiOperation(value="修改厂家信息", notes="修改厂家信息")
+    @PutMapping("/updateFactory")
+    public Result updateFactory(@RequestBody BusFactory busFactory){
+        return Result.result(deviceConfigServiceImpl.updateFactory(busFactory),"修改厂家信息成功","修改厂家信息失败");
+    }
+
+    @ApiOperation(value="查询厂家信息", notes="查询厂家信息")
+    @GetMapping("/queryFactory")
+    public Result queryFactory (){
+        return Result.result(deviceConfigServiceImpl.queryFactory());
+    }
+
+    @ApiOperation(value="新增一级设备类型", notes="新增一级设备类型")
+    @PostMapping("/addTypeFirst")
+    public Result addTypeFirst(@RequestBody BusTypeFirst busTypeFirst){
+        return Result.result(deviceConfigServiceImpl.addTypeFirst(busTypeFirst),"新增设备类型成功","新增设备类型失败");
+    }
+
+    @ApiOperation(value="删除一级设备类型", notes="删除一级设备类型")
+    @DeleteMapping("/deleteTypeFirst/{typeFirstId}")
+    public Result deleteTypeFirst(@PathVariable String typeFirstId){
+        return Result.result(deviceConfigServiceImpl.deleteTypeFirst(typeFirstId),"删除设备类型成功","删除设备类型失败");
+    }
+
+    @ApiOperation(value="修改一级设备类型", notes="修改一级设备类型")
+    @PutMapping("/updateTypeFirst")
+    public Result updateTypeFirst(@RequestBody BusTypeFirst busTypeFirst){
+        return Result.result(deviceConfigServiceImpl.updateTypeFirst(busTypeFirst),"修改设备类型成功","修改设备类型失败");
+    }
+
+    @ApiOperation(value="查询一级设备类型", notes="查询一级设备类型")
+    @GetMapping("/queryTypeFirst")
+    public Result queryTypeFirst (){
+        return Result.result(deviceConfigServiceImpl.queryTypeFirst());
     }
 }

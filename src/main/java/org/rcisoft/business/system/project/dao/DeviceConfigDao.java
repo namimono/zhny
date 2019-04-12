@@ -43,4 +43,11 @@ public interface DeviceConfigDao {
             "content = #{list.content},energy_type_id = #{list.energyTypeId},elec_type = #{list.elecType},\n" +
             "first_sign = #{list.firstSign} WHERE id = #{list.id}</foreach></script>\n")
     int updateAllParamSecond(List<BusParamSecond> list);
+
+    /**
+     * 查询一级参数名称或code相同的条数
+     */
+    @Select("SELECT COUNT(*) FROM bus_param_first WHERE coding = #{paramCode} OR `name` = #{paramName}\n" +
+            "and project_id = #{proId}")
+    int queryRepeatNum(@Param("paramName") String paramName,@Param("paramCode")String paramCode,@Param("proId")String proId);
 }

@@ -2,6 +2,7 @@ package org.rcisoft.business.equipment.report.service.Impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mysql.jdbc.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.rcisoft.business.equipment.report.dao.SystemDataDao;
 import org.rcisoft.business.equipment.report.entity.ParamSecondWithFirst;
@@ -16,11 +17,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 土豆儿
@@ -32,27 +31,17 @@ public class SystemDataServiceImpl implements SystemDataService {
     @Autowired
     private SystemDataDao systemDataDao;
     @Autowired
-    private BusParamSecondDao busParamSecondDao;
-    @Autowired
     private SysDataDao sysDataDao;
-
-//    /**
-//     * 根据参数来源查询二级参数
-//     */
-//    @Override
-//    public List<BusParamSecond> queryParamSecondBySource(String proId, String sourceId){
-//        return busParamSecondDao.queryParamSecondByProId(proId,sourceId);
-//    }
 
     /**
      * 下载数据文档
      */
     @Override
-    public void downlDataDocument(HttpServletResponse response,String paramSecondIds,String proId,String beginTime,String endTime){
+    public void downlDataDocument(HttpServletResponse response,String paramSecondIds,String proId,String date){
         HSSFWorkbook workbook = new HSSFWorkbook();
         //SimpleDateFormat fdate = new SimpleDateFormat("yyyy-MM-dd"); fdate.format(new Date())
         // 设置要导出的文件的名字
-        String fileName = beginTime + ".xls";
+        String fileName = date + ".xls";
         //处理二级参数id格式
         StringBuilder secondIds = new StringBuilder();
         String[] ids = paramSecondIds.split(",");
@@ -67,8 +56,8 @@ public class SystemDataServiceImpl implements SystemDataService {
         //获取参数信息
         List<ParamSecondWithFirst> secondWithFirstList = systemDataDao.querySecondWithFirst(secondIds.toString());
         //获取data数据
-        beginTime += "00:00:00";
-        endTime += "23:59:59";
+        String beginTime = date + "00:00:00";
+        String endTime = date + "23:59:59";
         List<SysData> sysDataList = sysDataDao.queryDataByProIdAndTime(proId,beginTime,endTime);
         //创建分页名
         String sheetName = "系统数据";
@@ -111,4 +100,62 @@ public class SystemDataServiceImpl implements SystemDataService {
         }
     }
 
+    /**
+     * 查询图表数据
+     */
+    @Override
+    public List<Object> queryEchartData(String paramSecondIds,String proId,String date){
+        List<Object> resultList = new ArrayList<>();
+        //处理二级参数id格式
+        StringBuilder secondIds = new StringBuilder();
+        String[] ids = paramSecondIds.split(",");
+        for (String id : ids) {
+            secondIds.append("'");
+            secondIds.append(id);
+            secondIds.append("'");
+            secondIds.append(",");
+        }
+        if (!StringUtils.isNullOrEmpty(secondIds.toString())) {
+            //删除末尾的逗号
+            secondIds.deleteCharAt(secondIds.length() - 1);
+            //获取参数信息
+            List<ParamSecondWithFirst> secondWithFirstList = systemDataDao.querySecondWithFirst(secondIds.toString());
+            if (secondWithFirstList.size() <= 0){
+                return null;
+            }
+            //获取data数据
+            String beginTime = date + " 00:00:00";
+            String endTime = date + " 23:59:59";
+            //从sys_data表查询对应日期的所有记录
+            List<SysData> sysDataList = sysDataDao.queryDataByTime(proId, beginTime, endTime);
+            if (sysDataList.size() <= 0){
+                return null;
+            }
+            //日期进行操作的类
+            Calendar cal = Calendar.getInstance();
+            List<String> nameList = new ArrayList<>();
+            for (ParamSecondWithFirst paramSecondWithFirst : secondWithFirstList) {
+                List<Object> list = Arrays.asList(new Object[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+                for (SysData sysData : sysDataList) {
+                    //得到json对象
+                    JSONObject jsonObject = JSONObject.parseObject(sysData.getJson());
+                    cal.setTime(sysData.getCreateTime());
+                    JSONObject paramFirst = jsonObject.getJSONObject(paramSecondWithFirst.getFirstCode());
+                    JSONObject paramSecond = paramFirst.getJSONObject("REG_VAL");
+                    //整点数据
+                    if (cal.get(Calendar.MINUTE) == 0) {
+                        //得到小时
+                        int hour = cal.get(Calendar.HOUR_OF_DAY);
+                        //参数数值
+                        String paramValue = paramSecond.getString(paramSecondWithFirst.getSecondCode());
+                        list.set(hour, paramValue);
+                    }
+                }
+                resultList.add(list);
+                nameList.add(paramSecondWithFirst.getSecondName());
+            }
+            resultList.add(nameList);
+        }
+        return resultList;
+    }
 }

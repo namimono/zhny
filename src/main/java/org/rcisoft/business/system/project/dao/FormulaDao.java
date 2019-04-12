@@ -18,8 +18,9 @@ public interface FormulaDao {
      * 根据公式ID获取对应的变量信息ID查询参数信息
      */
     @Select("SELECT a.id AS 'variableId',a.variable,a.formula_id AS 'formulaId',\n" +
-            "b.coding AS 'paramFirstCoding',c.coding AS 'paramSecondCoding'\n" +
-            "FROM bus_variable a,bus_param_first b,bus_param_second c\n" +
+            "b.coding AS 'paramFirstCoding',c.coding AS 'paramSecondCoding',f.`name` AS 'formulaName'\n" +
+            "FROM bus_variable a LEFT JOIN bus_formula f ON f.id = a.formula_id,\n" +
+            "bus_param_first b,bus_param_second c\n" +
             "WHERE a.formula_id in (${formulaIds})\n" +
             "AND b.id = a.param_first_id\n" +
             "AND c.id = a.param_second_id;")

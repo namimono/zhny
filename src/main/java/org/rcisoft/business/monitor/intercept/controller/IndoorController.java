@@ -46,4 +46,10 @@ public class IndoorController {
     public Result queryParamHour(@PathVariable String proId,@PathVariable int type,@PathVariable String coding,@PathVariable String indoorId){
         return Result.result(1,indoorService.queryJsonIndoor(proId,type,coding,indoorId));
     }
+
+    @ApiOperation(value = "月度环境参数对比",notes = "月度环境参数对比")
+    @GetMapping(value = "monthParamContrast/{proId}/{type}/{coding}/{year}/{month}/{indoor}")
+    public Result monthParamContrast(@PathVariable String proId,@PathVariable int type,@PathVariable String coding,@PathVariable int year,@PathVariable int month,@PathVariable String indoor){
+        return Result.result(1,indoorService.MonthParamContrast(proId,type,coding,year,month,indoor));
+    }
 }

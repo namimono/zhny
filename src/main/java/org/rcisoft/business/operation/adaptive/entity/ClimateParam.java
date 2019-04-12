@@ -9,14 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by JiChao on 2019/4/3.
- * 建筑负荷参数
+ * Created by JiChao on 2019/4/9.
+ * 气候自适应参数
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class AdaptiveParam {
+public class ClimateParam {
+
+    /**
+     * 一级、二级coding
+     */
+    private List<CodingParam> codingList = new ArrayList<>();
 
     /**
      * 年月日
@@ -29,23 +34,8 @@ public class AdaptiveParam {
     private String projectId;
 
     /**
-     * 类型，1：来自sensor，2：来自公式
+     * excel表头：最优供水温度 + 自定义表头名称
      */
-    private Integer type;
-
-    /**
-     * 一级code，二级code
-     */
-    private String codingFirst, codingSecond;
-
-    /**
-     * 公式
-     */
-    private String formula;
-
-    /**
-     * 变量
-     */
-    private List<VariableParam> variableList = new ArrayList<>();
+    private List<String> titleList = new ArrayList<>();
 
 }

@@ -43,4 +43,24 @@ public interface SysDataDao extends Mapper<SysData> {
     @Select("select create_time, json from sys_data where project_id = #{projectId} and date_format(create_time, \"%Y-%c-%e\") = #{time} and right(create_time, 5)=\"00:00\" order by create_time asc")
     @ResultType(SysData.class)
     List<SysData> querySysData(@Param("time") String time, @Param("projectId") String projectId);
+
+    /**
+     * 查询整点数据
+     * @param time
+     * @param projectId
+     * @return
+     */
+    @Select("select create_time, json from sys_data where project_id = #{projectId} and date_format(create_time, \"%Y-%m-%d\") = #{time} and right(create_time, 5)=\"00:00\" order by create_time asc")
+    @ResultType(SysData.class)
+    List<SysData> querySysDataFormat(@Param("time") String time, @Param("projectId") String projectId);
+
+    /**
+     * 根据时间段和项目ID查询整点数据
+     */
+    @Select("SELECT * FROM sys_data WHERE project_id = #{projectId}\n" +
+            "AND create_time between #{beginTime} and #{endTime}\n" +
+            "AND RIGHT(create_time,5)='00:00' ORDER BY create_time asc;")
+    @ResultType(SysData.class)
+    List<SysData> queryDataByTime(@Param("projectId") String projectId,@Param("beginTime") String beginTime,@Param("endTime") String endTime);
+
 }

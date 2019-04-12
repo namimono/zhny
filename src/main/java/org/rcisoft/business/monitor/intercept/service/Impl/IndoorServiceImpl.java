@@ -167,65 +167,140 @@ public class IndoorServiceImpl implements IndoorService {
         map.put("outside",outside);
         return map;
     }
-       /* BigDecimal sum;
-        Map<String,Object> map = new HashMap<>();
-        SimpleDateFormat f = new SimpleDateFormat("HH");
-        BigDecimal inside[] = new BigDecimal[24];
-        BigDecimal outside[] = new BigDecimal[24];
-        List<SysData> json = indoorDao.queryJsonIndoor(proId);
-        BusParamOutsideAndInside insideParam = indoorDao.queryParamHoursInside(type,indoor);
-            BusParamOutsideAndInside outsideParam = indoorDao.queryParamHoursOutside(type,proId);
 
-        if(insideParam != null && outsideParam != null){
-            for (SysData js:json){
-                Date day = js.getCreateTime();
-                int hour = Integer.parseInt(f.format(day));
-                JSONObject jsonObject = JSONObject.parseObject(js.getJson());
-                String codingFirst = insideParam.getCodingFirst();
-                String codingSecond = insideParam.getCodingSecond();
-                JSONObject jsonFirst = (JSONObject) jsonObject.get(codingFirst);
-                JSONObject jsonSecond = (JSONObject)jsonFirst.get("REG_VAL");
-                sum = new BigDecimal(jsonSecond.get(codingSecond).toString());
-                for(int i = 0; i < inside.length; i++){
-                    inside[hour] = sum;
+
+    @Override
+    public Map<String, Object> MonthParamContrast(String proId, int type, String coding, int year, int month,String indoor) {
+        Map<String,Object> map = new HashMap<>();
+        SimpleDateFormat f = new SimpleDateFormat("dd");
+        BigDecimal inside[] = new BigDecimal[31];
+        BigDecimal outside[] = new BigDecimal[31];
+        List<SysData> listJson = indoorDao.queryJsonByData(year, month);
+        BigDecimal sum = new BigDecimal(0);
+        BigDecimal average;
+        int days = 0;
+        if(type == 1 || type == 2 ){
+            BusParamOutsideAndInside insideParam = indoorDao.queryParamHoursInside(type,proId);
+            if(insideParam != null){
+                for (SysData lj:listJson){
+                    Date day = lj.getCreateTime();
+                    int dayNum = Integer.parseInt(f.format(day));
+                    if(dayNum == days){
+                        JSONObject jsonObject = (JSONObject) JSONObject.parse(lj.getJson());
+                        String codingFirst = insideParam.getCodingFirst();
+                        String codingSecond = insideParam.getCodingSecond();
+                        JSONObject jsonFist = (JSONObject) jsonObject.get(codingFirst);
+                        JSONObject jsonSecond = (JSONObject)jsonFist.get("REG_VAL");
+                        sum = sum.add(new BigDecimal(jsonSecond.get(codingSecond).toString()));
+                        average = sum.divide(new BigDecimal(24),2);
+                        inside[days - 1] = average;
+                    }else{
+                        days = dayNum;
+                        JSONObject jsonObject = (JSONObject) JSONObject.parse(lj.getJson());
+                        String codingFirst = insideParam.getCodingFirst();
+                        String codingSecond = insideParam.getCodingSecond();
+                        JSONObject jsonFist = (JSONObject) jsonObject.get(codingFirst);
+                        JSONObject jsonSecond = (JSONObject)jsonFist.get("REG_VAL");
+                        sum = sum.add(new BigDecimal(jsonSecond.get(codingSecond).toString()));
+                        average = sum.divide(new BigDecimal(24),2);
+                        inside[days - 1] = average;
+                    }
+
                 }
-            }
-            if(type == 1 || type == 2 ){
                 if(type == 1){
-                    List<BusTemperature> listTemp = indoorDao.queryTempHours(coding);
+                    List<BusTemperature> listTemp = indoorDao.queryTempDate(coding,year,month);
                     for (BusTemperature bt:listTemp){
                         Date day = bt.getCreateTime();
-                        int hour = Integer.parseInt(f.format(day));
-                        sum = bt.getTemperature();
-                        outside[hour] = sum;
+                        int dayNum = Integer.parseInt(f.format(day));
+                        if(dayNum == days){
+                            sum = bt.getTemperature().add(sum);
+                            average = sum.divide(new BigDecimal(24),2);
+                            outside[dayNum - 1] = average;
+                        }else{
+                            days = dayNum;
+                            sum = bt.getTemperature().add(sum);
+                            average = sum.divide(new BigDecimal(24),2);
+                            outside[dayNum - 1] = average;
+                        }
+
                     }
                 }else{
-                    List<BusTemperature> listHumi = indoorDao.queryHumidityHours(coding);
+                    List<BusTemperature> listHumi = indoorDao.queryHumidityDate(coding,year,month);
+                    int sumHumi = 0;
                     for(BusTemperature bt:listHumi){
                         Date day = bt.getCreateTime();
-                        int hour = Integer.parseInt(f.format(day));
-                        sum = new BigDecimal(bt.getHumidity());
-                        outside[hour] = sum;
+                        int dayNum = Integer.parseInt(f.format(day));
+                        if(dayNum == days){
+                            sumHumi += bt.getHumidity();
+                            average = sum.divide(new BigDecimal(30),2);
+                            outside[dayNum] = average;
+                        }else{
+                            sumHumi += bt.getHumidity();
+                            average = sum.divide(new BigDecimal(30),2);
+                            outside[dayNum] = average;
+                        }
+
                     }
                 }
-            }else{
-                for (SysData js:json){
-                    Date day = js.getCreateTime();
-                    int hour = Integer.parseInt(f.format(day));
-                    JSONObject jsonObject = JSONObject.parseObject(js.getJson());
-                    String codingFirst = insideParam.getCodingFirst();
-                    String codingSecond = insideParam.getCodingSecond();
-                    JSONObject jsonFirst = (JSONObject) jsonObject.get(codingFirst);
-                    JSONObject jsonSecond = (JSONObject)jsonFirst.get("REG_VAL");
-                    sum = new BigDecimal(jsonSecond.get(codingSecond).toString());
-                    for(int i = 0; i < inside.length; i++){
-                        outside[hour] = sum;
+            }
+        }else{
+            BusParamOutsideAndInside insideParam = indoorDao.queryParamHoursInside(type,proId);
+            BusParamOutsideAndInside outsideParam = indoorDao.queryParamHoursOutside(type, proId);
+            if(insideParam != null && outsideParam != null){
+                for (SysData lj:listJson){
+                    Date day = lj.getCreateTime();
+                    int dayNum = Integer.parseInt(f.format(day));
+                    if(dayNum == days){
+                        JSONObject jsonObject = (JSONObject) JSONObject.parse(lj.getJson());
+                        String codingFirst = insideParam.getCodingFirst();
+                        String codingSecond = insideParam.getCodingSecond();
+                        JSONObject jsonFist = (JSONObject) jsonObject.get(codingFirst);
+                        JSONObject jsonSecond = (JSONObject)jsonFist.get("REG_VAL");
+                        sum = sum.add(new BigDecimal(jsonSecond.get(codingSecond).toString()));
+                        average = sum.divide(new BigDecimal(24),2);
+                        inside[days - 1] = average;
+                    }else{
+                        days = dayNum;
+                        JSONObject jsonObject = (JSONObject) JSONObject.parse(lj.getJson());
+                        String codingFirst = insideParam.getCodingFirst();
+                        String codingSecond = insideParam.getCodingSecond();
+                        JSONObject jsonFist = (JSONObject) jsonObject.get(codingFirst);
+                        JSONObject jsonSecond = (JSONObject)jsonFist.get("REG_VAL");
+                        sum = sum.add(new BigDecimal(jsonSecond.get(codingSecond).toString()));
+                        average = sum.divide(new BigDecimal(24),2);
+                        inside[days - 1] = average;
                     }
                 }
+                for (SysData lj:listJson){
+                    Date day = lj.getCreateTime();
+                    int dayNum = Integer.parseInt(f.format(day));
+                    if(dayNum == days){
+                        JSONObject jsonObject = (JSONObject) JSONObject.parse(lj.getJson());
+                        String codingFirst = insideParam.getCodingFirst();
+                        String codingSecond = insideParam.getCodingSecond();
+                        JSONObject jsonFist = (JSONObject) jsonObject.get(codingFirst);
+                        JSONObject jsonSecond = (JSONObject)jsonFist.get("REG_VAL");
+                        sum = sum.add(new BigDecimal(jsonSecond.get(codingSecond).toString()));
+                        average = sum.divide(new BigDecimal(24),2);
+                        outside[days - 1] = average;
+                    }else{
+                        days = dayNum;
+                        JSONObject jsonObject = (JSONObject) JSONObject.parse(lj.getJson());
+                        String codingFirst = insideParam.getCodingFirst();
+                        String codingSecond = insideParam.getCodingSecond();
+                        JSONObject jsonFist = (JSONObject) jsonObject.get(codingFirst);
+                        JSONObject jsonSecond = (JSONObject)jsonFist.get("REG_VAL");
+                        sum = sum.add(new BigDecimal(jsonSecond.get(codingSecond).toString()));
+                        average = sum.divide(new BigDecimal(24),2);
+                        outside[days - 1] = average;
+                    }
+                }
+
+
             }
         }
         map.put("inside",inside);
         map.put("outside",outside);
         return map;
-    }*/
+    }
 }

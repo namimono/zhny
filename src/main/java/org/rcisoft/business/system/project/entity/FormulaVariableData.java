@@ -15,25 +15,15 @@ import java.util.Date;
 @AllArgsConstructor
 public class FormulaVariableData {
 
-//    /**
-//     * 公式名称
-//     */
-//    private String name;
+    /**
+     * 公式名称
+     */
+    private String formulaName;
 //
 //    /**
 //     * 公式内容
 //     */
 //    private String formula;
-//
-//    /**
-//     * 项目id
-//     */
-//    private String projectId;
-//
-//    /**
-//     * 公式创建时间
-//     */
-//    private Date formulaCreateTime;
 
     /**
      * 变量表主键
@@ -69,9 +59,4 @@ public class FormulaVariableData {
      * 公式表主键
      */
     private String formulaId;
-
-//    /**
-//     * 变量创建时间
-//     */
-//    private Date variableCreateTime;
 }

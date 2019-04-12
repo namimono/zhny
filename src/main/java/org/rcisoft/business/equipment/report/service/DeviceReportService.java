@@ -16,5 +16,5 @@ public interface DeviceReportService {
      * @param proId
      * @param date
      */
-    void downloadDeviceTodayData(HttpServletResponse response, String deviceId, String proId, String date);
+    void downloadDeviceTodayData(HttpServletResponse response,String proId,String date);
 }

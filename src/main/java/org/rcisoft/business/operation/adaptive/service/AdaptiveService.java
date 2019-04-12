@@ -4,6 +4,8 @@ import org.rcisoft.business.operation.adaptive.entity.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @author 土豆儿
@@ -13,30 +15,30 @@ import javax.servlet.http.HttpServletResponse;
 public interface AdaptiveService {
 
     /**
-     * 气候自适应模块
-     */
-    ClimateAdaptation climateAdaptation(String projectId,String beginTime,String endTime);
-//
-//    /**
-//     * 建筑负荷自适应模块
-//     */
-//    BuildingAdaptation buildingAdaptation(String proId, String year, String month, String day);
-//
-//    /**
-//     * 计算建筑负荷最优供水温度
-//     */
-//    List<Object> buildingList(AdaptiveParam adaptiveParam);
-
-    /**
      * 建筑负荷
-     * @param buildingParam
+     * @param adaptiveParam
      * @return
      */
-    BuildingResult queryBuilding(BuildingParam buildingParam);
+    BuildingResult queryBuilding(AdaptiveParam adaptiveParam);
 
     /**
      * 建筑负荷excel下载
-     * @param buildingParam
+     * @param adaptiveParam
      */
-    void downloadBuilding(HttpServletRequest request, HttpServletResponse response, BuildingParam buildingParam);
+    void downloadBuilding(HttpServletRequest request, HttpServletResponse response, AdaptiveParam adaptiveParam);
+
+    /**
+     * 气候自适应
+     * @param climateParam
+     * @return
+     */
+    List<BigDecimal[]> queryClimate(ClimateParam climateParam);
+
+    /**
+     * 气候自适应excel下载
+     * @param request
+     * @param response
+     * @param climateParam
+     */
+    void downloadClimate(HttpServletRequest request, HttpServletResponse response, ClimateParam climateParam);
 }

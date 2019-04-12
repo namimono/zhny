@@ -1,6 +1,8 @@
 package org.rcisoft.business.equipment.report.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.rcisoft.entity.SysData;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,5 +13,12 @@ import java.util.List;
  **/
 @Repository
 public interface DeviceReportDao {
+
+    /**
+     * 根据月份查询数据信息
+     */
+    @Select("SELECT * FROM sys_data WHERE YEAR(create_time) = #{year} AND MONTH(create_time) = #{month} " +
+            "and project_id = #{proId};")
+    List<SysData> querySysDataByMonth(@Param("year") String year,@Param("month") String month,@Param("proId") String proId);
 
 }
