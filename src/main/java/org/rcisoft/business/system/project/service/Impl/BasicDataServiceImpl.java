@@ -108,14 +108,10 @@ public class BasicDataServiceImpl implements BasicDataService {
             }
             // 获取文件名
             String fileName = file.getOriginalFilename();
-            //String fileNames = file.getName();
-            //logger.info("上传的文件名为：" + fileName);
-            // 获取文件的后缀名
-            String suffixName = fileName.substring(fileName.lastIndexOf("."));
-            //logger.info("文件的后缀名为：" + suffixName);
-
+            //获取当前项目地址
+            String proAddress = System.getProperty("user.dir");
             // 设置文件存储路径
-            String filePath = "G:/IDEA_Proj/zhny-back-2nd/src/main/resources/excel/";
+            String filePath = proAddress + "\\src\\main\\resources\\excel\\";
             String path = filePath + fileName;
 
             File dest = new File(path);
@@ -143,7 +139,7 @@ public class BasicDataServiceImpl implements BasicDataService {
         String fileName = "碳排放量.xls";
         if (fileName != null) {
             //设置文件路径
-            String realPath = "G:/IDEA_Proj/zhny-back-2nd/src/main/resources/excel/";
+            String realPath = "src/main/resources/excel/";
             File file = new File(realPath , fileName);
             if (file.exists()) {
                 // 设置强制下载不打开
