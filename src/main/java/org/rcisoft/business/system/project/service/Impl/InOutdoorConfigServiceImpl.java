@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -104,6 +103,7 @@ public class InOutdoorConfigServiceImpl implements InOutdoorConfigService {
     @Override
     public List<BusIndoorParam> queryIndoorParamInfo(String indoorId){
         Example example = new Example(BusIndoorParam.class);
+        example.setOrderByClause("type asc");
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("indoorId",indoorId);
         return busIndoorParamDao.selectByExample(example);
