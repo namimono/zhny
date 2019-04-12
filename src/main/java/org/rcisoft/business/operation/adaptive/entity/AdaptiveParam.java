@@ -29,11 +29,6 @@ public class AdaptiveParam {
     private String projectId;
 
     /**
-     * 城市code
-     */
-    private String code;
-
-    /**
      * 类型，1：来自sensor，2：来自公式
      */
     private Integer type;
