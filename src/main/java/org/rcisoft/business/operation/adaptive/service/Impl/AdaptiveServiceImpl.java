@@ -216,7 +216,7 @@ public class AdaptiveServiceImpl implements AdaptiveService {
     @Override
     public void downloadClimate(HttpServletRequest request, HttpServletResponse response, ClimateParam climateParam) {
         List<BigDecimal[]> climateData = this.queryClimate(climateParam);
-        List<String> titleList = climateParam.getTitleList();
+        List<CodingParam> titleList = climateParam.getCodingList();
         String time = climateParam.getTime();
         // 创建excel
         Workbook workbook = new XSSFWorkbook();
@@ -225,7 +225,7 @@ public class AdaptiveServiceImpl implements AdaptiveService {
         Row rowTitle = sheet.createRow(0);
         rowTitle.createCell(0, CellType.STRING).setCellValue("小时");
         for (int i = 0; i < titleList.size(); i++) {
-            rowTitle.createCell(i + 1, CellType.STRING).setCellValue(titleList.get(i));
+            rowTitle.createCell(i + 1, CellType.STRING).setCellValue(titleList.get(i).getTitle());
         }
         // 数据行
         for (int i = 0; i < 24; i++) {

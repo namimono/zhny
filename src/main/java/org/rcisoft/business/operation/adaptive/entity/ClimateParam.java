@@ -33,9 +33,4 @@ public class ClimateParam {
      */
     private String projectId;
 
-    /**
-     * excel表头：最优供水温度 + 自定义表头名称
-     */
-    private List<String> titleList = new ArrayList<>();
-
 }

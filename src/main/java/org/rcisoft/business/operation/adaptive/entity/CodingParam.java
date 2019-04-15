@@ -15,6 +15,6 @@ import javax.persistence.Entity;
 @Entity
 public class CodingParam {
 
-    private String codingFirst, codingSecond;
+    private String title, codingFirst, codingSecond;
 
 }
