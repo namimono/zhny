@@ -1,5 +1,7 @@
 package org.rcisoft.business.whole.right.dao;
 
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.entity.BusReport;
 import org.springframework.stereotype.Repository;
@@ -21,6 +23,17 @@ public interface AnalysisReportDao extends Mapper<BusReport> {
     @Select("<script>select * from bus_report</script>")
     List<BusReport> queryAnalysisReport();
 
+    /**
+     * 根据年份查询文件名称
+     * @param year
+     * @param month
+     * @return
+     */
     @Select("<script>select url from bus_report where time_year = #{year} and time_month = #{month}</script>")
     String queryFileName(int year,int month);
+
+    @Select("<script>select * from bus_report where id = #{id}</script>")
+    BusReport queryFile(@Param("id") String id);
+
+
 }

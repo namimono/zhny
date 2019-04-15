@@ -20,4 +20,5 @@ public interface AnalysisReportService {
     List<BusReport> queryAnalysisReport();
     ServiceResult uploadAnalysisReport(MultipartFile file,String proId,int year,int month);
     String downloadAnalysisReport(HttpServletRequest request, HttpServletResponse response, String id, int year, int month) throws Exception;
+    Integer deleteAnalysisReport(String id);
 }

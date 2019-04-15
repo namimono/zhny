@@ -42,4 +42,10 @@ public class AnalysisReportController extends HttpServletController {
     public void downloadAnalysisReport(@PathVariable String proId,@PathVariable int year,@PathVariable int month) throws Exception {
         analysisReportService.downloadAnalysisReport(request,response,proId,year,month);
     }
+
+    @ApiOperation(value = "删除报告文件",notes = "删除报告文件")
+    @DeleteMapping("deteleAnalysisReport/{Id}}")
+    public void deteleAnalysisReport(@PathVariable String Id){
+        analysisReportService.deleteAnalysisReport(Id);
+    }
 }

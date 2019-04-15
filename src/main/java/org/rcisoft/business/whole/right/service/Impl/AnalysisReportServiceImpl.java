@@ -85,73 +85,24 @@ public class AnalysisReportServiceImpl implements AnalysisReportService {
             out.write(buff, 0, index);
             out.flush();
         }
-
         return null;
-        /*String fileName = analysisReportDao.queryFileName(year, month);
-        if (fileName != null) {
-            //设置文件路径
-            String realPath = "D://";
-            File file = new File(realPath, fileName);
-            if(!file.exists()){
-                //先得到文件的上级目录，并创建上级目录，在创建文件
-                file.getParentFile().mkdir();
-                try { //创建文件
-                     file.createNewFile();
-                } catch (IOException e)
-                { e.printStackTrace();
-                }
-            }else{
-                try(OutputStream outputStream = response.getOutputStream()) {
-                    //获取文件字节
-                    byte[] bytes = FileUtils.readFileToByteArray(file);
-                    //设置下载头
-                    response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "iso-8859-1"));
-                    outputStream.write(bytes);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    }
 
-            }
+    @Override
+    public Integer deleteAnalysisReport(String id) {
+        BusReport busReport = analysisReportDao.queryFile(id);
+        int year = busReport.getTimeYear();
+        int month = busReport.getTimeMonth();
+
+        String fileName = analysisReportDao.queryFileName(year, month);
+        String filePath = path + analysisReport + "/" + year + "/" + fileName;
+        System.out.println(filePath);
+        File file = new File(filePath);
+        if(file.exists()&&file.isFile()){
+            file.delete();
         }
-        return null;*/
-
-
-
-
-        /*BusReport busReport = new BusReport();
-        busReport.setProjectId(proId);
-        busReport.setTimeYear(year);
-        busReport.setTimeMonth(month);
-        busReport = analysisReportDao.selectOne(busReport);
-        String path = busReport.getUrl();
-        String fileName = busReport.getTimeMonth() + path.substring(path.lastIndexOf("."));
-        if (fileName != null) {
-            //设置文件路径
-            String realPath = "D://";
-            File file = new File(realPath, fileName);
-            if(!file.exists()){
-                //先得到文件的上级目录，并创建上级目录，在创建文件
-                file.getParentFile().mkdir();
-                try { //创建文件
-                    file.createNewFile();
-                } catch (IOException e)
-                { e.printStackTrace();
-                }
-            }else{
-                try(OutputStream outputStream = response.getOutputStream()) {
-                    //获取文件字节
-                    byte[] bytes = FileUtils.readFileToByteArray(new File(path));
-                    //设置下载头
-                    response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "iso-8859-1"));
-                    outputStream.write(bytes);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;*/
-
-
+        Integer status = analysisReportDao.deleteByPrimaryKey(id);
+        return status;
     }
 }
 
