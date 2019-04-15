@@ -98,6 +98,8 @@ location:
   path: D:\zhny2\filepath\
   # 背景图文件夹
   background: background-img
+  #分析报告表文件夹
+  analysisReport: analysis-report
   # 拓扑图节点文件夹（需要分系统）
   node: node-img
   # 拓扑图文件夹（需要分项目）
