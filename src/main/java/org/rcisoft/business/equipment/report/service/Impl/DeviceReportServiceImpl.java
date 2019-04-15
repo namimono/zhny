@@ -188,14 +188,14 @@ public class DeviceReportServiceImpl implements DeviceReportService {
                 //加载合并单元格对象
                 sheet.addMergedRegion(callRangeAddress);
                 //设置合并单元格边框
-                RegionUtil.setBorderRight(1,callRangeAddress,sheet);
+                RegionUtil.setBorderRight(BorderStyle.THIN,callRangeAddress,sheet);
                 firstCol += resultMap.get(key).size();
                 index++;
             }
 
             //设置A1合并单元格边框
-            RegionUtil.setBorderBottom(1,callRangeAddress1,sheet);
-            RegionUtil.setBorderRight(1,callRangeAddress1,sheet);
+            RegionUtil.setBorderBottom(BorderStyle.THIN,callRangeAddress1,sheet);
+            RegionUtil.setBorderRight(BorderStyle.THIN,callRangeAddress1,sheet);
 
 
             //将二级参数的数值循环插入表格

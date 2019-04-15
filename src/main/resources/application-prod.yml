@@ -106,3 +106,5 @@ location:
   device: device-img
   # 二维码（需要分项目）
   qrcode: qrcode-img
+  #分析报告表文件夹
+  analysisReport: analysis-report
