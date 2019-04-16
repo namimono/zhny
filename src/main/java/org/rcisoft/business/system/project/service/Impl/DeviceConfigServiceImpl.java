@@ -453,23 +453,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
      */
     @Transactional(rollbackFor=Exception.class)
     @Override
-    public int addTypeFirst(BusTypeFirst busTypeFirst,MultipartFile file){
+    public int addTypeFirst(BusTypeFirst busTypeFirst){
         busTypeFirst.setId(UuidUtil.create32());
-        String proId = busTypeFirst.getProjectId();
-        // 后缀
-        String suffix = "";
-        String[] fileNameArray = StringUtils.split(file.getOriginalFilename(), ".");
-        if (fileNameArray.length > 1) {
-            suffix = "." + fileNameArray[fileNameArray.length - 1];
-        }
-        // 新的文件名
-        String fileName = UuidUtil.create32() + suffix;
-        busTypeFirst.setUrl(fileName);
-        try {
-            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(path + device + "/" + proId + "/" + fileName));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return busTypeFirstDao.insertSelective(busTypeFirst);
     }
 
@@ -492,24 +477,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
      */
     @Transactional(rollbackFor=Exception.class)
     @Override
-    public int updateTypeFirst(BusTypeFirst busTypeFirst,MultipartFile file){
-        if (file != null) {
-            String proId = busTypeFirst.getProjectId();
-            // 后缀
-            String suffix = "";
-            String[] fileNameArray = StringUtils.split(file.getOriginalFilename(), ".");
-            if (fileNameArray.length > 1) {
-                suffix = "." + fileNameArray[fileNameArray.length - 1];
-            }
-            // 新的文件名
-            String fileName = UuidUtil.create32() + suffix;
-            busTypeFirst.setUrl(fileName);
-            try {
-                FileUtils.copyInputStreamToFile(file.getInputStream(), new File(path + device + "/" + proId + "/" + fileName));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public int updateTypeFirst(BusTypeFirst busTypeFirst){
         return busTypeFirstDao.updateByPrimaryKeySelective(busTypeFirst);
     }
 
@@ -523,5 +491,29 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
         criteria.andEqualTo("projectId",proId);
         criteria.andEqualTo("systemId",systemId);
         return busTypeFirstDao.selectByExample(example);
+    }
+
+    /**
+     * 上传设备类型图片
+     */
+    @Override
+    public ServiceResult uploadTypeImage(MultipartFile file,String proId){
+        // 返回值
+        Integer result = 0;
+        // 后缀
+        String suffix = "";
+        String[] fileNameArray = StringUtils.split(file.getOriginalFilename(), ".");
+        if (fileNameArray.length > 1) {
+            suffix = "." + fileNameArray[fileNameArray.length - 1];
+        }
+        // 新的文件名
+        String fileName = UuidUtil.create32() + suffix;
+        try {
+            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(path + device + "/" + proId + "/" + fileName));
+            result = 1;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ServiceResult(result,fileName);
     }
 }

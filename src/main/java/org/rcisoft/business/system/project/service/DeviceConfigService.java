@@ -134,7 +134,7 @@ public interface DeviceConfigService {
     /**
      * 新增一级设备类型
      */
-    int addTypeFirst(BusTypeFirst busTypeFirst,MultipartFile file);
+    int addTypeFirst(BusTypeFirst busTypeFirst);
 
     /**
      * 删除一级设备类型
@@ -144,11 +144,16 @@ public interface DeviceConfigService {
     /**
      * 修改一级设备类型
      */
-    int updateTypeFirst(BusTypeFirst busTypeFirst,MultipartFile file);
+    int updateTypeFirst(BusTypeFirst busTypeFirst);
 
     /**
      * 查询一级设备类型
      */
     List<BusTypeFirst> queryTypeFirst(String proId, String systemId);
+
+    /**
+     * 上传设备类型图片
+     */
+    ServiceResult uploadTypeImage(MultipartFile file,String proId);
 
 }

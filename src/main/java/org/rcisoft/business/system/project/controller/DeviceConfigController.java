@@ -167,8 +167,8 @@ public class DeviceConfigController {
 
     @ApiOperation(value="新增一级设备类型", notes="新增一级设备类型")
     @PostMapping("/addTypeFirst")
-    public Result addTypeFirst(@RequestBody BusTypeFirst busTypeFirst,@RequestParam MultipartFile file){
-        return Result.result(deviceConfigServiceImpl.addTypeFirst(busTypeFirst,file),"新增设备类型成功","新增设备类型失败");
+    public Result addTypeFirst(@RequestBody BusTypeFirst busTypeFirst){
+        return Result.result(deviceConfigServiceImpl.addTypeFirst(busTypeFirst),"新增设备类型成功","新增设备类型失败");
     }
 
     @ApiOperation(value="删除一级设备类型", notes="删除一级设备类型")
@@ -179,13 +179,19 @@ public class DeviceConfigController {
 
     @ApiOperation(value="修改一级设备类型", notes="修改一级设备类型")
     @PutMapping("/updateTypeFirst")
-    public Result updateTypeFirst(@RequestBody BusTypeFirst busTypeFirst,MultipartFile file){
-        return Result.result(deviceConfigServiceImpl.updateTypeFirst(busTypeFirst,file),"修改设备类型成功","修改设备类型失败");
+    public Result updateTypeFirst(@RequestBody BusTypeFirst busTypeFirst){
+        return Result.result(deviceConfigServiceImpl.updateTypeFirst(busTypeFirst),"修改设备类型成功","修改设备类型失败");
     }
 
     @ApiOperation(value="查询一级设备类型", notes="查询一级设备类型")
     @GetMapping("/queryTypeFirst/{proId}/{systemId}")
     public Result queryTypeFirst (@PathVariable String proId,@PathVariable String systemId){
         return Result.result(deviceConfigServiceImpl.queryTypeFirst(proId,systemId));
+    }
+
+    @ApiOperation(value="上传设备类型图片", notes="上传设备类型图片")
+    @PostMapping("/uploadTypeImage")
+    public Result uploadTypeImage(@RequestParam MultipartFile file,@RequestParam(value = "proId") String proId){
+        return Result.serviceResult(deviceConfigServiceImpl.uploadTypeImage(file,proId));
     }
 }
