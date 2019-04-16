@@ -4,10 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.business.system.project.service.ProjConfigService;
-import org.rcisoft.entity.BusBuilding;
-import org.rcisoft.entity.BusBuildingZone;
-import org.rcisoft.entity.BusProject;
-import org.rcisoft.entity.BusProjectSaving;
+import org.rcisoft.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -181,4 +178,21 @@ public class ProjConfigController {
         return Result.result(projConfigServiceImpl.querySystemType());
     }
 
+    @ApiOperation(value="新增系统类型", notes="新增系统类型")
+    @PostMapping("/addSysSystem")
+    public Result addSysSystem(@RequestBody SysSystem sysSystem){
+        return Result.result(projConfigServiceImpl.addSysSystem(sysSystem), "新增系统类型成功", "新增系统类型失败");
+    }
+
+    @ApiOperation(value="删除系统类型", notes="删除系统类型")
+    @DeleteMapping("/deleteSysSystem/{systemId}")
+    public Result deleteSysSystem(@PathVariable String systemId){
+        return Result.result(projConfigServiceImpl.deleteSysSystem(systemId), "删除系统类型成功", "删除系统类型失败");
+    }
+
+    @ApiOperation(value="修改系统类型", notes="修改系统类型")
+    @PutMapping("/updateSysSystem")
+    public Result updateSysSystem(@RequestBody SysSystem sysSystem){
+        return Result.result(projConfigServiceImpl.updateSysSystem(sysSystem), "修改系统类型成功", "修改系统类型失败");
+    }
 }

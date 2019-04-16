@@ -1,5 +1,7 @@
 package org.rcisoft.business.system.project.service.Impl;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.dao.DeviceConfigDao;
@@ -10,10 +12,16 @@ import org.rcisoft.dao.*;
 import org.rcisoft.entity.*;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import tk.mybatis.mapper.entity.Example;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -24,6 +32,13 @@ import java.util.*;
  **/
 @Service
 public class DeviceConfigServiceImpl implements DeviceConfigService {
+
+    /** 根路径 */
+    @Value("${location.path}")
+    String path;
+    /** 背景图文件夹 */
+    @Value("${location.device}")
+    String device;
 
     @Autowired
     private BusDeviceDao busDeviceDao;
@@ -436,25 +451,65 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     /**
      * 新增一级设备类型
      */
+    @Transactional(rollbackFor=Exception.class)
     @Override
-    public int addTypeFirst(BusTypeFirst busTypeFirst){
+    public int addTypeFirst(BusTypeFirst busTypeFirst,MultipartFile file){
         busTypeFirst.setId(UuidUtil.create32());
+        String proId = busTypeFirst.getProjectId();
+        // 后缀
+        String suffix = "";
+        String[] fileNameArray = StringUtils.split(file.getOriginalFilename(), ".");
+        if (fileNameArray.length > 1) {
+            suffix = "." + fileNameArray[fileNameArray.length - 1];
+        }
+        // 新的文件名
+        String fileName = UuidUtil.create32() + suffix;
+        busTypeFirst.setUrl(fileName);
+        try {
+            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(path + device + "/" + proId + "/" + fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return busTypeFirstDao.insertSelective(busTypeFirst);
     }
 
     /**
      * 删除一级设备类型
      */
+    @Transactional(rollbackFor=Exception.class)
     @Override
-    public int deleteTypeFirst(String typeFirstId){
+    public int deleteTypeFirst(String typeFirstId,String proId){
+        BusTypeFirst busTypeFirst = busTypeFirstDao.selectByPrimaryKey(typeFirstId);
+        File file = new File(path + device + "/" + proId + "/" + busTypeFirst.getUrl());
+        if (file.exists()) {
+            file.delete();
+        }
         return busTypeFirstDao.deleteByPrimaryKey(typeFirstId);
     }
 
     /**
      * 修改一级设备类型
      */
+    @Transactional(rollbackFor=Exception.class)
     @Override
-    public int updateTypeFirst(BusTypeFirst busTypeFirst){
+    public int updateTypeFirst(BusTypeFirst busTypeFirst,MultipartFile file){
+        if (file != null) {
+            String proId = busTypeFirst.getProjectId();
+            // 后缀
+            String suffix = "";
+            String[] fileNameArray = StringUtils.split(file.getOriginalFilename(), ".");
+            if (fileNameArray.length > 1) {
+                suffix = "." + fileNameArray[fileNameArray.length - 1];
+            }
+            // 新的文件名
+            String fileName = UuidUtil.create32() + suffix;
+            busTypeFirst.setUrl(fileName);
+            try {
+                FileUtils.copyInputStreamToFile(file.getInputStream(), new File(path + device + "/" + proId + "/" + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return busTypeFirstDao.updateByPrimaryKeySelective(busTypeFirst);
     }
 

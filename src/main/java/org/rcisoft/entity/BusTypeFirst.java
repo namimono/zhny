@@ -25,9 +25,30 @@ public class BusTypeFirst {
 	private String id;
 
 	/**
+	 * 项目id
+	 */
+   	@Column(name = "project_id" )
+	private String projectId;
+
+	/**
+	 * 子系统id
+	 */
+	@Column(name = "system_id" )
+	private String systemId;
+
+
+	/**
 	 * 类型名称
 	 */
-   	@Column(name = "name" )
+	@Column(name = "name" )
 	private String name;
+
+
+	/**
+	 * 图片路径
+	 */
+	@Column(name = "url" )
+	private String url;
+
 
 }

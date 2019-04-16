@@ -4,10 +4,13 @@ import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.service.TopologicalService;
 import org.rcisoft.dao.BusTopologyDao;
 import org.rcisoft.dao.BusTopologyNodeDao;
+import org.rcisoft.dao.BusTypeFirstDao;
 import org.rcisoft.entity.BusTopology;
 import org.rcisoft.entity.BusTopologyNode;
+import org.rcisoft.entity.BusTypeFirst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -22,6 +25,8 @@ public class TopologicalServiceImpl implements TopologicalService {
     private BusTopologyDao busTopologyDao;
     @Autowired
     private BusTopologyNodeDao busTopologyNodeDao;
+    @Autowired
+    private BusTypeFirstDao busTypeFirstDao;
 
     /**
      * 查询拓扑图信息
@@ -87,5 +92,17 @@ public class TopologicalServiceImpl implements TopologicalService {
     @Override
     public List<BusTopologyNode> queryTopologyNode(BusTopologyNode busTopologyNode){
         return busTopologyNodeDao.queryTopologyNode(busTopologyNode);
+    }
+
+    /**
+     * 根据系统ID查询设备类型
+     */
+    @Override
+    public List<BusTypeFirst> queryTypeFirstBySysId(String proId, String systemId){
+        Example example = new Example(BusTypeFirst.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",proId);
+        criteria.andEqualTo("systemId",systemId);
+        return busTypeFirstDao.selectByExample(example);
     }
 }

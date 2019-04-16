@@ -10,6 +10,7 @@ import org.rcisoft.entity.BusFactory;
 import org.rcisoft.entity.BusTypeFirst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -166,20 +167,20 @@ public class DeviceConfigController {
 
     @ApiOperation(value="新增一级设备类型", notes="新增一级设备类型")
     @PostMapping("/addTypeFirst")
-    public Result addTypeFirst(@RequestBody BusTypeFirst busTypeFirst){
-        return Result.result(deviceConfigServiceImpl.addTypeFirst(busTypeFirst),"新增设备类型成功","新增设备类型失败");
+    public Result addTypeFirst(@RequestBody BusTypeFirst busTypeFirst,@RequestParam MultipartFile file){
+        return Result.result(deviceConfigServiceImpl.addTypeFirst(busTypeFirst,file),"新增设备类型成功","新增设备类型失败");
     }
 
     @ApiOperation(value="删除一级设备类型", notes="删除一级设备类型")
-    @DeleteMapping("/deleteTypeFirst/{typeFirstId}")
-    public Result deleteTypeFirst(@PathVariable String typeFirstId){
-        return Result.result(deviceConfigServiceImpl.deleteTypeFirst(typeFirstId),"删除设备类型成功","删除设备类型失败");
+    @DeleteMapping("/deleteTypeFirst/{typeFirstId}/{proId}")
+    public Result deleteTypeFirst(@PathVariable String typeFirstId,@PathVariable String proId){
+        return Result.result(deviceConfigServiceImpl.deleteTypeFirst(typeFirstId,proId),"删除设备类型成功","删除设备类型失败");
     }
 
     @ApiOperation(value="修改一级设备类型", notes="修改一级设备类型")
     @PutMapping("/updateTypeFirst")
-    public Result updateTypeFirst(@RequestBody BusTypeFirst busTypeFirst){
-        return Result.result(deviceConfigServiceImpl.updateTypeFirst(busTypeFirst),"修改设备类型成功","修改设备类型失败");
+    public Result updateTypeFirst(@RequestBody BusTypeFirst busTypeFirst,MultipartFile file){
+        return Result.result(deviceConfigServiceImpl.updateTypeFirst(busTypeFirst,file),"修改设备类型成功","修改设备类型失败");
     }
 
     @ApiOperation(value="查询一级设备类型", notes="查询一级设备类型")

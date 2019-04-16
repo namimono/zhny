@@ -73,4 +73,10 @@ public class TopologicalController {
         busTopologyNode.setSystemId(systemId);
         return Result.result(topologicalServiceImpl.queryTopologyNode(busTopologyNode));
     }
+
+    @ApiOperation(value="根据系统ID查询设备类型", notes="根据系统ID查询设备类型")
+    @GetMapping("/queryTypeFirstBySysId/{proId}/{systemId}")
+    public Result queryTypeFirstBySysId(@PathVariable String proId,@PathVariable String systemId){
+        return Result.result(topologicalServiceImpl.queryTypeFirstBySysId(proId,systemId));
+    }
 }

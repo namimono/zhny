@@ -4,6 +4,7 @@ import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.ParamFirstContainSecond;
 import org.rcisoft.entity.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -133,17 +134,17 @@ public interface DeviceConfigService {
     /**
      * 新增一级设备类型
      */
-    int addTypeFirst(BusTypeFirst busTypeFirst);
+    int addTypeFirst(BusTypeFirst busTypeFirst,MultipartFile file);
 
     /**
      * 删除一级设备类型
      */
-    int deleteTypeFirst(String typeFirstId);
+    int deleteTypeFirst(String typeFirstId,String proId);
 
     /**
      * 修改一级设备类型
      */
-    int updateTypeFirst(BusTypeFirst busTypeFirst);
+    int updateTypeFirst(BusTypeFirst busTypeFirst,MultipartFile file);
 
     /**
      * 查询一级设备类型

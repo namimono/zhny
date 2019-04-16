@@ -147,4 +147,19 @@ public interface ProjConfigService {
      */
     List<SysSystem> querySystemType();
 
+    /**
+     * 新增系统类型
+     */
+    int addSysSystem(SysSystem sysSystem);
+
+    /**
+     * 删除系统类型
+     */
+    int deleteSysSystem(String systemId);
+
+    /**
+     * 修改系统类型
+     */
+    int updateSysSystem(SysSystem sysSystem);
+
 }

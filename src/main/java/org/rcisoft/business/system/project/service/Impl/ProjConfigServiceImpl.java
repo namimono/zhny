@@ -313,4 +313,29 @@ public class ProjConfigServiceImpl implements ProjConfigService {
         return sysSystemDao.querySysSystemInfo();
     }
 
+    /**
+     * 新增系统类型
+     */
+    @Override
+    public int addSysSystem(SysSystem sysSystem){
+        sysSystem.setId(UuidUtil.create32());
+        return sysSystemDao.insertSelective(sysSystem);
+    }
+
+    /**
+     * 删除系统类型
+     */
+    @Override
+    public int deleteSysSystem(String systemId){
+        return sysSystemDao.deleteByPrimaryKey(systemId);
+    }
+
+    /**
+     * 修改系统类型
+     */
+    @Override
+    public int updateSysSystem(SysSystem sysSystem){
+        return sysSystemDao.updateByPrimaryKeySelective(sysSystem);
+    }
+
 }
