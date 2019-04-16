@@ -184,8 +184,8 @@ public class DeviceConfigController {
     }
 
     @ApiOperation(value="查询一级设备类型", notes="查询一级设备类型")
-    @GetMapping("/queryTypeFirst")
-    public Result queryTypeFirst (){
-        return Result.result(deviceConfigServiceImpl.queryTypeFirst());
+    @GetMapping("/queryTypeFirst/{proId}/{systemId}")
+    public Result queryTypeFirst (@PathVariable String proId,@PathVariable String systemId){
+        return Result.result(deviceConfigServiceImpl.queryTypeFirst(proId,systemId));
     }
 }

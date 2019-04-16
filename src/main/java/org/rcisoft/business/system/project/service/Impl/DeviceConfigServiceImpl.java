@@ -517,7 +517,11 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
      * 查询一级设备类型
      */
     @Override
-    public List<BusTypeFirst> queryTypeFirst(){
-        return busTypeFirstDao.queryTypeFirst();
+    public List<BusTypeFirst> queryTypeFirst(String proId, String systemId){
+        Example example = new Example(BusTypeFirst.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",proId);
+        criteria.andEqualTo("systemId",systemId);
+        return busTypeFirstDao.selectByExample(example);
     }
 }

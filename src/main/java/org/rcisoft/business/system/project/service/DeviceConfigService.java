@@ -149,6 +149,6 @@ public interface DeviceConfigService {
     /**
      * 查询一级设备类型
      */
-    List<BusTypeFirst> queryTypeFirst();
+    List<BusTypeFirst> queryTypeFirst(String proId, String systemId);
 
 }
