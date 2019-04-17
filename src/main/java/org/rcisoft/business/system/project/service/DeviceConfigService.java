@@ -56,10 +56,10 @@ public interface DeviceConfigService {
      */
     List<EnergyType> queryEnergyType();
 
-    /**
-     * 处理一、二级设备类型下拉菜单级联格式
-     */
-    List<Map<String,Object>> processTypeFormat(String systemId);
+//    /**
+//     * 处理一、二级设备类型下拉菜单级联格式
+//     */
+//    List<Map<String,Object>> processTypeFormat(String systemId);
 
 //    /**
 //     * 删除一级参数信息
@@ -132,28 +132,33 @@ public interface DeviceConfigService {
     List<BusFactory> queryFactory();
 
     /**
-     * 新增一级设备类型
+     * 新增设备类型
      */
-    int addTypeFirst(BusTypeFirst busTypeFirst);
+    int addDeviceType(BusDeviceType busDeviceType);
 
     /**
-     * 删除一级设备类型
+     * 删除设备类型
      */
-    int deleteTypeFirst(String typeFirstId,String proId);
+    int deleteDeviceType(String typeId);
 
     /**
-     * 修改一级设备类型
+     * 修改设备类型
      */
-    int updateTypeFirst(BusTypeFirst busTypeFirst);
+    int updateDeviceType(BusDeviceType busDeviceType);
 
     /**
-     * 查询一级设备类型
+     * 查询设备类型
      */
-    List<BusTypeFirst> queryTypeFirst(String proId, String systemId);
+    List<BusDeviceType> queryDeviceType();
 
     /**
      * 上传设备类型图片
      */
     ServiceResult uploadTypeImage(MultipartFile file,String proId);
+
+    /**
+     * 删除设备图片
+     */
+    int deleteDevicePic(String picId);
 
 }

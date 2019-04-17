@@ -5,6 +5,7 @@ import org.rcisoft.business.system.project.service.TopologicalService;
 import org.rcisoft.dao.BusTopologyDao;
 import org.rcisoft.dao.BusTopologyNodeDao;
 import org.rcisoft.dao.BusTypeFirstDao;
+import org.rcisoft.entity.BusDevice;
 import org.rcisoft.entity.BusTopology;
 import org.rcisoft.entity.BusTopologyNode;
 import org.rcisoft.entity.BusTypeFirst;
@@ -90,19 +91,27 @@ public class TopologicalServiceImpl implements TopologicalService {
      * 查询拓扑图节点图片信息
      */
     @Override
-    public List<BusTopologyNode> queryTopologyNode(BusTopologyNode busTopologyNode){
-        return busTopologyNodeDao.queryTopologyNode(busTopologyNode);
+    public List<BusTopologyNode> queryTopologyNode(String proId){
+        return busTopologyNodeDao.queryTopologyNode(proId);
     }
 
+//    /**
+//     * 根据系统ID查询设备类型
+//     */
+//    @Override
+//    public List<BusTypeFirst> queryTypeFirstBySysId(String proId, String systemId){
+//        Example example = new Example(BusTypeFirst.class);
+//        Example.Criteria criteria = example.createCriteria();
+//        criteria.andEqualTo("projectId",proId);
+//        criteria.andEqualTo("systemId",systemId);
+//        return busTypeFirstDao.selectByExample(example);
+//    }
+
     /**
-     * 根据系统ID查询设备类型
+     * 根据图片ID查询设备信息
      */
     @Override
-    public List<BusTypeFirst> queryTypeFirstBySysId(String proId, String systemId){
-        Example example = new Example(BusTypeFirst.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",proId);
-        criteria.andEqualTo("systemId",systemId);
-        return busTypeFirstDao.selectByExample(example);
+    public List<BusDevice> queryDeviceByPicId(String picId){
+        return busTopologyNodeDao.queryDeviceByPicId(picId);
     }
 }

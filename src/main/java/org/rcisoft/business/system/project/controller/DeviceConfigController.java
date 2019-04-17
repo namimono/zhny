@@ -6,8 +6,8 @@ import org.rcisoft.base.result.Result;
 import org.rcisoft.business.system.project.entity.ParamFirstContainSecond;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.rcisoft.entity.BusDevice;
+import org.rcisoft.entity.BusDeviceType;
 import org.rcisoft.entity.BusFactory;
-import org.rcisoft.entity.BusTypeFirst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -75,11 +75,11 @@ public class DeviceConfigController {
         return Result.result(deviceConfigServiceImpl.queryEnergyType());
     }
 
-    @ApiOperation(value="处理一、二级设备类型下拉菜单级联格式", notes="处理一、二级设备类型下拉菜单级联格式")
-    @GetMapping("/processTypeFormat/{systemId}")
-    public Result processTypeFormat(@PathVariable String systemId){
-        return Result.result(deviceConfigServiceImpl.processTypeFormat(systemId));
-    }
+//    @ApiOperation(value="处理一、二级设备类型下拉菜单级联格式", notes="处理一、二级设备类型下拉菜单级联格式")
+//    @GetMapping("/processTypeFormat/{systemId}")
+//    public Result processTypeFormat(@PathVariable String systemId){
+//        return Result.result(deviceConfigServiceImpl.processTypeFormat(systemId));
+//    }
 
 //    @ApiOperation(value="删除一级参数信息", notes="删除一级参数信息")
 //    @DeleteMapping("/deleteParamFirst/{paramFirstId}")
@@ -165,28 +165,28 @@ public class DeviceConfigController {
         return Result.result(deviceConfigServiceImpl.queryFactory());
     }
 
-    @ApiOperation(value="新增一级设备类型", notes="新增一级设备类型")
-    @PostMapping("/addTypeFirst")
-    public Result addTypeFirst(@RequestBody BusTypeFirst busTypeFirst){
-        return Result.result(deviceConfigServiceImpl.addTypeFirst(busTypeFirst),"新增设备类型成功","新增设备类型失败");
+    @ApiOperation(value="新增设备类型", notes="新增设备类型")
+    @PostMapping("/addDeviceType")
+    public Result addDeviceType(@RequestBody BusDeviceType busDeviceType){
+        return Result.result(deviceConfigServiceImpl.addDeviceType(busDeviceType),"新增设备类型成功","新增设备类型失败");
     }
 
-    @ApiOperation(value="删除一级设备类型", notes="删除一级设备类型")
-    @DeleteMapping("/deleteTypeFirst/{typeFirstId}/{proId}")
-    public Result deleteTypeFirst(@PathVariable String typeFirstId,@PathVariable String proId){
-        return Result.result(deviceConfigServiceImpl.deleteTypeFirst(typeFirstId,proId),"删除设备类型成功","删除设备类型失败");
+    @ApiOperation(value="删除设备类型", notes="删除设备类型")
+    @DeleteMapping("/deleteDeviceType/{picId}")
+    public Result deleteDeviceType(@PathVariable String picId){
+        return Result.result(deviceConfigServiceImpl.deleteDeviceType(picId),"删除设备类型成功","删除设备类型失败");
     }
 
-    @ApiOperation(value="修改一级设备类型", notes="修改一级设备类型")
-    @PutMapping("/updateTypeFirst")
-    public Result updateTypeFirst(@RequestBody BusTypeFirst busTypeFirst){
-        return Result.result(deviceConfigServiceImpl.updateTypeFirst(busTypeFirst),"修改设备类型成功","修改设备类型失败");
+    @ApiOperation(value="修改设备类型", notes="修改设备类型")
+    @PutMapping("/updateDeviceType")
+    public Result updateDeviceType(@RequestBody BusDeviceType busDeviceType){
+        return Result.result(deviceConfigServiceImpl.updateDeviceType(busDeviceType),"修改设备类型成功","修改设备类型失败");
     }
 
-    @ApiOperation(value="查询一级设备类型", notes="查询一级设备类型")
-    @GetMapping("/queryTypeFirst/{proId}/{systemId}")
-    public Result queryTypeFirst (@PathVariable String proId,@PathVariable String systemId){
-        return Result.result(deviceConfigServiceImpl.queryTypeFirst(proId,systemId));
+    @ApiOperation(value="查询设备类型", notes="查询设备类型")
+    @GetMapping("/queryDeviceType")
+    public Result queryDeviceType (){
+        return Result.result(deviceConfigServiceImpl.queryDeviceType());
     }
 
     @ApiOperation(value="上传设备类型图片", notes="上传设备类型图片")

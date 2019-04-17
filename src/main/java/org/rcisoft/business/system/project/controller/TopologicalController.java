@@ -67,16 +67,20 @@ public class TopologicalController {
     }
 
     @ApiOperation(value="查询拓扑图节点图片信息", notes="查询拓扑图节点图片信息")
-    @GetMapping("/queryTopologyNode/{systemId}")
-    public Result queryTopologyNode(@PathVariable String systemId){
-        BusTopologyNode busTopologyNode = new BusTopologyNode();
-        busTopologyNode.setSystemId(systemId);
-        return Result.result(topologicalServiceImpl.queryTopologyNode(busTopologyNode));
+    @GetMapping("/queryTopologyNode/{proId}")
+    public Result queryTopologyNode(@PathVariable String proId){
+        return Result.result(topologicalServiceImpl.queryTopologyNode(proId));
     }
 
-    @ApiOperation(value="根据系统ID查询设备类型", notes="根据系统ID查询设备类型")
-    @GetMapping("/queryTypeFirstBySysId/{proId}/{systemId}")
-    public Result queryTypeFirstBySysId(@PathVariable String proId,@PathVariable String systemId){
-        return Result.result(topologicalServiceImpl.queryTypeFirstBySysId(proId,systemId));
+//    @ApiOperation(value="根据系统ID查询设备类型", notes="根据系统ID查询设备类型")
+//    @GetMapping("/queryTypeFirstBySysId/{proId}/{systemId}")
+//    public Result queryTypeFirstBySysId(@PathVariable String proId,@PathVariable String systemId){
+//        return Result.result(topologicalServiceImpl.queryTypeFirstBySysId(proId,systemId));
+//    }
+
+    @ApiOperation(value="根据图片ID查询设备信息", notes="根据图片ID查询设备信息")
+    @GetMapping("/queryDeviceByPicId/{picId}")
+    public Result queryDeviceByPicId(@PathVariable String picId){
+        return Result.result(topologicalServiceImpl.queryDeviceByPicId(picId));
     }
 }
