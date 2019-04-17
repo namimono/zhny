@@ -1,6 +1,7 @@
 package org.rcisoft.dao;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.system.project.entity.TitleParamAndParam;
 import org.rcisoft.entity.BusTitleParam;
@@ -26,5 +27,6 @@ public interface BusTitleParamDao extends Mapper<BusTitleParam> {
             "FROM bus_title_param a,bus_param_first b,bus_param_second c\n" +
             "WHERE a.param_first_id = b.id AND a.param_second_id = c.id\n" +
             "AND a.title_id = #{titleId};")
+    @ResultType(TitleParamAndParam.class)
     List<TitleParamAndParam> queryTitleParamsInfo(@Param("titleId") String titleId);
 }

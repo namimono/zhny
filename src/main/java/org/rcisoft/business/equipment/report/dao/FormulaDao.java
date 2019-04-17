@@ -1,4 +1,4 @@
-package org.rcisoft.business.system.project.dao;
+package org.rcisoft.business.equipment.report.dao;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -19,10 +19,9 @@ public interface FormulaDao {
      */
     @Select("SELECT a.id AS 'variableId',a.variable,a.formula_id AS 'formulaId',\n" +
             "b.coding AS 'paramFirstCoding',c.coding AS 'paramSecondCoding',f.`name` AS 'formulaName'\n" +
-            "FROM bus_variable a LEFT JOIN bus_formula f ON f.id = a.formula_id,\n" +
-            "bus_param_first b,bus_param_second c\n" +
-            "WHERE a.formula_id in (${formulaIds})\n" +
-            "AND b.id = a.param_first_id\n" +
-            "AND c.id = a.param_second_id;")
+            "FROM bus_variable a\n" +
+            "LEFT JOIN (bus_formula f,bus_param_first b,bus_param_second c)\n" +
+            "ON f.id = a.formula_id AND b.id = a.param_first_id AND c.id = a.param_second_id\n" +
+            "WHERE a.formula_id in (${formulaIds});")
     List<FormulaVariableData> queryParamsByFormula(@Param("formulaIds") String formulaIds);
 }

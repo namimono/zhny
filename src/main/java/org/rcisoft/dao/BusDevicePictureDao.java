@@ -1,6 +1,7 @@
 package org.rcisoft.dao;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.entity.BusDevicePicture;
 import org.springframework.stereotype.Repository;
@@ -18,5 +19,6 @@ public interface BusDevicePictureDao extends Mapper<BusDevicePicture> {
      * 根据项目Id查询设备图片
      */
     @Select("select * from bus_device_picture where project_id = #{proId};")
+    @ResultType(BusDevicePicture.class)
     List<BusDevicePicture> queryDevicePicByProId(@Param("proId") String proId);
 }

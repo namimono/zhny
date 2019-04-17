@@ -28,5 +28,6 @@ public interface BusTopologyNodeDao extends Mapper<BusTopologyNode> {
      * 根据图片ID查询设备信息
      */
     @Select("select id,name from bus_device where device_picture_id = #{picId};")
+    @ResultType(BusTopologyNode.class)
     List<BusDevice> queryDeviceByPicId(@Param("picId") String picId);
 }
