@@ -37,9 +37,9 @@ public class BusTopologyNode {
 	private String imageUrl;
 
 	/**
-	 * 子系统id
+	 * 项目id
 	 */
-   	@Column(name = "system_id" )
-	private String systemId;
+   	@Column(name = "project_id" )
+	private String projectId;
 
 }
