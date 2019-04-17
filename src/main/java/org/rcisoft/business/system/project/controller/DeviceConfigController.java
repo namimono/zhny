@@ -172,9 +172,9 @@ public class DeviceConfigController {
     }
 
     @ApiOperation(value="删除设备类型", notes="删除设备类型")
-    @DeleteMapping("/deleteDeviceType/{picId}")
-    public Result deleteDeviceType(@PathVariable String picId){
-        return Result.result(deviceConfigServiceImpl.deleteDeviceType(picId),"删除设备类型成功","删除设备类型失败");
+    @DeleteMapping("/deleteDeviceType/{typeId}")
+    public Result deleteDeviceType(@PathVariable String typeId){
+        return Result.result(deviceConfigServiceImpl.deleteDeviceType(typeId),"删除设备类型成功","删除设备类型失败");
     }
 
     @ApiOperation(value="修改设备类型", notes="修改设备类型")
@@ -185,13 +185,31 @@ public class DeviceConfigController {
 
     @ApiOperation(value="查询设备类型", notes="查询设备类型")
     @GetMapping("/queryDeviceType")
-    public Result queryDeviceType (){
+    public Result queryDeviceType(){
         return Result.result(deviceConfigServiceImpl.queryDeviceType());
     }
 
-    @ApiOperation(value="上传设备类型图片", notes="上传设备类型图片")
-    @PostMapping("/uploadTypeImage")
-    public Result uploadTypeImage(@RequestParam MultipartFile file,@RequestParam(value = "proId") String proId){
-        return Result.serviceResult(deviceConfigServiceImpl.uploadTypeImage(file,proId));
+    @ApiOperation(value="新增设备图片", notes="新增设备图片")
+    @PostMapping("/addTypeImage")
+    public Result addTypeImage(@RequestParam MultipartFile file,@RequestParam(value = "proId") String proId,@RequestParam(value = "name")String name){
+        return Result.serviceResult(deviceConfigServiceImpl.addTypeImage(file,proId,name),"新增设备图片成功","新增设备图片失败");
+    }
+
+    @ApiOperation(value="删除设备图片", notes="删除设备图片")
+    @DeleteMapping("/deleteDevicePic/{picId}")
+    public Result deleteDevicePic(@PathVariable String picId){
+        return Result.result(deviceConfigServiceImpl.deleteDevicePic(picId),"删除设备图片成功","删除设备图片失败");
+    }
+
+    @ApiOperation(value="修改设备图片", notes="修改设备图片")
+    @PutMapping("/updateTypeImage")
+    public Result updateTypeImage(MultipartFile file,@RequestParam(value = "picId") String picId,@RequestParam(value = "name")String name){
+        return Result.serviceResult(deviceConfigServiceImpl.updateTypeImage(file,picId,name),"修改设备图片成功","修改设备图片失败");
+    }
+
+    @ApiOperation(value="查询设备图片", notes="查询设备图片")
+    @GetMapping("/queryDevicePic/{proId}")
+    public Result queryDevicePic(@PathVariable String proId){
+        return Result.result(deviceConfigServiceImpl.queryDevicePic(proId));
     }
 }

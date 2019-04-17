@@ -482,10 +482,11 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     }
 
     /**
-     * 上传设备类型图片
+     * 新增设备图片
      */
+    @Transactional(rollbackFor=Exception.class)
     @Override
-    public ServiceResult uploadTypeImage(MultipartFile file,String proId){
+    public ServiceResult addTypeImage(MultipartFile file,String proId,String name){
         // 返回值
         Integer result = 0;
         // 后缀
@@ -496,9 +497,16 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
         }
         // 新的文件名
         String fileName = UuidUtil.create32() + suffix;
+
+        BusDevicePicture busDevicePicture = new BusDevicePicture();
+        busDevicePicture.setId(UuidUtil.create32());
+        busDevicePicture.setProjectId(proId);
+        busDevicePicture.setName(name);
+        busDevicePicture.setUrl(fileName);
+
         try {
+            result = busDevicePictureDao.insert(busDevicePicture);
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(path + device + "/" + proId + "/" + fileName));
-            result = 1;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -517,5 +525,59 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
             file.delete();
         }
         return busDevicePictureDao.deleteByPrimaryKey(picId);
+    }
+
+    /**
+     * 修改设备图片
+     */
+    @Transactional(rollbackFor=Exception.class)
+    @Override
+    public ServiceResult updateTypeImage(MultipartFile file,String picId,String name){
+        if (file == null){
+            BusDevicePicture busDevicePicture = new BusDevicePicture();
+            busDevicePicture.setId(picId);
+            busDevicePicture.setName(name);
+            return new ServiceResult(busDevicePictureDao.updateByPrimaryKeySelective(busDevicePicture),"null");
+        }else {
+            //先删除原有图片
+            BusDevicePicture busDevicePicture = busDevicePictureDao.selectByPrimaryKey(picId);
+            File file0 = new File(path + device + "/" + busDevicePicture.getProjectId() + "/" + busDevicePicture.getUrl());
+
+            // 返回值
+            Integer result = 0;
+            // 后缀
+            String suffix = "";
+            String[] fileNameArray = StringUtils.split(file.getOriginalFilename(), ".");
+            if (fileNameArray.length > 1) {
+                suffix = "." + fileNameArray[fileNameArray.length - 1];
+            }
+            // 新的文件名
+            String fileName = UuidUtil.create32() + suffix;
+
+            busDevicePicture.setId(picId);
+            busDevicePicture.setName(name);
+            busDevicePicture.setUrl(fileName);
+
+            try {
+                result = busDevicePictureDao.updateByPrimaryKeySelective(busDevicePicture);
+                if (file0.exists()) {
+                    file0.delete();
+                }
+                FileUtils.copyInputStreamToFile(file.getInputStream(), new File(path + device + "/" + busDevicePicture.getProjectId() + "/" + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return new ServiceResult(result,fileName);
+        }
+
+    }
+
+
+    /**
+     * 查询设备图片
+     */
+    @Override
+    public List<BusDevicePicture> queryDevicePic(String proId){
+        return busDevicePictureDao.queryDevicePicByProId(proId);
     }
 }

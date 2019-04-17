@@ -29,19 +29,19 @@ public class BusDevicePicture {
     /**
      * 项目id
      */
-    @Column(name = "id" )
+    @Column(name = "project_id" )
     private String projectId;
 
     /**
      * 设备图片名称
      */
-    @Column(name = "id" )
+    @Column(name = "name" )
     private String name;
 
     /**
      * 图片路径
      */
-    @Column(name = "id" )
+    @Column(name = "url" )
     private String url;
 
 }

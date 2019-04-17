@@ -152,13 +152,23 @@ public interface DeviceConfigService {
     List<BusDeviceType> queryDeviceType();
 
     /**
-     * 上传设备类型图片
+     * 新增设备图片
      */
-    ServiceResult uploadTypeImage(MultipartFile file,String proId);
+    ServiceResult addTypeImage(MultipartFile file,String proId,String name);
 
     /**
      * 删除设备图片
      */
     int deleteDevicePic(String picId);
+
+    /**
+     * 修改设备图片
+     */
+    ServiceResult updateTypeImage(MultipartFile file,String picId,String name);
+
+    /**
+     * 查询设备图片
+     */
+    List<BusDevicePicture> queryDevicePic(String proId);
 
 }
