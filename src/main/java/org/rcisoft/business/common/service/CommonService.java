@@ -11,11 +11,11 @@ import java.util.List;
 public interface CommonService {
 
     /**
-     * 根据项目id，查询当前项目下所有的一级设备类型
+     * 根据项目id，查询当前项目下所有的设备类型
      * @param projectId
      * @return
      */
-    List<BusTypeFirst> queryTypeFirst(String projectId);
+    List<BusDeviceType> queryDeviceType(String projectId);
 
     /**
      * 查询项目拥有的系统类型
@@ -27,17 +27,19 @@ public interface CommonService {
     /**
      * 查询项目下所有设备
      * @param projectId
+     * @param deviceTypeId
+     * @param systemId
      * @return
      */
-    List<BusDevice> queryDevices(String projectId, String typeFirstId);
+    List<BusDevice> queryDevices(String projectId, String systemId, String deviceTypeId);
 
     /**
-     * 查询项目所有的一级参数
-     * @param projectId
+     * 查询设备所有的一级参数
+     * @param deviceId
      * @param sourceId
      * @return
      */
-    List<BusParamFirst> queryParamFirsts(String projectId, String sourceId);
+    List<BusParamFirst> queryParamFirsts(String deviceId, String sourceId);
 
     /**
      * 查询一级参数的二级参数

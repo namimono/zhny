@@ -23,8 +23,8 @@ public class CommonServiceImpl implements CommonService {
     SysSystemDao sysSystemDao;
 
     @Override
-    public List<BusTypeFirst> queryTypeFirst(String projectId) {
-        return commonDao.queryTypeFirst(projectId);
+    public List<BusDeviceType> queryDeviceType(String projectId) {
+        return commonDao.queryDeviceType(projectId);
     }
 
     @Override
@@ -44,13 +44,13 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    public List<BusDevice> queryDevices(String projectId, String typeFirstId) {
-        return commonDao.queryDevices(projectId, typeFirstId);
+    public List<BusDevice> queryDevices(String projectId, String systemId, String deviceTypeId) {
+        return commonDao.queryDevices(projectId, systemId, deviceTypeId);
     }
 
     @Override
-    public List<BusParamFirst> queryParamFirsts(String projectId, String sourceId) {
-        return commonDao.queryParamFirsts(projectId, sourceId);
+    public List<BusParamFirst> queryParamFirsts(String deviceId, String sourceId) {
+        return commonDao.queryParamFirsts(deviceId, sourceId);
     }
 
     @Override

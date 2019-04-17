@@ -20,9 +20,9 @@ public interface CommonDao {
      * @param projectId
      * @return
      */
-    @Select("<script>select f.* from bus_device d, bus_type_first f where d.type_first_id = f.id and d.project_id = #{projectId} group by f.id</script>")
-    @ResultType(BusTypeFirst.class)
-    List<BusTypeFirst> queryTypeFirst(@Param("projectId") String projectId);
+    @Select("<script>select t.* from bus_device d, bus_device_type t where d.device_type_id = t.id and d.project_id = #{projectId} group by t.id</script>")
+    @ResultType(BusDeviceType.class)
+    List<BusDeviceType> queryDeviceType(@Param("projectId") String projectId);
 
     /**
      * 查询项目中的子系统字段
@@ -36,20 +36,22 @@ public interface CommonDao {
     /**
      * 查询项目下的所有设备
      * @param projectId
+     * @param systemId
+     * @param deviceTypeId
      * @return
      */
-    @Select("<script>select id, name from bus_device where project_id = #{projectId} <if test = \"typeFirstId != null\">and type_first_id = #{typeFirstId}</if></script>")
+    @Select("<script>select id, name from bus_device where project_id = #{projectId}<if test = \"systemId != null\"> and system_id = #{systemId}</if><if test = \"deviceTypeId != null\"> and device_type_id = #{deviceTypeId}</if></script>")
     @ResultType(BusDevice.class)
-    List<BusDevice> queryDevices(@Param("projectId") String projectId, @Param("typeFirstId") String typeFirstId);
+    List<BusDevice> queryDevices(@Param("projectId") String projectId, @Param("systemId") String systemId, @Param("deviceTypeId") String deviceTypeId);
 
     /**
-     * 查询项目所有的一级参数
-     * @param projectId
+     * 查询设备下所有的一级参数
+     * @param deviceId
      * @return
      */
-    @Select("<script>select id, name, coding from bus_param_first where project_id = #{projectId} <if test = \"sourceId != null\">and source_id = #{sourceId}</if> order by source_id asc</script>")
+    @Select("<script>select id, name, coding from bus_param_first where device_id = #{deviceId} <if test = \"sourceId != null\">and source_id = #{sourceId}</if> order by source_id asc</script>")
     @ResultType(BusParamFirst.class)
-    List<BusParamFirst> queryParamFirsts(@Param("projectId") String projectId, @Param("sourceId") String sourceId);
+    List<BusParamFirst> queryParamFirsts(@Param("deviceId") String deviceId, @Param("sourceId") String sourceId);
 
     /**
      * 查询一级参数的二级参数
