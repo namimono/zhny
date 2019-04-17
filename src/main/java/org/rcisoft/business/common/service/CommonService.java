@@ -1,5 +1,6 @@
 package org.rcisoft.business.common.service;
 
+import org.rcisoft.business.common.entity.DeviceParam;
 import org.rcisoft.entity.*;
 
 import java.util.List;
@@ -47,5 +48,13 @@ public interface CommonService {
      * @return
      */
     List<BusParamSecond> queryParamSeconds(String paramFirstId);
+
+    /**
+     * 查询设备、一级、二级
+     * @param projectId
+     * @param systemId
+     * @return
+     */
+    List<DeviceParam> queryDeviceAndParam(String projectId, String systemId);
 
 }

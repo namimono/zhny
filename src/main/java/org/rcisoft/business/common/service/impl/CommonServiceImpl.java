@@ -1,6 +1,10 @@
 package org.rcisoft.business.common.service.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.business.common.dao.CommonDao;
+import org.rcisoft.business.common.entity.DeviceParam;
+import org.rcisoft.business.common.entity.FirstParam;
+import org.rcisoft.business.common.entity.SecondParam;
 import org.rcisoft.business.common.service.CommonService;
 import org.rcisoft.dao.SysSystemDao;
 import org.rcisoft.entity.*;
@@ -56,5 +60,29 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public List<BusParamSecond> queryParamSeconds(String paramFirstId) {
         return commonDao.queryParamSeconds(paramFirstId);
+    }
+
+    @Override
+    public List<DeviceParam> queryDeviceAndParam(String projectId, String systemId) {
+        List<DeviceParam> deviceList = commonDao.queryDeviceParam(projectId, systemId);
+        List<FirstParam> firstList = commonDao.queryFirstParam(projectId, systemId);
+        List<SecondParam> secondList = commonDao.querySecondParam(projectId, systemId);
+        deviceList.forEach(deviceParam -> {
+            String deviceId = deviceParam.getDeviceId();
+            List<FirstParam> firstList1 = deviceParam.getFirstList();
+            firstList.forEach(firstParam -> {
+                String paramFirstId = firstParam.getParamFirstId();
+                List<SecondParam> secondList1 = firstParam.getSecondList();
+                secondList.forEach(secondParam -> {
+                    if (StringUtils.equals(secondParam.getParamFirstId(), paramFirstId)) {
+                        secondList1.add(secondParam);
+                    }
+                });
+                if (StringUtils.equals(firstParam.getDeviceId(), deviceId)) {
+                    firstList1.add(firstParam);
+                }
+            });
+        });
+        return deviceList;
     }
 }

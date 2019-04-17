@@ -49,4 +49,10 @@ public class CommonController {
         return Result.result(commonServiceImpl.queryParamSeconds(paramFirstId));
     }
 
+    @ApiOperation(value="查询设备&一级参数&二级参数", notes="查询设备&一级参数&二级参数")
+    @PostMapping("/queryDeviceAndParam")
+    public Result queryDeviceAndParam(@RequestParam String projectId, @RequestParam(required = false) String systemId) {
+        return Result.result(commonServiceImpl.queryDeviceAndParam(projectId, systemId));
+    }
+
 }
