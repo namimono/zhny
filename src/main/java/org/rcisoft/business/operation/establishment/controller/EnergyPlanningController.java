@@ -28,9 +28,7 @@ public class EnergyPlanningController {
     @Autowired
     private EnergyPlanningDeviceService energyPlanningDeviceService;
     @Autowired
-    private BusTypeFirstService busTypeFirstService;
-    @Autowired
-    private BusTypeSecondService busTypeSecondService;
+    private BusDeviceTypeService busDeviceTypeService;
     @Autowired
     private BusDeviceService busDeviceService;
 
@@ -88,17 +86,11 @@ public class EnergyPlanningController {
     @ApiOperation(value = "添加设备时，选择一级设备类型，查询一级设备类别", notes = "无参数")
     @GetMapping("/listBusTypeFirst")
     public Result listBusTypeFirst() {
-        return Result.result(busTypeFirstService.listBusTypeFirst());
-    }
-
-    @ApiOperation(value = "添加设备时，选择二级设备类型，查询二级设备类别", notes = "参数：一级设备类型Id")
-    @PostMapping("/listBusTypeSecondByFirstId")
-    public Result listBusTypeSecondByFirstId(@RequestBody BusTypeSecond busTypeSecond) {
-        return Result.result(busTypeSecondService.listBusTypeSecondByFirstId(busTypeSecond));
+        return Result.result(busDeviceTypeService.listBusDeviceType());
     }
 
 
-    @ApiOperation(value = "添加设备时，选择设备，根据设备类型查询设备", notes = "参数：一级设备类型Id，二级设备类型Id,项目Id")
+    @ApiOperation(value = "添加设备时，选择设备，根据设备类型查询设备", notes = "参数：一级设备类型Id,项目Id")
     @PostMapping("/listBusDevice")
     public Result listBusDevice(@RequestBody BusDevice busDevice) {
         return Result.result(busDeviceService.listBusDevice(busDevice));
