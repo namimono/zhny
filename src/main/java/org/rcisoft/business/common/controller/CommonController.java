@@ -33,7 +33,7 @@ public class CommonController {
 
     @ApiOperation(value="查询项目下所有设备", notes="deviceTypeId：设备类型id，非必填；systemId：系统id，非必填")
     @PostMapping("/queryDevices")
-    public Result queryDevices(@RequestParam String projectId, @RequestParam String systemId, @RequestParam(required = false) String deviceTypeId) {
+    public Result queryDevices(@RequestParam String projectId, @RequestParam(required = false) String systemId, @RequestParam(required = false) String deviceTypeId) {
         return Result.result(commonServiceImpl.queryDevices(projectId, systemId, deviceTypeId));
     }
 
