@@ -569,7 +569,6 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
             }
             return new ServiceResult(result,fileName);
         }
-
     }
 
 
