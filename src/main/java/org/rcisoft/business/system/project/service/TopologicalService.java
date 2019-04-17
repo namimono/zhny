@@ -1,5 +1,6 @@
 package org.rcisoft.business.system.project.service;
 
+import org.rcisoft.entity.BusDevice;
 import org.rcisoft.entity.BusTopology;
 import org.rcisoft.entity.BusTopologyNode;
 import org.rcisoft.entity.BusTypeFirst;
@@ -51,10 +52,15 @@ public interface TopologicalService {
     /**
      * 查询拓扑图节点图片信息
      */
-    List<BusTopologyNode> queryTopologyNode(BusTopologyNode busTopologyNode);
+    List<BusTopologyNode> queryTopologyNode(String proId);
+
+//    /**
+//     * 根据系统ID查询设备类型
+//     */
+//    List<BusTypeFirst> queryTypeFirstBySysId(String proId,String systemId);
 
     /**
-     * 根据系统ID查询设备类型
+     * 根据图片ID查询设备信息
      */
-    List<BusTypeFirst> queryTypeFirstBySysId(String proId,String systemId);
+    List<BusDevice> queryDeviceByPicId(String picId);
 }

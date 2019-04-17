@@ -45,10 +45,6 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     @Autowired
     private DeviceConfigDao deviceConfigDao;
     @Autowired
-    private BusTypeFirstDao busTypeFirstDao;
-    @Autowired
-    private BusTypeSecondDao busTypeSecondDao;
-    @Autowired
     private BusParamFirstDao busParamFirstDao;
     @Autowired
     private BusParamSecondDao busParamSecondDao;
@@ -64,6 +60,10 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     private BusTitleParamDao busTitleParamDao;
     @Autowired
     private BusFactoryDao busFactoryDao;
+    @Autowired
+    private BusDeviceTypeDao busDeviceTypeDao;
+    @Autowired
+    private BusDevicePictureDao busDevicePictureDao;
 
     /**
      * 获取当前系统时间
@@ -133,45 +133,45 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
         return sysSystemDao.querySysSystemInfo();
     }
 
-    /**
-     * 处理一、二级设备类型下拉菜单级联格式
-     */
-    @Override
-    public List<Map<String,Object>> processTypeFormat(String systemId){
-        List<Map<String,Object>> data = new ArrayList<>();
-        List<TypeFirstAndSecond> typeSecondList = busTypeSecondDao.queryTypeSecondInfo(systemId);
-        Map<String,List<TypeFirstAndSecond>> resultMap = new HashMap<>(16);
-        /*
-        将所有二级设备信息数据通过一级设备ID分组，存于resultMap中
-         */
-        for(TypeFirstAndSecond typeFirstAndSecond : typeSecondList){
-            if (resultMap.containsKey(typeFirstAndSecond.getFirstId())){
-                resultMap.get(typeFirstAndSecond.getFirstId()).add(typeFirstAndSecond);
-            }else {
-                List<TypeFirstAndSecond> list = new ArrayList<>();
-                list.add(typeFirstAndSecond);
-                resultMap.put(typeFirstAndSecond.getFirstId(),list);
-            }
-        }
-        /*
-        对每组数据进行进一步格式处理
-         */
-        for(String key : resultMap.keySet()){
-            Map<String,Object> firstMap = new HashMap<>(16);
-            firstMap.put("firstId",resultMap.get(key).get(0).getFirstId());
-            firstMap.put("firstName",resultMap.get(key).get(0).getFirstName());
-            List<Map<String,String>> secondListMap = new ArrayList<>();
-            for(TypeFirstAndSecond typeFirstAndSecond : resultMap.get(key)){
-                Map<String,String> secondMap = new HashMap<>(16);
-                secondMap.put("secondId",typeFirstAndSecond.getSecondId());
-                secondMap.put("secondName",typeFirstAndSecond.getSecondName());
-                secondListMap.add(secondMap);
-            }
-            firstMap.put("child",secondListMap);
-            data.add(firstMap);
-        }
-        return data;
-    }
+//    /**
+//     * 处理一、二级设备类型下拉菜单级联格式
+//     */
+//    @Override
+//    public List<Map<String,Object>> processTypeFormat(String systemId){
+//        List<Map<String,Object>> data = new ArrayList<>();
+//        List<TypeFirstAndSecond> typeSecondList = busTypeSecondDao.queryTypeSecondInfo(systemId);
+//        Map<String,List<TypeFirstAndSecond>> resultMap = new HashMap<>(16);
+//        /*
+//        将所有二级设备信息数据通过一级设备ID分组，存于resultMap中
+//         */
+//        for(TypeFirstAndSecond typeFirstAndSecond : typeSecondList){
+//            if (resultMap.containsKey(typeFirstAndSecond.getFirstId())){
+//                resultMap.get(typeFirstAndSecond.getFirstId()).add(typeFirstAndSecond);
+//            }else {
+//                List<TypeFirstAndSecond> list = new ArrayList<>();
+//                list.add(typeFirstAndSecond);
+//                resultMap.put(typeFirstAndSecond.getFirstId(),list);
+//            }
+//        }
+//        /*
+//        对每组数据进行进一步格式处理
+//         */
+//        for(String key : resultMap.keySet()){
+//            Map<String,Object> firstMap = new HashMap<>(16);
+//            firstMap.put("firstId",resultMap.get(key).get(0).getFirstId());
+//            firstMap.put("firstName",resultMap.get(key).get(0).getFirstName());
+//            List<Map<String,String>> secondListMap = new ArrayList<>();
+//            for(TypeFirstAndSecond typeFirstAndSecond : resultMap.get(key)){
+//                Map<String,String> secondMap = new HashMap<>(16);
+//                secondMap.put("secondId",typeFirstAndSecond.getSecondId());
+//                secondMap.put("secondName",typeFirstAndSecond.getSecondName());
+//                secondListMap.add(secondMap);
+//            }
+//            firstMap.put("child",secondListMap);
+//            data.add(firstMap);
+//        }
+//        return data;
+//    }
 
     /**
      * 查询参数来源
@@ -449,48 +449,36 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     }
 
     /**
-     * 新增一级设备类型
+     * 新增设备类型
      */
-    @Transactional(rollbackFor=Exception.class)
     @Override
-    public int addTypeFirst(BusTypeFirst busTypeFirst){
-        busTypeFirst.setId(UuidUtil.create32());
-        return busTypeFirstDao.insertSelective(busTypeFirst);
+    public int addDeviceType(BusDeviceType busDeviceType){
+        busDeviceType.setId(UuidUtil.create32());
+        return busDeviceTypeDao.insertSelective(busDeviceType);
     }
 
     /**
-     * 删除一级设备类型
+     * 删除设备类型
      */
-    @Transactional(rollbackFor=Exception.class)
     @Override
-    public int deleteTypeFirst(String typeFirstId,String proId){
-        BusTypeFirst busTypeFirst = busTypeFirstDao.selectByPrimaryKey(typeFirstId);
-        File file = new File(path + device + "/" + proId + "/" + busTypeFirst.getUrl());
-        if (file.exists()) {
-            file.delete();
-        }
-        return busTypeFirstDao.deleteByPrimaryKey(typeFirstId);
+    public int deleteDeviceType(String typeId){
+        return busDeviceTypeDao.deleteByPrimaryKey(typeId);
     }
 
     /**
-     * 修改一级设备类型
+     * 修改设备类型
      */
-    @Transactional(rollbackFor=Exception.class)
     @Override
-    public int updateTypeFirst(BusTypeFirst busTypeFirst){
-        return busTypeFirstDao.updateByPrimaryKeySelective(busTypeFirst);
+    public int updateDeviceType(BusDeviceType busDeviceType){
+        return busDeviceTypeDao.updateByPrimaryKeySelective(busDeviceType);
     }
 
     /**
-     * 查询一级设备类型
+     * 查询设备类型
      */
     @Override
-    public List<BusTypeFirst> queryTypeFirst(String proId, String systemId){
-        Example example = new Example(BusTypeFirst.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",proId);
-        criteria.andEqualTo("systemId",systemId);
-        return busTypeFirstDao.selectByExample(example);
+    public List<BusDeviceType> queryDeviceType(){
+        return busDeviceTypeDao.selectAll();
     }
 
     /**
@@ -515,5 +503,19 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
             e.printStackTrace();
         }
         return new ServiceResult(result,fileName);
+    }
+
+    /**
+     * 删除设备图片
+     */
+    @Transactional(rollbackFor=Exception.class)
+    @Override
+    public int deleteDevicePic(String picId){
+        BusDevicePicture busDevicePicture = busDevicePictureDao.selectByPrimaryKey(picId);
+        File file = new File(path + device + "/" + busDevicePicture.getProjectId() + "/" + busDevicePicture.getUrl());
+        if (file.exists()) {
+            file.delete();
+        }
+        return busDevicePictureDao.deleteByPrimaryKey(picId);
     }
 }
