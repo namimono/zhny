@@ -83,14 +83,14 @@ public class EnergyPlanningController {
         return Result.result(energyPlanningDeviceService.saveEnergyPlanningDevice(energyPlanningDevice), "添加设备成功", "添加设备失败,可能已经添加过这个设备了");
     }
 
-    @ApiOperation(value = "添加设备时，选择一级设备类型，查询一级设备类别", notes = "无参数")
+    @ApiOperation(value = "添加设备时，选择设备类型，查询设备类别", notes = "无参数")
     @GetMapping("/listBusTypeFirst")
     public Result listBusTypeFirst() {
         return Result.result(busDeviceTypeService.listBusDeviceType());
     }
 
 
-    @ApiOperation(value = "添加设备时，选择设备，根据设备类型查询设备", notes = "参数：一级设备类型Id,项目Id")
+    @ApiOperation(value = "添加设备时，选择设备，根据设备类型查询设备", notes = "参数：设备类型Id,项目Id")
     @PostMapping("/listBusDevice")
     public Result listBusDevice(@RequestBody BusDevice busDevice) {
         return Result.result(busDeviceService.listBusDevice(busDevice));
