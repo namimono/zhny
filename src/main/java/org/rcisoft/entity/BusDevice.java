@@ -1,9 +1,6 @@
 package org.rcisoft.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -52,14 +49,28 @@ public class BusDevice {
 	/**
 	 * 一级设备类型id
 	 */
+	@Transient
    	@Column(name = "type_first_id" )
 	private String typeFirstId;
 
 	/**
 	 * 二级设备类型id
 	 */
+	@Transient
    	@Column(name = "type_second_id" )
 	private String typeSecondId;
+
+	/**
+	 * 设备类型id
+	 */
+	@Column(name = "device_type_id" )
+	private String deviceTypeId;
+
+	/**
+	 * 设备图片id
+	 */
+	@Column(name = "device_picture_id" )
+	private String devicePictureId;
 
 	/**
 	 * 设备位置
