@@ -579,7 +579,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     public List<BusDevicePicture> queryDevicePic(String proId){
         List<BusDevicePicture> busDevicePictureList = busDevicePictureDao.queryDevicePicByProId(proId);
         busDevicePictureList.forEach(busDevicePicture -> {
-            String url = path + device + "/" + busDevicePicture.getProjectId() + "/" + busDevicePicture.getUrl();
+            String url = "filepath" + "/" + device + "/" + busDevicePicture.getProjectId() + "/" + busDevicePicture.getUrl();
             url=url.replace("\\", "/");
             busDevicePicture.setUrl(url);
         });
