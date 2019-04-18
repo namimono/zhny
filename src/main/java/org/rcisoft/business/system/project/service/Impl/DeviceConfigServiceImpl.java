@@ -7,15 +7,12 @@ import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.dao.DeviceConfigDao;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.ParamFirstContainSecond;
-import org.rcisoft.business.system.project.entity.TypeFirstAndSecond;
+import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.rcisoft.dao.*;
 import org.rcisoft.entity.*;
-import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import tk.mybatis.mapper.entity.Example;
@@ -33,6 +30,9 @@ import java.util.*;
 @Service
 public class DeviceConfigServiceImpl implements DeviceConfigService {
 
+    /** url */
+    @Value("${location.url}")
+    String url;
     /** 根路径 */
     @Value("${location.path}")
     String path;
@@ -579,9 +579,9 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     public List<BusDevicePicture> queryDevicePic(String proId){
         List<BusDevicePicture> busDevicePictureList = busDevicePictureDao.queryDevicePicByProId(proId);
         busDevicePictureList.forEach(busDevicePicture -> {
-            String url = "filepath" + "/" + device + "/" + busDevicePicture.getProjectId() + "/" + busDevicePicture.getUrl();
-            url=url.replace("\\", "/");
-            busDevicePicture.setUrl(url);
+            String myUrl = url + "/" + device + "/" + busDevicePicture.getProjectId() + "/" + busDevicePicture.getUrl();
+            myUrl=myUrl.replace("\\", "/");
+            busDevicePicture.setUrl(myUrl);
         });
         return busDevicePictureList;
     }
