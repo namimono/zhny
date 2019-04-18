@@ -577,6 +577,12 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
      */
     @Override
     public List<BusDevicePicture> queryDevicePic(String proId){
-        return busDevicePictureDao.queryDevicePicByProId(proId);
+        List<BusDevicePicture> busDevicePictureList = busDevicePictureDao.queryDevicePicByProId(proId);
+        busDevicePictureList.forEach(busDevicePicture -> {
+            String url = path + device + "/" + busDevicePicture.getProjectId() + "/" + busDevicePicture.getUrl();
+            url=url.replace("\\", "/");
+            busDevicePicture.setUrl(url);
+        });
+        return busDevicePictureList;
     }
 }
