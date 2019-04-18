@@ -31,6 +31,6 @@ public interface CompareService {
      * @param compareType 1同比2环比
      * @return
      */
-    CompareResult queryEnergyCompare(String projcetId, Integer energyType, Integer compareType);
+    CompareResult queryEnergyCompare(String projcetId, Integer energyType, Integer compareType, Integer year, Integer month);
 
 }

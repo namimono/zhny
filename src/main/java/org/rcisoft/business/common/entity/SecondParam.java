@@ -20,6 +20,8 @@ public class SecondParam {
 
     private String paramSecondName;
 
+    private String paramSecondCode;
+
     @JsonIgnore
     private String paramFirstId;
 

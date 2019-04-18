@@ -22,6 +22,8 @@ public class FirstParam {
 
     private String paramFirstName;
 
+    private String paramFirstCode;
+
     @JsonIgnore
     private String deviceId;
 

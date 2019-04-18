@@ -60,7 +60,7 @@ public class AdaptiveServiceImpl implements AdaptiveService {
         });
         // 查询建筑负荷
         // 从data表中查询数据
-        List<SysData> dataList = sysDataDao.querySysData(time, adaptiveParam.getProjectId());
+        List<SysData> dataList = sysDataDao.querySysDataFormat(time, adaptiveParam.getProjectId());
         String codingFirst = adaptiveParam.getCodingFirst();
         String codingSecond = adaptiveParam.getCodingSecond();
         // 获取公式
@@ -68,15 +68,17 @@ public class AdaptiveServiceImpl implements AdaptiveService {
         // 获取变量列表
         List<VariableParam> variableList = adaptiveParam.getVariableList();
         // 排序变量list
-        Collections.sort(variableList, (o1, o2) -> {
-            String o1V = o1.getVariable();
-            String o2V = o2.getVariable();
-            if (o1V.length() > o2V.length()) {
-                return -1;
-            } else {
-                return 1;
-            }
-        });
+        if (variableList != null) {
+            Collections.sort(variableList, (o1, o2) -> {
+                String o1V = o1.getVariable();
+                String o2V = o2.getVariable();
+                if (o1V.length() > o2V.length()) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            });
+        }
         // 处理数据
         dataList.forEach(sysData -> {
             String value = null;

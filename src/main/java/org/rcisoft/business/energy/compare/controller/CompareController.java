@@ -35,9 +35,9 @@ public class CompareController {
     }
 
     @ApiOperation(value="用能比较", notes="energyType：1水2电3气；compareType：1同比2环比")
-    @GetMapping("/queryEnergyCompare/{projectId}/{energyType}/{compareType}")
-    public Result queryEnergyCompare(@PathVariable String projectId, @PathVariable Integer energyType, @PathVariable Integer compareType) {
-        return Result.result(compareServiceImpl.queryEnergyCompare(projectId, energyType, compareType));
+    @GetMapping("/queryEnergyCompare/{projectId}/{energyType}/{compareType}/{year}/{month}")
+    public Result queryEnergyCompare(@PathVariable String projectId, @PathVariable Integer energyType, @PathVariable Integer compareType, @PathVariable Integer year, @PathVariable Integer month) {
+        return Result.result(compareServiceImpl.queryEnergyCompare(projectId, energyType, compareType, year, month));
     }
 
 }

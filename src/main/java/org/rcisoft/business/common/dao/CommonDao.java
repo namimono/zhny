@@ -81,7 +81,7 @@ public interface CommonDao {
      * @param systemId
      * @return
      */
-    @Select("<script>select id paramFirstId, name paramFirstName, device_id deviceId from bus_param_first where project_id = #{projectId}<if test=\"systemId != null\"> and system_id = #{systemId}</if></script>")
+    @Select("<script>select id paramFirstId, name paramFirstName, coding paramFirstCode, device_id deviceId from bus_param_first where project_id = #{projectId}<if test=\"systemId != null\"> and system_id = #{systemId}</if></script>")
     @ResultType(FirstParam.class)
     List<FirstParam> queryFirstParam(@Param("projectId") String projectId, @Param("systemId") String systemId);
 
@@ -91,7 +91,7 @@ public interface CommonDao {
      * @param systemId
      * @return
      */
-    @Select("<script>select id paramSecondId, name paramSecondName, param_first_id paramFirstId from bus_param_second where project_id = #{projectId}<if test=\"systemId != null\"> and system_id = #{systemId}</if></script>")
+    @Select("<script>select id paramSecondId, name paramSecondName, coding paramSecondCode, param_first_id paramFirstId from bus_param_second where project_id = #{projectId}<if test=\"systemId != null\"> and system_id = #{systemId}</if></script>")
     @ResultType(SecondParam.class)
     List<SecondParam> querySecondParam(@Param("projectId") String projectId, @Param("systemId") String systemId);
 
