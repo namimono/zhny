@@ -36,7 +36,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     /** 根路径 */
     @Value("${location.path}")
     String path;
-    /** 背景图文件夹 */
+    /** 设备图片文件夹 */
     @Value("${location.device}")
     String device;
 
@@ -579,7 +579,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     public List<BusDevicePicture> queryDevicePic(String proId){
         List<BusDevicePicture> busDevicePictureList = busDevicePictureDao.queryDevicePicByProId(proId);
         busDevicePictureList.forEach(busDevicePicture -> {
-            String myUrl = url + "/" + device + "/" + busDevicePicture.getProjectId() + "/" + busDevicePicture.getUrl();
+            String myUrl = url + device + "/" + busDevicePicture.getProjectId() + "/" + busDevicePicture.getUrl();
             myUrl=myUrl.replace("\\", "/");
             busDevicePicture.setUrl(myUrl);
         });

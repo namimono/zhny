@@ -4,6 +4,7 @@ import org.rcisoft.entity.BusDevice;
 import org.rcisoft.entity.BusTopology;
 import org.rcisoft.entity.BusTopologyNode;
 import org.rcisoft.entity.BusTypeFirst;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -37,27 +38,17 @@ public interface TopologicalService {
     /**
      * 新增拓扑图节点图片信息
      */
-    int addTopologyNode(BusTopologyNode busTopologyNode);
+    int addTopologyNode(MultipartFile file,String proId);
 
     /**
      * 删除拓扑图节点图片信息
      */
-    int deleteTopologyNode(BusTopologyNode busTopologyNode);
-
-    /**
-     * 修改拓扑图节点图片信息
-     */
-    int upadteTopologyNode(BusTopologyNode busTopologyNode);
+    int deleteTopologyNode(String nodeId);
 
     /**
      * 查询拓扑图节点图片信息
      */
     List<BusTopologyNode> queryTopologyNode(String proId);
-
-//    /**
-//     * 根据系统ID查询设备类型
-//     */
-//    List<BusTypeFirst> queryTypeFirstBySysId(String proId,String systemId);
 
     /**
      * 根据图片ID查询设备信息

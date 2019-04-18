@@ -1,5 +1,7 @@
 package org.rcisoft.business.system.project.service.Impl;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.service.TopologicalService;
 import org.rcisoft.dao.BusTopologyDao;
@@ -10,9 +12,14 @@ import org.rcisoft.entity.BusTopology;
 import org.rcisoft.entity.BusTopologyNode;
 import org.rcisoft.entity.BusTypeFirst;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import tk.mybatis.mapper.entity.Example;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -21,6 +28,16 @@ import java.util.List;
  **/
 @Service
 public class TopologicalServiceImpl implements TopologicalService {
+
+    /** url */
+    @Value("${location.url}")
+    String url;
+    /** 根路径 */
+    @Value("${location.path}")
+    String path;
+    /** 设备图片文件夹 */
+    @Value("${location.topology}")
+    String topology;
 
     @Autowired
     private BusTopologyDao busTopologyDao;
@@ -65,26 +82,46 @@ public class TopologicalServiceImpl implements TopologicalService {
     /**
      * 新增拓扑图节点图片信息
      */
+    @Transactional(rollbackFor=Exception.class)
     @Override
-    public int addTopologyNode(BusTopologyNode busTopologyNode){
+    public int addTopologyNode(MultipartFile file, String proId){
+        // 返回值
+        int result = 0;
+        // 后缀
+        String suffix = "";
+        String[] fileNameArray = StringUtils.split(file.getOriginalFilename(), ".");
+        if (fileNameArray.length > 1) {
+            suffix = "." + fileNameArray[fileNameArray.length - 1];
+        }
+        // 新的文件名
+        String fileName = UuidUtil.create32() + suffix;
+
+        BusTopologyNode busTopologyNode = new BusTopologyNode();
         busTopologyNode.setId(UuidUtil.create32());
-        return busTopologyNodeDao.insert(busTopologyNode);
+        busTopologyNode.setProjectId(proId);
+        busTopologyNode.setUrl(fileName);
+
+        try {
+            result = busTopologyNodeDao.insert(busTopologyNode);
+            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(path + topology + "/" + proId + "/" + fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        busTopologyNode.setId(UuidUtil.create32());
+        return result;
     }
 
     /**
      * 删除拓扑图节点图片信息
      */
     @Override
-    public int deleteTopologyNode(BusTopologyNode busTopologyNode){
-        return busTopologyNodeDao.deleteByPrimaryKey(busTopologyNode);
-    }
-
-    /**
-     * 修改拓扑图节点图片信息
-     */
-    @Override
-    public int upadteTopologyNode(BusTopologyNode busTopologyNode){
-        return busTopologyNodeDao.updateByPrimaryKeySelective(busTopologyNode);
+    public int deleteTopologyNode(String nodeId){
+        BusTopologyNode busTopologyNode = busTopologyNodeDao.selectByPrimaryKey(nodeId);
+        File file = new File(path + topology + "/" + busTopologyNode.getProjectId() + "/" + busTopologyNode.getUrl());
+        if (file.exists()) {
+            file.delete();
+        }
+        return busTopologyNodeDao.deleteByPrimaryKey(nodeId);
     }
 
     /**
@@ -92,20 +129,14 @@ public class TopologicalServiceImpl implements TopologicalService {
      */
     @Override
     public List<BusTopologyNode> queryTopologyNode(String proId){
-        return busTopologyNodeDao.queryTopologyNode(proId);
+        List<BusTopologyNode> busTopologyNodeList = busTopologyNodeDao.queryTopologyNode(proId);
+        busTopologyNodeList.forEach(busTopologyNode -> {
+            String myUrl = url + topology + "/" + busTopologyNode.getProjectId() + "/" + busTopologyNode.getUrl();
+            myUrl=myUrl.replace("\\", "/");
+            busTopologyNode.setUrl(myUrl);
+        });
+        return busTopologyNodeList;
     }
-
-//    /**
-//     * 根据系统ID查询设备类型
-//     */
-//    @Override
-//    public List<BusTypeFirst> queryTypeFirstBySysId(String proId, String systemId){
-//        Example example = new Example(BusTypeFirst.class);
-//        Example.Criteria criteria = example.createCriteria();
-//        criteria.andEqualTo("projectId",proId);
-//        criteria.andEqualTo("systemId",systemId);
-//        return busTypeFirstDao.selectByExample(example);
-//    }
 
     /**
      * 根据图片ID查询设备信息

@@ -33,8 +33,8 @@ public class BusTopologyNode {
 	/**
 	 * 图片路径
 	 */
-   	@Column(name = "image_url" )
-	private String imageUrl;
+   	@Column(name = "url" )
+	private String url;
 
 	/**
 	 * 项目id
