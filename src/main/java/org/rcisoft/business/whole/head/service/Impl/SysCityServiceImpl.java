@@ -38,7 +38,7 @@ public class SysCityServiceImpl implements SysCityService {
 
     /**
      * 根据城市名称获取城市天气信息
-     * @param city
+     * @param proId
      * @return
      */
     @Override
@@ -105,7 +105,6 @@ public class SysCityServiceImpl implements SysCityService {
 
     /**
      * 查询所有城市天气信息存入数据库
-     * @param city
      * @return
      */
     @Override
@@ -113,28 +112,30 @@ public class SysCityServiceImpl implements SysCityService {
         try{
             String id;
             List<BusTemperature> list = new ArrayList<>();
-            SysCity sysCity = new SysCity();
+//            SysCity sysCity = new SysCity();
             List<String> codingList = sysCityDao.queryCoding();
             for (String code:codingList){
-                BusTemperature busTemperature = new BusTemperature();
-                id = UuidUtil.create32();
-                JSONObject weatherJson = this.getWeatherMessage(code);
-                //湿度
-                String sd =  (String)weatherJson.get("SD");
-                 Integer Humidity = Integer.parseInt(sd.replaceAll("%", ""));
-                //温度
-                String wd = (String)weatherJson.get("temp");
-                //风速
-                String fs = (String)weatherJson.get("WD") + (String) weatherJson.get("WS");
-                BigDecimal temp = new BigDecimal(wd);
-                busTemperature.setWind(fs);
-                busTemperature.setTemperature(temp);
-                busTemperature.setHumidity(Humidity);
-                busTemperature.setHumidityPercent(sd);
-                busTemperature.setCoding(code);
-                busTemperature.setId(id);
-                busTemperature.setCreateTime(new Date());
-                list.add(busTemperature);
+                if (StringUtils.isNotEmpty(code)) {
+                    BusTemperature busTemperature = new BusTemperature();
+                    id = UuidUtil.create32();
+                    JSONObject weatherJson = this.getWeatherMessage(code);
+                    //湿度
+                    String sd =  weatherJson.getString("SD");
+                    Integer Humidity = Integer.parseInt(sd.replaceAll("%", ""));
+                    //温度
+                    String wd = weatherJson.getString("temp");
+                    //风速
+                    String fs = weatherJson.getString("WD") + weatherJson.getString("WS");
+                    BigDecimal temp = new BigDecimal(wd);
+                    busTemperature.setWind(fs);
+                    busTemperature.setTemperature(temp);
+                    busTemperature.setHumidity(Humidity);
+                    busTemperature.setHumidityPercent(sd);
+                    busTemperature.setCoding(code);
+                    busTemperature.setId(id);
+                    busTemperature.setCreateTime(new Date());
+                    list.add(busTemperature);
+                }
             }
             Integer saveWeatherFlag = sysCityDao.saveWeather(list);
             if (saveWeatherFlag != 0 ){

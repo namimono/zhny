@@ -32,8 +32,8 @@ public class AdaptiveController {
 
     @ApiOperation(value="建筑负荷excel下载", notes="建筑负荷excel下载")
     @PostMapping("/downloadBuilding")
-    public void downloadBuilding(HttpServletRequest request, HttpServletResponse response, @RequestBody AdaptiveParam adaptiveParam) {
-        adaptiveServiceImpl.downloadBuilding(request, response, adaptiveParam);
+    public void downloadBuilding(HttpServletRequest request, HttpServletResponse response, @RequestParam String value) {
+        adaptiveServiceImpl.downloadBuilding(request, response, value);
     }
 
     @ApiOperation(value="气候自适应", notes="气候自适应")
@@ -44,7 +44,7 @@ public class AdaptiveController {
 
     @ApiOperation(value="气候自适应excel下载", notes="气候自适应excel下载")
     @PostMapping("/downloadClimate")
-    public void downloadClimate(HttpServletRequest request, HttpServletResponse response, @RequestBody ClimateParam climateParam) {
-        adaptiveServiceImpl.downloadClimate(request, response, climateParam);
+    public void downloadClimate(HttpServletRequest request, HttpServletResponse response, @RequestParam String value) {
+        adaptiveServiceImpl.downloadClimate(request, response, value);
     }
 }

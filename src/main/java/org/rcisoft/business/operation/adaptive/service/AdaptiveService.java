@@ -23,9 +23,9 @@ public interface AdaptiveService {
 
     /**
      * 建筑负荷excel下载
-     * @param adaptiveParam
+     * @param value
      */
-    void downloadBuilding(HttpServletRequest request, HttpServletResponse response, AdaptiveParam adaptiveParam);
+    void downloadBuilding(HttpServletRequest request, HttpServletResponse response, String value);
 
     /**
      * 气候自适应
@@ -38,7 +38,7 @@ public interface AdaptiveService {
      * 气候自适应excel下载
      * @param request
      * @param response
-     * @param climateParam
+     * @param value
      */
-    void downloadClimate(HttpServletRequest request, HttpServletResponse response, ClimateParam climateParam);
+    void downloadClimate(HttpServletRequest request, HttpServletResponse response, String value);
 }
