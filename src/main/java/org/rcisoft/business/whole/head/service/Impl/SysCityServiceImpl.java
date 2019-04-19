@@ -121,7 +121,7 @@ public class SysCityServiceImpl implements SysCityService {
                 JSONObject weatherJson = this.getWeatherMessage(code);
                 //湿度
                 String sd =  (String)weatherJson.get("SD");
-                Integer Humidity = Integer.parseInt(sd.replaceAll("%", ""));
+                 Integer Humidity = Integer.parseInt(sd.replaceAll("%", ""));
                 //温度
                 String wd = (String)weatherJson.get("temp");
                 //风速

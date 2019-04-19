@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,6 +49,8 @@ public class AnalysisReportServiceImpl implements AnalysisReportService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
     @Override
     public ServiceResult uploadAnalysisReport(MultipartFile file, String proId, int year, int month) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String now = df.format(new Date());
         // 返回值
         Integer result = 0;
         // 后缀
@@ -59,7 +63,7 @@ public class AnalysisReportServiceImpl implements AnalysisReportService {
         String fileName = month + suffix;
         try {
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(path + analysisReport + "/" + year + "/" + fileName ));
-            result = analysisReportDao.insert(new BusReport(UuidUtil.create32(), proId, year, month, fileName));
+            result = analysisReportDao.insert(new BusReport(UuidUtil.create32(), proId,now, year, month, fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
