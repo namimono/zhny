@@ -55,9 +55,9 @@ public class OtherConfigController {
     }
 
     @ApiOperation(value="根据项目ID查询自定义标题信息", notes="根据项目ID查询自定义标题信息")
-    @GetMapping("/queryTitleInfo/{projectId}")
-    public Result queryTitleInfo(@PathVariable String projectId){
-        return Result.result(otherConfigServiceImpl.queryTitleInfo(projectId));
+    @GetMapping("/queryTitleInfo/{projectId}/{systemId}")
+    public Result queryTitleInfo(@PathVariable String projectId,@PathVariable String systemId){
+        return Result.result(otherConfigServiceImpl.queryTitleInfo(projectId,systemId));
     }
 
     @ApiOperation(value="增加自定义参数信息", notes="增加自定义参数信息")

@@ -1,6 +1,7 @@
 package org.rcisoft.business.system.project.service;
 
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
+import org.rcisoft.business.system.project.entity.TitleAndSysName;
 import org.rcisoft.business.system.project.entity.TitleParamAndParam;
 import org.rcisoft.entity.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,7 +45,7 @@ public interface OtherConfigService {
     /**
      * 根据项目ID查询自定义标题信息
      */
-    List<BusTitle> queryTitleInfo(String projectId);
+    List<TitleAndSysName> queryTitleInfo(String projectId,String systemId);
 
     /**
      * 增加自定义参数信息
