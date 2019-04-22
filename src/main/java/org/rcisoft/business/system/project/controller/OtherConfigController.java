@@ -62,9 +62,9 @@ public class OtherConfigController {
     }
 
     @ApiOperation(value="增加自定义参数信息", notes="增加自定义参数信息")
-    @PostMapping("/addTitleParamInfo")
-    public Result addTitleParamInfo(@RequestBody List<BusTitleParam> titleParamList){
-        return Result.result(otherConfigServiceImpl.addTitleParamInfo(titleParamList),"增加自定义参数信息成功","增加自定义参数信息失败");
+    @PostMapping("/addTitleParamInfo/{titleId}")
+    public Result addTitleParamInfo(@RequestBody List<BusTitleParam> titleParamList,@PathVariable String titleId){
+        return Result.result(otherConfigServiceImpl.addTitleParamInfo(titleParamList,titleId),"增加自定义参数信息成功","增加自定义参数信息失败");
     }
 
     @ApiOperation(value="根据自定义标题ID查询自定义参数信息", notes="根据自定义标题ID查询自定义参数信息")

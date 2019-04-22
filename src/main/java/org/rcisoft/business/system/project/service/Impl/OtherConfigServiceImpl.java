@@ -309,10 +309,8 @@ public class OtherConfigServiceImpl implements OtherConfigService {
      * 增加自定义参数信息
      */
     @Override
-    public int addTitleParamInfo(List<BusTitleParam> titleParamList){
+    public int addTitleParamInfo(List<BusTitleParam> titleParamList,String titleId){
         if (titleParamList.size() > 0) {
-
-            String titleId = titleParamList.get(0).getTitleId();
             Example example = new Example(BusTitleParam.class);
             Example.Criteria criteria = example.createCriteria();
             criteria.andEqualTo("titleId",titleId);
@@ -321,7 +319,10 @@ public class OtherConfigServiceImpl implements OtherConfigService {
             titleParamList.forEach(busTitleParam -> busTitleParam.setId(UuidUtil.create32()));
             return busTitleParamDao.insertListUseAllCols(titleParamList);
         }else {
-            return 0;
+            Example example = new Example(BusTitleParam.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("titleId",titleId);
+            return busTitleParamDao.deleteByExample(example);
         }
     }
 

@@ -50,7 +50,7 @@ public interface OtherConfigService {
     /**
      * 增加自定义参数信息
      */
-    int addTitleParamInfo(List<BusTitleParam> titleParamList);
+    int addTitleParamInfo(List<BusTitleParam> titleParamList,String titleId);
 
     /**
      * 根据自定义标题ID查询自定义参数信息
