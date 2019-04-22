@@ -208,7 +208,7 @@ public class AdaptiveServiceImpl implements AdaptiveService {
                     String codingSecond = codingList.get(i).getCodingSecond();
                     String value = FormulaUtil.getValueFromJson(codingFirst, codingSecond, json);
                     if (value != null) {
-                        result.get(i + 1)[hour] = new BigDecimal(value);
+                        result.get(i)[hour] = new BigDecimal(value);
                     }
                 }
             });
@@ -225,15 +225,19 @@ public class AdaptiveServiceImpl implements AdaptiveService {
         // 创建excel
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("sheet1");
+        // 时间行
+        Row timeRow = sheet.createRow(0);
+        timeRow.createCell(0, CellType.STRING).setCellValue("日期");
+        timeRow.createCell(1, CellType.STRING).setCellValue(time);
         // 标题行
-        Row rowTitle = sheet.createRow(0);
-        rowTitle.createCell(0, CellType.STRING).setCellValue("小时");
+        Row titleRow = sheet.createRow(1);
+        titleRow.createCell(0, CellType.STRING).setCellValue("小时");
         for (int i = 0; i < titleList.size(); i++) {
-            rowTitle.createCell(i + 1, CellType.STRING).setCellValue(titleList.get(i).getTitle());
+            titleRow.createCell(i + 1, CellType.STRING).setCellValue(titleList.get(i).getTitle());
         }
         // 数据行
         for (int i = 0; i < 24; i++) {
-            Row row = sheet.createRow(i + 1);
+            Row row = sheet.createRow(i + 2);
             row.createCell(0, CellType.STRING).setCellValue(i);
             for (int j = 0; j < climateData.size(); j++) {
                 BigDecimal val = climateData.get(j)[i];
