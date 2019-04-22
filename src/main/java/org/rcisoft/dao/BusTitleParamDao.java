@@ -21,7 +21,7 @@ public interface BusTitleParamDao extends Mapper<BusTitleParam>, SpecialBatchMap
     /**
      * 根据自定义标题ID查询自定义参数信息
      */
-    @Select("SELECT a.id,a.title_id AS 'titleId',a.param_first_id AS 'paramFirstId',\n" +
+    @Select("SELECT a.id,a.title_id AS 'titleId',a.device_id as 'deviceId',a.param_first_id AS 'paramFirstId',\n" +
             "a.param_second_id AS 'paramSecondId',b.name AS 'paramFirstName',\n" +
             "b.coding AS 'paramFirstCoding',c.name AS 'paramSecondName',\n" +
             "c.coding AS 'paramSecondCoding'\n" +

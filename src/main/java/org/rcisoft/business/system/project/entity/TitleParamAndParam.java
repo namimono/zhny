@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+
 /**
  * @author 土豆儿
  * @date 2019/3/15 16:19
@@ -22,6 +24,11 @@ public class TitleParamAndParam {
      * 标题表id
      */
     private String titleId;
+
+    /**
+     * 设备id
+     */
+    private String deviceId;
 
     /**
      * 一级参数id
