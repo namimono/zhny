@@ -309,25 +309,20 @@ public class OtherConfigServiceImpl implements OtherConfigService {
      * 增加自定义参数信息
      */
     @Override
-    public int addTitleParamInfo(BusTitleParam busTitleParam){
-        busTitleParam.setId(UuidUtil.create32());
-        return busTitleParamDao.insertSelective(busTitleParam);
-    }
+    public int addTitleParamInfo(List<BusTitleParam> titleParamList){
+        if (titleParamList.size() > 0) {
 
-    /**
-     * 删除自定义参数信息
-     */
-    @Override
-    public int deleteTitleParamInfo(BusTitleParam busTitleParam){
-        return busTitleParamDao.deleteByPrimaryKey(busTitleParam);
-    }
+            String titleId = titleParamList.get(0).getTitleId();
+            Example example = new Example(BusTitleParam.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("titleId",titleId);
+            busTitleParamDao.deleteByExample(example);
 
-    /**
-     * 修改自定义参数信息
-     */
-    @Override
-    public int updateTitleParamInfo(BusTitleParam busTitleParam){
-        return busTitleParamDao.updateByPrimaryKeySelective(busTitleParam);
+            titleParamList.forEach(busTitleParam -> busTitleParam.setId(UuidUtil.create32()));
+            return busTitleParamDao.insertListUseAllCols(titleParamList);
+        }else {
+            return 0;
+        }
     }
 
     /**

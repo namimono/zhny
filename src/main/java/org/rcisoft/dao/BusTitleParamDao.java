@@ -3,6 +3,7 @@ package org.rcisoft.dao;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
+import org.rcisoft.base.util.SpecialBatchMapper;
 import org.rcisoft.business.system.project.entity.TitleParamAndParam;
 import org.rcisoft.entity.BusTitleParam;
 import org.springframework.stereotype.Repository;
@@ -15,7 +16,7 @@ import java.util.List;
  * @date 2019/3/15 15:15
  **/
 @Repository
-public interface BusTitleParamDao extends Mapper<BusTitleParam> {
+public interface BusTitleParamDao extends Mapper<BusTitleParam>, SpecialBatchMapper<BusTitleParam> {
 
     /**
      * 根据自定义标题ID查询自定义参数信息
