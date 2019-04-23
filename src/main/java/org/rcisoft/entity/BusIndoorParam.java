@@ -31,6 +31,12 @@ public class BusIndoorParam {
 	private String projectId;
 
 	/**
+	 * 设备id
+	 */
+	@Column(name = "device_id" )
+	private String deviceId;
+
+	/**
 	 * 室内环境id
 	 */
    	@Column(name = "indoor_id" )

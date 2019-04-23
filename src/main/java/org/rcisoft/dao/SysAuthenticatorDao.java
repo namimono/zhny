@@ -1,5 +1,6 @@
 package org.rcisoft.dao;
 
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.entity.SysAuthenticator;
 import org.springframework.stereotype.Repository;
@@ -18,5 +19,6 @@ public interface SysAuthenticatorDao extends Mapper<SysAuthenticator> {
      * 查询认定员信息
      */
     @Select("SELECT * FROM sys_authenticator;")
+    @ResultType(SysAuthenticator.class)
     List<SysAuthenticator> queryAuthenticator();
 }

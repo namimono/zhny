@@ -13,7 +13,7 @@ import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.base.util.ZhnyUtils;
 import org.rcisoft.business.equipment.report.entity.VariableAndParam;
 import org.rcisoft.business.equipment.report.service.FormulaOperationService;
-import org.rcisoft.business.system.project.dao.FormulaDao;
+import org.rcisoft.business.equipment.report.dao.FormulaDao;
 import org.rcisoft.business.system.project.entity.FormulaVariableData;
 import org.rcisoft.dao.*;
 import org.rcisoft.entity.*;

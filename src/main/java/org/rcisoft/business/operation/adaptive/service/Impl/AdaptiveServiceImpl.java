@@ -1,9 +1,8 @@
 package org.rcisoft.business.operation.adaptive.service.Impl;
 
+import com.alibaba.fastjson.JSON;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -23,8 +22,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -60,7 +57,7 @@ public class AdaptiveServiceImpl implements AdaptiveService {
         });
         // 查询建筑负荷
         // 从data表中查询数据
-        List<SysData> dataList = sysDataDao.querySysData(time, adaptiveParam.getProjectId());
+        List<SysData> dataList = sysDataDao.querySysDataFormat(time, adaptiveParam.getProjectId());
         String codingFirst = adaptiveParam.getCodingFirst();
         String codingSecond = adaptiveParam.getCodingSecond();
         // 获取公式
@@ -68,15 +65,17 @@ public class AdaptiveServiceImpl implements AdaptiveService {
         // 获取变量列表
         List<VariableParam> variableList = adaptiveParam.getVariableList();
         // 排序变量list
-        Collections.sort(variableList, (o1, o2) -> {
-            String o1V = o1.getVariable();
-            String o2V = o2.getVariable();
-            if (o1V.length() > o2V.length()) {
-                return -1;
-            } else {
-                return 1;
-            }
-        });
+        if (variableList != null) {
+            Collections.sort(variableList, (o1, o2) -> {
+                String o1V = o1.getVariable();
+                String o2V = o2.getVariable();
+                if (o1V.length() > o2V.length()) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            });
+        }
         // 处理数据
         dataList.forEach(sysData -> {
             String value = null;
@@ -117,7 +116,9 @@ public class AdaptiveServiceImpl implements AdaptiveService {
     }
 
     @Override
-    public void downloadBuilding(HttpServletRequest request, HttpServletResponse response, AdaptiveParam adaptiveParam) {
+//    public void downloadBuilding(HttpServletRequest request, HttpServletResponse response, AdaptiveParam adaptiveParam) {
+    public void downloadBuilding(HttpServletRequest request, HttpServletResponse response, String value) {
+        AdaptiveParam adaptiveParam = JSON.toJavaObject(JSON.parseObject(value), AdaptiveParam.class);
         BuildingResult result = this.queryBuilding(adaptiveParam);
         // 创建excel
         Workbook workbook = new XSSFWorkbook();
@@ -189,9 +190,9 @@ public class AdaptiveServiceImpl implements AdaptiveService {
         result.add(tempResult);
         /** 自定义选择值 */
         List<CodingParam> codingList = climateParam.getCodingList();
-        if (codingList.size() > 0) {
+        if (codingList.size() > 1) {
             // 增加返回值的内容
-            for (int i = 0; i < codingList.size(); i++) {
+            for (int i = 1; i < codingList.size(); i++) {
                 result.add(new BigDecimal[24]);
             }
             // 查询当天sys_data数据
@@ -202,11 +203,13 @@ public class AdaptiveServiceImpl implements AdaptiveService {
                 Date date = sysData.getCreateTime();
                 calendar.setTime(date);
                 int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                for (int i = 0; i < codingList.size(); i++) {
+                for (int i = 1; i < codingList.size(); i++) {
                     String codingFirst = codingList.get(i).getCodingFirst();
                     String codingSecond = codingList.get(i).getCodingSecond();
                     String value = FormulaUtil.getValueFromJson(codingFirst, codingSecond, json);
-                    result.get(i + 1)[hour] = new BigDecimal(value);
+                    if (value != null) {
+                        result.get(i)[hour] = new BigDecimal(value);
+                    }
                 }
             });
         }
@@ -214,26 +217,31 @@ public class AdaptiveServiceImpl implements AdaptiveService {
     }
 
     @Override
-    public void downloadClimate(HttpServletRequest request, HttpServletResponse response, ClimateParam climateParam) {
+    public void downloadClimate(HttpServletRequest request, HttpServletResponse response, String value) {
+        ClimateParam climateParam = JSON.toJavaObject(JSON.parseObject(value), ClimateParam.class);
         List<BigDecimal[]> climateData = this.queryClimate(climateParam);
         List<CodingParam> titleList = climateParam.getCodingList();
         String time = climateParam.getTime();
         // 创建excel
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("sheet1");
+        // 时间行
+        Row timeRow = sheet.createRow(0);
+        timeRow.createCell(0, CellType.STRING).setCellValue("日期");
+        timeRow.createCell(1, CellType.STRING).setCellValue(time);
         // 标题行
-        Row rowTitle = sheet.createRow(0);
-        rowTitle.createCell(0, CellType.STRING).setCellValue("小时");
+        Row titleRow = sheet.createRow(1);
+        titleRow.createCell(0, CellType.STRING).setCellValue("小时");
         for (int i = 0; i < titleList.size(); i++) {
-            rowTitle.createCell(i + 1, CellType.STRING).setCellValue(titleList.get(i).getTitle());
+            titleRow.createCell(i + 1, CellType.STRING).setCellValue(titleList.get(i).getTitle());
         }
         // 数据行
         for (int i = 0; i < 24; i++) {
-            Row row = sheet.createRow(i + 1);
+            Row row = sheet.createRow(i + 2);
             row.createCell(0, CellType.STRING).setCellValue(i);
             for (int j = 0; j < climateData.size(); j++) {
-                BigDecimal value = climateData.get(j)[i];
-                row.createCell(j + 1, CellType.STRING).setCellValue(value == null ? "" : value.toString());
+                BigDecimal val = climateData.get(j)[i];
+                row.createCell(j + 1, CellType.STRING).setCellValue(val == null ? "" : val.toString());
             }
         }
         ExcelUtil.downloadExcel(request, response, "气候自适应-" + time, workbook);

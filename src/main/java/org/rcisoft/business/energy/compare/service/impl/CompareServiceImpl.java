@@ -86,7 +86,7 @@ public class CompareServiceImpl implements CompareService {
     }
 
     @Override
-    public CompareResult queryEnergyCompare(String projcetId, Integer energyType, Integer compareType) {
+    public CompareResult queryEnergyCompare(String projcetId, Integer energyType, Integer compareType, Integer year, Integer month) {
         String column = "";
         switch (energyType) {
             case 1:
@@ -100,8 +100,9 @@ public class CompareServiceImpl implements CompareService {
                 break;
         }
         Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
+        calendar.set(year, month - 1, 1);
+//        int year = calendar.get(Calendar.YEAR);
+//        int month = calendar.get(Calendar.MONTH) + 1;
         // 查询当月
         List<DayAndEnergy> energyList = compareDao.queryEnergyCompare(projcetId, year, month, column);
         // 查询环比 or 同比 月

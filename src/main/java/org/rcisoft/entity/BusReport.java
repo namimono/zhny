@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,6 +31,12 @@ public class BusReport {
 	 */
    	@Column(name = "project_id" )
 	private String projectId;
+
+	/**
+	 * 创建日期
+	 */
+	@Column(name = "create_time")
+   	private String createTime;
 
 	/**
 	 * 年份

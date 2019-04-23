@@ -20,7 +20,7 @@ public interface BusTopologyNodeDao extends Mapper<BusTopologyNode> {
     /**
      * 查询拓扑图节点图片信息
      */
-    @Select("SELECT * FROM bus_topology_node WHERE project_id = #[proId};")
+    @Select("SELECT * FROM bus_topology_node WHERE project_id = #{proId};")
     @ResultType(BusTopologyNode.class)
     List<BusTopologyNode> queryTopologyNode(@Param("proId") String proId);
 
@@ -28,5 +28,6 @@ public interface BusTopologyNodeDao extends Mapper<BusTopologyNode> {
      * 根据图片ID查询设备信息
      */
     @Select("select id,name from bus_device where device_picture_id = #{picId};")
+    @ResultType(BusTopologyNode.class)
     List<BusDevice> queryDeviceByPicId(@Param("picId") String picId);
 }

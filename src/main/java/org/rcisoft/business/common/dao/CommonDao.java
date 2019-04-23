@@ -3,6 +3,9 @@ package org.rcisoft.business.common.dao;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
+import org.rcisoft.business.common.entity.DeviceParam;
+import org.rcisoft.business.common.entity.FirstParam;
+import org.rcisoft.business.common.entity.SecondParam;
 import org.rcisoft.entity.*;
 import org.springframework.stereotype.Repository;
 
@@ -61,5 +64,35 @@ public interface CommonDao {
     @Select("<script>select id, name, coding from bus_param_second where param_first_id = #{paramFirstId}</script>")
     @ResultType(BusParamSecond.class)
     List<BusParamSecond> queryParamSeconds(@Param("paramFirstId") String paramFirstId);
+
+    /**
+     * 根据项目id，系统id查询所有设备
+     * @param projectId
+     * @param systemId
+     * @return
+     */
+    @Select("<script>select id deviceId, name deviceName from bus_device where project_id = #{projectId}<if test=\"systemId != null\"> and system_id = #{systemId}</if></script>")
+    @ResultType(DeviceParam.class)
+    List<DeviceParam> queryDeviceParam(@Param("projectId") String projectId, @Param("systemId") String systemId);
+
+    /**
+     * 根据项目id，系统id查询所有一级参数
+     * @param projectId
+     * @param systemId
+     * @return
+     */
+    @Select("<script>select id paramFirstId, name paramFirstName, coding paramFirstCode, device_id deviceId from bus_param_first where project_id = #{projectId}<if test=\"systemId != null\"> and system_id = #{systemId}</if></script>")
+    @ResultType(FirstParam.class)
+    List<FirstParam> queryFirstParam(@Param("projectId") String projectId, @Param("systemId") String systemId);
+
+    /**
+     * 根据项目id，系统id查询所有二级参数
+     * @param projectId
+     * @param systemId
+     * @return
+     */
+    @Select("<script>select id paramSecondId, name paramSecondName, coding paramSecondCode, param_first_id paramFirstId from bus_param_second where project_id = #{projectId}<if test=\"systemId != null\"> and system_id = #{systemId}</if></script>")
+    @ResultType(SecondParam.class)
+    List<SecondParam> querySecondParam(@Param("projectId") String projectId, @Param("systemId") String systemId);
 
 }

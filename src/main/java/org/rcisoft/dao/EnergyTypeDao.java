@@ -1,5 +1,6 @@
 package org.rcisoft.dao;
 
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.entity.EnergyType;
 import org.springframework.stereotype.Repository;
@@ -18,5 +19,6 @@ public interface EnergyTypeDao extends Mapper<EnergyType> {
      * 查询能耗分类信息
      */
     @Select("SELECT * FROM energy_type;")
+    @ResultType(EnergyType.class)
     List<EnergyType> queryEnergyType();
 }

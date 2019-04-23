@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.dao.OtherConfigDao;
+import org.rcisoft.business.system.project.entity.TitleAndSysName;
 import org.rcisoft.business.system.project.entity.TitleParamAndParam;
 import org.rcisoft.business.system.project.service.OtherConfigService;
 import org.rcisoft.dao.*;
@@ -296,33 +297,33 @@ public class OtherConfigServiceImpl implements OtherConfigService {
      * 根据项目ID查询自定义标题信息
      */
     @Override
-    public List<BusTitle> queryTitleInfo(String projectId){
-        return busTitleDao.queryTitleInfo(projectId);
+    public List<TitleAndSysName> queryTitleInfo(String projectId,String systemId){
+        if ("0".equals(systemId)){
+            return busTitleDao.queryTitleInfo(projectId);
+        }else{
+            return busTitleDao.queryTitleInfoBySys(projectId,systemId);
+        }
     }
 
     /**
      * 增加自定义参数信息
      */
     @Override
-    public int addTitleParamInfo(BusTitleParam busTitleParam){
-        busTitleParam.setId(UuidUtil.create32());
-        return busTitleParamDao.insertSelective(busTitleParam);
-    }
+    public int addTitleParamInfo(List<BusTitleParam> titleParamList,String titleId){
+        if (titleParamList.size() > 0) {
+            Example example = new Example(BusTitleParam.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("titleId",titleId);
+            busTitleParamDao.deleteByExample(example);
 
-    /**
-     * 删除自定义参数信息
-     */
-    @Override
-    public int deleteTitleParamInfo(BusTitleParam busTitleParam){
-        return busTitleParamDao.deleteByPrimaryKey(busTitleParam);
-    }
-
-    /**
-     * 修改自定义参数信息
-     */
-    @Override
-    public int updateTitleParamInfo(BusTitleParam busTitleParam){
-        return busTitleParamDao.updateByPrimaryKeySelective(busTitleParam);
+            titleParamList.forEach(busTitleParam -> busTitleParam.setId(UuidUtil.create32()));
+            return busTitleParamDao.insertListUseAllCols(titleParamList);
+        }else {
+            Example example = new Example(BusTitleParam.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("titleId",titleId);
+            return busTitleParamDao.deleteByExample(example);
+        }
     }
 
     /**
