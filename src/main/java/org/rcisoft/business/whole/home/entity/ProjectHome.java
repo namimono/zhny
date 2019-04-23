@@ -1,5 +1,6 @@
 package org.rcisoft.business.whole.home.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -68,4 +69,16 @@ public class ProjectHome {
      * 是否通讯故障 0：正常 1：故障
      */
     private int communicationStatus;
+
+    /**
+     * 是否接收数据，0：不，1：接
+     */
+    private int receive;
+
+    /**
+     * 网关编号，多个，逗号分隔
+     */
+    @JsonIgnore
+    private String phones;
+
 }

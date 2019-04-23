@@ -67,7 +67,7 @@ public class AuthUserServiceImpl implements AuthService {
         UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(username,password);
         final Authentication authentication = authenticationManager.authenticate(upToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        final UserDetails userDetails = (SysUser) authentication.getPrincipal();// userDetailsService.loadUserByUsername(username);
         final String Token = jwtTokenUtil.generateToken(userDetails);
         return Token;
     }
