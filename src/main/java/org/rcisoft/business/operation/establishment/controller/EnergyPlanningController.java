@@ -83,6 +83,14 @@ public class EnergyPlanningController {
         return Result.result(energyPlanningDeviceService.saveEnergyPlanningDevice(energyPlanningDevice), "添加设备成功", "添加设备失败,可能已经添加过这个设备了");
     }
 
+    @ApiOperation(value = "点击删除设备，删除设备", notes = "参数：设备Id,创建时间（yyyy-MM-dd）")
+    @DeleteMapping("/deleteEnergyPlanningDevice")
+    public Result deleteEnergyPlanningDevice(@RequestBody EnergyPlanningDevice energyPlanningDevice) {
+        return Result.result(energyPlanningDeviceService.deleteEnergyPlanningDevice(energyPlanningDevice), "删除设备成功", "删除设备失败");
+    }
+
+
+
     @ApiOperation(value = "添加设备时，选择设备类型，查询设备类别", notes = "无参数")
     @GetMapping("/listBusTypeFirst")
     public Result listBusTypeFirst() {

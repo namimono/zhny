@@ -11,7 +11,15 @@ public interface EnergyPlanningDeviceService {
     /**
      *  新增计划设备
      * @param energyPlanningDevice
-     * @return
+     * @return Integer
      */
     Integer saveEnergyPlanningDevice(EnergyPlanningDevice energyPlanningDevice);
+
+
+    /**
+     *  删除计划设备
+     * @param energyPlanningDevice
+     * @return Integer
+     */
+    Integer deleteEnergyPlanningDevice(EnergyPlanningDevice energyPlanningDevice);
 }
