@@ -34,6 +34,12 @@ public class BusOutdoor {
     private String projectId;
 
     /**
+     * 设备id
+     */
+    @Column(name = "device_id" )
+    private String deviceId;
+
+    /**
      * 一级参数id
      */
     @Column(name = "param_first_id")
