@@ -17,7 +17,7 @@ import java.util.List;
  * @Date: Created in 15:12 2019/4/12
  */
 public interface AnalysisReportService {
-    List<BusReport> queryAnalysisReport();
+    List<BusReport> queryAnalysisReport(int year);
     ServiceResult uploadAnalysisReport(MultipartFile file,String proId,int year,int month);
     String downloadAnalysisReport(HttpServletRequest request, HttpServletResponse response, String id, int year, int month) throws Exception;
     Integer deleteAnalysisReport(String id);
