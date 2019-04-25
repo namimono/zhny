@@ -1,7 +1,7 @@
 server:
   servlet:
     context-path: /zhny2
-  url: localhost
+  url: 10.150.4.204
   port: 8080
   tomcat:
     max-threads: 300
