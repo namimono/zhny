@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.management.evaluateproj.entity.ProjectAssessment;
 import org.rcisoft.business.monitor.intercept.entity.BusProjectParam;
 import org.rcisoft.business.system.project.entity.ProjectBriefInfo;
+import org.rcisoft.business.system.roleuser.entity.ProjectName;
 import org.rcisoft.entity.BusProject;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
@@ -18,6 +19,13 @@ import java.util.List;
  **/
 @Repository
 public interface BusProjectDao extends Mapper<BusProject> {
+
+    /**
+     * 查出项目的Id,名称
+     * @return List<ProjectName>
+     */
+    @Select("SELECT bus_project.id AS projectId, bus_project.name AS projectName FROM bus_project")
+    List<ProjectName> listProjectName();
 
     /**
      * 查询全部项目表信息

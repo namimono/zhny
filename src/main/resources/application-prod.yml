@@ -79,6 +79,10 @@ jwt:
   expiration: 604800
   tokenHead: "Bearer "
 
+#默认密码
+password:
+  default: "123456"
+
 #  省略debug Console中的大量 CONDITIONS EVALUATION REPORT 日志信息
 logging:
   level:
