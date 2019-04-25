@@ -17,6 +17,15 @@ import java.util.List;
 public interface SysUserMenuDao extends Mapper<SysUser> {
 
 
+    /**
+     * 查询某个角色的菜单权限
+     * @param roleId
+     * @return List<SysMenu>
+     */
+    @Select("<script>SELECT sm.id,sm.`name`,sm.pid,sm.`level` FROM sys_role_menu_mid srmm \n" +
+            "LEFT JOIN sys_menu sm ON srmm.menu_id = sm.id \n" +
+            "WHERE srmm.role_id = #{roleId} </script>")
+    List<SysMenu> getRolePermission(@Param("roleId") String roleId);
 
     /**
      * 根据用户名查询菜单详情
