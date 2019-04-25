@@ -9,6 +9,7 @@ import org.rcisoft.entity.EnergyPrice;
 import org.rcisoft.entity.EnergyStandard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 import tk.mybatis.mapper.entity.Example;
 
@@ -140,7 +141,12 @@ public class BasicDataServiceImpl implements BasicDataService {
         if (fileName != null) {
             //设置文件路径
             String realPath = "src/main/resources/excel/";
-            File file = new File(realPath , fileName);
+            File file = null;
+            try {
+                file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "excel/碳排放量.xls");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
             if (file.exists()) {
                 // 设置强制下载不打开
                 response.setContentType("application/force-download");

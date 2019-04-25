@@ -93,9 +93,9 @@ logging:
 #     如 localhost/filepath/image/1.jpg（url + 不同前缀 + 文件名）
 location:
   # 显示图片的url前缀
-  url: ${server.url}:${server.port}/filepath/
+  url: http://${server.url}:9000/filepath/
   # 存储根路径
-  path: /zhny2/filepath/
+  path: /working/zhihui/nginx/filepath/
   # 背景图文件夹
   background: background-img
   # 拓扑图节点文件夹（需要分系统）
