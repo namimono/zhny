@@ -20,8 +20,8 @@ public interface AnalysisReportDao extends Mapper<BusReport> {
      * 查询分析报告表列表
      * @return
      */
-    @Select("<script>select * from bus_report</script>")
-    List<BusReport> queryAnalysisReport();
+    @Select("<script>select * from bus_report where time_year = #{year}</script>")
+    List<BusReport> queryAnalysisReport(int year);
 
     /**
      * 根据年份查询文件名称
@@ -32,6 +32,11 @@ public interface AnalysisReportDao extends Mapper<BusReport> {
     @Select("<script>select url from bus_report where time_year = #{year} and time_month = #{month}</script>")
     String queryFileName(int year,int month);
 
+    /**
+     * 根据id查找文件信息
+     * @param id
+     * @return
+     */
     @Select("<script>select * from bus_report where id = #{id}</script>")
     BusReport queryFile(@Param("id") String id);
 

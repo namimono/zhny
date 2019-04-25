@@ -26,9 +26,9 @@ public class AnalysisReportController extends HttpServletController {
     private AnalysisReportService analysisReportService;
 
     @ApiOperation(value = "分析报告列表",notes = "分析报告列表")
-    @GetMapping("queryAnalysisReport")
-    public Result queryAnalysisReport(){
-        return Result.result(1,analysisReportService.queryAnalysisReport());
+    @GetMapping("queryAnalysisReport/{year}")
+    public Result queryAnalysisReport(@PathVariable int year){
+        return Result.result(1,analysisReportService.queryAnalysisReport(year));
     }
 
     @ApiOperation(value = "上传报告文件",notes = "上传报告文件")

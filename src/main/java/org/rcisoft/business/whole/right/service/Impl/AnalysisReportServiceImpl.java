@@ -42,8 +42,8 @@ public class AnalysisReportServiceImpl implements AnalysisReportService {
 
 
     @Override
-    public List<BusReport> queryAnalysisReport() {
-        return analysisReportDao.queryAnalysisReport();
+    public List<BusReport> queryAnalysisReport(int year) {
+        return analysisReportDao.queryAnalysisReport(year);
     }
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
