@@ -96,7 +96,7 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
 
                         //封装数据
                         allMenuFirsts.setId(sysMenuFirst.getId());
-                        allMenuFirsts.setName(sysMenuFirst.getId());
+                        allMenuFirsts.setName(sysMenuFirst.getName());
                         allMenuFirsts.setRolePermissionSecondList(allMenuSeconds);
 
                         //将数据增加到要返回的list中
