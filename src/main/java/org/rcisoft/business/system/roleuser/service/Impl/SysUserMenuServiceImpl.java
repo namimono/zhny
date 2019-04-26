@@ -97,6 +97,7 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
                         //封装数据
                         allMenuFirsts.setId(sysMenuFirst.getId());
                         allMenuFirsts.setName(sysMenuFirst.getName());
+                        allMenuFirsts.setFlag(0);
                         allMenuFirsts.setRolePermissionSecondList(allMenuSeconds);
 
                         //将数据增加到要返回的list中
@@ -131,6 +132,7 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
                                             for (SysMenu roleMenuSecond : roleMenuSecondList) {
                                                 //如果这个角色拥有当前二级菜单,则设置状态位为1
                                                 if (roleMenuSecond.getId().equals(rolePermissionSecond.getId())) {
+                                                    rolePermissionFirst.setFlag(1);
                                                     rolePermissionSecond.setFlag(1);
                                                 }
                                             }

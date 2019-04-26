@@ -27,6 +27,11 @@ public class RolePermissionFirst {
     private String name;
 
     /**
+     * 表示是否已经拥有这个菜单的查看权（1表示拥有，0表示没有）
+     */
+    private Integer flag;
+
+    /**
      * 这个一级菜单下的二级菜单
      */
     List<RolePermissionSecond> rolePermissionSecondList;
