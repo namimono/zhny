@@ -95,11 +95,13 @@ public class BusProjectServiceImpl implements BusProjectService {
 
     @Override
     public List<DeviceInfo> queryDeviceInfo(String typeFirstId) {
+        //查出当天有哪些设备有故障
         List<String> list_mal = deviceParamDao.queryMalfunction();
-        List<DeviceInfo> list = new ArrayList<>();
-        list = deviceParamDao.queryDeviceInfo(typeFirstId);
+        //查出当前类型的设备信息
+        List<DeviceInfo> list = deviceParamDao.queryDeviceInfo(typeFirstId);
         for (DeviceInfo li : list){
             for(String str : list_mal){
+                //如果当前设备有故障，则设置状态位
                 if(li.getId().equals(str)){
                     li.setStatus(1);
                 }

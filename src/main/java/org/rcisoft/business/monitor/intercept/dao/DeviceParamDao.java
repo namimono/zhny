@@ -46,7 +46,7 @@ public interface DeviceParamDao extends Mapper<DeviceParam> {
      * @param typeFirstId
      * @return
      */
-    @Select("<script>select id,name,runtime from bus_device where type_first_id = #{typeFirstId}</script>")
+    @Select("<script>select id,name,runtime from bus_device where device_type_id = #{typeFirstId}</script>")
     List<DeviceInfo> queryDeviceInfo(String typeFirstId);
 
     /**
