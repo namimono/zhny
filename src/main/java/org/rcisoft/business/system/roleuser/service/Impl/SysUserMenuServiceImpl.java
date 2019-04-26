@@ -171,7 +171,12 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
         if (ifInUser(flag)) {
             SysUser sysUser = new SysUser();
             sysUser.setType(Integer.parseInt(flag));
-            return sysUserDao.select(sysUser);
+            //将密码设置为空
+            List<SysUser> sysUsers = sysUserDao.select(sysUser);
+            for (SysUser user : sysUsers){
+                user.setPassword(null);
+            }
+            return sysUsers;
         }
 
         //团队负责人标志
@@ -183,7 +188,11 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
         //巡检员标志
         String inspectorFlag = "5";
         if (inspectorFlag.equals(flag)) {
-            return sysInspectorDao.selectAll();
+            List<SysInspector> sysInspectors = sysInspectorDao.selectAll();
+            for (SysInspector sysInspector : sysInspectors){
+                sysInspector.setPassword(null);
+            }
+            return sysInspectors;
         }
 
         //认定员标志
