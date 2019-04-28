@@ -138,7 +138,7 @@ public class DeviceConfigController {
     @ApiOperation(value="批量增删改一二级参数信息", notes="批量增删改一二级参数信息")
     @PostMapping("/batchOperationParams/{paramFirstIds}/{paramSecondIds}")
     public Result batchOperationParams(@RequestBody List<ParamFirstContainSecond> list,@PathVariable String paramFirstIds,@PathVariable String paramSecondIds){
-        return Result.serviceResult(deviceConfigServiceImpl.batchOperationParams(list,paramFirstIds,paramSecondIds),"保存成功","操作失败");
+        return Result.serviceResult(deviceConfigServiceImpl.batchOperationParams(list,paramFirstIds,paramSecondIds));
     }
 
     @ApiOperation(value="新增厂家信息", notes="新增厂家信息")
