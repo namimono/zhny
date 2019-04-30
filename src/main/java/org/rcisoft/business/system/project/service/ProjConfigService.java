@@ -29,7 +29,7 @@ public interface ProjConfigService {
     /**
      * 修改项目配置信息
      */
-    int updateProjConfig(BusProject busProject);
+    int updateProjConfig(BusProject busProject,BusProjectSaving busProjectSaving);
 
     /**
      * 获取省份、城市及其code信息
@@ -110,16 +110,6 @@ public interface ProjConfigService {
      * 删除建筑分区(气候分区)
      */
     int deleteBuildZone(BusBuildingZone busBuildingZone);
-
-    /**
-     * 删除节能改造信息
-     */
-    int deleteProjectSaving(String savingId);
-
-    /**
-     * 修改节能改造信息
-     */
-    int updateProjectSaving(BusProjectSaving busProjectSaving);
 
     /**
      * 查询认定员信息

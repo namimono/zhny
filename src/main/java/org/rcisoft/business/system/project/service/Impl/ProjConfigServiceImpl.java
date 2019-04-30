@@ -89,30 +89,18 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     }
 
     /**
-     * 删除节能改造信息
-     */
-    @Override
-    public int deleteProjectSaving(String savingId){
-        return busProjectSavingDao.deleteByPrimaryKey(savingId);
-    }
-
-    /**
      * 修改项目配置信息
      */
     @Override
-    public int updateProjConfig(BusProject busProject){
+    public int updateProjConfig(BusProject busProject,BusProjectSaving busProjectSaving){
+        if (busProject.getSaveSign() == 0){
+            busProjectSavingDao.deleteByPrimaryKey(busProjectSaving.getId());
+        }else {
+            busProjectSavingDao.updateByPrimaryKeySelective(busProjectSaving);
+        }
         return busProjectDao.updateByPrimaryKeySelective(busProject);
     }
 
-
-    /**
-     * 修改节能改造信息
-     */
-    @Override
-    public int updateProjectSaving(BusProjectSaving busProjectSaving){
-        return busProjectSavingDao.updateByPrimaryKeySelective(busProjectSaving);
-    }
-    
     /**
      * 获取省份、城市及其code信息
      */

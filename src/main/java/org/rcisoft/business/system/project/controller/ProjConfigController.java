@@ -35,8 +35,8 @@ public class ProjConfigController {
 
     @ApiOperation(value="修改项目配置信息", notes="修改项目配置信息")
     @PostMapping("/updateProjConfig")
-    public Result updateProjConfig(@RequestBody BusProject busProject){
-        return Result.result(projConfigServiceImpl.updateProjConfig(busProject),"修改项目配置信息成功","修改项目配置信息失败");
+    public Result updateProjConfig(@RequestBody BusProject busProject,@RequestBody BusProjectSaving busProjectSaving){
+        return Result.result(projConfigServiceImpl.updateProjConfig(busProject,busProjectSaving),"修改项目配置信息成功","修改项目配置信息失败");
     }
 
     @ApiOperation(value="新增项目配置信息和节能改造信息", notes="新增项目配置信息和节能改造信息")
@@ -133,18 +133,6 @@ public class ProjConfigController {
     @DeleteMapping("/deleteBuildZone")
     public Result deleteBuildZone(@RequestBody BusBuildingZone busBuildingZone){
         return Result.result(projConfigServiceImpl.deleteBuildZone(busBuildingZone), "删除建筑分区(气候分区)成功", "删除建筑分区(气候分区)失败");
-    }
-
-    @ApiOperation(value="删除节能改造信息", notes="删除节能改造信息")
-    @DeleteMapping("/deleteProjectSaving/{savingId}")
-    public Result deleteProjectSaving(@PathVariable String savingId){
-        return Result.result(projConfigServiceImpl.deleteProjectSaving(savingId), "删除节能改造信息成功", "删除节能改造信息失败");
-    }
-
-    @ApiOperation(value="修改节能改造信息", notes="修改节能改造信息")
-    @PutMapping("/updateProjectSaving")
-    public Result updateProjectSaving(@RequestBody BusProjectSaving busProjectSaving){
-        return Result.result(projConfigServiceImpl.updateProjectSaving(busProjectSaving), "修改节能改造信息成功", "修改节能改造信息失败");
     }
 
     @ApiOperation(value="查询认定员信息", notes="查询认定员信息")
