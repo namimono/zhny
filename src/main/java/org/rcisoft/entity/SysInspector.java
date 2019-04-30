@@ -1,13 +1,14 @@
 package org.rcisoft.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -47,5 +48,11 @@ public class SysInspector {
 	 */
    	@Column(name = "open_id" )
 	private String openId;
+
+	/**
+	 * 创建时间
+	 */
+	@Column(name = "create_time" )
+   	private Date createTime;
 
 }

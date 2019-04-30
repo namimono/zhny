@@ -15,7 +15,14 @@ public interface BusProjectService {
     List<Map<String, Object>> queryParam(String id);
     List<DeviceParam> queryDeviceParam(String deviceId);
     List<String> queryDeviceTitle();
-    List<DeviceInfo> queryDeviceInfo(String typeFirstId);
+
+    /**
+     * 查出某个项目下某个设备类型的设备信息
+     * @param typeFirstId
+     * @param projectId
+     * @return List<DeviceInfo>
+     */
+    List<DeviceInfo> queryDeviceInfo(String typeFirstId,String projectId,String systemId);
     List<String> queryModelName();
     Map<String,Object> EnergyEchart(String titleId);
     List<EnergyParam> queryEnergyParam(String deviceId);

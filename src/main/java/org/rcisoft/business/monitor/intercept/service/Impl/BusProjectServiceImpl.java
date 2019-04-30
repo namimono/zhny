@@ -94,11 +94,11 @@ public class BusProjectServiceImpl implements BusProjectService {
     }
 
     @Override
-    public List<DeviceInfo> queryDeviceInfo(String typeFirstId) {
-        //查出当天有哪些设备有故障
-        List<String> list_mal = deviceParamDao.queryMalfunction();
-        //查出当前类型的设备信息
-        List<DeviceInfo> list = deviceParamDao.queryDeviceInfo(typeFirstId);
+    public List<DeviceInfo> queryDeviceInfo(String typeFirstId, String projectId, String systemId) {
+        //查出当天该项目有哪些设备有故障
+        List<String> list_mal = deviceParamDao.queryMalfunction(projectId,systemId);
+        //查出当前项目当前类型的设备信息
+        List<DeviceInfo> list = deviceParamDao.queryDeviceInfo(typeFirstId,projectId,systemId);
         for (DeviceInfo li : list){
             for(String str : list_mal){
                 //如果当前设备有故障，则设置状态位
@@ -107,12 +107,9 @@ public class BusProjectServiceImpl implements BusProjectService {
                 }
             }
             long time = li.getRuntime();
-            long second = time / 1000;
-            long minute = second / 60;
-            second = second % 1000;
-            long hour = minute / 60;
-            minute = minute % 60;
-            String runtime = hour + ":" + minute + ":" + second;
+            long hour = time / 60;
+            long minute = time % 60;
+            String runtime = hour + ":" + minute ;
             li.setTime(runtime);
         }
         return list;

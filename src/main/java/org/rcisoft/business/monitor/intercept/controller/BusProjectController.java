@@ -3,7 +3,6 @@ package org.rcisoft.business.monitor.intercept.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
-import org.rcisoft.business.monitor.intercept.dao.DeviceParamDao;
 import org.rcisoft.business.monitor.intercept.service.BusProjectService;
 import org.rcisoft.business.monitor.intercept.service.SysDetectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +37,9 @@ public class BusProjectController {
     }
 
     @ApiOperation(value = "获取标签",notes = "获取标签")
-    @RequestMapping(value = "busTitle",method = RequestMethod.GET)
-    public Result queryBusTitle(){
-        return Result.result(1,sysDetectionService.queryBusTitle());
+    @GetMapping(value = "busTitle/{projectId}/{systemId}")
+    public Result queryBusTitle(@PathVariable("projectId") String projectId, @PathVariable("systemId") String systemId){
+        return Result.result(1,sysDetectionService.queryBusTitle(projectId,systemId));
     }
 
     @ApiOperation(value = "获取项目参数",notes = "获取项目参数")
@@ -62,9 +61,9 @@ public class BusProjectController {
     }
 
     @ApiOperation(value = "获取设备具体信息",notes = "获取设备具体信息")
-    @GetMapping(value = "queryDeviceInfo/{typeFirstId}")
-    public Result queryDeviceInfo(@PathVariable String typeFirstId){
-        return Result.result(1,busProjectService.queryDeviceInfo(typeFirstId));
+    @GetMapping(value = "queryDeviceInfo/{typeFirstId}/{projectId}/{systemId}")
+    public Result queryDeviceInfo(@PathVariable("typeFirstId") String typeFirstId, @PathVariable("projectId") String projectId, @PathVariable("systemId") String systemId){
+        return Result.result(1,busProjectService.queryDeviceInfo(typeFirstId,projectId,systemId));
     }
 
     @ApiOperation(value = "左侧边栏模块名称",notes = "左侧边栏模块名称")

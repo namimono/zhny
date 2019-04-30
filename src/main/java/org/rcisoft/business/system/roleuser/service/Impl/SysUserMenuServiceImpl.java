@@ -4,6 +4,7 @@ import org.rcisoft.base.jwt.JwtTokenUtil;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.base.util.ZhnyUtils;
 import org.rcisoft.business.system.roleuser.dao.SysUserMenuDao;
+import org.rcisoft.business.system.roleuser.entity.IdAndPassword;
 import org.rcisoft.business.system.roleuser.entity.ProjectName;
 import org.rcisoft.business.system.roleuser.entity.RolePermissionFirst;
 import org.rcisoft.business.system.roleuser.entity.RolePermissionSecond;
@@ -175,7 +176,7 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
             sysUser.setType(Integer.parseInt(flag));
             //将密码设置为空
             List<SysUser> sysUsers = sysUserDao.select(sysUser);
-            for (SysUser user : sysUsers){
+            for (SysUser user : sysUsers) {
                 user.setPassword(null);
             }
             return sysUsers;
@@ -191,7 +192,7 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
         String inspectorFlag = "5";
         if (inspectorFlag.equals(flag)) {
             List<SysInspector> sysInspectors = sysInspectorDao.selectAll();
-            for (SysInspector sysInspector : sysInspectors){
+            for (SysInspector sysInspector : sysInspectors) {
                 sysInspector.setPassword(null);
             }
             return sysInspectors;
@@ -207,7 +208,7 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
     }
 
     @Override
-    public Integer deleteRoleUser(String flag,String id) {
+    public Integer deleteRoleUser(String flag, String id) {
         //如果flag是1，2，3中的一种，则信息在用户表查询
         if (ifInUser(flag)) {
             return sysUserDao.deleteByPrimaryKey(id);
@@ -267,6 +268,7 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         sysInspector.setId(UuidUtil.create32());
         sysInspector.setPassword(encoder.encode(sysInspector.getPassword()));
+        sysInspector.setCreateTime(new Date());
         return sysInspectorDao.insertSelective(sysInspector);
     }
 
@@ -295,6 +297,7 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
             SysUser sysUser = new SysUser();
             sysUser.setId(id);
             sysUser.setPassword(encoder.encode(password));
+            sysUser.setUpdateTime(new Date());
             return sysUserDao.updateByPrimaryKeySelective(sysUser);
         }
 
@@ -326,9 +329,9 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
             //设置标志位为0
             allProjectName.setFlag(0);
             //遍历用户拥有的项目，进行匹配
-            for (SysUserProjectMid userProjectMid : userProjectMidList){
+            for (SysUserProjectMid userProjectMid : userProjectMidList) {
                 //如果相等，则表示用户拥有这个项目
-                if (allProjectName.getProjectId().equals(userProjectMid.getProjectId())){
+                if (allProjectName.getProjectId().equals(userProjectMid.getProjectId())) {
                     //拥有这个项目，则设置标志位为1
                     allProjectName.setFlag(1);
                 }
@@ -347,7 +350,7 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
             sysUserProjectMidDao.delete(sysUserProjectMid);
 
             //设置Id
-            for (SysUserProjectMid sysUserProject : sysUserProjectMidList){
+            for (SysUserProjectMid sysUserProject : sysUserProjectMidList) {
                 sysUserProject.setId(UuidUtil.create32());
             }
 
@@ -385,6 +388,42 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
         String username = jwtTokenUtil.getUsernameFromToken(token);
         List<SysMenu> list = sysUserMenuDao.userMenu(username);
         return list;
+    }
+
+    @Override
+    public Integer updatePassword(IdAndPassword idAndPassword) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (ifInUser(idAndPassword.getFlag())) {
+            //获得用户信息
+            SysUser user = sysUserDao.selectByPrimaryKey(idAndPassword.getId());
+            //验证密码
+            if (encoder.matches(idAndPassword.getOldPassword(), user.getPassword())){
+                SysUser sysUser = new SysUser();
+                sysUser.setId(idAndPassword.getId());
+                sysUser.setPassword(encoder.encode(idAndPassword.getNewPassword()));
+                sysUser.setUpdateTime(new Date());
+                return sysUserDao.updateByPrimaryKeySelective(sysUser);
+            }
+
+        }
+
+        //巡检员标志
+        String inspectorFlag = "5";
+        if (inspectorFlag.equals(idAndPassword.getFlag())) {
+            //获得巡检员信息
+            SysInspector inspector = sysInspectorDao.selectByPrimaryKey(idAndPassword.getId());
+            //验证密码
+            if (encoder.matches(idAndPassword.getOldPassword(), inspector.getPassword())){
+                SysInspector sysInspector = new SysInspector();
+                sysInspector.setId(idAndPassword.getId());
+                sysInspector.setPassword(encoder.encode(idAndPassword.getNewPassword()));
+                return sysInspectorDao.updateByPrimaryKeySelective(sysInspector);
+            }
+
+        }
+
+
+        return 0;
     }
 
 

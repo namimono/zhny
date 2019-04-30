@@ -32,7 +32,10 @@ public class SysDetectionServiceImpl implements SysDetectionService {
     }
 
     @Override
-    public List<BusTitle> queryBusTitle() {
-        return busTitleDao.queryBusTitle();
+    public List<BusTitle> queryBusTitle(String projectId, String systemId) {
+        BusTitle busTitle = new BusTitle();
+        busTitle.setProjectId(projectId);
+        busTitle.setSystemId(systemId);
+        return busTitleDao.select(busTitle);
     }
 }

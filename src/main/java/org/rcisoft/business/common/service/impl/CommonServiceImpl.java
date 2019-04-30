@@ -27,8 +27,8 @@ public class CommonServiceImpl implements CommonService {
     SysSystemDao sysSystemDao;
 
     @Override
-    public List<BusDeviceType> queryDeviceType(String projectId) {
-        return commonDao.queryDeviceType(projectId);
+    public List<BusDeviceType> queryDeviceType(String projectId, String systemId) {
+        return commonDao.queryDeviceType(projectId,systemId);
     }
 
     @Override

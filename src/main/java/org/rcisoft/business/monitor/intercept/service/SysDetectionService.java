@@ -12,5 +12,12 @@ import java.util.List;
  */
 public interface SysDetectionService {
     BusTopology queryTopoJson();
-    List<BusTitle> queryBusTitle();
+
+    /**
+     * 根据系统类型查出当前项目下的标签
+     * @param systemId
+     * @param projectId
+     * @return List<BusTitle>
+     */
+    List<BusTitle> queryBusTitle(String projectId, String systemId);
 }

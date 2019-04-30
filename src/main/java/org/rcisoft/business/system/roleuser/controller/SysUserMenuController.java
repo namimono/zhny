@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.business.system.auth.service.Impl.AuthUserServiceImpl;
+import org.rcisoft.business.system.roleuser.entity.IdAndPassword;
 import org.rcisoft.business.system.roleuser.service.SysUserMenuService;
 import org.rcisoft.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,7 +125,11 @@ public class SysUserMenuController {
         return Result.result(sysUserMenuService.saveUserProject(sysUserProjectMidList),"分配项目成功","分配项目失败");
     }
 
-
+    @ApiOperation(value = "修改密码", notes = "参数：表ID，旧密码，新密码，角色标识")
+    @PostMapping(value = "/updatePasswrd")
+    public Result updatePassword(@RequestBody IdAndPassword idAndPassword) {
+        return Result.result(sysUserMenuService.updatePassword(idAndPassword),"修改密码成功","修改密码失败");
+    }
 
 
     @ApiOperation(value = "菜单查询", notes = "菜单查询")

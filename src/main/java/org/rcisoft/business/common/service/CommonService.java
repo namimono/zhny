@@ -16,7 +16,7 @@ public interface CommonService {
      * @param projectId
      * @return
      */
-    List<BusDeviceType> queryDeviceType(String projectId);
+    List<BusDeviceType> queryDeviceType(String projectId, String systemId);
 
     /**
      * 查询项目拥有的系统类型

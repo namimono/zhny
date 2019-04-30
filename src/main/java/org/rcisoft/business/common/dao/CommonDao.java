@@ -23,9 +23,11 @@ public interface CommonDao {
      * @param projectId
      * @return
      */
-    @Select("<script>select t.* from bus_device d, bus_device_type t where d.device_type_id = t.id and d.project_id = #{projectId} group by t.id</script>")
+    @Select("<script>select t.* from bus_device d, bus_device_type t where d.device_type_id = t.id and d.project_id = #{projectId}" +
+            "<if test = \"systemId != null\"> and d.system_id = #{systemId}</if>" +
+            " group by t.id</script>")
     @ResultType(BusDeviceType.class)
-    List<BusDeviceType> queryDeviceType(@Param("projectId") String projectId);
+    List<BusDeviceType> queryDeviceType(@Param("projectId") String projectId, @Param("systemId") String systemId);
 
     /**
      * 查询项目中的子系统字段

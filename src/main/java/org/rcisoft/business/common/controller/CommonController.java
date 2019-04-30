@@ -21,8 +21,8 @@ public class CommonController {
 
     @ApiOperation(value="查询设备类型", notes="查询本项目中所有存在的设备类型")
     @PostMapping("/queryDeviceType")
-    public Result queryDeviceType(@RequestParam String projectId) {
-        return Result.result(commonServiceImpl.queryDeviceType(projectId));
+    public Result queryDeviceType(@RequestParam String projectId, @RequestParam(required = false) String systemId) {
+        return Result.result(commonServiceImpl.queryDeviceType(projectId, systemId));
     }
 
     @ApiOperation(value="查询项目拥有的系统类型", notes="查询项目拥有的系统类型")

@@ -18,9 +18,7 @@ import java.util.List;
 @Repository
 public interface BusTitleDao extends Mapper<BusTitle> {
 
-    @Select("<script>select * from bus_title</script>")
-    @ResultType(BusTitle.class)
-    List<BusTitle> queryBusTitle();
+
 
     /**
      * 根据项目ID联表查询自定义标题信息

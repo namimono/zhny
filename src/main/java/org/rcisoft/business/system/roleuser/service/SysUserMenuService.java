@@ -1,5 +1,6 @@
 package org.rcisoft.business.system.roleuser.service;
 
+import org.rcisoft.business.system.roleuser.entity.IdAndPassword;
 import org.rcisoft.business.system.roleuser.entity.ProjectName;
 import org.rcisoft.business.system.roleuser.entity.RolePermissionFirst;
 import org.rcisoft.entity.*;
@@ -13,6 +14,11 @@ import java.util.List;
 public interface SysUserMenuService {
     List<SysMenu> userMenu(String oldtoken);
 
+    /**
+     * 修改密码
+     * @return  Integer
+     */
+    Integer updatePassword(IdAndPassword idAndPassword);
 
     /**
      * 根据角色标志位，查询这个角色对应的权限（显示的菜单）
