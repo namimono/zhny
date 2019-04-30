@@ -22,9 +22,9 @@ public interface ProjConfigService {
     List<ProjectAssessment> queryAllInfo();
 
     /**
-     * 新增项目配置信息
+     * 新增项目配置信息和节能改造信息
      */
-    ServiceResult addProjConfig(BusProject busProject);
+    ServiceResult addProjConfig(BusProject busProject,BusProjectSaving busProjectSaving);
 
     /**
      * 修改项目配置信息
@@ -110,11 +110,6 @@ public interface ProjConfigService {
      * 删除建筑分区(气候分区)
      */
     int deleteBuildZone(BusBuildingZone busBuildingZone);
-
-    /**
-     *新增节能改造信息
-     */
-    ServiceResult addProjectSaving(BusProjectSaving busProjectSaving);
 
     /**
      * 删除节能改造信息

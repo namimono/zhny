@@ -39,10 +39,10 @@ public class ProjConfigController {
         return Result.result(projConfigServiceImpl.updateProjConfig(busProject),"修改项目配置信息成功","修改项目配置信息失败");
     }
 
-    @ApiOperation(value="新增项目配置信息", notes="新增项目配置信息")
+    @ApiOperation(value="新增项目配置信息和节能改造信息", notes="新增项目配置信息和节能改造信息")
     @PostMapping("/addProjConfig")
-    public Result addProjConfig(@RequestBody BusProject busProject){
-        return Result.serviceResult(projConfigServiceImpl.addProjConfig(busProject), "新增项目配置信息成功", "新增项目配置信息失败");
+    public Result addProjConfig(@RequestBody BusProject busProject,@RequestBody BusProjectSaving busProjectSaving){
+        return Result.serviceResult(projConfigServiceImpl.addProjConfig(busProject,busProjectSaving), "新增项目配置信息成功", "新增项目配置信息失败");
     }
 
     @ApiOperation(value="获取省份信息及其ID", notes="获取省份信息及其ID")
@@ -133,12 +133,6 @@ public class ProjConfigController {
     @DeleteMapping("/deleteBuildZone")
     public Result deleteBuildZone(@RequestBody BusBuildingZone busBuildingZone){
         return Result.result(projConfigServiceImpl.deleteBuildZone(busBuildingZone), "删除建筑分区(气候分区)成功", "删除建筑分区(气候分区)失败");
-    }
-
-    @ApiOperation(value="新增节能改造信息", notes="新增节能改造信息")
-    @PostMapping("/addProjectSaving")
-    public Result addProjectSaving(@RequestBody BusProjectSaving busProjectSaving){
-        return Result.serviceResult(projConfigServiceImpl.addProjectSaving(busProjectSaving), "新增节能改造信息成功", "新增节能改造信息失败");
     }
 
     @ApiOperation(value="删除节能改造信息", notes="删除节能改造信息")

@@ -71,25 +71,20 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     }
 
     /**
-     * 新增项目配置信息
+     * 新增项目配置信息和节能改造信息
      */
     @Override
-    public ServiceResult addProjConfig(BusProject busProject){
+    public ServiceResult addProjConfig(BusProject busProject,BusProjectSaving busProjectSaving){
         String id = UuidUtil.create32();
         busProject.setId(id);
         busProject.setCreateTime(this.getNowTime());
         int i = busProjectDao.insertSelective(busProject);
-        return new ServiceResult(i, id);
-    }
 
-    /**
-     *新增节能改造信息
-     */
-    @Override
-    public ServiceResult addProjectSaving(BusProjectSaving busProjectSaving){
-        String id = UuidUtil.create32();
-        busProjectSaving.setId(id);
-        int i = busProjectSavingDao.insertSelective(busProjectSaving);
+        if(busProjectSaving != null){
+            busProjectSaving.setId(UuidUtil.create32());
+            busProjectSaving.setProjectId(id);
+            busProjectSavingDao.insertSelective(busProjectSaving);
+        }
         return new ServiceResult(i, id);
     }
 
@@ -109,6 +104,15 @@ public class ProjConfigServiceImpl implements ProjConfigService {
         return busProjectDao.updateByPrimaryKeySelective(busProject);
     }
 
+
+    /**
+     * 修改节能改造信息
+     */
+    @Override
+    public int updateProjectSaving(BusProjectSaving busProjectSaving){
+        return busProjectSavingDao.updateByPrimaryKeySelective(busProjectSaving);
+    }
+    
     /**
      * 获取省份、城市及其code信息
      */
@@ -270,14 +274,6 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     @Override
     public int deleteBuildZone(BusBuildingZone busBuildingZone){
         return busBuildingZoneDao.deleteByPrimaryKey(busBuildingZone);
-    }
-
-    /**
-     * 修改节能改造信息
-     */
-    @Override
-    public int updateProjectSaving(BusProjectSaving busProjectSaving){
-        return busProjectSavingDao.updateByPrimaryKeySelective(busProjectSaving);
     }
 
     /**
