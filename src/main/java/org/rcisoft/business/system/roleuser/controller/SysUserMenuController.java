@@ -126,7 +126,7 @@ public class SysUserMenuController {
     }
 
     @ApiOperation(value = "修改密码", notes = "参数：表ID，旧密码，新密码，角色标识")
-    @PostMapping(value = "/updatePasswrd")
+    @PostMapping(value = "/updatePassword")
     public Result updatePassword(@RequestBody IdAndPassword idAndPassword) {
         return Result.result(sysUserMenuService.updatePassword(idAndPassword),"修改密码成功","修改密码失败");
     }
