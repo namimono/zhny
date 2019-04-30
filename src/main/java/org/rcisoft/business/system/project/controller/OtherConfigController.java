@@ -3,9 +3,9 @@ package org.rcisoft.business.system.project.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
-import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.rcisoft.business.system.project.service.OtherConfigService;
-import org.rcisoft.entity.*;
+import org.rcisoft.entity.BusTitle;
+import org.rcisoft.entity.BusTitleParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,7 +64,7 @@ public class OtherConfigController {
     @ApiOperation(value="增加自定义参数信息", notes="增加自定义参数信息")
     @PostMapping("/addTitleParamInfo/{titleId}")
     public Result addTitleParamInfo(@RequestBody List<BusTitleParam> titleParamList,@PathVariable String titleId){
-        return Result.result(otherConfigServiceImpl.addTitleParamInfo(titleParamList,titleId),"增加自定义参数信息成功","增加自定义参数信息失败");
+        return Result.result(otherConfigServiceImpl.addTitleParamInfo(titleParamList,titleId),"保存自定义参数信息成功","保存自定义参数信息失败");
     }
 
     @ApiOperation(value="根据自定义标题ID查询自定义参数信息", notes="根据自定义标题ID查询自定义参数信息")

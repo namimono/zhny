@@ -120,13 +120,13 @@ public class ProjConfigController {
     @ApiOperation(value="新增建筑分区(气候分区)", notes="新增建筑分区(气候分区)")
     @PostMapping("/insertBuildZone")
     public Result insertBuildZone(@RequestBody BusBuildingZone busBuildingZone){
-        return Result.result(projConfigServiceImpl.insertBuildZone(busBuildingZone), "新增建筑分区(气候分区)成功", "新增建筑分区(气候分区)失败");
+        return Result.result(projConfigServiceImpl.insertBuildZone(busBuildingZone), "新增气候分区成功", "新增气候分区失败");
     }
 
     @ApiOperation(value="修改建筑分区(气候分区)", notes="修改建筑分区(气候分区)")
     @PutMapping("/updateBuildZone")
     public Result updateBuildZone(@RequestBody BusBuildingZone busBuildingZone){
-        return Result.result(projConfigServiceImpl.updateBuildZone(busBuildingZone), "修改建筑分区(气候分区)成功", "修改建筑分区(气候分区)失败");
+        return Result.result(projConfigServiceImpl.updateBuildZone(busBuildingZone), "修改气候分区成功", "修改气候分区失败");
     }
 
     @ApiOperation(value="删除建筑分区(气候分区)", notes="删除建筑分区(气候分区)")

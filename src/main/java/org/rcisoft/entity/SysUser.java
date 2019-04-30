@@ -70,7 +70,7 @@ public class SysUser implements UserDetails {
 	 * 手机号
 	 */
 	@Column(name = "mobile" )
-	private Integer mobile;
+	private Long mobile;
 
 	/**
 	 * 邮箱
