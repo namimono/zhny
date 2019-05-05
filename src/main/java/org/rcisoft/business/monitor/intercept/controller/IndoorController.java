@@ -24,15 +24,15 @@ public class IndoorController {
     private IndoorService indoorService;
 
     @ApiOperation(value = "查询所有楼层",notes = "查询所有楼层")
-    @GetMapping(value = "queryFloor")
-    public Result queryFloor(){
-        return Result.result(1,indoorService.queryFloor());
+    @GetMapping(value = "queryFloor/{projectId}")
+    public Result queryFloor(@PathVariable("projectId") String projectId){
+        return Result.result(1,indoorService.queryFloor(projectId));
     }
 
     @ApiOperation(value = "根据楼层查询房间",notes = "根据楼层查询房间")
-    @GetMapping(value = "queryDoor/{floor}")
-    public Result queryDoor(@PathVariable int floor){
-        return Result.result(1,indoorService.queryDoor(floor));
+    @GetMapping(value = "queryDoor/{projectId}/{floor}")
+    public Result queryDoor(@PathVariable("projectId") String projectId, @PathVariable("floor") int floor){
+        return Result.result(1,indoorService.queryDoor(projectId,floor));
     }
 
     @ApiOperation(value = "查询室内环境参数",notes = "查询室内环境参数")
@@ -48,8 +48,8 @@ public class IndoorController {
     }
 
     @ApiOperation(value = "月度环境参数对比",notes = "月度环境参数对比")
-    @GetMapping(value = "monthParamContrast/{proId}/{type}/{coding}/{year}/{month}/{indoor}")
-    public Result monthParamContrast(@PathVariable String proId,@PathVariable int type,@PathVariable String coding,@PathVariable int year,@PathVariable int month,@PathVariable String indoor){
-        return Result.result(1,indoorService.MonthParamContrast(proId,type,coding,year,month,indoor));
+    @GetMapping(value = "monthParamContrast/{proId}/{type}/{coding}/{year}/{month}")
+    public Result monthParamContrast(@PathVariable String proId,@PathVariable int type,@PathVariable String coding,@PathVariable int year,@PathVariable int month){
+        return Result.result(1,indoorService.MonthParamContrast(proId,type,coding,year,month));
     }
 }

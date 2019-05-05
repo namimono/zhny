@@ -7,15 +7,18 @@ import org.rcisoft.business.monitor.intercept.entity.BusParamType;
 import org.rcisoft.business.monitor.intercept.entity.OutsideAndInsideTemp;
 import org.rcisoft.business.monitor.intercept.service.IndoorService;
 import org.rcisoft.business.whole.head.service.SysCityService;
-import org.rcisoft.entity.*;
+import org.rcisoft.entity.BusIndoor;
+import org.rcisoft.entity.BusTemperature;
+import org.rcisoft.entity.SysData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import springfox.documentation.spring.web.json.Json;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.logging.SimpleFormatter;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Minghui Xu
@@ -30,19 +33,20 @@ public class IndoorServiceImpl implements IndoorService {
     SysCityService sysCityService;
 
     @Override
-    public List<String> queryFloor() {
-        return indoorDao.queryFloor();
+    public List<BusIndoor> queryFloor(String projectId) {
+        return indoorDao.queryFloor(projectId);
     }
 
     @Override
-    public List<BusIndoor> queryDoor(int floor) {
-        return indoorDao.queryDoor(floor);
+    public List<BusIndoor> queryDoor(String projectId, int floor) {
+        return indoorDao.queryDoor(projectId,floor);
     }
 
     @Override
     public OutsideAndInsideTemp queryIndoorParam(String indoorId,String proId,String coding) {
         BigDecimal sum,sumNum;
         OutsideAndInsideTemp outsideAndInsideTemp = new OutsideAndInsideTemp();
+        //查出最近的项目网关数据
         JSONObject jsonObject = JSONObject.parseObject(indoorDao.queryJson(proId));
         List<BusParamType> busIndoorParam = indoorDao.queryBusIndoorParamInside(indoorId,proId);
         List<BusParamType> busOutdoor = indoorDao.queryBusIndoorParamOutside(proId);
@@ -61,6 +65,8 @@ public class IndoorServiceImpl implements IndoorService {
                     outsideAndInsideTemp.setInsidePm(sum);break;
                 case 4 :
                     outsideAndInsideTemp.setInsideCo2(sum);break;
+                default:
+                    break;
             }
         }
         for (BusParamType bo:busOutdoor){
@@ -70,18 +76,18 @@ public class IndoorServiceImpl implements IndoorService {
             JSONObject jsonSecond = (JSONObject)json.get("REG_VAL");
             sum = new BigDecimal(jsonSecond.get(codingSecond).toString());
             switch (bo.getType()){
-                case 1 :
-                    sumNum = indoorDao.queryTemperature(coding);
-                    outsideAndInsideTemp.setOutsideTemp(sumNum);break;
-                case 2 :
-                    sumNum = indoorDao.queryHumidity(coding);
-                    outsideAndInsideTemp.setOutsideHumidity(sumNum);break;
                 case 3 :
                     outsideAndInsideTemp.setOutsidePm(sum);break;
                 case 4 :
                     outsideAndInsideTemp.setOutsideCo2(sum);break;
+                default:
+                    break;
             }
         }
+        sumNum = indoorDao.queryTemperature(coding);
+        outsideAndInsideTemp.setOutsideTemp(sumNum);
+        sumNum = indoorDao.queryHumidity(coding);
+        outsideAndInsideTemp.setOutsideHumidity(sumNum);
 
         return outsideAndInsideTemp;
     }
@@ -170,7 +176,7 @@ public class IndoorServiceImpl implements IndoorService {
 
 
     @Override
-    public Map<String, Object> MonthParamContrast(String proId, int type, String coding, int year, int month,String indoor) {
+    public Map<String, Object> MonthParamContrast(String proId, int type, String coding, int year, int month) {
         Map<String,Object> map = new HashMap<>();
         SimpleDateFormat f = new SimpleDateFormat("dd");
         BigDecimal inside[] = new BigDecimal[31];

@@ -1,5 +1,6 @@
 package org.rcisoft.business.monitor.intercept.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.monitor.intercept.entity.BusParamOutsideAndInside;
 import org.rcisoft.business.monitor.intercept.entity.BusParamType;
@@ -17,27 +18,28 @@ import java.util.List;
 @Repository
 public interface IndoorDao{
     /**
-     * 查询所有楼层
-     * @return
+     * 查询该项目下的所有楼层
+     * @return List<BusIndoor>
      */
-    @Select("<script>select floor from bus_indoor GROUP BY floor</script>")
-    List<String> queryFloor();
+    @Select("<script>select * from bus_indoor WHERE project_id = #{projectId} GROUP BY floor</script>")
+    List<BusIndoor> queryFloor(@Param("projectId") String projectId);
 
     /**
-     * 查看该楼层所有房间
+     * 查看该项目该楼层所有房间
      * @param floor
      * @return
      */
-    @Select("<script>select id,door FROM bus_indoor where floor = #{floor}</script>")
-    List<BusIndoor> queryDoor(int floor);
+    @Select("<script>select * FROM bus_indoor where floor = #{floor} AND project_id = #{projectId}</script>")
+    List<BusIndoor> queryDoor(@Param("projectId") String projectId, @Param("floor") int floor);
 
     /**
      * 根据门牌号查询室内参数
      * @param indoorId
      * @return
      */
-    @Select("<script>select bpf.coding as codingFirst,bps.coding as codingSecond,bip.type   from bus_indoor_param bip,bus_param_first bpf,bus_param_second bps \n" +
-            "                        where  bip.indoor_id = #{indoorId} and bip.param_first_id = bpf.id and bip.param_second_id = bps.id and bip.project_id = #{proId}</script>")
+    @Select("<script>select bpf.coding as codingFirst,bps.coding as codingSecond,bip.type " +
+            "  from bus_indoor_param bip,bus_param_first bpf,bus_param_second bps \n" +
+            " where  bip.indoor_id = #{indoorId} and bip.param_first_id = bpf.id and bip.param_second_id = bps.id and bip.project_id = #{proId}</script>")
     List<BusParamType> queryBusIndoorParamInside(String indoorId, String proId);
 
     /**

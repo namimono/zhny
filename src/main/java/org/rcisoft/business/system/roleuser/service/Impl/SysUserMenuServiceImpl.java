@@ -310,7 +310,6 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
             return sysInspectorDao.updateByPrimaryKeySelective(sysInspector);
         }
 
-
         return 0;
     }
 
