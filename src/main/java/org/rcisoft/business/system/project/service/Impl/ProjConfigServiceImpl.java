@@ -71,41 +71,33 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     }
 
     /**
-     * 新增项目配置信息
+     * 新增项目配置信息和节能改造信息
      */
     @Override
-    public ServiceResult addProjConfig(BusProject busProject){
+    public ServiceResult addProjConfig(BusProject busProject,BusProjectSaving busProjectSaving){
         String id = UuidUtil.create32();
         busProject.setId(id);
         busProject.setCreateTime(this.getNowTime());
         int i = busProjectDao.insertSelective(busProject);
-        return new ServiceResult(i, id);
-    }
 
-    /**
-     *新增节能改造信息
-     */
-    @Override
-    public ServiceResult addProjectSaving(BusProjectSaving busProjectSaving){
-        String id = UuidUtil.create32();
-        busProjectSaving.setId(id);
-        int i = busProjectSavingDao.insertSelective(busProjectSaving);
+        if(busProjectSaving != null){
+            busProjectSaving.setId(UuidUtil.create32());
+            busProjectSaving.setProjectId(id);
+            busProjectSavingDao.insertSelective(busProjectSaving);
+        }
         return new ServiceResult(i, id);
-    }
-
-    /**
-     * 删除节能改造信息
-     */
-    @Override
-    public int deleteProjectSaving(String savingId){
-        return busProjectSavingDao.deleteByPrimaryKey(savingId);
     }
 
     /**
      * 修改项目配置信息
      */
     @Override
-    public int updateProjConfig(BusProject busProject){
+    public int updateProjConfig(BusProject busProject,BusProjectSaving busProjectSaving){
+        if (busProject.getSaveSign() == 0){
+            busProjectSavingDao.deleteByPrimaryKey(busProjectSaving.getId());
+        }else {
+            busProjectSavingDao.updateByPrimaryKeySelective(busProjectSaving);
+        }
         return busProjectDao.updateByPrimaryKeySelective(busProject);
     }
 
@@ -270,14 +262,6 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     @Override
     public int deleteBuildZone(BusBuildingZone busBuildingZone){
         return busBuildingZoneDao.deleteByPrimaryKey(busBuildingZone);
-    }
-
-    /**
-     * 修改节能改造信息
-     */
-    @Override
-    public int updateProjectSaving(BusProjectSaving busProjectSaving){
-        return busProjectSavingDao.updateByPrimaryKeySelective(busProjectSaving);
     }
 
     /**
