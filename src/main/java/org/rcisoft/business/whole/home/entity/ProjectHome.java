@@ -17,6 +17,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectHome {
+
+    /**
+     * 城市code
+     */
+    private String code;
     /**
      * 项目主键
      */
