@@ -67,17 +67,21 @@ public class CommonServiceImpl implements CommonService {
         List<DeviceParam> deviceList = commonDao.queryDeviceParam(projectId, systemId);
         List<FirstParam> firstList = commonDao.queryFirstParam(projectId, systemId);
         List<SecondParam> secondList = commonDao.querySecondParam(projectId, systemId);
+        // 循环一级参数，将二级参数放入
+        firstList.forEach(firstParam -> {
+            String paramFirstId = firstParam.getParamFirstId();
+            List<SecondParam> secondList1 = firstParam.getSecondList();
+            secondList.forEach(secondParam -> {
+                if (StringUtils.equals(secondParam.getParamFirstId(), paramFirstId)) {
+                    secondList1.add(secondParam);
+                }
+            });
+        });
+        // 循环设备，将一级参数放入
         deviceList.forEach(deviceParam -> {
             String deviceId = deviceParam.getDeviceId();
             List<FirstParam> firstList1 = deviceParam.getFirstList();
             firstList.forEach(firstParam -> {
-                String paramFirstId = firstParam.getParamFirstId();
-                List<SecondParam> secondList1 = firstParam.getSecondList();
-                secondList.forEach(secondParam -> {
-                    if (StringUtils.equals(secondParam.getParamFirstId(), paramFirstId)) {
-                        secondList1.add(secondParam);
-                    }
-                });
                 if (StringUtils.equals(firstParam.getDeviceId(), deviceId)) {
                     firstList1.add(firstParam);
                 }
