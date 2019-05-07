@@ -50,11 +50,13 @@ public class InOutdoorConfigServiceImpl implements InOutdoorConfigService {
         List<BusIndoorParam> addIndoorParamList = new ArrayList<>();
         String id = UuidUtil.create32();
         indoorContainParam.getBusIndoor().setId(id);
-        indoorContainParam.getIndoorParams().forEach(busIndoorParam -> {
-            busIndoorParam.setId(UuidUtil.create32());
-            busIndoorParam.setIndoorId(id);
-            addIndoorParamList.add(busIndoorParam);
-        });
+        if (indoorContainParam.getIndoorParams().size() > 0) {
+            indoorContainParam.getIndoorParams().forEach(busIndoorParam -> {
+                busIndoorParam.setId(UuidUtil.create32());
+                busIndoorParam.setIndoorId(id);
+                addIndoorParamList.add(busIndoorParam);
+            });
+        }
         if (addIndoorParamList.size() > 0){
             busIndoorParamDao.insertListUseAllCols(addIndoorParamList);
         }
@@ -78,11 +80,22 @@ public class InOutdoorConfigServiceImpl implements InOutdoorConfigService {
      */
     @Override
     public int updateIndoorInfo(IndoorContainParam indoorContainParam){
-        //批新增室内环境信息和室内环境参数
-        List<BusIndoorParam> updateIndoorParamList = new ArrayList<>();
-        updateIndoorParamList.addAll(indoorContainParam.getIndoorParams());
-        if (updateIndoorParamList.size() > 0){
-            inOutDoorConfigDao.updateAllIndoorParam(updateIndoorParamList);
+        String indoorId = indoorContainParam.getBusIndoor().getId();
+        Example example = new Example(BusIndoorParam.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("indoorId",indoorId);
+        busIndoorParamDao.deleteByExample(example);
+        //批量修改室内环境信息和室内环境参数
+        List<BusIndoorParam> addIndoorParamList = new ArrayList<>();
+        if (indoorContainParam.getIndoorParams().size() > 0) {
+            indoorContainParam.getIndoorParams().forEach(busIndoorParam -> {
+                busIndoorParam.setId(UuidUtil.create32());
+                busIndoorParam.setIndoorId(indoorId);
+                addIndoorParamList.add(busIndoorParam);
+            });
+            if (addIndoorParamList.size() > 0){
+                busIndoorParamDao.insertListUseAllCols(addIndoorParamList);
+            }
         }
         return busIndoorDao.updateByPrimaryKey(indoorContainParam.getBusIndoor());
     }
