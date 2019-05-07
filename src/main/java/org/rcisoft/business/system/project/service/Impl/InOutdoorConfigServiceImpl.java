@@ -84,7 +84,7 @@ public class InOutdoorConfigServiceImpl implements InOutdoorConfigService {
         if (updateIndoorParamList.size() > 0){
             inOutDoorConfigDao.updateAllIndoorParam(updateIndoorParamList);
         }
-        return busIndoorDao.updateByPrimaryKeySelective(indoorContainParam.getBusIndoor());
+        return busIndoorDao.updateByPrimaryKey(indoorContainParam.getBusIndoor());
     }
 
     /**
