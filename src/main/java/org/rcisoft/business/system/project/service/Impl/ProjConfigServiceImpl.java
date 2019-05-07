@@ -167,18 +167,32 @@ public class ProjConfigServiceImpl implements ProjConfigService {
         }else {
             BusProjectSaving busProjectSaving = new BusProjectSaving();
 
-            busProjectSaving.setId(projectConfigInfo.getSavingId());
-            busProjectSaving.setProjectId(projectConfigInfo.getProjectId());
-            busProjectSaving.setSaveContent(projectConfigInfo.getSaveContent());
-            busProjectSaving.setSaveCost(projectConfigInfo.getSaveCost());
-            busProjectSaving.setSaveShare(projectConfigInfo.getSaveShare());
+            if (projectConfigInfo.getSavingId() == null) {
+                busProjectSaving.setId(UuidUtil.create32());
+                busProjectSaving.setProjectId(projectConfigInfo.getProjectId());
+                busProjectSaving.setSaveContent(projectConfigInfo.getSaveContent());
+                busProjectSaving.setSaveCost(projectConfigInfo.getSaveCost());
+                busProjectSaving.setSaveShare(projectConfigInfo.getSaveShare());
 
-            busProjectSaving.setSaveMethod(projectConfigInfo.getSaveMethod());
-            busProjectSaving.setSaveEstimate(projectConfigInfo.getSaveEstimate());
-            busProjectSaving.setSaveCostId(projectConfigInfo.getSaveCostId());
-            busProjectSaving.setSaveEnergyId(projectConfigInfo.getSaveEnergyId());
+                busProjectSaving.setSaveMethod(projectConfigInfo.getSaveMethod());
+                busProjectSaving.setSaveEstimate(projectConfigInfo.getSaveEstimate());
+                busProjectSaving.setSaveCostId(projectConfigInfo.getSaveCostId());
+                busProjectSaving.setSaveEnergyId(projectConfigInfo.getSaveEnergyId());
 
-            busProjectSavingDao.updateByPrimaryKeySelective(busProjectSaving);
+                busProjectSavingDao.insertSelective(busProjectSaving);
+            }else {
+                busProjectSaving.setId(projectConfigInfo.getSavingId());
+                busProjectSaving.setProjectId(projectConfigInfo.getProjectId());
+                busProjectSaving.setSaveContent(projectConfigInfo.getSaveContent());
+                busProjectSaving.setSaveCost(projectConfigInfo.getSaveCost());
+                busProjectSaving.setSaveShare(projectConfigInfo.getSaveShare());
+
+                busProjectSaving.setSaveMethod(projectConfigInfo.getSaveMethod());
+                busProjectSaving.setSaveEstimate(projectConfigInfo.getSaveEstimate());
+                busProjectSaving.setSaveCostId(projectConfigInfo.getSaveCostId());
+                busProjectSaving.setSaveEnergyId(projectConfigInfo.getSaveEnergyId());
+                busProjectSavingDao.updateByPrimaryKeySelective(busProjectSaving);
+            }
         }
         return busProjectDao.updateByPrimaryKeySelective(busProject);
     }
