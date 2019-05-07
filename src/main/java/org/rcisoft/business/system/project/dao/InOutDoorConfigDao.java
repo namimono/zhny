@@ -28,7 +28,7 @@ public interface InOutDoorConfigDao {
     @Update("<script><foreach collection=\"list\" item=\"list\" index=\"index\" open=\"\" close=\"\" separator=\";\">\n" +
             "UPDATE bus_indoor_param SET project_id = #{list.projectId},\n" +
             "indoor_id = #{list.indoorId},param_first_id = #{list.paramFirstId},param_second_id = #{list.paramSecondId},\n" +
-            "type = #{list.type} WHERE id = #{list.id}</foreach></script>\n")
+            "type = #{list.type},device_id = #{list.deviceId} WHERE id = #{list.id}</foreach></script>\n")
     int updateAllIndoorParam(List<BusIndoorParam> list);
 
     /**
@@ -37,6 +37,6 @@ public interface InOutDoorConfigDao {
     @Update("<script><foreach collection=\"list\" item=\"list\" index=\"index\" open=\"\" close=\"\" separator=\";\">\n" +
             "UPDATE bus_outdoor SET project_id = #{list.projectId},\n" +
             "param_first_id = #{list.paramFirstId},param_second_id = #{list.paramSecondId},\n" +
-            "type = #{list.type} WHERE id = #{list.id}</foreach></script>\n")
+            "type = #{list.type},device_id = #{list.deviceId} WHERE id = #{list.id}</foreach></script>\n")
     int updateAllOutdoorInfo(List<BusOutdoor> list);
 }

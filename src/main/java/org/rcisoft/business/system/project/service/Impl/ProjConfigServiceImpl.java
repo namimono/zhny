@@ -74,15 +74,54 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      * 新增项目配置信息和节能改造信息
      */
     @Override
-    public ServiceResult addProjConfig(BusProject busProject,BusProjectSaving busProjectSaving){
+    public ServiceResult addProjConfig(ProjectConfigInfo projectConfigInfo){
         String id = UuidUtil.create32();
+        BusProject busProject = new BusProject();
+
         busProject.setId(id);
+        busProject.setName(projectConfigInfo.getProjectName());
+        busProject.setPhones(projectConfigInfo.getPhones());
+        busProject.setBuildingId(projectConfigInfo.getBuildingId());
+        busProject.setBuildingName(projectConfigInfo.getBuildingName());
+        busProject.setBuildingArea(projectConfigInfo.getBuildingArea());
+        busProject.setBuildingLocal(projectConfigInfo.getBuildingLocal());
+        busProject.setBuildingCoordinate(projectConfigInfo.getBuildingCoordinate());
+        busProject.setBuildingAge(projectConfigInfo.getBuildingAge());
+        busProject.setBuildingZoneId(projectConfigInfo.getBuildingZoneId());
+
+        busProject.setUserId(projectConfigInfo.getUserId());
+        busProject.setProvinceId(projectConfigInfo.getProvinceId());
+        busProject.setCityId(projectConfigInfo.getCityId());
+        busProject.setCode(projectConfigInfo.getCode());
         busProject.setCreateTime(this.getNowTime());
+        busProject.setEquipmentAge(projectConfigInfo.getEquipmentAge());
+        busProject.setEnergyPotential(projectConfigInfo.getEnergyPotential());
+        busProject.setOnlineTeamId(projectConfigInfo.getOnlineTeamId());
+        busProject.setOfflineTeamId(projectConfigInfo.getOfflineTeamId());
+        busProject.setType(projectConfigInfo.getType());
+
+        busProject.setInspectIds(projectConfigInfo.getInspectIds());
+        busProject.setSystemIds(projectConfigInfo.getSystemIds());
+        busProject.setOnline(projectConfigInfo.getOnline());
+        busProject.setReceive(projectConfigInfo.getReceive());
+        busProject.setSaveSign(projectConfigInfo.getSaveSign());
+
         int i = busProjectDao.insertSelective(busProject);
 
-        if(busProjectSaving != null){
+        if(projectConfigInfo.getSaveSign() == 1){
+            BusProjectSaving busProjectSaving = new BusProjectSaving();
+
             busProjectSaving.setId(UuidUtil.create32());
             busProjectSaving.setProjectId(id);
+            busProjectSaving.setSaveContent(projectConfigInfo.getSaveContent());
+            busProjectSaving.setSaveCost(projectConfigInfo.getSaveCost());
+            busProjectSaving.setSaveShare(projectConfigInfo.getSaveShare());
+
+            busProjectSaving.setSaveMethod(projectConfigInfo.getSaveMethod());
+            busProjectSaving.setSaveEstimate(projectConfigInfo.getSaveEstimate());
+            busProjectSaving.setSaveCostId(projectConfigInfo.getSaveCostId());
+            busProjectSaving.setSaveEnergyId(projectConfigInfo.getSaveEnergyId());
+
             busProjectSavingDao.insertSelective(busProjectSaving);
         }
         return new ServiceResult(i, id);
@@ -92,11 +131,68 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      * 修改项目配置信息
      */
     @Override
-    public int updateProjConfig(BusProject busProject,BusProjectSaving busProjectSaving){
+    public int updateProjConfig(ProjectConfigInfo projectConfigInfo){
+        BusProject busProject = new BusProject();
+
+        busProject.setId(projectConfigInfo.getId());
+        busProject.setName(projectConfigInfo.getProjectName());
+        busProject.setPhones(projectConfigInfo.getPhones());
+        busProject.setBuildingId(projectConfigInfo.getBuildingId());
+        busProject.setBuildingName(projectConfigInfo.getBuildingName());
+        busProject.setBuildingArea(projectConfigInfo.getBuildingArea());
+        busProject.setBuildingLocal(projectConfigInfo.getBuildingLocal());
+        busProject.setBuildingCoordinate(projectConfigInfo.getBuildingCoordinate());
+        busProject.setBuildingAge(projectConfigInfo.getBuildingAge());
+        busProject.setBuildingZoneId(projectConfigInfo.getBuildingZoneId());
+
+        busProject.setUserId(projectConfigInfo.getUserId());
+        busProject.setProvinceId(projectConfigInfo.getProvinceId());
+        busProject.setCityId(projectConfigInfo.getCityId());
+        busProject.setCode(projectConfigInfo.getCode());
+        busProject.setCreateTime(projectConfigInfo.getCreateTime());
+        busProject.setEquipmentAge(projectConfigInfo.getEquipmentAge());
+        busProject.setEnergyPotential(projectConfigInfo.getEnergyPotential());
+        busProject.setOnlineTeamId(projectConfigInfo.getOnlineTeamId());
+        busProject.setOfflineTeamId(projectConfigInfo.getOfflineTeamId());
+        busProject.setType(projectConfigInfo.getType());
+
+        busProject.setInspectIds(projectConfigInfo.getInspectIds());
+        busProject.setSystemIds(projectConfigInfo.getSystemIds());
+        busProject.setOnline(projectConfigInfo.getOnline());
+        busProject.setReceive(projectConfigInfo.getReceive());
+        busProject.setSaveSign(projectConfigInfo.getSaveSign());
+
         if (busProject.getSaveSign() == 0){
-            busProjectSavingDao.deleteByPrimaryKey(busProjectSaving.getId());
+            busProjectSavingDao.deleteByPrimaryKey(projectConfigInfo.getSavingId());
         }else {
-            busProjectSavingDao.updateByPrimaryKeySelective(busProjectSaving);
+            BusProjectSaving busProjectSaving = new BusProjectSaving();
+
+            if (projectConfigInfo.getSavingId() == null) {
+                busProjectSaving.setId(UuidUtil.create32());
+                busProjectSaving.setProjectId(projectConfigInfo.getProjectId());
+                busProjectSaving.setSaveContent(projectConfigInfo.getSaveContent());
+                busProjectSaving.setSaveCost(projectConfigInfo.getSaveCost());
+                busProjectSaving.setSaveShare(projectConfigInfo.getSaveShare());
+
+                busProjectSaving.setSaveMethod(projectConfigInfo.getSaveMethod());
+                busProjectSaving.setSaveEstimate(projectConfigInfo.getSaveEstimate());
+                busProjectSaving.setSaveCostId(projectConfigInfo.getSaveCostId());
+                busProjectSaving.setSaveEnergyId(projectConfigInfo.getSaveEnergyId());
+
+                busProjectSavingDao.insertSelective(busProjectSaving);
+            }else {
+                busProjectSaving.setId(projectConfigInfo.getSavingId());
+                busProjectSaving.setProjectId(projectConfigInfo.getProjectId());
+                busProjectSaving.setSaveContent(projectConfigInfo.getSaveContent());
+                busProjectSaving.setSaveCost(projectConfigInfo.getSaveCost());
+                busProjectSaving.setSaveShare(projectConfigInfo.getSaveShare());
+
+                busProjectSaving.setSaveMethod(projectConfigInfo.getSaveMethod());
+                busProjectSaving.setSaveEstimate(projectConfigInfo.getSaveEstimate());
+                busProjectSaving.setSaveCostId(projectConfigInfo.getSaveCostId());
+                busProjectSaving.setSaveEnergyId(projectConfigInfo.getSaveEnergyId());
+                busProjectSavingDao.updateByPrimaryKeySelective(busProjectSaving);
+            }
         }
         return busProjectDao.updateByPrimaryKeySelective(busProject);
     }

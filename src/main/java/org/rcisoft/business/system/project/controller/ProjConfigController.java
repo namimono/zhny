@@ -3,6 +3,7 @@ package org.rcisoft.business.system.project.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
+import org.rcisoft.business.system.project.entity.ProjectConfigInfo;
 import org.rcisoft.business.system.project.service.ProjConfigService;
 import org.rcisoft.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +36,14 @@ public class ProjConfigController {
 
     @ApiOperation(value="修改项目配置信息", notes="修改项目配置信息")
     @PostMapping("/updateProjConfig")
-    public Result updateProjConfig(@RequestBody BusProject busProject,@RequestBody BusProjectSaving busProjectSaving){
-        return Result.result(projConfigServiceImpl.updateProjConfig(busProject,busProjectSaving),"修改项目配置信息成功","修改项目配置信息失败");
+    public Result updateProjConfig(@RequestBody ProjectConfigInfo projectConfigInfo){
+        return Result.result(projConfigServiceImpl.updateProjConfig(projectConfigInfo),"修改项目配置信息成功","修改项目配置信息失败");
     }
 
     @ApiOperation(value="新增项目配置信息和节能改造信息", notes="新增项目配置信息和节能改造信息")
     @PostMapping("/addProjConfig")
-    public Result addProjConfig(@RequestBody BusProject busProject,@RequestBody BusProjectSaving busProjectSaving){
-        return Result.serviceResult(projConfigServiceImpl.addProjConfig(busProject,busProjectSaving), "新增项目配置信息成功", "新增项目配置信息失败");
+    public Result addProjConfig(@RequestBody ProjectConfigInfo projectConfigInfo){
+        return Result.serviceResult(projConfigServiceImpl.addProjConfig(projectConfigInfo), "新增项目配置信息成功", "新增项目配置信息失败");
     }
 
     @ApiOperation(value="获取省份信息及其ID", notes="获取省份信息及其ID")
