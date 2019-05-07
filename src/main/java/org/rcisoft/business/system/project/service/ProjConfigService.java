@@ -24,12 +24,12 @@ public interface ProjConfigService {
     /**
      * 新增项目配置信息和节能改造信息
      */
-    ServiceResult addProjConfig(BusProject busProject,BusProjectSaving busProjectSaving);
+    ServiceResult addProjConfig(ProjectConfigInfo projectConfigInfo);
 
     /**
      * 修改项目配置信息
      */
-    int updateProjConfig(BusProject busProject,BusProjectSaving busProjectSaving);
+    int updateProjConfig(ProjectConfigInfo projectConfigInfo);
 
     /**
      * 获取省份、城市及其code信息
