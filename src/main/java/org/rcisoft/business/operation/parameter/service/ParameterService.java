@@ -1,7 +1,7 @@
 package org.rcisoft.business.operation.parameter.service;
 
+import org.rcisoft.business.system.auth.entity.DeviceParamNameValue;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
-import org.rcisoft.entity.EnergyParamLibrary;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -16,7 +16,7 @@ public interface ParameterService {
     /**
      * 查询设备简要信息（参数库）
      */
-    List<DeviceBriefInfo> queryDeviceBriefByType(String systemId,String projectId,String typeFirstId);
+    List<DeviceBriefInfo> queryDeviceBriefByType(String systemId,String projectId, String deviceTypeId);
 
     /**
      * 导出参数库数据
@@ -26,5 +26,5 @@ public interface ParameterService {
     /**
      * 查询参数库参数数据
      */
-    List<EnergyParamLibrary> queryParamLibrary(String deviceId);
+    DeviceParamNameValue queryParamLibrary(String deviceId);
 }

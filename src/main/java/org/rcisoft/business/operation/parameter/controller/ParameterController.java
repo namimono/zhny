@@ -25,9 +25,9 @@ public class ParameterController {
     private ParameterService parameterServiceImpl;
 
     @ApiOperation(value="查询设备简要信息（参数库）", notes="查询设备简要信息（参数库）")
-    @GetMapping("/queryDeviceBriefByType/{systemId}/{projectId}/{typeFirstId}")
-    public Result queryDeviceBriefByType(@PathVariable String systemId,@PathVariable String projectId,@PathVariable String typeFirstId){
-        return Result.result(parameterServiceImpl.queryDeviceBriefByType(systemId,projectId,typeFirstId));
+    @GetMapping("/queryDeviceBriefByType/{systemId}/{projectId}/{deviceTypeId}")
+    public Result queryDeviceBriefByType(@PathVariable String systemId,@PathVariable String projectId,@PathVariable String deviceTypeId){
+        return Result.result(parameterServiceImpl.queryDeviceBriefByType(systemId,projectId,deviceTypeId));
     }
 
     @ApiOperation(value="导出参数库数据", notes="导出参数库数据",produces="application/octet-stream")
