@@ -128,47 +128,28 @@ public class InOutdoorConfigServiceImpl implements InOutdoorConfigService {
      */
     @Override
     public int addOutdoorInfo(List<BusOutdoor> busOutdoorList){
-        int flag = 0;
-        for (BusOutdoor busOutdoor : busOutdoorList){
-            if (null == busOutdoor){ flag++; }
-        }
-        if (flag == busOutdoorList.size()){ return 0; }
         busOutdoorList.forEach(busOutdoor -> busOutdoor.setId(UuidUtil.create32()));
         return busOutdoorDao.insertListUseAllCols(busOutdoorList);
     }
-
-//    /**
-//     *判断一个实体类对象实例的所有成员变量是否为空
-//     *@param obj 校验的类对象实例
-//     *@return List
-//     *@throws Exception
-//     */
-//
-//    public static  List<String> isObjectFieldEmpty(Object obj) throws Exception {
-//        Class<?> clazz=obj.getClass();  //得到类对象
-//        Field[] fs=clazz.getDeclareFields(); //得到属性集合
-//        List<String> list=new ArrayList<String>();
-//        for(Field field:fs){            //遍历属性
-//            field.setAccessible(true); //设置属性是可以访问的（私有的也可以）
-//            if(field.get(obj)==null||field.get(obj)==""||"null".equalsIngnoreCase(String)field.get(obj))){
-//                String name=(String)field.getName();
-//                list.add(name);
-//            }
-//        }
-//        return list;
-//    }
 
     /**
      * 修改室外配置
      */
     @Override
     public int updateOutdoorInfo(List<BusOutdoor> busOutdoorList){
-        int flag = 0;
-        for (BusOutdoor busOutdoor : busOutdoorList){
-            if (busOutdoor == null){ flag++; }
+        if (busOutdoorList.size() > 0) {
+            String deviceId = busOutdoorList.get(0).getDeviceId();
+            Example example = new Example(BusIndoorParam.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("deviceId", deviceId);
+            busOutdoorDao.deleteByExample(example);
+
+            busOutdoorList.forEach(busOutdoor -> busOutdoor.setId(UuidUtil.create32()));
+            busOutdoorDao.insertListUseAllCols(busOutdoorList);
+            return inOutDoorConfigDao.updateAllOutdoorInfo(busOutdoorList);
+        }else {
+            return 0;
         }
-        if (flag == busOutdoorList.size()){ return 0; }
-        return inOutDoorConfigDao.updateAllOutdoorInfo(busOutdoorList);
     }
 
     /**
