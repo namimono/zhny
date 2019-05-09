@@ -306,8 +306,8 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      * 查询项目简要信息
      */
     @Override
-    public List<ProjectBriefInfo> queryBriefInfo(){
-        return busProjectDao.queryBriefInfo();
+    public List<ProjectBriefInfo> queryBriefInfo(Integer online){
+        return busProjectDao.queryBriefInfo(online);
     }
 
     /**
@@ -416,6 +416,17 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     @Override
     public int updateSysSystem(SysSystem sysSystem){
         return sysSystemDao.updateByPrimaryKeySelective(sysSystem);
+    }
+    /**
+     * 修改系统类型
+     */
+    @Override
+    public int updateProjectReceiveAndOnline(ProjectConfigInfo projectConfigInfo){
+        BusProject busProject = new BusProject();
+        busProject.setId(projectConfigInfo.getId());
+        busProject.setOnline(projectConfigInfo.getOnline());
+        busProject.setReceive(projectConfigInfo.getReceive());
+        return busProjectDao.updateByPrimaryKeySelective(busProject);
     }
 
 }
