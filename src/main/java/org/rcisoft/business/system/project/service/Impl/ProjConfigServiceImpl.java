@@ -102,8 +102,10 @@ public class ProjConfigServiceImpl implements ProjConfigService {
 
         busProject.setInspectIds(projectConfigInfo.getInspectIds());
         busProject.setSystemIds(projectConfigInfo.getSystemIds());
-        busProject.setOnline(projectConfigInfo.getOnline());
-        busProject.setReceive(projectConfigInfo.getReceive());
+        busProject.setOnline(1);
+        busProject.setReceive(0);
+//        busProject.setOnline(projectConfigInfo.getOnline());
+//        busProject.setReceive(projectConfigInfo.getReceive());
         busProject.setSaveSign(projectConfigInfo.getSaveSign());
 
         int i = busProjectDao.insertSelective(busProject);
