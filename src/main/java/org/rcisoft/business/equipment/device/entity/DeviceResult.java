@@ -20,7 +20,7 @@ public class DeviceResult extends BusDevice {
     /**
      * 一级系统类型
      */
-    private String typeFirstName;
+    private String deviceTypeName;
 
     /**
      * 厂家名称
