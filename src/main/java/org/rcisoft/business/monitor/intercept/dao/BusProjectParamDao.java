@@ -41,6 +41,5 @@ public interface BusProjectParamDao extends Mapper<BusProjectParam> {
             "where bpf.id = bps.param_first_id and bps.elec_type = 2 and bps.device_id = #{deviceId}</script>")
     List<EnergyParam> queryEnergyParam(String deviceId);
 
-    @Select("<script>select name,coding,unit,fix_value as fixValue from bus_param_fixed where device_id = #{deviceId}</script>")
-    List<DeviceFixValue> queryDeviceFixParam(String deviceId);
+
 }
