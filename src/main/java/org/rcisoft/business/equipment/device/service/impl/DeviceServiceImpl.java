@@ -34,8 +34,8 @@ public class DeviceServiceImpl implements DeviceService {
     DeviceDao deviceDao;
 
     @Override
-    public List<DeviceResult> queryDevices(String projectId, String typeFirstId) {
-        List<DeviceResult> list = deviceDao.queryDevices(projectId, typeFirstId);
+    public List<DeviceResult> queryDevices(String projectId, String deviceTypeId) {
+        List<DeviceResult> list = deviceDao.queryDevices(projectId, deviceTypeId);
         list.forEach(deviceResult -> {
             // localhost:8080/qrcode-img/projectId/qrcode.jpg
             deviceResult.setQrcodeUrl(url + qrcode + "/" + projectId + "/" + deviceResult.getQrcodeUrl());

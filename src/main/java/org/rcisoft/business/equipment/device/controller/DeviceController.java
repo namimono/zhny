@@ -23,9 +23,9 @@ public class DeviceController {
     DeviceService deviceServiceImpl;
 
     @ApiOperation(value="资产统计", notes="查询设备列表")
-    @GetMapping("/queryDevices/{projectId}/{typeFirstId}")
-    public Result queryDevices(@PathVariable String projectId, @PathVariable String typeFirstId) {
-        return Result.result(deviceServiceImpl.queryDevices(projectId, typeFirstId));
+    @GetMapping("/queryDevices/{projectId}/{deviceTypeId}")
+    public Result queryDevices(@PathVariable String projectId, @PathVariable String deviceTypeId) {
+        return Result.result(deviceServiceImpl.queryDevices(projectId, deviceTypeId));
     }
 
     @ApiOperation(value="巡检记录", notes="查询巡检列表")

@@ -19,17 +19,17 @@ public interface DeviceDao {
     /**
      * 查询设备列表
      * @param projectId
-     * @param typeFirstId
+     * @param deviceTypeId
      * @return
      */
     @Select("<script>select d.*, s.name systemName, f.name factoryName, t.name typeFirstName from bus_device d " +
             "left join sys_system s on d.system_id = s.id " +
             "left join bus_factory f on d.factory_id = f.id " +
-            "left join bus_type_first t on d.type_first_id = t.id " +
-            "where d.project_id = #{projectId} and d.type_first_id = #{typeFirstId} " +
+            "left join bus_type_first t on d.device_type_id = t.id " +
+            "where d.project_id = #{projectId} and d.device_type_id = #{deviceTypeId} " +
             "order by d.system_id asc</script>")
     @ResultType(DeviceResult.class)
-    List<DeviceResult> queryDevices(@Param("projectId") String projectId, @Param("typeFirstId") String typeFirstId);
+    List<DeviceResult> queryDevices(@Param("projectId") String projectId, @Param("deviceTypeId") String deviceTypeId);
 
     /**
      * 查询巡检记录

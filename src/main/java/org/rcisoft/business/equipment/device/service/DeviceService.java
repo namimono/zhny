@@ -15,10 +15,10 @@ public interface DeviceService {
     /**
      * 查询设备列表
      * @param projectId
-     * @param typeFirstId
+     * @param deviceTypeId
      * @return
      */
-    List<DeviceResult> queryDevices(String projectId, String typeFirstId);
+    List<DeviceResult> queryDevices(String projectId, String deviceTypeId);
 
     /**
      * 分页查询巡检记录
