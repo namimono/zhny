@@ -84,11 +84,7 @@ public class BusProjectController {
         return Result.result(1,busProjectService.queryEnergyParam(deviceId));
     }
 
-    @ApiOperation(value = "查询设备固定参数",notes = "查询设备固定参数")
-    @GetMapping(value = "DeviceFixValue/{deviceId}")
-    public Result queryDeviceFixValue(@PathVariable String deviceId){
-        return Result.result(1,busProjectService.queryDeviceFixValue(deviceId));
-    }
+
     
     @ApiOperation(value = "查询设备实时参数，并判断状态",notes = "查询设备实时参数，并判断状态")
     @GetMapping(value = "DeviceDetail/{deviceId}")
