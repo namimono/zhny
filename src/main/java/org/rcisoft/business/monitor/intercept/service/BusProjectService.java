@@ -26,7 +26,7 @@ public interface BusProjectService {
     List<String> queryModelName();
     Map<String,Object> EnergyEchart(String titleId);
     List<EnergyParam> queryEnergyParam(String deviceId);
-    List<DeviceFixValue> queryDeviceFixValue(String deviceId);
+
     List<DeviceDetail> queryDeviceDetail(String deviceId);
     List<String> queryJsonByProId(String ProId);
 }

@@ -54,7 +54,13 @@ public class IndoorServiceImpl implements IndoorService {
             String codingFirst = bp.getCodingFirst();
             String codingSecond = bp.getCodingSecond();
             JSONObject json = (JSONObject) jsonObject.get(codingFirst);
+            if(json==null){
+                return null;
+            }
             JSONObject jsonSecond = (JSONObject)json.get("REG_VAL");
+            if(jsonSecond==null){
+                return null;
+            }
             sum = new BigDecimal(jsonSecond.get(codingSecond).toString());
             switch (bp.getType()){
                 case 1 :
@@ -73,7 +79,13 @@ public class IndoorServiceImpl implements IndoorService {
             String codingFirst = bo.getCodingFirst();
             String codingSecond = bo.getCodingSecond();
             JSONObject json = (JSONObject) jsonObject.get(codingFirst);
+            if(json==null){
+                return null;
+            }
             JSONObject jsonSecond = (JSONObject)json.get("REG_VAL");
+            if(jsonSecond==null){
+                return null;
+            }
             sum = new BigDecimal(jsonSecond.get(codingSecond).toString());
             switch (bo.getType()){
                 case 3 :

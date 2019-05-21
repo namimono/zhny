@@ -59,9 +59,9 @@ public class CompareServiceImpl implements CompareService {
     @Override
     public EnergyStandardResult queryEnergyStandard(String projectId) {
         // 今年颜色
-        String colorThisYear = "#8a87c2";
+        String colorThisYear = "#f2033b";
         // 去年颜色
-        String colorLastYear = "#f2033b";
+        String colorLastYear = "#5de3e1";
         // 查询标准用量
         List<EnergyStandard> standardList = energyStandardDao.queryEnergyStandard(projectId);
         // 查询今年水电气用量
@@ -69,6 +69,16 @@ public class CompareServiceImpl implements CompareService {
         EnergyAndCount energyThisYear = compareDao.queryEnergyAndCount(projectId, year);
         // 查询去年水电气用量
         EnergyAndCount energyLastYear = compareDao.queryEnergyAndCount(projectId, year - 1);
+        //非空判断
+        if(standardList.size()==0){
+            return null;
+        }
+        if(energyThisYear.getGas()==null || energyThisYear.getWater()==null ||energyThisYear.getElec()==null){
+            return  null;
+        }
+        if(energyLastYear.getGas()==null || energyLastYear.getWater()==null ||energyLastYear.getElec()==null){
+            return  null;
+        }
         // 将结果放入最后的返回值中
         EnergyStandardResult result = new EnergyStandardResult();
         // 先放入标准值
@@ -151,8 +161,8 @@ public class CompareServiceImpl implements CompareService {
      * @param color 当前正常显示的颜色
      */
     private void setValueAndColor(EnergyAndCount e, List<BigDecimal> standardSuggest, List<BigDecimal> standardIndustry, List<BigDecimal> standardCountry, List<String> colorList, List<BigDecimal> energyList, String color) {
-        // 超标颜色
-        String colorExcess = "#ccd4de";
+        // 超标颜色(红色)
+        String colorExcess = "#f2033b";
         Integer countThisYear = e.getCount();
         if (countThisYear != 0) {
             BigDecimal count = new BigDecimal(countThisYear);
