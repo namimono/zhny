@@ -1,7 +1,7 @@
 server:
   servlet:
     context-path: /zhny2
-  url: 10.150.4.204
+#  url: 10.150.4.204
   port: 8080
   tomcat:
     max-threads: 300
@@ -56,6 +56,20 @@ spring:
   http:
     encoding:
       charset: utf-8
+#配置mqtt服务器基本信息
+  mqtt:
+    #mqtt用户名
+    username: admin
+    #mqtt密码
+    password: public
+    #mqtt服务器地址
+    url: tcp://10.96.129.56:1883
+    #连接服务器默认客户端id,可以在调用时指定
+    client:
+      id: mqttId
+    default:
+      #默认消息的推送主题，可以在调用时指定
+      topic: topic
 
 mybatis:
 #  mapper-locations: classpath:mapper/*.xml
@@ -101,3 +115,4 @@ location:
   device: device-img
   # 二维码（需要分项目）
   qrcode: qrcode-img
+
