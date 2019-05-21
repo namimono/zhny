@@ -29,9 +29,9 @@ public class ProjConfigController {
 //    }
 
     @ApiOperation(value="获取项目简要信息", notes="获取项目简要信息")
-    @GetMapping("/queryBriefInfo")
-    public Result queryBriefInfo(){
-        return Result.result(projConfigServiceImpl.queryBriefInfo());
+    @GetMapping("/queryBriefInfo/{online}")
+    public Result queryBriefInfo(@PathVariable Integer online){
+        return Result.result(projConfigServiceImpl.queryBriefInfo(online));
     }
 
     @ApiOperation(value="修改项目配置信息", notes="修改项目配置信息")
@@ -177,5 +177,10 @@ public class ProjConfigController {
     @PutMapping("/updateSysSystem")
     public Result updateSysSystem(@RequestBody SysSystem sysSystem){
         return Result.result(projConfigServiceImpl.updateSysSystem(sysSystem), "修改系统类型成功", "修改系统类型失败");
+    }
+    @ApiOperation(value="修改项目接收状态和在线状态", notes="修改项目接收状态和在线状态")
+    @PutMapping("/updateProjectReceiveAndOnline")
+    public Result updateProjectReceiveAndOnline(@RequestBody ProjectConfigInfo projectConfigInfo){
+        return Result.result(projConfigServiceImpl.updateProjectReceiveAndOnline(projectConfigInfo));
     }
 }

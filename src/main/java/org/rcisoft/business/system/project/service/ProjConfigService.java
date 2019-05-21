@@ -2,12 +2,11 @@ package org.rcisoft.business.system.project.service;
 
 import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.business.management.evaluateproj.entity.ProjectAssessment;
+import org.rcisoft.business.system.project.entity.PositionInfo;
 import org.rcisoft.business.system.project.entity.ProjectBriefInfo;
 import org.rcisoft.business.system.project.entity.ProjectConfigInfo;
 import org.rcisoft.entity.*;
-import org.rcisoft.business.system.project.entity.PositionInfo;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,7 +78,7 @@ public interface ProjConfigService {
     /**
      * 查询项目简要信息
      */
-    List<ProjectBriefInfo> queryBriefInfo();
+    List<ProjectBriefInfo> queryBriefInfo(Integer online);
 
     /**
      * 新增建筑类型
@@ -147,4 +146,8 @@ public interface ProjConfigService {
      */
     int updateSysSystem(SysSystem sysSystem);
 
+    /**
+     * 修改项目的接收状态
+     */
+    int updateProjectReceiveAndOnline(ProjectConfigInfo projectConfigInfo);
 }

@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-
 /**
  * Create by 土豆儿
  * Time：2019/3/8 10:22
@@ -46,5 +44,13 @@ public class ProjectBriefInfo {
      * 所属业主名称
      */
     private String userName;
+    /**
+     * 是否在线（1：线上  0：项目回收状态）
+     */
+    private Integer online;
+    /**
+     * 是否接收数据，0：不接，1：接收
+     */
+    private Integer receive;
 
 }

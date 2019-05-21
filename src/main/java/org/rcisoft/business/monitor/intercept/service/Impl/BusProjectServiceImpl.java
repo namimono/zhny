@@ -147,10 +147,7 @@ public class BusProjectServiceImpl implements BusProjectService {
         return busProjectParamDao.queryEnergyParam(deviceId);
     }
 
-    @Override
-    public List<DeviceFixValue> queryDeviceFixValue(String deviceId) {
-        return busProjectParamDao.queryDeviceFixParam(deviceId);
-    }
+
 
     @Override
     public List<DeviceDetail> queryDeviceDetail(String deviceId) {

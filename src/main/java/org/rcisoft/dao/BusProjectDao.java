@@ -35,15 +35,14 @@ public interface BusProjectDao extends Mapper<BusProject> {
     List<BusProject> queryAllInfo();
 
     /**
-     * 查询项目简要信息
+     * 查询线上项目简要信息
      */
     @Select("SELECT a.id as 'proId',a.name as 'proName',a.building_local as 'buildingLocal',\n" +
-            "a.building_area as 'buildingArea',b.username as 'userName',c.name AS 'buildTypeName'\n" +
+            "a.building_area as 'buildingArea',b.username as 'userName',c.name AS 'buildTypeName',a.online,a.receive\n" +
             "FROM bus_project a,sys_user b,bus_building c\n" +
-            "WHERE a.user_id = b.id AND a.building_id = c.id;")
+            "WHERE a.user_id = b.id AND a.building_id = c.id AND a.online = #{online};")
     @ResultType(ProjectBriefInfo.class)
-    List<ProjectBriefInfo> queryBriefInfo();
-
+    List<ProjectBriefInfo> queryBriefInfo(Integer online);
 
     /**
      *  查询关于项目的所有信息(包含检定员信息)
