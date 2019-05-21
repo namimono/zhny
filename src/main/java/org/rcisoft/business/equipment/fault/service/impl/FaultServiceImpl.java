@@ -37,12 +37,12 @@ public class FaultServiceImpl implements FaultService {
     BusMalfunctionDao busMalfunctionDao;
 
     @Override
-    public int[] queryFaultCount(String projectId, String typeFirstId, Integer year, Integer month) {
+    public int[] queryFaultCount(String projectId, String deviceTypeId, Integer year, Integer month) {
         // 当月天数
         int date = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
         // 返回值
         int[] result = new int[date];
-        List<FaultCountResult> list = faultDao.queryFaultCount(projectId, typeFirstId, year + "-" + month);
+        List<FaultCountResult> list = faultDao.queryFaultCount(projectId, deviceTypeId, year + "-" + month);
         list.forEach(faultCountResult -> {
             result[faultCountResult.getTime()] = faultCountResult.getCount();
         });
@@ -50,22 +50,23 @@ public class FaultServiceImpl implements FaultService {
     }
 
     @Override
-    public PageInfo<FaultResult> queryFaults(String projectId, String typeFirstId, Integer year, Integer month) {
-        List<FaultResult> list = faultDao.queryFaults(projectId, typeFirstId, year + "-" + month);
+    public PageInfo<FaultResult> queryFaultsForPage(String projectId, String deviceTypeId, Integer year, Integer month) {
+        List<FaultResult> list = faultDao.queryFaults(projectId, deviceTypeId, year + "-" + month);
         return PageUtil.pageResult(list);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int updateMalfunction(BusMalfunction busMalfunction) {
+        busMalfunction.setStatus(1);
         return busMalfunctionDao.updateByPrimaryKeySelective(busMalfunction);
     }
 
     @Override
-    public void downloadFaults(HttpServletRequest request, HttpServletResponse response, String projectId, String typeFirstId, Integer year, Integer month) {
+    public void downloadFaults(HttpServletRequest request, HttpServletResponse response, String projectId, String deviceTypeId, Integer year, Integer month) {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // 结果集
-        List<FaultResult> list = faultDao.queryFaults(projectId, typeFirstId, year + "-" + month);
+        List<FaultResult> list = faultDao.queryFaults(projectId, deviceTypeId, year + "-" + month);
         // 创建excel
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("sheet1");

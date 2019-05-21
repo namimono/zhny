@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-
 /**
  * Created by JiChao on 2019/4/1.
  * 当日养护计划
@@ -13,7 +11,6 @@ import javax.persistence.Entity;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class MaintainPlanResult {
 
     /**

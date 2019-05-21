@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.equipment.maintain.entity.MaintainPlanResult;
+import org.rcisoft.business.equipment.maintain.entity.MaintenanceAndDevTypeId;
 import org.rcisoft.business.equipment.maintain.entity.ScheduleResult;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,7 @@ public interface MaintainDao {
 
     /**
      * 养护日程
+     *
      * @param projectId
      * @param year
      * @return
@@ -32,8 +34,9 @@ public interface MaintainDao {
 
     /**
      * 当日养护计划列表
+     *
      * @param projectId
-     * @param time 年月日
+     * @param time      年月日
      * @return
      */
     @Select("<script>select m.id, m.plan_time time, d.name deviceName, m.principal " +
@@ -44,5 +47,19 @@ public interface MaintainDao {
             "order by m.plan_time asc</script>")
     @ResultType(MaintainPlanResult.class)
     List<MaintainPlanResult> queryPlan(@Param("projectId") String projectId, @Param("time") String time);
+
+
+    /**
+     * 根据养护计划Id查询养护计划以及该设备对应的设备类型名称
+     *
+     * @param maintenanceId
+     * @return List<MaintenanceAndDevTypeId>
+     */
+    @Select("<script>" +
+            "SELECT bm.*, bdt.`name` AS deviceTypeName,bdt.id AS deviceTypeId\n" +
+            "FROM bus_maintenance bm LEFT JOIN bus_device bd ON bm.device_id = bd.id " +
+            " LEFT JOIN  bus_device_type bdt  ON bd.device_type_id = bdt.id  WHERE bm.id = #{maintenanceId} " +
+            "</script>")
+    MaintenanceAndDevTypeId getMaintenanceAndDevTypeId(@Param("maintenanceId") String maintenanceId);
 
 }

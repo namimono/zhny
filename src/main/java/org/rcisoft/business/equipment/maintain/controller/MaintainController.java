@@ -34,7 +34,7 @@ public class MaintainController {
     @ApiOperation(value="根据id查询养护计划", notes="根据id查询养护计划")
     @GetMapping("/queryMaintenance/{id}")
     public Result queryMaintenance(@PathVariable String id) {
-        return Result.result(maintainServiceImpl.queryMaintenance(id));
+        return Result.result(maintainServiceImpl.getMaintenanceAndDevTypeId(id));
     }
 
     @ApiOperation(value="新增养护计划", notes="新增养护计划")

@@ -3,6 +3,7 @@ package org.rcisoft.business.equipment.maintain.service.impl;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.equipment.maintain.dao.MaintainDao;
 import org.rcisoft.business.equipment.maintain.entity.MaintainPlanResult;
+import org.rcisoft.business.equipment.maintain.entity.MaintenanceAndDevTypeId;
 import org.rcisoft.business.equipment.maintain.entity.ScheduleResult;
 import org.rcisoft.business.equipment.maintain.service.MaintainService;
 import org.rcisoft.dao.BusMaintenanceDao;
@@ -35,8 +36,8 @@ public class MaintainServiceImpl implements MaintainService {
     }
 
     @Override
-    public BusMaintenance queryMaintenance(String id) {
-        return busMaintenanceDao.selectByPrimaryKey(id);
+    public MaintenanceAndDevTypeId getMaintenanceAndDevTypeId(String id) {
+        return maintainDao.getMaintenanceAndDevTypeId(id);
     }
 
     @Override
