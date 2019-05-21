@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,7 +66,9 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
 
         if (ifInUser(flag)) {
             //查出所有菜单
-            List<SysMenu> sysAllMenuList = sysMenuDao.selectAll();
+            Example example = new Example(SysMenu.class);
+            example.setOrderByClause("ordered asc");
+            List<SysMenu> sysAllMenuList = sysMenuDao.selectByExample(example);
             if (sysAllMenuList.size() > 0) {
                 //把所有菜单按照一级，二级菜单进行分组
                 Map<Object, List> allMenuGroup = ZhnyUtils.groupListByName(sysAllMenuList, "level");

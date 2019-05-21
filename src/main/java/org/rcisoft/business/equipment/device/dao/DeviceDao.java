@@ -22,10 +22,10 @@ public interface DeviceDao {
      * @param deviceTypeId
      * @return
      */
-    @Select("<script>select d.*, s.name systemName, f.name factoryName, t.name typeFirstName from bus_device d " +
+    @Select("<script>select d.*, s.name systemName, f.name factoryName, t.name deviceTypeName from bus_device d " +
             "left join sys_system s on d.system_id = s.id " +
             "left join bus_factory f on d.factory_id = f.id " +
-            "left join bus_type_first t on d.device_type_id = t.id " +
+            "left join bus_device_type t on d.device_type_id = t.id " +
             "where d.project_id = #{projectId} and d.device_type_id = #{deviceTypeId} " +
             "order by d.system_id asc</script>")
     @ResultType(DeviceResult.class)

@@ -1,6 +1,7 @@
 package org.rcisoft.business.equipment.maintain.service;
 
 import org.rcisoft.business.equipment.maintain.entity.MaintainPlanResult;
+import org.rcisoft.business.equipment.maintain.entity.MaintenanceAndDevTypeId;
 import org.rcisoft.business.equipment.maintain.entity.ScheduleResult;
 import org.rcisoft.entity.BusMaintenance;
 
@@ -33,9 +34,9 @@ public interface MaintainService {
     /**
      * 根据id查询养护计划
      * @param id
-     * @return
+     * @return MaintenanceAndDevTypeId
      */
-    BusMaintenance queryMaintenance(String id);
+    MaintenanceAndDevTypeId getMaintenanceAndDevTypeId(String id);
 
     /**
      * 新增养护计划

@@ -16,22 +16,22 @@ public interface FaultService {
     /**
      * 故障数量统计
      * @param projectId
-     * @param typeFirstId
+     * @param deviceTypeId
      * @param year
      * @param month
      * @return
      */
-    int[] queryFaultCount(String projectId, String typeFirstId, Integer year, Integer month);
+    int[] queryFaultCount(String projectId, String deviceTypeId, Integer year, Integer month);
 
     /**
      * 分页查询故障内容列表
      * @param projectId
-     * @param typeFirstId
+     * @param deviceTypeId
      * @param year
      * @param month
      * @return
      */
-    PageInfo<FaultResult> queryFaults(String projectId, String typeFirstId, Integer year, Integer month);
+    PageInfo<FaultResult> queryFaultsForPage(String projectId, String deviceTypeId, Integer year, Integer month);
 
     /**
      * 更新故障记录
@@ -43,10 +43,10 @@ public interface FaultService {
     /**
      * 故障内容下载
      * @param projectId
-     * @param typeFirstId
+     * @param deviceTypeId
      * @param year
      * @param month
      */
-    void downloadFaults(HttpServletRequest request, HttpServletResponse response, String projectId, String typeFirstId, Integer year, Integer month);
+    void downloadFaults(HttpServletRequest request, HttpServletResponse response, String projectId, String deviceTypeId, Integer year, Integer month);
 
 }
