@@ -1,13 +1,14 @@
 package org.rcisoft.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Data
@@ -59,6 +60,7 @@ public class BusMaintenance {
 	 * 计划时间
 	 */
    	@Column(name = "plan_time" )
+	@JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
 	private Date planTime;
 
 }
