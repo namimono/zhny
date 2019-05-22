@@ -32,6 +32,12 @@ public class BusVariable {
 	private String variable;
 
 	/**
+	 * 设备id
+	 */
+	@Column(name = "device_id" )
+	private String deviceId;
+
+	/**
 	 * 一级参数表id
 	 */
    	@Column(name = "param_first_id" )
