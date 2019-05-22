@@ -1,17 +1,20 @@
 package org.rcisoft.business.system.project.service.Impl;
 
+import org.apache.commons.lang3.StringUtils;
+import org.rcisoft.base.redis.RedisService;
 import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.management.evaluateproj.entity.ProjectAssessment;
 import org.rcisoft.business.system.project.dao.ProConfigDao;
+import org.rcisoft.business.system.project.entity.PositionInfo;
 import org.rcisoft.business.system.project.entity.ProjectBriefInfo;
 import org.rcisoft.business.system.project.entity.ProjectConfigInfo;
+import org.rcisoft.business.system.project.service.ProjConfigService;
 import org.rcisoft.dao.*;
 import org.rcisoft.entity.*;
-import org.rcisoft.business.system.project.service.ProjConfigService;
-import org.rcisoft.business.system.project.entity.PositionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,6 +50,13 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     private ProConfigDao proConfigDao;
     @Autowired
     private SysSystemDao sysSystemDao;
+    @Autowired
+    private RedisService redisService;
+
+    /**
+     * 定义网关ID在redis中的key
+     */
+    public static final String PHONE_ID_KEY = "phoneIds";
 
     /**
      * 获取当前系统时间
@@ -419,16 +429,58 @@ public class ProjConfigServiceImpl implements ProjConfigService {
     public int updateSysSystem(SysSystem sysSystem){
         return sysSystemDao.updateByPrimaryKeySelective(sysSystem);
     }
+
     /**
-     * 修改系统类型
+     * 修改项目的接收状态
      */
     @Override
     public int updateProjectReceiveAndOnline(ProjectConfigInfo projectConfigInfo){
+
         BusProject busProject = new BusProject();
         busProject.setId(projectConfigInfo.getId());
         busProject.setOnline(projectConfigInfo.getOnline());
         busProject.setReceive(projectConfigInfo.getReceive());
-        return busProjectDao.updateByPrimaryKeySelective(busProject);
+        int flag = busProjectDao.updateByPrimaryKeySelective(busProject);
+        if (flag > 0){
+            searchProject();
+        }
+        return flag;
+    }
+
+    /**
+     * 预先将网关ID存到redis中
+     * @author GaoLiWei
+     * @date 14:13 2019/3/4
+     **/
+    private void searchProject() {
+        // 清空redis中的phoneIds
+        redisService.remove(PHONE_ID_KEY);
+        //查找出要接受的项目的信息
+        Example example = new Example(BusProject.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("receive", 1);
+        List<BusProject> list =  busProjectDao.selectByExample(example);
+
+        if (list.size() > 0){
+            //所有项目的网关ID
+            List<String> repeatList = new ArrayList<>();
+            //对符合要求的项目进行处理
+            list.forEach(busProject -> {
+                //取出该项目对应的网关ID
+                String phoneIds = busProject.getPhones();
+                if (StringUtils.isNotBlank(phoneIds)) {
+                    String[] split = phoneIds.split(",");
+                    //将网关ID全部存到一个list中
+                    repeatList.addAll(Arrays.asList(split));
+                }
+                redisService.set(busProject.getId(),busProject.getPhones());
+            });
+
+            for(String phoneIdList : repeatList){
+                // 把网关ID存到redis中
+                redisService.setList(PHONE_ID_KEY, phoneIdList);
+            }
+        }
     }
 
 }
