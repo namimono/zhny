@@ -7,6 +7,7 @@ import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.dao.DeviceConfigDao;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.ParamFirstContainSecond;
+import org.rcisoft.business.system.project.entity.ParamResult;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.rcisoft.dao.*;
 import org.rcisoft.entity.*;
@@ -303,8 +304,14 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
      * 查询一二级参数信息
      */
     @Override
-    public List<ParamFirstContainSecond> queryParamInfo(String deviceId){
-        List<ParamFirstContainSecond> paramFirstContainSecondList = new ArrayList<>();
+    public ParamResult queryParamInfo(String deviceId){
+        // 最后的返回值
+        ParamResult result = new ParamResult();
+        // 一二级参数返回值
+        List<ParamFirstContainSecond> paramFirstContainSecondList = result.getList();
+        // 固定参数返回值
+        List<BusParamSecond> fixedList = result.getFixedList();
+        // 查询数据
         List<BusParamFirst> paramFirstList = busParamFirstDao.queryParamFirstByDevId(deviceId);
         List<BusParamSecond> paramSecondList = busParamSecondDao.queryParamSecondByDevId(deviceId);
         //分组存储二级参数信息
@@ -313,12 +320,17 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
         将所有二级参数信息通过一级参数ID进行分组，存于resultMap中
          */
         for(BusParamSecond busParamSecond : paramSecondList){
-            if (resultMap.containsKey(busParamSecond.getParamFirstId())){
-                resultMap.get(busParamSecond.getParamFirstId()).add(busParamSecond);
-            }else {
-                List<BusParamSecond> list = new ArrayList<>();
-                list.add(busParamSecond);
-                resultMap.put(busParamSecond.getParamFirstId(),list);
+            // 如果是固定参数，放入固定参数返回值
+            if (busParamSecond.getSourceId() == 4) {
+                fixedList.add(busParamSecond);
+            } else {
+                if (resultMap.containsKey(busParamSecond.getParamFirstId())){
+                    resultMap.get(busParamSecond.getParamFirstId()).add(busParamSecond);
+                }else {
+                    List<BusParamSecond> list = new ArrayList<>();
+                    list.add(busParamSecond);
+                    resultMap.put(busParamSecond.getParamFirstId(),list);
+                }
             }
         }
         //循环将一级参数和其对应的二级参数装入paramFirstContainSecondList
@@ -332,7 +344,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
                 }
             });
         }
-        return paramFirstContainSecondList;
+        return result;
     }
 
     /**
