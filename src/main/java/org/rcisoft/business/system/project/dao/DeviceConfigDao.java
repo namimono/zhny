@@ -48,7 +48,7 @@ public interface DeviceConfigDao {
     /**
      * 查询一级参数名称或code相同的条数
      */
-    @Select("SELECT COUNT(*) FROM bus_param_first WHERE coding = #{paramCode} OR `name` = #{paramName}\n" +
+    @Select("SELECT COUNT(*) FROM bus_param_first WHERE (coding = #{paramCode} OR `name` = #{paramName})\n" +
             "and project_id = #{proId} and device_id = #{deviceId}")
     int queryRepeatNum(@Param("paramName") String paramName, @Param("paramCode")String paramCode, @Param("proId")String proId, @Param("deviceId") String deviceId);
 }
