@@ -4,22 +4,22 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mysql.jdbc.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
+import org.rcisoft.base.util.FormulaUtil;
+import org.rcisoft.base.util.ZhnyUtils;
 import org.rcisoft.business.equipment.report.dao.SystemDataDao;
-import org.rcisoft.business.equipment.report.entity.ParamSecondWithFirst;
+import org.rcisoft.business.equipment.report.entity.*;
 import org.rcisoft.business.equipment.report.service.SystemDataService;
-import org.rcisoft.dao.BusParamSecondDao;
 import org.rcisoft.dao.SysDataDao;
-import org.rcisoft.entity.BusParamFirst;
-import org.rcisoft.entity.BusParamSecond;
 import org.rcisoft.entity.SysData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static java.util.Calendar.HOUR_OF_DAY;
 
 /**
  * @author 土豆儿
@@ -145,7 +145,7 @@ public class SystemDataServiceImpl implements SystemDataService {
                     //整点数据
                     if (cal.get(Calendar.MINUTE) == 0) {
                         //得到小时
-                        int hour = cal.get(Calendar.HOUR_OF_DAY);
+                        int hour = cal.get(HOUR_OF_DAY);
                         //参数数值
                         String paramValue = paramSecond.getString(paramSecondWithFirst.getSecondCode());
                         list.set(hour, paramValue);
@@ -157,5 +157,53 @@ public class SystemDataServiceImpl implements SystemDataService {
             resultList.add(nameList);
         }
         return resultList;
+    }
+
+    @Override
+    public List<ReturnSystemData> listSystemData(SystemDataDto systemDataDto) {
+        //要返回的数据
+        List<ReturnSystemData> returnSystemDataList = new ArrayList<>();
+
+        //获得参数列表
+        List<FirstCodeAndSecondCode> firstCodeAndSecondCodeList = systemDataDto.getFirstCodeAndSecondCodeList();
+
+        //得到网关原始数据
+        List<SysData> sysDataList = systemDataDao.listDataByProIdAndDate(systemDataDto.getProjectId(), systemDataDto.getDate());
+
+        //将原始数据按照每小时一次分组
+        Long time = 3600000L;
+        Map<Long,String> statusMap = ZhnyUtils.groupSysDataByTime(systemDataDto.getDate(),sysDataList,time);
+
+        //设备名前缀数字
+        int numFlag = 1;
+
+        if (firstCodeAndSecondCodeList .size()>0){
+            for (FirstCodeAndSecondCode firstCodeAndSecondCode : firstCodeAndSecondCodeList){
+                ReturnSystemData returnSystemData = new ReturnSystemData();
+
+                List<CodeValueAndHour> codeValueAndHours = new ArrayList<>();
+
+                statusMap.forEach((k,v) ->{
+                    CodeValueAndHour codeValueAndHour = new CodeValueAndHour();
+                    //获得当前参数的值
+                    String secondParamValue = FormulaUtil.getValueFromJson(firstCodeAndSecondCode.getFirstCode(), firstCodeAndSecondCode.getSecondCode(), v);
+                    //获得当前是第几个小时
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(new Date(k));
+                    int hour = cal.get(Calendar.HOUR_OF_DAY);
+
+                    codeValueAndHour.setSecondCodeValue(secondParamValue);
+                    codeValueAndHour.setHour(hour);
+                    codeValueAndHours.add(codeValueAndHour);
+                });
+                //封装返回值
+                returnSystemData.setDeviceName(numFlag+"-"+firstCodeAndSecondCode.getDeviceName());
+                returnSystemData.setCodeValueAndHours(codeValueAndHours);
+                returnSystemDataList.add(returnSystemData);
+                //让返回值前缀增加1
+                numFlag++;
+            }
+        }
+        return returnSystemDataList;
     }
 }

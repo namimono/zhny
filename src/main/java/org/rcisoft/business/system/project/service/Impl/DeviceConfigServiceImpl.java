@@ -357,7 +357,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
         //判断新增一级参数信息是否重复
         for (ParamFirstContainSecond paramFirstContainSecond : list){
             if (paramFirstContainSecond.getBusParamFirst().getId() == null || "".equals(paramFirstContainSecond.getBusParamFirst().getId())){
-                int flag = deviceConfigDao.queryRepeatNum(paramFirstContainSecond.getBusParamFirst().getName(),paramFirstContainSecond.getBusParamFirst().getCoding(),paramFirstContainSecond.getBusParamFirst().getProjectId());
+                int flag = deviceConfigDao.queryRepeatNum(paramFirstContainSecond.getBusParamFirst().getName(),paramFirstContainSecond.getBusParamFirst().getCoding(),paramFirstContainSecond.getBusParamFirst().getProjectId(),paramFirstContainSecond.getBusParamFirst().getDeviceId());
                 if(flag > 0){
                     return new ServiceResult(flag,"error");
                 }

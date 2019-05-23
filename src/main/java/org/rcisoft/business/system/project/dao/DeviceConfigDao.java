@@ -1,6 +1,7 @@
 package org.rcisoft.business.system.project.dao;
 
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.mapping.StatementType;
 import org.rcisoft.entity.BusParamFirst;
 import org.rcisoft.entity.BusParamSecond;
@@ -48,6 +49,6 @@ public interface DeviceConfigDao {
      * 查询一级参数名称或code相同的条数
      */
     @Select("SELECT COUNT(*) FROM bus_param_first WHERE coding = #{paramCode} OR `name` = #{paramName}\n" +
-            "and project_id = #{proId}")
-    int queryRepeatNum(@Param("paramName") String paramName,@Param("paramCode")String paramCode,@Param("proId")String proId);
+            "and project_id = #{proId} and device_id = #{deviceId}")
+    int queryRepeatNum(@Param("paramName") String paramName, @Param("paramCode")String paramCode, @Param("proId")String proId, @Param("deviceId") String deviceId);
 }

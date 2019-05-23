@@ -2,14 +2,12 @@ package org.rcisoft.base.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.rcisoft.entity.SysData;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author GaoLiwei
@@ -112,6 +110,65 @@ public class ZhnyUtils {
             }
         }
         return resultMap;
+    }
+
+
+    /**
+     * 将项目的网关数据，按照指定时间分组
+     * @author GaoLiWei
+     * @date 9:59 2019/5/23
+     **/
+    public static Map<Long,String> groupSysDataByTime(Date date, List<SysData> sysDataList, Long time){
+
+        Map<Long,String> map = new HashMap<>(144);
+
+            //当天结束时间
+            long dayEndTime = getDayEndTime(date).getTime();
+            //1天24小时按照10分钟一次对这个设备当天的原始数据进行处理
+            for (long dayStartTime = getDayStartTime(date).getTime(); dayStartTime<=dayEndTime; dayStartTime += time){
+                map.put(dayStartTime,null);
+                for (SysData sysData : sysDataList){
+                    if (sysData.getCreateTime().getTime() == dayStartTime){
+                        map.put(dayStartTime,sysData.getJson());
+                        break;
+                    }
+                }
+            }
+
+        return map;
+    }
+
+
+    /**
+     * 得到当天的开始时间
+     *
+     * @author GaoLiWei
+     * @date 9:35 2019/3/18
+     **/
+    public static Date getDayStartTime(Date date) {
+        Calendar dayStart = Calendar.getInstance();
+        dayStart.setTime(date);
+        dayStart.set(Calendar.HOUR, 0);
+        dayStart.set(Calendar.MINUTE, 0);
+        dayStart.set(Calendar.SECOND, 0);
+        dayStart.set(Calendar.MILLISECOND, 0);
+        return dayStart.getTime();
+    }
+
+    /**
+     * 得到当天的结束时间
+     *
+     * @author GaoLiWei
+     * @date 9:35 2019/3/18
+     **/
+    public static Date getDayEndTime(Date date) {
+        Calendar dayEnd = Calendar.getInstance();
+        dayEnd.setTime(date);
+        dayEnd.set(Calendar.HOUR, 23);
+        dayEnd.set(Calendar.MINUTE, 59);
+        dayEnd.set(Calendar.SECOND, 59);
+        dayEnd.set(Calendar.MILLISECOND, 999);
+        return dayEnd.getTime();
     }
 
 

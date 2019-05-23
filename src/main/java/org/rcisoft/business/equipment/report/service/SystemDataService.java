@@ -1,6 +1,7 @@
 package org.rcisoft.business.equipment.report.service;
 
-import org.rcisoft.entity.BusParamSecond;
+import org.rcisoft.business.equipment.report.entity.ReturnSystemData;
+import org.rcisoft.business.equipment.report.entity.SystemDataDto;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -21,4 +22,8 @@ public interface SystemDataService {
      * 查询图表数据
      */
     List<Object> queryEchartData(String paramSecondIds,String proId,String date);
+
+
+    List<ReturnSystemData> listSystemData (SystemDataDto systemDataDto);
+
 }
