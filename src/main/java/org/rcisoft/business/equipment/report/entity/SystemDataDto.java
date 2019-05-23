@@ -32,6 +32,6 @@ public class SystemDataDto {
     /**
      * code参数
      */
-    List<FirstCodeAndSecondCode> firstCodeAndSecondCodeList;
+    private List<FirstCodeAndSecondCode> firstCodeAndSecondCodeList;
 
 }
