@@ -120,7 +120,7 @@ public class ZhnyUtils {
      **/
     public static Map<Long,String> groupSysDataByTime(Date date, List<SysData> sysDataList, Long time){
 
-        Map<Long,String> map = new HashMap<>(144);
+        Map<Long,String> map = new HashMap<>();
 
             //当天结束时间
             long dayEndTime = getDayEndTime(date).getTime();

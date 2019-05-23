@@ -8,6 +8,7 @@ import org.rcisoft.business.equipment.report.service.SystemDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -28,13 +29,13 @@ public class SystemDataController {
         return Result.result(systemDataServiceImpl.queryEchartData(paramSecondIds,proId,date));
     }
 
-    @ApiOperation(value="下载数据文档",notes="下载数据文档",produces="application/octet-stream")
-    @GetMapping("/downlDataDocument/{paramSecondIds}/{proId}/{date}")
-    public void downlDataDocument(HttpServletResponse response,@PathVariable String paramSecondIds,@PathVariable String proId,@PathVariable String date){
-        systemDataServiceImpl.downlDataDocument(response,paramSecondIds,proId,date);
+    @ApiOperation(value="下载数据文档",notes="参数：项目ID,一级参数code,二级参数code,选择时间(yyyy-MM-dd)")
+    @PostMapping("/downlDataDocument")
+    public void downlDataDocument(HttpServletRequest request,HttpServletResponse response, @RequestBody SystemDataDto systemDataDto){
+        systemDataServiceImpl.downlDataDocument(request,response,systemDataDto);
     }
 
-    @ApiOperation(value = "查询系统数据", notes = "参数：项目ID,一级参数code,二级参数code,选择时间")
+    @ApiOperation(value = "查询系统数据", notes = "参数：项目ID,一级参数code,二级参数code,选择时间(yyyy-MM-dd)")
     @PostMapping("/listSystemData")
     public Result listSystemData(@RequestBody SystemDataDto systemDataDto){
         return Result.result(systemDataServiceImpl.listSystemData(systemDataDto));
