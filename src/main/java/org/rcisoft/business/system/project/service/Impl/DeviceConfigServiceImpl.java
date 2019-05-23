@@ -1,8 +1,10 @@
 package org.rcisoft.business.system.project.service.Impl;
 
+import com.google.zxing.WriterException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.base.result.ServiceResult;
+import org.rcisoft.base.util.QRCodeUtils;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.dao.DeviceConfigDao;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
@@ -40,6 +42,11 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     /** 设备图片文件夹 */
     @Value("${location.device}")
     String device;
+    /**
+     * 二维码存放路径
+     */
+    @Value("${location.qrcode}")
+    String qrcodeImgPath;
 
     @Autowired
     private BusDeviceDao busDeviceDao;
@@ -85,8 +92,18 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
      */
     @Override
     public int addDeviceConfigInfo(BusDevice busDevice){
-        busDevice.setId(UuidUtil.create32());
+        String id = UuidUtil.create32();
+        busDevice.setId(id);
         busDevice.setCreateTime(this.getNowTime());
+        busDevice.setQrcodeUrl(id+".JPG");
+        try {
+            //生成二维码
+            QRCodeUtils.createQRCodeFile(id,path+qrcodeImgPath,id);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return busDeviceDao.insertSelective(busDevice);
     }
 
