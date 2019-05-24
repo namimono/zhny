@@ -136,7 +136,7 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
         Example example = new Example(BusVariable.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("projectId", projectId);
-        example.setOrderByClause("createTime desc");
+        example.setOrderByClause("create_time desc");
         List<BusVariable> variableList = busVariableDao.selectByExample(example);
         // 循环公式集合，将变量放入对应的公式
         formulaList.forEach(formulaAndVariables -> {
