@@ -3,12 +3,14 @@ package org.rcisoft.business.equipment.report.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
+import org.rcisoft.business.equipment.report.entity.FormulaParams;
 import org.rcisoft.business.equipment.report.service.FormulaOperationService;
 import org.rcisoft.entity.BusFormula;
 import org.rcisoft.entity.BusVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -24,75 +26,33 @@ public class FormulaOperationController {
     @Autowired
     private FormulaOperationService formulaOperationServiceImpl;
 
-    @ApiOperation(value="增加公式信息", notes="增加公式信息")
-    @PostMapping("/addFormula")
-    public Result addFormula(@RequestBody BusFormula busFormula){
-        return Result.result(formulaOperationServiceImpl.addFormula(busFormula),"增加公式信息成功","增加公式信息失败");
+    @ApiOperation(value="编辑公式和变量",notes="需要的参数（字段名称与数据库一致） 公式：busFormula，参数集合：variableList，删除的参数ids：deleteVariableIds")
+    @PostMapping("/editFormulaAndVariable")
+    public Result editFormulaAndVariable(@RequestBody FormulaParams formulaParams) {
+        return Result.result(formulaOperationServiceImpl.editFormulaAndVariable(formulaParams), "编辑公式成功", "编辑公式失败");
     }
 
-    @ApiOperation(value="删除公式信息", notes="删除公式信息")
-    @DeleteMapping("/deleteFormula")
-    public Result deleteFormula(@RequestBody BusFormula busFormula){
-        return Result.result(formulaOperationServiceImpl.deleteFormula(busFormula),"删除公式信息成功","删除公式信息失败");
+    @ApiOperation(value="删除公式",notes="需要的参数（字段名称与数据库一致） 公式id")
+    @GetMapping("/deleteFormula/{formulaId}")
+    public Result deleteFormula(@PathVariable String formulaId) {
+        return Result.result(formulaOperationServiceImpl.deleteFormula(formulaId), "删除公式成功", "删除公式失败");
     }
 
-    @ApiOperation(value="修改公式信息", notes="修改公式信息")
-    @PutMapping("/updateFormula")
-    public Result updateFormula(@RequestBody BusFormula busFormula){
-        return Result.result(formulaOperationServiceImpl.updateFormula(busFormula),"修改公式信息成功","修改公式信息失败");
+    @ApiOperation(value="查询所有公式和变量",notes="需要的参数（字段名称与数据库一致） 项目id")
+    @GetMapping("/queryFormulaAndVariale/{projectId}")
+    public Result queryFormulaAndVariale(@PathVariable String projectId) {
+        return Result.result(formulaOperationServiceImpl.queryFormulaAndVariale(projectId));
     }
 
-    @ApiOperation(value="根据项目ID查询公式信息", notes="根据项目ID查询公式信息")
-    @GetMapping("/queryFormula/{projectId}")
-    public Result queryFormula(@PathVariable String projectId){
-        return Result.result(formulaOperationServiceImpl.queryFormula(projectId));
+    @ApiOperation(value="查询echart图的数据",notes="需要的参数（字段名称与数据库一致） 项目id，年月日")
+    @GetMapping("/queryData/{projectId}/{date}")
+    public Result queryData(@PathVariable String projectId, @PathVariable String date) {
+        return Result.result(formulaOperationServiceImpl.queryData(projectId, date));
     }
 
-    @ApiOperation(value="查询参数来源", notes="查询参数来源")
-    @GetMapping("/querySource")
-    public Result querySource(){
-        return Result.result(formulaOperationServiceImpl.querySource());
-    }
-
-    @ApiOperation(value="根据公式ID和项目ID查询变量", notes="根据公式ID和项目ID查询变量")
-    @GetMapping("/queryVariable/{projectId}/{formulaId}")
-    public Result queryVariable(@PathVariable String projectId,@PathVariable String formulaId){
-        return Result.result(formulaOperationServiceImpl.queryVariable(projectId,formulaId));
-    }
-
-    @ApiOperation(value="增加变量信息", notes="增加变量信息")
-    @PostMapping("/addVariable")
-    public Result addVariable(@RequestBody BusVariable busVariable){
-        return Result.result(formulaOperationServiceImpl.addVariable(busVariable),"增加变量信息成功","增加变量信息失败");
-    }
-
-    @ApiOperation(value="删除变量信息", notes="删除变量信息")
-    @DeleteMapping("/deleteVariable")
-    public Result deleteVariable(@RequestBody BusVariable busVariable){
-        return Result.result(formulaOperationServiceImpl.deleteVariable(busVariable),"删除变量信息成功","删除变量信息失败");
-    }
-
-    @ApiOperation(value="修改变量信息", notes="修改变量信息")
-    @PutMapping("/updateVariable")
-    public Result updateVariable(@RequestBody BusVariable busVariable){
-        return Result.result(formulaOperationServiceImpl.updateVariable(busVariable),"修改变量信息成功","修改变量信息失败");
-    }
-
-    @ApiOperation(value="根据项目ID和参数来源查询二级参数信息", notes="根据项目ID和参数来源查询二级参数信息")
-    @GetMapping("/queryVariable/{projectId}/{sourceId}")
-    public Result queryParamSecondByProId(@PathVariable String projectId,@PathVariable String sourceId){
-        return Result.result(formulaOperationServiceImpl.queryParamSecondByProId(projectId,sourceId));
-    }
-
-    @ApiOperation(value="导出公式数据",notes="导出公式数据",produces="application/octet-stream")
-    @PostMapping("/downloadFormulaData/{projectId}/{date}")
-    public void downloadFormulaData(HttpServletResponse response,@PathVariable String projectId,@PathVariable String date,@RequestBody List<BusFormula> formulaList){
-        formulaOperationServiceImpl.downloadFormulaData(response,projectId,date,formulaList);
-    }
-
-    @ApiOperation(value="查询计算公式结果", notes="查询计算公式结果")
-    @GetMapping("/queryResult/{proId}/{date}")
-    public Result queryResult(@PathVariable String proId,@PathVariable String date){
-        return Result.result(formulaOperationServiceImpl.queryResult(proId,date));
+    @ApiOperation(value="下载echart图数据",notes="需要的参数（字段名称与数据库一致） 项目id，年月日")
+    @GetMapping("/downloadData/{projectId}/{date}")
+    public void downloadData(HttpServletRequest request, HttpServletResponse response, @PathVariable String projectId, @PathVariable String date) {
+        formulaOperationServiceImpl.downloadData(request, response, projectId, date);
     }
 }

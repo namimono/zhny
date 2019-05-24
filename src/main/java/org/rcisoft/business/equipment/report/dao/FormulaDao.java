@@ -1,8 +1,11 @@
 package org.rcisoft.business.equipment.report.dao;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
-import org.rcisoft.business.system.project.entity.FormulaVariableData;
+import org.rcisoft.business.equipment.report.entity.FormulaAndVariables;
+import org.rcisoft.business.equipment.report.entity.FormulaEntity;
+import org.rcisoft.business.equipment.report.entity.VariableParam;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,13 +18,34 @@ import java.util.List;
 public interface FormulaDao {
 
     /**
-     * 根据公式ID获取对应的变量信息ID查询参数信息
+     * 根据项目id查询所有公式
+     * @param projectId
+     * @return
      */
-    @Select("SELECT a.id AS 'variableId',a.variable,a.formula_id AS 'formulaId',\n" +
-            "b.coding AS 'paramFirstCoding',c.coding AS 'paramSecondCoding',f.`name` AS 'formulaName'\n" +
-            "FROM bus_variable a\n" +
-            "LEFT JOIN (bus_formula f,bus_param_first b,bus_param_second c)\n" +
-            "ON f.id = a.formula_id AND b.id = a.param_first_id AND c.id = a.param_second_id\n" +
-            "WHERE a.formula_id in (${formulaIds});")
-    List<FormulaVariableData> queryParamsByFormula(@Param("formulaIds") String formulaIds);
+    @Select("<script>" +
+            "select * from bus_formula where project_id = #{projectId}" +
+            "</script>")
+    @ResultType(FormulaAndVariables.class)
+    List<FormulaAndVariables> queryFormulasByProjectId(@Param("projectId") String projectId);
+
+    /**
+     * 根据项目id查询所有公式
+     * @param projectId
+     * @return
+     */
+    @Select("<script>" +
+            "select * from bus_formula where project_id = #{projectId}" +
+            "</script>")
+    @ResultType(FormulaEntity.class)
+    List<FormulaEntity> queryFormulaEntity(@Param("projectId") String projectId);
+
+    @Select("<script>" +
+            "select v.formula_id, v.variable, f.coding codingFirst, s.coding codingSecond from bus_variable v " +
+            "left join bus_param_first f on f.id = v.param_first_id " +
+            "left join bus_param_second s on s.id = v.param_second_id " +
+            "where v.project_id = #{projectId} " +
+            "order by v.create_time asc" +
+            "</script>")
+    @ResultType(VariableParam.class)
+    List<VariableParam> queryVariableParam(@Param("projectId") String projectId);
 }

@@ -1,5 +1,6 @@
 package org.rcisoft.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.energy.compare.entity.CompareParam;
@@ -70,5 +71,15 @@ public interface EnergyStatisticsDao extends Mapper<EnergyStatistics> {
     EnergyStatistics queryEnergyDayAndMon(CompareParam compareParam);
 
     /** -----------------------------用能比较---------------------------------------- */
+    /**
+     * 下载电子报表
+     * @param projectId
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    @Select("<script>select device_id, create_time, energy_water, energy_elec, energy_gas from energy_statistics where project_id = #{projectId} and create_time between #{beginTime} and #{endTime} order by device_id, create_time asc</script>")
+    @ResultType(EnergyStatistics.class)
+    List<EnergyStatistics> queryEnergyStatistics(@Param("projectId") String projectId, @Param("beginTime") String beginTime, @Param("endTime") String endTime);
 
 }

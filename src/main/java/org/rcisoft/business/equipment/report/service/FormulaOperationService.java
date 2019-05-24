@@ -1,11 +1,11 @@
 package org.rcisoft.business.equipment.report.service;
 
-import org.rcisoft.business.equipment.report.entity.VariableAndParam;
-import org.rcisoft.entity.BusFormula;
-import org.rcisoft.entity.BusParamSecond;
-import org.rcisoft.entity.BusVariable;
-import org.rcisoft.entity.SysSource;
 
+import org.rcisoft.business.equipment.report.entity.EchartResult;
+import org.rcisoft.business.equipment.report.entity.FormulaAndVariables;
+import org.rcisoft.business.equipment.report.entity.FormulaParams;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -17,62 +17,39 @@ import java.util.List;
 public interface FormulaOperationService {
 
     /**
-     * 根据项目ID查询公式信息
+     * 添加公式和变量
+     * @param formulaParams
+     * @return
      */
-    List<BusFormula> queryFormula(String projectId);
+    int editFormulaAndVariable(FormulaParams formulaParams);
 
     /**
-     * 增加公式信息
+     * 删除公式和变量
+     * @param formulaId
+     * @return
      */
-    int addFormula(BusFormula busFormula);
+    int deleteFormula(String formulaId);
 
     /**
-     * 删除公式信息
+     * 根据项目id查询所有的公式和公式下的变量集合
+     * @param projectId
+     * @return
      */
-    int deleteFormula(BusFormula busFormula);
+    List<FormulaAndVariables> queryFormulaAndVariale(String projectId);
 
     /**
-     * 修改公式信息
+     * 查询echart图的数据
+     * @param projectId
+     * @param date
+     * @return
      */
-    int updateFormula(BusFormula busFormula);
+    List<EchartResult> queryData(String projectId, String date);
 
     /**
-     * 根据公式ID和项目ID查询变量
+     * 下载echart图数据
+     * @param projectId
+     * @param date
      */
-    List<VariableAndParam> queryVariable(String projectId, String formulaId);
+    void downloadData(HttpServletRequest request, HttpServletResponse response, String projectId, String date);
 
-    /**
-     * 查询参数来源
-     */
-    List<SysSource> querySource();
-
-    /**
-     * 增加变量信息
-     */
-    int addVariable(BusVariable busVariable);
-
-    /**
-     * 删除变量信息
-     */
-    int deleteVariable(BusVariable busVariable);
-
-    /**
-     * 修改变量信息
-     */
-    int updateVariable(BusVariable busVariable);
-
-    /**
-     * 根据项目ID和参数来源查询二级参数信息
-     */
-    List<BusParamSecond> queryParamSecondByProId(String projectId, String sourceId);
-
-    /**
-     * 导出公式数据
-     */
-    void downloadFormulaData(HttpServletResponse response,String projectId,String date,List<BusFormula> formulaList);
-
-    /**
-     * 查询计算公式结果
-     */
-    List<Object> queryResult(String proId,String date);
 }

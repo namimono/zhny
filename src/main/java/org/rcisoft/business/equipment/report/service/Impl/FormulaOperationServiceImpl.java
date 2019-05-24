@@ -1,29 +1,30 @@
 package org.rcisoft.business.equipment.report.service.Impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
-import com.mysql.jdbc.StringUtils;
-import org.apache.poi.hssf.usermodel.*;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.rcisoft.base.util.ExcelUtil;
 import org.rcisoft.base.util.FormulaUtil;
 import org.rcisoft.base.util.UuidUtil;
-import org.rcisoft.base.util.ZhnyUtils;
-import org.rcisoft.business.equipment.report.entity.VariableAndParam;
+import org.rcisoft.business.equipment.report.entity.*;
 import org.rcisoft.business.equipment.report.service.FormulaOperationService;
 import org.rcisoft.business.equipment.report.dao.FormulaDao;
-import org.rcisoft.business.system.project.entity.FormulaVariableData;
 import org.rcisoft.dao.*;
-import org.rcisoft.entity.*;
+import org.rcisoft.entity.BusFormula;
+import org.rcisoft.entity.BusVariable;
+import org.rcisoft.entity.SysData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -46,356 +47,220 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
     @Autowired
     private SysDataDao sysDataDao;
 
-    /**
-     * 获取当前系统时间
-     */
-    private Date getNowTime(){
-        SimpleDateFormat fdate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date nowTime = null;
-        try {
-            nowTime = fdate.parse(fdate.format(new Date()));
-        } catch (ParseException e) {
-            e.printStackTrace();
+    @Transactional
+    @Override
+    public int editFormulaAndVariable(FormulaParams formulaParams) {
+        BusFormula busFormula = formulaParams.getBusFormula();
+        List<BusVariable> variableList = formulaParams.getVariableList();
+        String delIds = formulaParams.getDeleteVariableIds();
+        String projectId = formulaParams.getProjectId();
+        // 数据库操作结果
+        int a = 0, b = 0, c = 0, d = 0, e = 0;
+        // 日期
+        Date date = new Date();
+        // 操作的标志，0：新增，1：更新
+        int saveOrUpdate = 0;
+        // 删除的id集合
+        String[] delArrays = null;
+        // 获取公式id
+        String formulaId = busFormula.getId();
+        // 公式id为空，是新增，不为空，是更新
+        if (StringUtils.isEmpty(formulaId)) {
+            formulaId = UuidUtil.create32();
+            busFormula.setId(formulaId);
+            busFormula.setProjectId(projectId);
+            busFormula.setCreateTime(date);
+        } else {
+            saveOrUpdate = 1;
         }
-        return nowTime;
-    }
-
-    /**
-     * 根据项目ID查询公式信息
-     */
-    @Override
-    public List<BusFormula> queryFormula(String projectId){
-        return busFormulaDao.queryFormula(projectId);
-    }
-
-    /**
-     * 增加公式信息
-     */
-    @Override
-    public int addFormula(BusFormula busFormula){
-        busFormula.setId(UuidUtil.create32());
-        busFormula.setCreateTime(this.getNowTime());
-        return busFormulaDao.insertSelective(busFormula);
-    }
-
-    /**
-     * 删除公式信息
-     */
-    @Override
-    public int deleteFormula(BusFormula busFormula){
-        return busFormulaDao.deleteByPrimaryKey(busFormula);
-    }
-
-    /**
-     * 修改公式信息
-     */
-    @Override
-    public int updateFormula(BusFormula busFormula){
-        return busFormulaDao.updateByPrimaryKeySelective(busFormula);
-    }
-
-    /**
-     * 根据公式ID和项目ID查询变量
-     */
-    @Override
-    public List<VariableAndParam> queryVariable(String projectId, String formulaId){
-        return busVariableDao.queryVariable(projectId,formulaId);
-    }
-
-    /**
-     * 查询参数来源
-     */
-    @Override
-    public List<SysSource> querySource(){
-        return sysSourceDao.querySourceInfo();
-    }
-
-    /**
-     * 增加变量信息
-     */
-    @Override
-    public int addVariable(BusVariable busVariable){
-        busVariable.setCreateTime(this.getNowTime());
-        busVariable.setId(UuidUtil.create32());
-        return busVariableDao.insertSelective(busVariable);
-    }
-
-    /**
-     * 删除变量信息
-     */
-    @Override
-    public int deleteVariable(BusVariable busVariable){
-        return busVariableDao.deleteByPrimaryKey(busVariable);
-    }
-
-    /**
-     * 修改变量信息
-     */
-    @Override
-    public int updateVariable(BusVariable busVariable){
-        return busVariableDao.updateByPrimaryKeySelective(busVariable);
-    }
-
-    /**
-     * 根据项目ID和参数来源查询二级参数信息
-     */
-    @Override
-    public List<BusParamSecond> queryParamSecondByProId(String projectId, String sourceId){
-        return busParamSecondDao.queryParamSecondByProId(projectId,sourceId);
-    }
-
-    /**
-     * 导出公式数据
-     */
-    @Override
-    public void downloadFormulaData(HttpServletResponse response,String projectId,String date,List<BusFormula> formulaList){
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("公式数据");
-
-        /*设置单元格格式为文本格式*/
-        HSSFCellStyle textStyle = workbook.createCellStyle();
-        HSSFDataFormat format = workbook.createDataFormat();
-        textStyle.setDataFormat(format.getFormat("@"));
-        //设置单元格格式为"文本"cell.setCellStyle(textStyle);
-
-        //设置要导出的文件的名字
-        String fileName = "FormulaData.xls";
-        String[] header = {"公式名称","公式内容","时间","数值"};
-
-        //设置默认列宽
-        sheet.setDefaultColumnWidth(12);
-        //设置列宽
-        sheet.setColumnWidth(0,5000);
-
-        //创建合并单元格对象
-        //起始行,结束行,起始列,结束列
-        CellRangeAddress callRangeAddress = new CellRangeAddress(2,2,1,formulaList.size());
-        //加载合并单元格对象
-        sheet.addMergedRegion(callRangeAddress);
-
-        //添加第一行表头
-        HSSFRow row1 = sheet.createRow(0);
-        //在excel表中添加表头
-        for(int i=0;i<formulaList.size()+1;i++){
-            if (i == 0) {
-                HSSFCell cell = row1.createCell(i);
-                HSSFRichTextString text = new HSSFRichTextString(header[0]);
-                cell.setCellValue(text);
-            }else {
-                HSSFCell cell = row1.createCell(i);
-                HSSFRichTextString text = new HSSFRichTextString(formulaList.get(i-1).getName());
-                cell.setCellValue(text);
+        // 循环参数集合，如果id为空，放入待新增的list；如果不为空，放入待更新的设备
+        List<BusVariable> insertList = new ArrayList<>();
+        List<BusVariable> updateList = new ArrayList<>();
+        for (BusVariable busVariable : variableList) {
+            if (StringUtils.isEmpty(busVariable.getId())) {
+                // 需要新增
+                busVariable.setId(UuidUtil.create32());
+                busVariable.setFormulaId(formulaId);
+                busVariable.setProjectId(projectId);
+                busVariable.setCreateTime(date);
+                insertList.add(busVariable);
+            } else {
+                // 需要更新
+                updateList.add(busVariable);
             }
         }
+        // 删除
+        if (StringUtils.isNotEmpty(delIds)) {
+            delArrays = delIds.split(",");
+        }
+        /** 数据库的操作 */
+        // 公式表
+        if (saveOrUpdate == 0) {
+            // 新增
+            a = busFormulaDao.insertSelective(busFormula);
+        } else {
+            // 更新
+            b = busFormulaDao.updateByPrimaryKey(busFormula);
+        }
+        // 参数表
+        if (insertList.size() > 0) {
+            c = busVariableDao.batchSave(insertList);
+        }
+        if (updateList.size() > 0) {
+            d = busVariableDao.batchUpdate(updateList);
+        }
+        // 删除参数表
+        if (delArrays != null) {
+            e = busVariableDao.batchDelete(delArrays);
+        }
+        return a + b + c + d + e;
+    }
 
-        //存储公式ID组合串
-        StringBuffer formulaIds = new StringBuffer();
-        formulaList.forEach(busFormula -> {
-            //获得公式ID组合串
-            formulaIds.append("'");
-            formulaIds.append(busFormula.getId());
-            formulaIds.append("'");
-            formulaIds.append(",");
+    @Transactional
+    @Override
+    public int deleteFormula(String formulaId) {
+        // 删除公式表
+        int result = busFormulaDao.deleteByPrimaryKey(formulaId);
+        // 删除变量表
+        BusVariable busVariable = new BusVariable();
+        busVariable.setFormulaId(formulaId);
+        busVariableDao.delete(busVariable);
+        return result;
+    }
+
+    @Override
+    public List<FormulaAndVariables> queryFormulaAndVariale(String projectId) {
+        // 查询所有公式
+        List<FormulaAndVariables> formulaList = formulaDao.queryFormulasByProjectId(projectId);
+        // 查询所有变量
+        Example example = new Example(BusVariable.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId", projectId);
+        example.setOrderByClause("createTime desc");
+        List<BusVariable> variableList = busVariableDao.selectByExample(example);
+        // 循环公式集合，将变量放入对应的公式
+        formulaList.forEach(formulaAndVariables -> {
+            String id = formulaAndVariables.getId();
+            List<BusVariable> list = formulaAndVariables.getVariableList();
+            variableList.forEach(busVariable -> {
+                String formulaId = busVariable.getFormulaId();
+                if (StringUtils.equals(id, formulaId)) {
+                    // 如果公式id一致，放入
+                    list.add(busVariable);
+                }
+            });
         });
-        //删除末尾的逗号
-        formulaIds.deleteCharAt(formulaIds.length()-1);
-
-        //添加第二行表头
-        HSSFRow row2 = sheet.createRow(1);
-        for(int i=0;i<formulaList.size()+1;i++){
-            if (i == 0) {
-                HSSFCell cell = row2.createCell(i);
-                HSSFRichTextString text = new HSSFRichTextString(header[1]);
-                cell.setCellValue(text);
-            }else {
-                HSSFCell cell = row2.createCell(i);
-                HSSFRichTextString text = new HSSFRichTextString(formulaList.get(i-1).getFormula());
-                cell.setCellValue(text);
-            }
-        }
-        //添加第三行表头
-        HSSFRow row3 = sheet.createRow(2);
-        for(int i = 0;i < 2;i++){
-            HSSFCell cell = row3.createCell(i);
-            HSSFRichTextString text = new HSSFRichTextString(header[i+2]);
-            cell.setCellValue(text);
-        }
-
-        //查询出变量相应的二级参数代码
-        List<FormulaVariableData> formulaVariableDataList = formulaDao.queryParamsByFormula(formulaIds.toString());
-        //获取JSON数据
-        String beginTime = date + " 00:00:00";
-        String endTime = date + " 23:59:59";
-        List<SysData> sysDataList = sysDataDao.queryDataByProIdAndTime(projectId,beginTime,endTime);
-        //分组存储公式变量信息
-        Map<String,List<FormulaVariableData>> resultMap = new HashMap<>(16);
-        /*
-        将所有变量信息数据通过公式ID进行分组，存于resultMap中
-         */
-        for(FormulaVariableData formulaVariableData : formulaVariableDataList){
-            if (resultMap.containsKey(formulaVariableData.getFormulaId())){
-                resultMap.get(formulaVariableData.getFormulaId()).add(formulaVariableData);
-            }else {
-                List<FormulaVariableData> list = new ArrayList<>();
-                list.add(formulaVariableData);
-                resultMap.put(formulaVariableData.getFormulaId(),list);
-            }
-        }
-
-        //新增数据行（从表格第四行开始），并且设置单元格数据
-        int rowNum = 3;
-        //公式计算类
-        FelEngine fel = new FelEngineImpl();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //在表中存放查询到的数据放入对应的列
-        for (SysData sysData : sysDataList) {
-            JSONObject jsonObject = JSON.parseObject(sysData.getJson());
-            HSSFRow row4 = sheet.createRow(rowNum);
-            row4.createCell(0, CellType.STRING).setCellValue(sdf.format(sysData.getCreateTime()));
-            //通过公式的数量进行循环
-            int i = 1;
-            for (String key : resultMap.keySet()){
-                String formula = formulaList.get(i-1).getFormula();
-                //通过每个公式对应的变量数循环
-                // 排序变量list
-                List<FormulaVariableData> variableDataList = resultMap.get(key);
-                Collections.sort(variableDataList, (o1, o2) -> {
-                    String o1V = o1.getParamSecondCoding();
-                    String o2V = o2.getParamSecondCoding();
-                    if (o1V.length() > o2V.length()) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-                });
-                for (FormulaVariableData formulaVariableData : variableDataList){
-                    formula = this.fillValues(formula,formulaVariableData,jsonObject);
-                }
-                row4.createCell(i).setCellValue(FormulaUtil.calculate(formula,fel));
-                i++;
-            }
-            rowNum++;
-        }
-
-        response.setContentType("application/octet-stream");
-        response.setHeader("Content-disposition", "attachment;filename=" + fileName);
-        try {
-            response.flushBuffer();
-            workbook.write(response.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return formulaList;
     }
 
-    /**
-     * 将公式中的变量名替换为JSON数据中的具体数值
-     * @param formula
-     * @param formulaVariableData
-     * @param jsonObject
-     * @return 替换后的计算表达式
-     */
-    private String fillValues(String formula,FormulaVariableData formulaVariableData,JSONObject jsonObject){
-        JSONObject paramFirstCoding = jsonObject.getJSONObject(formulaVariableData.getParamFirstCoding());
-        JSONObject param = paramFirstCoding.getJSONObject("REG_VAL");
-        //存储变量对应的数值
-        String value = "";
-        if (param.get(formulaVariableData.getParamSecondCoding()) != null) {
-            value = param.get(formulaVariableData.getParamSecondCoding()).toString();
-        }else {
-            value = "0";
-        }
-        //将公式中的变量替换为相应的数值
-        formula = formula.replaceAll(formulaVariableData.getVariable(),value);
-        return formula;
-    }
-
-    /**
-     * 查询计算公式结果
-     */
     @Override
-    public List<Object> queryResult(String proId,String date){
-        //公式计算类
-        FelEngine fel = new FelEngineImpl();
-        //获取JSON数据
-        String beginTime = date + " 00:00:00";
-        String endTime = date + " 23:59:59";
-        List<SysData> dataList = sysDataDao.queryDataByTime(proId,beginTime,endTime);
-        if (dataList.size() <= 0){
-            return null;
-        }
-        //存储所有公式的统计数据
-        List<Object> resultsList = new ArrayList<>();
-        //存储公式信息，并获得公式ID组合串
-        List<BusFormula> formulaList = busFormulaDao.queryFormula(proId);
-        if (formulaList.size() <= 0){
-            return null;
-        }
-        StringBuilder formulaIds = new StringBuilder();
-        formulaList.forEach(busFormula -> {
-            formulaIds.append("'");
-            formulaIds.append(busFormula.getId());
-            formulaIds.append("'");
-            formulaIds.append(",");
+    public List<EchartResult> queryData(String projectId, String date) {
+        Calendar calendar = Calendar.getInstance();
+        FelEngine felEngineImpl = new FelEngineImpl();
+        // 新建返回值
+        List<EchartResult> resultList = new ArrayList<>();
+        // 查询公式
+        List<FormulaEntity> formulaList = this.queryFormulaEntity(projectId);
+        // 查询sys_data数据
+        List<SysData> dataList = sysDataDao.querySysData(date, projectId);
+        // 循环公式集合
+        formulaList.forEach(formulaEntity -> {
+            // 新建单个返回值
+            EchartResult echartResult = new EchartResult();
+            // 公式名称
+            echartResult.setName(formulaEntity.getName());
+            // 数据集合
+            List<String> list = echartResult.getDataList();
+            // 公式
+            String formula = formulaEntity.getFormula();
+            // 变量集合
+            List<VariableParam> variableParamList = formulaEntity.getVariableParamList();
+            // 变量排序
+            Collections.sort(variableParamList, (o1, o2) -> {
+                String o1V = o1.getVariable();
+                String o2V = o2.getVariable();
+                if (o1V.length() > o2V.length()) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            });
+            // 处理数据
+            dataList.forEach(sysData -> {
+                String value = null;
+                calendar.setTime(sysData.getCreateTime());
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                String json = sysData.getJson();
+                // 从公式中取数据
+                // 替换数据之后的公式计算式
+                String felFormula = new String(formula);
+                // 循环变量
+                for (VariableParam variableParam : variableParamList) {
+                    // 变量
+                    String variable = variableParam.getVariable();
+                    // 一级
+                    String first = variableParam.getCodingFirst();
+                    // 二级
+                    String second = variableParam.getCodingSecond();
+                    // 变量的值
+                    String variableValue = FormulaUtil.getValueFromJson(first, second, json);
+                    // 替换公式中的变量
+                    if (variableValue != null) {
+                        felFormula = felFormula.replaceAll(variable, variableValue);
+                    }
+                }
+                // 计算结果
+                value = FormulaUtil.calculate(felFormula, felEngineImpl);
+                // 放入结果集
+                if (value != null) {
+                    list.add(hour, value);
+                }
+            });
+            resultList.add(echartResult);
         });
-        //删除末尾的逗号
-        formulaIds.deleteCharAt(formulaIds.length()-1);
-        //查询出变量相应的二级参数代码
-        List<FormulaVariableData> variablesDataList = formulaDao.queryParamsByFormula(formulaIds.toString());
-        if (variablesDataList.size() <= 0){
-            return null;
-        }
-        //将数据根据公式ID进行分组
-        Map<Object,List> resultMap = ZhnyUtils.groupListByName(variablesDataList,"formulaId");
-        //日期进行操作的类
-        Calendar cal = Calendar.getInstance();
-        //将计算出的数值存入resultList
-        List<String> formulaName = new ArrayList<>();
-        //通过公式的数量进行循环
-        int i = 0;
-        if(resultMap.size() > 0){
-            for (Object key : resultMap.keySet()){
-                //存储单条公式24小时的数据
-                List<Object> resultList = Arrays.asList(new Object[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
-                for (SysData sysData : dataList) {
-                    JSONObject jsonObject = JSON.parseObject(sysData.getJson());
-                    cal.setTime(sysData.getCreateTime());
-                    String formula = formulaList.get(i).getFormula();
-                    //通过每个公式对应的变量数循环
-                    List<FormulaVariableData> variableDataList = resultMap.get(key);
-                    Collections.sort(variableDataList, (o1, o2) -> {
-                        String o1V = o1.getParamSecondCoding();
-                        String o2V = o2.getParamSecondCoding();
-                        if (o1V.length() > o2V.length()) {
-                            return -1;
-                        } else {
-                            return 1;
-                        }
-                    });
-                    if (variableDataList.size() <= 0){
-                        return null;
-                    }
-                    if (formulaList.get(i).getName().equals(variableDataList.get(0).getFormulaName())){
-                        for (FormulaVariableData formulaVariableData : variableDataList){
-                            formula = this.fillValues(formula,formulaVariableData,jsonObject);
-                        }
-                        //整点数据
-                        int hour = cal.get(Calendar.HOUR_OF_DAY);
-                        //参数数值
-                        String formulaResult = FormulaUtil.calculate(formula,fel);
-                        resultList.set(hour,formulaResult);
-                    }
-                }
-                if (StringUtils.isNullOrEmpty(formulaList.get(i).getName())){
-                    formulaName.add("null");
-                }else {
-                    formulaName.add(formulaList.get(i).getName());
-                }
-                resultsList.add(resultList);
-                i++;
-            }
-        }
-        resultsList.add(formulaName);
-        return resultsList;
+        return resultList;
     }
 
+    @Override
+    public void downloadData(HttpServletRequest request, HttpServletResponse response, String projectId, String date) {
+        List<EchartResult> echartList = this.queryData(projectId, date);
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet();
+        // 添加表头
+        Row row = sheet.createRow(0);
+        for (int i = 1; i < 25; i++) {
+            row.createCell(i, CellType.STRING).setCellValue(i + "时");
+        }
+        // 添加数据
+        for (int i = 0; i < echartList.size(); i++) {
+            Row dataRow = sheet.createRow(1 + i);
+            EchartResult echartResult = echartList.get(i);
+            dataRow.createCell(0, CellType.STRING).setCellValue(echartResult.getName());
+            List<String> dataList = echartResult.getDataList();
+            for (int j = 0; j < dataList.size(); j++) {
+                dataRow.createCell(j + 1, CellType.STRING).setCellValue(dataList.get(j));
+            }
+        }
+        ExcelUtil.downloadExcel(request, response, date + "公式数据", workbook);
+    }
+
+    private List<FormulaEntity> queryFormulaEntity(String projectId) {
+        // 查询所有公式
+        List<FormulaEntity> formulaList = formulaDao.queryFormulaEntity(projectId);
+        // 查询公式变量
+        List<VariableParam> variableParamList = formulaDao.queryVariableParam(projectId);
+
+        formulaList.forEach(formulaEntity -> {
+            String id = formulaEntity.getId();
+            List<VariableParam> variableList = formulaEntity.getVariableParamList();
+            variableParamList.forEach(variableParam -> {
+                String formulaId = variableParam.getFormulaId();
+                if (StringUtils.equals(id, formulaId)) {
+                    variableList.add(variableParam);
+                }
+            });
+        });
+
+        return formulaList;
+    }
 }

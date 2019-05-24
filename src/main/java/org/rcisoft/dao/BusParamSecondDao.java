@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.base.util.SpecialBatchMapper;
+import org.rcisoft.business.equipment.report.entity.ParamSecond;
 import org.rcisoft.entity.BusParamSecond;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
@@ -52,4 +53,14 @@ public interface BusParamSecondDao extends Mapper<BusParamSecond>, SpecialBatchM
     @Select("SELECT * FROM bus_param_second WHERE device_id = #{deviceId};")
     @ResultType(BusParamSecond.class)
     List<BusParamSecond> queryParamSecondByDevId(@Param("deviceId") String deviceId);
+
+    /**
+     * 根据项目id查询
+     * @param projectId
+     * @return
+     */
+    @Select("select id, param_first_id, name, coding from bus_param_second where project_id = #{projectId}")
+    @ResultType(ParamSecond.class)
+    List<ParamSecond> queryParamSecondByProjectId(@Param("projectId") String projectId);
+
 }

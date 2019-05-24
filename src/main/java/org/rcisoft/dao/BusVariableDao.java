@@ -1,8 +1,6 @@
 package org.rcisoft.dao;
 
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.ResultType;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.rcisoft.business.equipment.report.entity.VariableAndParam;
 import org.rcisoft.entity.BusVariable;
 import org.springframework.stereotype.Repository;
@@ -32,4 +30,44 @@ public interface BusVariableDao extends Mapper<BusVariable> {
             "WHERE a.formula_id = #{formulaId} AND a.project_id = #{projectId};")
     @ResultType(VariableAndParam.class)
     List<VariableAndParam> queryVariable(@Param("projectId") String projectId,@Param("formulaId") String formulaId);
+
+    /**
+     * 批量新增公式参数
+     * @param insertList
+     * @return
+     */
+    @Insert("<script>" +
+            "<foreach collection=\"list\" item=\"item\" separator=\";\">" +
+            "insert into bus_variable(id, variable, device_id, param_first_id, param_second_id, formula_id, project_id, create_time) " +
+            "values(#{item.id}, #{item.variable}, #{item.deviceId}, #{item.paramFirstId}, #{item.paramSecondId}, #{item.formulaId}, #{item.projectId}, #{item.createTime})" +
+            "</foreach>" +
+            "</script>")
+    int batchSave(List<BusVariable> insertList);
+
+    /**
+     * 批量更新公式参数
+     * @param updateList
+     * @return
+     */
+    @Update("<script>" +
+            "<foreach collection=\"list\" item=\"item\" separator=\";\">" +
+            "update bus_variable set " +
+            "variable = #{item.variable}, device_id = #{item.deviceId}, " +
+            "param_first_id = #{item.paramFirstId}, param_second_id = #{paramSecondId} " +
+            "where id = #{item.id}" +
+            "</foreach>" +
+            "</script>")
+    int batchUpdate(List<BusVariable> updateList);
+
+    /**
+     * 批量删除公式参数
+     * @param delIds
+     * @return
+     */
+    @Delete("<script>" +
+            "<foreach collection=\"array\" item=\"item\" separator=\";\">" +
+            "delete from bus_variable where id = #{item}" +
+            "</foreach>" +
+            "</script>")
+    int batchDelete(String[] delIds);
 }
