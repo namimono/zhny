@@ -23,6 +23,8 @@ public class EchartResult {
     /**
      * 公式运算结果
      */
-    private List<String> dataList = new ArrayList<>(24);
+//    private List<String> dataList = new ArrayList<>(24);
+
+    private Double[] data = new Double[24];
 
 }
