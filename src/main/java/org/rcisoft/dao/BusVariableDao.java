@@ -53,7 +53,7 @@ public interface BusVariableDao extends Mapper<BusVariable> {
             "<foreach collection=\"list\" item=\"item\" separator=\";\">" +
             "update bus_variable set " +
             "variable = #{item.variable}, device_id = #{item.deviceId}, " +
-            "param_first_id = #{item.paramFirstId}, param_second_id = #{paramSecondId} " +
+            "param_first_id = #{item.paramFirstId}, param_second_id = #{item.paramSecondId} " +
             "where id = #{item.id}" +
             "</foreach>" +
             "</script>")
