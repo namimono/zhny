@@ -162,7 +162,7 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
         // 查询公式
         List<FormulaEntity> formulaList = this.queryFormulaEntity(projectId);
         // 查询sys_data数据
-        List<SysData> dataList = sysDataDao.querySysData(date, projectId);
+        List<SysData> dataList = sysDataDao.querySysDataFormat(date, projectId);
         // 循环公式集合
         formulaList.forEach(formulaEntity -> {
             // 新建单个返回值
@@ -170,7 +170,7 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
             // 公式名称
             echartResult.setName(formulaEntity.getName());
             // 数据集合
-            List<String> list = echartResult.getDataList();
+            Double[] data = echartResult.getData();
             // 公式
             String formula = formulaEntity.getFormula();
             // 变量集合
@@ -213,7 +213,7 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
                 value = FormulaUtil.calculate(felFormula, felEngineImpl);
                 // 放入结果集
                 if (value != null) {
-                    list.add(hour, value);
+                    data[hour] = Double.parseDouble(value);
                 }
             });
             resultList.add(echartResult);
@@ -236,9 +236,9 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
             Row dataRow = sheet.createRow(1 + i);
             EchartResult echartResult = echartList.get(i);
             dataRow.createCell(0, CellType.STRING).setCellValue(echartResult.getName());
-            List<String> dataList = echartResult.getDataList();
-            for (int j = 0; j < dataList.size(); j++) {
-                dataRow.createCell(j + 1, CellType.STRING).setCellValue(dataList.get(j));
+            Double[] data = echartResult.getData();
+            for (int j = 0; j < data.length; j++) {
+                dataRow.createCell(j + 1, CellType.STRING).setCellValue(data[j]);
             }
         }
         ExcelUtil.downloadExcel(request, response, date + "公式数据", workbook);
