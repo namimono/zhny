@@ -96,13 +96,13 @@ public class SysUserMenuController {
     @ApiOperation(value = "新增认定员", notes = "参数：姓名，职业资质，从业时间，项目业绩")
     @PostMapping(value = "/saveAuthenticator")
     public Result saveAuthenticator(@RequestBody SysAuthenticator sysAuthenticator) {
-        return Result.result(sysUserMenuService.saveAuthenticator(sysAuthenticator), "新增巡检员成功", "新增巡检员失败");
+        return Result.result(sysUserMenuService.saveAuthenticator(sysAuthenticator), "新增认定员成功", "新增认定员失败");
     }
 
     @ApiOperation(value = "编辑认定员", notes = "参数：姓名，职业资质，从业时间，项目业绩")
     @PutMapping(value = "/updateAuthenticator")
     public Result updateAuthenticator(@RequestBody SysAuthenticator sysAuthenticator) {
-        return Result.result(sysUserMenuService.updateAuthenticator(sysAuthenticator), "编辑巡检员成功", "编辑巡检员失败");
+        return Result.result(sysUserMenuService.updateAuthenticator(sysAuthenticator), "编辑认定员成功", "编辑认定员失败");
     }
 
 
