@@ -1,32 +1,31 @@
 package org.rcisoft.business.equipment.report.service.Impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.RegionUtil;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.rcisoft.base.util.ExcelUtil;
+import org.rcisoft.base.util.FormulaUtil;
 import org.rcisoft.business.equipment.report.dao.DeviceReportDao;
+import org.rcisoft.business.equipment.report.entity.Device;
+import org.rcisoft.business.equipment.report.entity.ParamFirst;
+import org.rcisoft.business.equipment.report.entity.ParamSecond;
 import org.rcisoft.business.equipment.report.service.DeviceReportService;
-import org.rcisoft.dao.BusDeviceDao;
-import org.rcisoft.dao.BusParamFirstDao;
-import org.rcisoft.dao.BusParamSecondDao;
-import org.rcisoft.dao.SysDataDao;
-import org.rcisoft.entity.BusDevice;
-import org.rcisoft.entity.BusParamFirst;
-import org.rcisoft.entity.BusParamSecond;
-import org.rcisoft.entity.SysData;
+import org.rcisoft.dao.*;
+import org.rcisoft.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 土豆儿
@@ -45,6 +44,8 @@ public class DeviceReportServiceImpl implements DeviceReportService {
     private BusDeviceDao busDeviceDao;
     @Autowired
     private SysDataDao sysDataDao;
+    @Autowired
+    private EnergyStatisticsDao energyStatisticsDao;
 
     /**
      * 导出当日设备信息excel
@@ -244,5 +245,139 @@ public class DeviceReportServiceImpl implements DeviceReportService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void downloadDeviceData(HttpServletRequest request, HttpServletResponse response, String projectId, String time) {
+        Calendar calendar = Calendar.getInstance();
+        Workbook workbook = new XSSFWorkbook();
+        String beginTime = time + " 00:00:00";
+        String endTime = time + " 23:59:59";
+        /** 1.查询项目下所有设备的名称，一级参数名称、code，二级参数名称、code，一二级之间的关系 */
+        // 根据项目id查询所有设备
+        List<Device> deviceList = busDeviceDao.queryDeviceByProId(projectId);
+        // 根据项目id查询所有一级参数
+        List<ParamFirst> paramFirstList = busParamFirstDao.queryParamFirstByProjectId(projectId);
+        // 根据项目id查询所有二级参数
+        List<ParamSecond> paramSecondList = busParamSecondDao.queryParamSecondByProjectId(projectId);
+        /** 2.查询系统数据 */
+        List<SysData> sysDataList = sysDataDao.queryDataByProIdAndTime(projectId, beginTime, endTime);
+        /** 3.查询能耗数据 */
+        List<EnergyStatistics> energyStatisticsList = energyStatisticsDao.queryEnergyStatistics(projectId, beginTime, endTime);
+        // 将三种数据组合
+        deviceList.forEach(device -> {
+            String deviceId = device.getId();
+            List<ParamFirst> firstList = device.getParamFirstList();
+            paramFirstList.forEach(paramFirst -> {
+                String paramFirstId = paramFirst.getId();
+                List<ParamSecond> secendList = paramFirst.getParamSecondList();
+                paramSecondList.forEach(paramSecond -> {
+                    // 二级参数加入一级list
+                    String secondParamFirstId = paramSecond.getParamFirstId();
+                    if (StringUtils.equals(secondParamFirstId, paramFirstId)) {
+                        secendList.add(paramSecond);
+                    }
+                });
+                // 一级参数加入设备list
+                String firstDeviceId = paramFirst.getDeviceId();
+                if (StringUtils.equals(firstDeviceId, deviceId)) {
+                    firstList.add(paramFirst);
+                }
+            });
+            /** 4.生成excel */
+            Sheet sheet = workbook.createSheet(device.getName());
+            // 创建第一行，一级参数名称
+            Row titleRow1 = sheet.createRow(0);
+            // 第二行，二级参数名称
+            Row titleRow2 = sheet.createRow(1);
+            // 第一列是时间
+            titleRow1.createCell(0, CellType.STRING).setCellValue("时间");
+            CellRangeAddress regionTime = new CellRangeAddress(0, 1, 0, 0);
+            sheet.addMergedRegion(regionTime);
+            // 第二列开始是一级参数，需要合并单元格
+            int rowStat1 = 1, rowStat2 = 1;
+            for (ParamFirst paramFirst : firstList) {
+                // 填入一级参数名称
+                titleRow1.createCell(rowStat1, CellType.STRING).setCellValue(paramFirst.getName());
+                // 获得其二级参数的数量
+                List<ParamSecond> secondList = paramFirst.getParamSecondList();
+                int size = secondList.size();
+                // 合并单元格
+                if (size > 1) {
+                    CellRangeAddress region = new CellRangeAddress(0, 0, rowStat1, rowStat1 + size - 1);
+                    sheet.addMergedRegion(region);
+                }
+                rowStat1 += size;
+                for (ParamSecond paramSecond : secondList) {
+                    // 第二行放入二级参数名称
+                    titleRow2.createCell(rowStat2++, CellType.STRING).setCellValue(paramSecond.getName());
+                }
+            }
+            // 最后3列加入能耗
+            titleRow1.createCell(rowStat1, CellType.STRING).setCellValue("能耗");
+            CellRangeAddress regionEnergyFirst = new CellRangeAddress(0, 0, rowStat1, rowStat1 + 2);
+            sheet.addMergedRegion(regionEnergyFirst);
+            titleRow2.createCell(rowStat2, CellType.STRING).setCellValue("水能耗");
+            titleRow2.createCell(rowStat2 + 1, CellType.STRING).setCellValue("电能耗");
+            titleRow2.createCell(rowStat2 + 2, CellType.STRING).setCellValue("气能耗");
+            // 初始化row，每个sheet页有144行数据，加上表头一共146行
+            int hour = 0;
+            int minute = 0;
+            for (int i = 2; i < 146; i++) {
+                Row row = sheet.createRow(i);
+                String hourStr = hour > 9 ? String.valueOf(hour) : "0" + hour;
+                String minuteStr = minute + "0";
+                row.createCell(0, CellType.STRING).setCellValue(time + " " + hourStr + ":" + minuteStr);
+                if (++minute % 6 == 0) {
+                    minute = 0;
+                    hour++;
+                }
+            }
+            // 循环网关数据
+            sysDataList.forEach(sysData -> {
+                String json = sysData.getJson();
+                Date sysTime = sysData.getCreateTime();
+                // 得到放入数据的行号
+                int rowCount = this.getRowCount(calendar, sysTime);
+                Row row = sheet.getRow(rowCount);
+                // 需要放入数据的列
+                int rowSetCount = 1;
+                for (ParamFirst paramFirst : firstList) {
+                    String coding1 = paramFirst.getCoding();
+                    List<ParamSecond> secondList = paramFirst.getParamSecondList();
+                    for (ParamSecond paramSecond : secondList) {
+                        String coding2 = paramSecond.getCoding();
+                        String value = FormulaUtil.getValueFromJson(coding1, coding2, json);
+                        if (value != null) {
+                            row.createCell(rowSetCount, CellType.STRING).setCellValue(value);
+                        }
+                        rowSetCount++;
+                    }
+                }
+            });
+            // 循环能耗数据
+            for (EnergyStatistics energyStatistics : energyStatisticsList) {
+                Date createTime = energyStatistics.getCreateTime();
+                int rowCount = this.getRowCount(calendar, createTime);
+                Row row = sheet.getRow(rowCount);
+                row.createCell(rowStat2, CellType.STRING).setCellValue(energyStatistics.getEnergyWater().toString());
+                row.createCell(rowStat2 + 1, CellType.STRING).setCellValue(energyStatistics.getEnergyElec().toString());
+                row.createCell(rowStat2 + 2, CellType.STRING).setCellValue(energyStatistics.getEnergyGas().toString());
+            }
+        });
+        ExcelUtil.downloadExcel(request, response, time + "设备报表", workbook);
+    }
+
+    /**
+     * 通过时间获得excel的行号
+     * @param calendar
+     * @param date
+     * @return
+     */
+    private int getRowCount(Calendar calendar, Date date) {
+        calendar.setTime(date);
+        int sysHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int sysMin = calendar.get(Calendar.MINUTE);
+        return (sysHour * 60 + sysMin) / 10 + 2;
     }
 }

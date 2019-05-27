@@ -1,5 +1,6 @@
 package org.rcisoft.business.equipment.report.service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -12,9 +13,20 @@ public interface DeviceReportService {
     /**
      * 导出当日设备信息excel
      * @param response
-     * @param deviceId
      * @param proId
      * @param date
      */
-    void downloadDeviceTodayData(HttpServletResponse response,String proId,String date);
+    void downloadDeviceTodayData(HttpServletResponse response, String proId, String date);
+
+    /**
+     * 到处设备信息
+     * @param request
+     * @param response
+     * @param projectId
+     * @param time
+     */
+    void downloadDeviceData(HttpServletRequest request, HttpServletResponse response, String projectId, String time);
+
 }
+
+

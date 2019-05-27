@@ -3,6 +3,7 @@ package org.rcisoft.business.system.project.service;
 import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.ParamFirstContainSecond;
+import org.rcisoft.business.system.project.entity.ParamResult;
 import org.rcisoft.entity.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -104,7 +105,7 @@ public interface DeviceConfigService {
     /**
      * 查询一二级参数信息
      */
-    List<ParamFirstContainSecond> queryParamInfo(String deviceId);
+    ParamResult queryParamInfo(String deviceId);
 
     /**
      * 批量增删改一二级参数信息

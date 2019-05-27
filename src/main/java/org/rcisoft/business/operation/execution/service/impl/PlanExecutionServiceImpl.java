@@ -20,6 +20,9 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static org.rcisoft.base.util.ZhnyUtils.getDayEndTime;
+import static org.rcisoft.base.util.ZhnyUtils.getDayStartTime;
+
 /**
  * @author GaoLiwei
  * @date 2019/3/21
@@ -62,23 +65,8 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
 
             //项目当天的所有参数原始信息，10分钟一次
             List<SysData> sysDataList = sysDataDao.listSysDataByProIdAndDate(conditionDto);
-            Map<Long,String> statusMap = new HashMap<>(144);
-            if (sysDataList.size() >0){
-                //当天结束时间
-                long dayEndTime = getDayEndTime(conditionDto).getTime();
-                //1天24小时按照10分钟一次对这个设备当天的原始数据进行处理
-                for (long dayStartTime = getDayStartTime(conditionDto).getTime(); dayStartTime<=dayEndTime; dayStartTime+=600000){
-                    Map<Long,String> map = new HashMap(1);
-                    map.put(dayStartTime,null);
-                    for (SysData sysData : sysDataList){
-                        if (sysData.getCreateTime().getTime() == dayStartTime){
-                            map.put(dayStartTime,sysData.getJson());
-                            break;
-                        }
-                    }
-                    statusMap.putAll(map);
-                }
-            }
+            Long time = 600000L;
+            Map<Long,String> statusMap = ZhnyUtils.groupSysDataByTime(conditionDto.getDate(),sysDataList,time);
 
             //查出项目当天的计划编制信息
             List<DevicePlanningFromDb> devicePlanningFromDbList = devicePlanningRepository.listDevicePlanningFromDb(conditionDto);
@@ -124,9 +112,9 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
                         resultPlanningDeviceInformation.setMainName2(devicePlanning.get(0).getMainName2());
 
                         //当天结束时间
-                        long dayEndTime = getDayEndTime(conditionDto).getTime();
+                        long dayEndTime = getDayEndTime(conditionDto.getDate()).getTime();
                         //1天24小时按照10分钟一次对这个设备的数据进行处理
-                        for (long dayStartTime = getDayStartTime(conditionDto).getTime(); dayStartTime<=dayEndTime; dayStartTime+=600000){
+                        for (long dayStartTime = getDayStartTime(conditionDto.getDate()).getTime(); dayStartTime<=dayEndTime; dayStartTime+=600000){
                             //每个设备每10分钟的详细信息
                             DeviceRecordInformation deviceRecordInformation = new DeviceRecordInformation();
 
@@ -293,36 +281,4 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
         return null;
     }
 
-
-    /**
-     * 得到当天的开始时间
-     *
-     * @author GaoLiWei
-     * @date 9:35 2019/3/18
-     **/
-    private Date getDayStartTime(ConditionDto conditionDto) {
-        Calendar dayStart = Calendar.getInstance();
-        dayStart.setTime(conditionDto.getDate());
-        dayStart.set(Calendar.HOUR, 0);
-        dayStart.set(Calendar.MINUTE, 0);
-        dayStart.set(Calendar.SECOND, 0);
-        dayStart.set(Calendar.MILLISECOND, 0);
-        return dayStart.getTime();
-    }
-
-    /**
-     * 得到当天的结束时间
-     *
-     * @author GaoLiWei
-     * @date 9:35 2019/3/18
-     **/
-    private Date getDayEndTime(ConditionDto conditionDto) {
-        Calendar dayEnd = Calendar.getInstance();
-        dayEnd.setTime(conditionDto.getDate());
-        dayEnd.set(Calendar.HOUR, 23);
-        dayEnd.set(Calendar.MINUTE, 59);
-        dayEnd.set(Calendar.SECOND, 59);
-        dayEnd.set(Calendar.MILLISECOND, 999);
-        return dayEnd.getTime();
-    }
 }

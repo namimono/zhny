@@ -2,13 +2,6 @@ package org.rcisoft.base.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.greenpineyu.fel.FelEngine;
-import com.greenpineyu.fel.FelEngineImpl;
-import org.apache.commons.lang3.StringUtils;
-
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author 土豆儿
@@ -46,12 +39,14 @@ public class FormulaUtil {
      */
     public static String getValueFromJson(String first, String second, String json) {
         String result = null;
-        JSONObject jsonObject = JSONObject.parseObject(json);
-        JSONObject jsonFirst = jsonObject.getJSONObject(first);
-        if (jsonFirst != null) {
-            JSONObject regJson = jsonFirst.getJSONObject("REG_VAL");
-            if (regJson != null) {
-                result = regJson.getString(second);
+        if (null != json){
+            JSONObject jsonObject = JSONObject.parseObject(json);
+            JSONObject jsonFirst = jsonObject.getJSONObject(first);
+            if (jsonFirst != null) {
+                JSONObject regJson = jsonFirst.getJSONObject("REG_VAL");
+                if (regJson != null) {
+                    result = regJson.getString(second);
+                }
             }
         }
         return result;

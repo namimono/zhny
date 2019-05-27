@@ -3,8 +3,10 @@ package org.rcisoft.business.equipment.report.dao;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.equipment.report.entity.ParamSecondWithFirst;
+import org.rcisoft.entity.SysData;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,4 +24,16 @@ public interface SystemDataDao {
             "FROM bus_param_first a,bus_param_second b\n" +
             "WHERE b.id IN (${paramSecondIds}) AND b.param_first_id = a.id;")
     List<ParamSecondWithFirst> querySecondWithFirst(@Param("paramSecondIds") String paramSecondId);
+
+
+    /**
+     * 根据项目ID，时间查出这个项目当天的网关数据
+     *
+     * @param projectId
+     * @param date
+     * @return List<SysData>
+     */
+    @Select("<script>SELECT * FROM sys_data WHERE project_id = #{projectId} \n" +
+            "AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_FORMAT(#{date},'%Y-%m-%d')  </script>")
+    List<SysData> listDataByProIdAndDate(@Param("projectId") String projectId, @Param("date") Date date);
 }

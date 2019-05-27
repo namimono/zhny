@@ -46,7 +46,7 @@ public class MaintainController {
     @ApiOperation(value="修改养护计划", notes="修改养护计划")
     @PutMapping("/updateMaintenance")
     public Result updateMaintenance(@RequestBody BusMaintenance busMaintenance) {
-        return Result.result(maintainServiceImpl.updateMaintenance(busMaintenance), null);
+        return Result.result(maintainServiceImpl.updateMaintenance(busMaintenance), "修改养护计划成功","修改养护计划失败");
     }
 
     @ApiOperation(value="删除养护计划", notes="删除养护计划")

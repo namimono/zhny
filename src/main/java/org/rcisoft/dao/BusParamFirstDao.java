@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.base.util.SpecialBatchMapper;
+import org.rcisoft.business.equipment.report.entity.ParamFirst;
 import org.rcisoft.entity.BusParamFirst;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
@@ -23,5 +24,14 @@ public interface BusParamFirstDao extends Mapper<BusParamFirst>, SpecialBatchMap
     @Select("SELECT * FROM bus_param_first WHERE device_id = #{deviceId};")
     @ResultType(BusParamFirst.class)
     List<BusParamFirst> queryParamFirstByDevId(@Param("deviceId") String deviceId);
+
+    /**
+     * 根据项目id查询所有一级参数
+     * @param projectId
+     * @return
+     */
+    @Select("select id, name, coding, device_id from bus_param_first where project_id = #{projectId}")
+    @ResultType(ParamFirst.class)
+    List<ParamFirst> queryParamFirstByProjectId(@Param("projectId") String projectId);
 
 }
