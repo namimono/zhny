@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -66,6 +67,7 @@ public class EnergyPlanningRecordServiceImpl implements EnergyPlanningRecordServ
                 }
             }
             energyPlanningRecord.setId(UuidUtil.create32());
+            energyPlanningRecord.setCreateTime(new Date());
             insertFlag = energyPlanningRecordDao.insert(energyPlanningRecord);
             if (insertFlag >0){
                 //更新当天的计划能耗花费

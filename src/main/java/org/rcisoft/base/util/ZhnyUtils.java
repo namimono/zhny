@@ -124,7 +124,7 @@ public class ZhnyUtils {
 
             //当天结束时间
             long dayEndTime = getDayEndTime(date).getTime();
-            //1天24小时按照10分钟一次对这个设备当天的原始数据进行处理
+            //按指定时间对这个设备当天的原始数据进行处理
             for (long dayStartTime = getDayStartTime(date).getTime(); dayStartTime<=dayEndTime; dayStartTime += time){
                 map.put(dayStartTime,null);
                 for (SysData sysData : sysDataList){
@@ -140,7 +140,7 @@ public class ZhnyUtils {
 
 
     /**
-     * 得到当天的开始时间
+     * 得到某天的开始时间
      *
      * @author GaoLiWei
      * @date 9:35 2019/3/18
@@ -156,7 +156,7 @@ public class ZhnyUtils {
     }
 
     /**
-     * 得到当天的结束时间
+     * 得到某天的结束时间
      *
      * @author GaoLiWei
      * @date 9:35 2019/3/18

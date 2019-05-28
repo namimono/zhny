@@ -105,7 +105,7 @@ public class EnergyPlanningController {
     }
 
 
-    @ApiOperation(value = "点击添加一条，新增计划编制", notes = "参数为：项目Id,设备Id,所有参数值，对应的电费用，气费用，电能耗，气能耗，创建时间（yyyy-MM-dd）,开始时间与结束时间（yyyy-MM-dd HH:mm:ss）")
+    @ApiOperation(value = "点击添加一条，新增计划编制", notes = "参数为：项目Id,设备Id,所有参数值，对应的电费用，气费用，电能耗，气能耗,开始时间与结束时间（yyyy-MM-dd HH:mm:ss）")
     @PostMapping("/saveEnergyPlanningRecord")
     public Result saveEnergyPlanningRecord(@RequestBody EnergyPlanningRecord energyPlanningRecord) {
         return Result.result(energyPlanningRecordService.saveEnergyPlanningRecord(energyPlanningRecord), "添加计划成功", "添加计划失败");
