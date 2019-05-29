@@ -1,11 +1,9 @@
 package org.rcisoft.business.monitor.intercept.dao;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
-import org.rcisoft.business.monitor.intercept.entity.DeviceInfo;
-import org.rcisoft.business.monitor.intercept.entity.DeviceParam;
-import org.rcisoft.business.monitor.intercept.entity.EnergyEcharts;
-import org.rcisoft.business.monitor.intercept.entity.TimeJson;
+import org.rcisoft.business.monitor.intercept.entity.*;
 import org.springframework.stereotype.Repository;
 
 import tk.mybatis.mapper.common.Mapper;
@@ -67,4 +65,33 @@ public interface DeviceParamDao extends Mapper<DeviceParam> {
     @Select("<script>select create_time as createTime,json from sys_data where to_days(create_time) = to_days(now())" +
             " and  RIGHT(create_time,5)='00:00'</script>")
     List<TimeJson> queryData();
+
+    @Select("<script>" +
+            "select d.id deviceId, f.coding firstCode, s.coding secondCode, s.elec_type `type` " +
+            "from bus_device d, bus_param_first f, bus_param_second s " +
+            "where f.device_id = d.id and s.param_first_id = f.id and s.energy_type_id = 2 " +
+            "and d.project_id = #{projectId} and d.system_id = #{systemId}" +
+            "</script>")
+    @ResultType(ParamElec.class)
+    List<ParamElec> queryDeviceElec(@Param("projectId") String projectId, @Param("systemId") String systemId);
+
+    @Select("<script>" +
+            "select f.coding firstCode, s.coding secondCode, s.name paramName, s.unit paramUnit from bus_param_second s " +
+            "left join bus_param_first f on s.param_first_id = f.id " +
+            "where s.device_id = #{deviceId} " +
+            "limit ${count}" +
+            "</script>")
+    @ResultType(Params.class)
+    List<Params> queryParams(@Param("deviceId") String deviceId, @Param("count") Integer count);
+
+    @Select("<script>" +
+            "select f.coding firstCode, s.coding secondCode, s.name paramName, s.unit paramUnit, " +
+            "s.fault_status faultStatus, s.min_value minValue, s.max_value `maxValue`, s.content, " +
+            "s.energy_type_id energyType, s.elec_type elecType " +
+            "from bus_param_second s " +
+            "left join bus_param_first f on s.param_first_id = f.id " +
+            "where s.device_id = #{deviceId} " +
+            "</script>")
+    @ResultType(Params.class)
+    List<Params> queryParamsAll(@Param("deviceId") String deviceId);
 }

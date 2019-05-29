@@ -17,19 +17,9 @@ import java.util.List;
  */
 @Service
 public class SysDetectionServiceImpl implements SysDetectionService {
-    @Autowired
-    BusTopologyDao busTopologyDao;
+
     @Autowired
     BusTitleDao busTitleDao;
-
-    /**
-     * 获取拓扑图json
-     * @return
-     */
-    @Override
-    public BusTopology queryTopoJson() {
-        return busTopologyDao.queryTopoJson();
-    }
 
     @Override
     public List<BusTitle> queryBusTitle(String projectId, String systemId) {

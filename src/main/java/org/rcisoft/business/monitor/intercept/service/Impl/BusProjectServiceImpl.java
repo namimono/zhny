@@ -1,7 +1,9 @@
 package org.rcisoft.business.monitor.intercept.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.base.redis.RedisService;
 import org.rcisoft.business.monitor.intercept.dao.BusProjectParamDao;
 import org.rcisoft.business.monitor.intercept.dao.DeviceDetailDao;
@@ -27,71 +29,9 @@ import java.util.Map;
 public class BusProjectServiceImpl implements BusProjectService {
 
     @Autowired
-    private BusProjectDao busProjectDao;
-    @Autowired
     private RedisService redisService;
     @Autowired
     private DeviceParamDao deviceParamDao;
-    @Autowired
-    private BusProjectParamDao busProjectParamDao;
-    @Autowired
-    private DeviceDetailDao deviceDetailDao;
-
-
-    @Override
-    public Map<String,Object> queryPhones(String id) {
-        String Phones = busProjectDao.queryPhones(id);
-        String phones[] = Phones.split(",");
-        for(int i = 0;i < phones.length; i++){
-            System.out.println(phones[i]);
-        }
-        Map<String,Object> map = new HashMap<>();
-        for(int i = 0;i < phones.length; i++){
-            map.put(phones[i],redisService.get(phones[i]));
-            System.out.println(phones[i]);
-        }
-        System.out.println(map);
-        return map;
-    }
-
-    @Override
-    public List<Map<String, Object>> queryParam(String id) {
-        List<Map<String,Object>> data = new ArrayList<>();
-        List<BusProjectParam> BusProjectParamList = busProjectDao.queryParam(id);
-        Map<String,List<BusProjectParam>> resultMap = new HashMap<>();
-        for(BusProjectParam list:BusProjectParamList) {
-        	if(resultMap.containsKey(list.getName())) {
-        		resultMap.get(list.getName()).add(list);
-        	}else {
-        		List<BusProjectParam> paramList = new ArrayList<>();
-        		paramList.add(list);
-        		resultMap.put(list.getName(), paramList);
-        	}
-        }
-        for(String key : resultMap.keySet()){
-            Map<String,Object> firstMap = new HashMap<>();
-            firstMap.put("name",resultMap.get(key).get(0).getName());
-            List<Map<String,String>> secondListMap = new ArrayList<>();
-            for (BusProjectParam busProjectParam:resultMap.get(key)){
-                Map<String,String> secondMap = new HashMap<>();
-                secondMap.put("coding",busProjectParam.getCoding());
-                secondListMap.add(secondMap);
-            }
-            firstMap.put("child",secondListMap);
-            data.add(firstMap);
-        }
-        return data;
-    }
-
-    @Override
-    public List<DeviceParam> queryDeviceParam(String deviceId) {
-        return deviceParamDao.queryDeviceParam(deviceId);
-    }
-
-    @Override
-    public List<String> queryDeviceTitle() {
-        return deviceParamDao.queryDeviceTitle();
-    }
 
     @Override
     public List<DeviceInfo> queryDeviceInfo(String typeFirstId, String projectId, String systemId) {
@@ -113,11 +53,6 @@ public class BusProjectServiceImpl implements BusProjectService {
             li.setTime(runtime);
         }
         return list;
-    }
-
-    @Override
-    public List<String> queryModelName() {
-        return busProjectParamDao.queryModelName();
     }
 
     @Override
@@ -143,28 +78,47 @@ public class BusProjectServiceImpl implements BusProjectService {
     }
 
     @Override
-    public List<EnergyParam> queryEnergyParam(String deviceId) {
-        return busProjectParamDao.queryEnergyParam(deviceId);
-    }
-
-
-
-    @Override
-    public List<DeviceDetail> queryDeviceDetail(String deviceId) {
-        return deviceDetailDao.queryDeviceDetail(deviceId);
+    public List<ParamElec> queryDeviceElec(String projectId, String systemId) {
+        return deviceParamDao.queryDeviceElec(projectId, systemId);
     }
 
     @Override
-    public List<String> queryJsonByProId(String ProId) {
-        List<String> jsonList = new ArrayList<>();
-        String phoneList = redisService.get(ProId);
-        String phone[] = phoneList.split(",");
-        System.out.println(phone);
-        for (int i = 0;i < phone.length; i++){
-            jsonList.add(redisService.get(phone[i]));
+    public List<Params> queryParams(String deviceId, Integer count) {
+        return deviceParamDao.queryParams(deviceId, count);
+    }
+
+    @Override
+    public ParamsResult queryParamsAll(String deviceId) {
+        ParamsResult result = new ParamsResult();
+        List<ParamsResult.Elec> elecList = result.getElecList();
+        List<Params> paramsList = deviceParamDao.queryParamsAll(deviceId);
+        result.setParamList(paramsList);
+        paramsList.forEach(params -> {
+            if (params.getEnergyType() == 2) {
+                ParamsResult.Elec elec = new ParamsResult().new Elec();
+                elec.setElecFirstCode(params.getFirstCode());
+                elec.setElecSecondCode(params.getSecondCode());
+                elec.setElecType(params.getElecType());
+                elecList.add(elec);
+            }
+        });
+        return result;
+    }
+
+    @Override
+    public JSONArray queryCacheData(String projectId) {
+        JSONArray result = new JSONArray();
+        String phones = redisService.get(projectId);
+        if (StringUtils.isNotEmpty(phones)) {
+            String[] phoneArray = phones.split(",");
+            for (String phone : phoneArray) {
+                String jsonStr = redisService.get(phone);
+                if (StringUtils.isNotEmpty(jsonStr)) {
+                    result.add(JSON.parseObject(jsonStr));
+                }
+            }
         }
-
-        System.out.println(jsonList);
-        return jsonList;
+        return result;
     }
+
 }

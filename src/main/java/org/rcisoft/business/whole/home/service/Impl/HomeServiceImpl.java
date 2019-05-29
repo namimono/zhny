@@ -90,7 +90,9 @@ public class HomeServiceImpl implements HomeService {
                 for (String phone: phoneArray) {
                     // 用网关号从redis中取得状态
                     int i = this.checkCommunicate(phone + this.count);
-                    length = length - i;
+                    if (i > 5) {
+                        length--;
+                    }
                 }
                 // 判断length，如果所有网关都有错误，length=0
                 if (length == 0) {

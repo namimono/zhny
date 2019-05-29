@@ -11,7 +11,7 @@ import java.util.List;
  * @Date: Created in 10:56 2019/3/13
  */
 public interface SysDetectionService {
-    BusTopology queryTopoJson();
+
 
     /**
      * 根据系统类型查出当前项目下的标签
