@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +48,7 @@ public class EnergyPlanningRecordServiceImpl implements EnergyPlanningRecordServ
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer saveEnergyPlanningRecord(EnergyPlanningRecord energyPlanningRecord) {
+    public Integer saveEnergyPlanningRecord(EnergyPlanningRecord energyPlanningRecord) throws ParseException {
         List<DeviceParamIdAndSeq> deviceParamIdAndSeqList = devicePlanningRepository.listDeviceParamIdAndSeqByDevId(energyPlanningRecord.getDeviceId());
         int insertFlag = 0;
         if (deviceParamIdAndSeqList.size() > 0){
@@ -67,7 +69,9 @@ public class EnergyPlanningRecordServiceImpl implements EnergyPlanningRecordServ
                 }
             }
             energyPlanningRecord.setId(UuidUtil.create32());
-            energyPlanningRecord.setCreateTime(new Date());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String formatDate = sdf.format(new Date());
+            energyPlanningRecord.setCreateTime(sdf.parse(formatDate));
             insertFlag = energyPlanningRecordDao.insert(energyPlanningRecord);
             if (insertFlag >0){
                 //更新当天的计划能耗花费

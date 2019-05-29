@@ -3,6 +3,8 @@ package org.rcisoft.business.operation.establishment.service;
 import org.rcisoft.business.operation.establishment.entity.ConditionDto;
 import org.rcisoft.entity.EnergyPlanningRecord;
 
+import java.text.ParseException;
+
 /**
  * @author GaoLiwei
  * @date 2019/3/19
@@ -22,7 +24,7 @@ public interface EnergyPlanningRecordService {
      * @param energyPlanningRecord
      * @return
      */
-    Integer saveEnergyPlanningRecord(EnergyPlanningRecord energyPlanningRecord);
+    Integer saveEnergyPlanningRecord(EnergyPlanningRecord energyPlanningRecord) throws ParseException;
 
     /**
      *  根据Id,删除计划编制
