@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -70,7 +69,7 @@ public class EnergyPlanningRecordServiceImpl implements EnergyPlanningRecordServ
             }
             energyPlanningRecord.setId(UuidUtil.create32());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String formatDate = sdf.format(new Date());
+            String formatDate = sdf.format(energyPlanningRecord.getCreateTime());
             energyPlanningRecord.setCreateTime(sdf.parse(formatDate));
             insertFlag = energyPlanningRecordDao.insert(energyPlanningRecord);
             if (insertFlag >0){

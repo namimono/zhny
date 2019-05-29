@@ -33,12 +33,11 @@ public class EnergyPlanningDeviceServiceImpl implements EnergyPlanningDeviceServ
         //查出某一天所有已经添加到计划编制的设备
         EnergyPlanningDevice planningDevice = new EnergyPlanningDevice();
         planningDevice.setCreateTime(energyPlanningDevice.getCreateTime());
+        planningDevice.setDeviceId(energyPlanningDevice.getDeviceId());
         List<EnergyPlanningDevice> energyPlanningDeviceList = energyPlanningDeviceDao.select(planningDevice);
-        for (EnergyPlanningDevice device : energyPlanningDeviceList){
-            //如果要添加的设备Id已经添加过，则返回，不可以重复添加
-            if (device.getDeviceId().equals(energyPlanningDevice.getDeviceId())){
-                return 0;
-            }
+        //如果要添加的设备Id已经添加过，则返回，不可以重复添加
+        if (energyPlanningDeviceList.size() >0){
+            return 0;
         }
         energyPlanningDevice.setId(UuidUtil.create32());
         return energyPlanningDeviceDao.insert(energyPlanningDevice);
