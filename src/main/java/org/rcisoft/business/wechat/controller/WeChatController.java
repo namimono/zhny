@@ -101,8 +101,7 @@ public class WeChatController {
     @PostMapping("/sendMessageToWechat")
     @ApiOperation(value = "发送微信消息", notes = "参数：项目Id,推送内容")
     public Result sendMessageToWechat(@RequestBody BusPushRecord busPushRecord){
-
-        return null;
+        return Result.result(weChatService.sendMessageToWechat(busPushRecord),"发送成功","发送失败");
     }
 
 
