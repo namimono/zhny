@@ -1,5 +1,6 @@
 package org.rcisoft.business.monitor.intercept.service;
 
+import com.alibaba.fastjson.JSONArray;
 import org.rcisoft.business.monitor.intercept.entity.*;
 
 import java.util.List;
@@ -11,10 +12,7 @@ import java.util.Map;
  * @Date: Created in 14:01 2019/3/18
  */
 public interface BusProjectService {
-    Map<String,Object> queryPhones(String id);
-    List<Map<String, Object>> queryParam(String id);
-    List<DeviceParam> queryDeviceParam(String deviceId);
-    List<String> queryDeviceTitle();
+
 
     /**
      * 查出某个项目下某个设备类型的设备信息
@@ -23,10 +21,37 @@ public interface BusProjectService {
      * @return List<DeviceInfo>
      */
     List<DeviceInfo> queryDeviceInfo(String typeFirstId,String projectId,String systemId);
-    List<String> queryModelName();
-    Map<String,Object> EnergyEchart(String titleId);
-    List<EnergyParam> queryEnergyParam(String deviceId);
 
-    List<DeviceDetail> queryDeviceDetail(String deviceId);
-    List<String> queryJsonByProId(String ProId);
+    Map<String,Object> EnergyEchart(String titleId);
+
+    /**
+     * 查询每个设备中表示电量的参数code
+     * @param projectId
+     * @param systemId
+     * @return
+     */
+    List<ParamElec> queryDeviceElec(String projectId, String systemId);
+
+    /**
+     * 拓扑图，单个设备查询部分参数
+     * @param deviceId
+     * @param count
+     * @return
+     */
+    List<Params> queryParams(String deviceId, Integer count);
+
+    /**
+     * 查询设备下所有参数信息
+     * @param deviceId
+     * @return
+     */
+    ParamsResult queryParamsAll(String deviceId);
+
+    /**
+     * 查询项目所属的网关数据
+     * @param projectId
+     * @return
+     */
+    JSONArray queryCacheData(String projectId);
+
 }

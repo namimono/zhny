@@ -23,53 +23,10 @@ public class BusProjectController {
     @Autowired
     private SysDetectionService sysDetectionService;
 
-
-    @ApiOperation(value = "查询网关",notes = "查询网关")
-    @GetMapping(value = "/queryPhones/{id}")
-    Result queryPhones(@PathVariable String id){
-        return Result.result(1,busProjectService.queryPhones(id));
-    }
-
-    @ApiOperation(value = "获取拓扑图json",notes = "获取拓扑图json")
-    @RequestMapping(value = "topoJson",method = RequestMethod.GET)
-    public Result queryTopoJson(){
-        return Result.result(1,sysDetectionService.queryTopoJson());
-    }
-
-    @ApiOperation(value = "获取标签",notes = "获取标签")
-    @GetMapping(value = "busTitle/{projectId}/{systemId}")
-    public Result queryBusTitle(@PathVariable("projectId") String projectId, @PathVariable("systemId") String systemId){
-        return Result.result(1,sysDetectionService.queryBusTitle(projectId,systemId));
-    }
-
-    @ApiOperation(value = "获取项目参数",notes = "获取项目参数")
-    @GetMapping(value = "queryParam/{id}")
-    public Result queryParam(@PathVariable String id){
-        return Result.result(1,busProjectService.queryParam(id));
-    }
-
-    @ApiOperation(value = "查询设备一二级参数及二级名称",notes = "查询设备一二级参数及二级名称")
-    @GetMapping(value = "queryDeviceParam/{id}")
-    public Result queryDeviceParam(@PathVariable String id){
-        return Result.result(1,busProjectService.queryDeviceParam(id));
-    }
-
-    @ApiOperation(value = "查询设备列表标题",notes = "查询设备列表标题")
-    @GetMapping(value = "queryDeviceTitle")
-    public Result queryDeviceTitle(){
-        return Result.result(1,busProjectService.queryDeviceTitle());
-    }
-
     @ApiOperation(value = "获取设备具体信息",notes = "获取设备具体信息")
     @GetMapping(value = "queryDeviceInfo/{typeFirstId}/{projectId}/{systemId}")
     public Result queryDeviceInfo(@PathVariable("typeFirstId") String typeFirstId, @PathVariable("projectId") String projectId, @PathVariable("systemId") String systemId){
         return Result.result(1,busProjectService.queryDeviceInfo(typeFirstId,projectId,systemId));
-    }
-
-    @ApiOperation(value = "左侧边栏模块名称",notes = "左侧边栏模块名称")
-    @GetMapping(value = "queryModelName")
-    public Result queryModelName(){
-        return Result.result(1,busProjectService.queryModelName());
     }
 
     @ApiOperation(value = "查询echarts图数据",notes = "查询echarts图数据")
@@ -78,24 +35,34 @@ public class BusProjectController {
         return Result.result(1,busProjectService.EnergyEchart(titleId));
     }
 
-    @ApiOperation(value = "查询能源参数",notes = "查询能源参数")
-    @GetMapping(value = "EnergyParam/{deviceId}")
-    public Result EnergyParam(@PathVariable String deviceId){
-        return Result.result(1,busProjectService.queryEnergyParam(deviceId));
+    @ApiOperation(value = "获取标签",notes = "获取标签")
+    @GetMapping(value = "busTitle/{projectId}/{systemId}")
+    public Result queryBusTitle(@PathVariable("projectId") String projectId, @PathVariable("systemId") String systemId){
+        return Result.result(1,sysDetectionService.queryBusTitle(projectId,systemId));
     }
 
-
-    
-    @ApiOperation(value = "查询设备实时参数，并判断状态",notes = "查询设备实时参数，并判断状态")
-    @GetMapping(value = "DeviceDetail/{deviceId}")
-    public Result queryDeviceDetail(@PathVariable String deviceId) {
-    	return Result.result(1, busProjectService.queryDeviceDetail(deviceId));
+    @ApiOperation(value = "根据项目id、系统id查询拓扑图中每个设备表示电量的参数",notes = "返回设备id，一级参数code，二级参数code，电度：0（默认） or 功率：1")
+    @GetMapping(value = "queryDeviceElec/{projectId}/{systemId}")
+    public Result queryDeviceElec(@PathVariable String projectId, @PathVariable String systemId) {
+        return Result.result(busProjectService.queryDeviceElec(projectId, systemId));
     }
 
-    @ApiOperation(value = "获取项目id，取出json串",notes = "获取项目id，取出json串")
-    @GetMapping(value = "getProId/{proId}")
-    public Result getProId(@PathVariable String proId){
-        return  Result.result(1,busProjectService.queryJsonByProId(proId));
+    @ApiOperation(value = "查询设备下部分参数信息",notes = "参数，deviceId：设备id；count：查询的数量")
+    @GetMapping(value = "queryParams/{deviceId}/{count}")
+    public Result queryParams(@PathVariable String deviceId, @PathVariable Integer count) {
+        return Result.result(busProjectService.queryParams(deviceId, count));
+    }
+
+    @ApiOperation(value = "查询设备下所有参数信息",notes = "参数，deviceId：设备id")
+    @GetMapping(value = "queryParamsAll/{deviceId}")
+    public Result queryParamsAll(@PathVariable String deviceId) {
+        return Result.result(busProjectService.queryParamsAll(deviceId));
+    }
+
+    @ApiOperation(value = "根据项目id查询实时数据",notes = "参数，projectId：项目id")
+    @GetMapping(value = "queryCacheData/{projectId}")
+    public Result queryCacheData(@PathVariable String projectId) {
+        return Result.result(busProjectService.queryCacheData(projectId));
     }
 
 }
