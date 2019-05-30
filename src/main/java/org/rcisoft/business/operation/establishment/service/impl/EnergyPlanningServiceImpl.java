@@ -77,6 +77,7 @@ public class EnergyPlanningServiceImpl implements EnergyPlanningService {
 
                         //将要用到信息封装到DeviceRecordInformation中
                         DeviceRecordInformation deviceRecordInformation = new DeviceRecordInformation();
+                        deviceRecordInformation.setEnergyPlanningRecordId(record.getId());
                         deviceRecordInformation.setStartTime(record.getStartTime());
                         deviceRecordInformation.setEndTime(record.getEndTime());
                         deviceRecordInformation.setMainValue(record.getMainValue());

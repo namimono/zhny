@@ -18,6 +18,11 @@ import java.util.Date;
 public class DeviceRecordInformation {
 
     /**
+     * 计划编制表Id
+     */
+    private String energyPlanningRecordId;
+
+    /**
      * 表示状态
      *     当设备参数的状态不同时，为3，前台显示红色
      *     当设备参数的状态相同，但是参数值不同时，为2，前台显示蓝色

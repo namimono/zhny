@@ -1,7 +1,9 @@
 package org.rcisoft.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
+import org.rcisoft.business.wechat.entity.DeviceDetailed;
 import org.rcisoft.entity.SysInspector;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
@@ -21,4 +23,16 @@ public interface SysInspectorDao extends Mapper<SysInspector> {
     @Select("SELECT * FROM sys_inspector;")
     @ResultType(SysInspector.class)
     List<SysInspector> queryInspectorInfo();
+
+    /**
+     * 查询设备信息
+     * @param deviceId
+     * @return DeviceDetail
+     */
+    @Select("<script>" +
+            "SELECT bd.`name` as deviceName, bdt.`name` as deviceTypeName, bd.project_id, bd.id as deviceId \n" +
+            "FROM bus_device bd LEFT JOIN bus_device_type bdt ON bd.device_type_id = bdt.id \n" +
+            "WHERE bd.id = #{deviceId}" +
+            "</script>")
+    DeviceDetailed getDeviceDetailById(@Param("deviceId") String deviceId);
 }
