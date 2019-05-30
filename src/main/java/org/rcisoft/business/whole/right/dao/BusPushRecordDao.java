@@ -3,6 +3,7 @@ package org.rcisoft.business.whole.right.dao;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.entity.BusPushRecord;
+import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
 /**
@@ -10,6 +11,7 @@ import tk.mybatis.mapper.common.Mapper;
  * @Description:
  * @Date: Created in 10:12 2019/3/13
  */
+@Repository
 public interface BusPushRecordDao extends Mapper<BusPushRecord> {
     /**
      * 查询消息推送时间及内容

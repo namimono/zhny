@@ -1,5 +1,7 @@
 package org.rcisoft.business.wechat.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import me.chanjar.weixin.common.bean.WxJsapiSignature;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -7,6 +9,7 @@ import org.rcisoft.base.result.Result;
 import org.rcisoft.business.wechat.entity.DeviceDetailed;
 import org.rcisoft.business.wechat.service.WeChatService;
 import org.rcisoft.entity.BusInspection;
+import org.rcisoft.entity.BusPushRecord;
 import org.rcisoft.entity.SysInspector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +21,7 @@ import java.util.Map;
  * @author GaoLiwei
  * @date 2019/5/29
  */
-
+@Api(tags = "微信相关接口")
 @RestController
 @RequestMapping("/wx/weChat")
 public class WeChatController {
@@ -85,9 +88,22 @@ public class WeChatController {
         return Result.result(0,null);
     }
 
+    /**
+     * 保存巡检信息
+     * @param busInspection
+     * @return Result
+     */
     @PostMapping("/saveInspection")
     public Result saveInspection(BusInspection busInspection){
         return Result.result(weChatService.saveInspection(busInspection),"成功","失败");
     }
+
+    @PostMapping("/sendMessageToWechat")
+    @ApiOperation(value = "发送微信消息", notes = "参数：项目Id,推送内容")
+    public Result sendMessageToWechat(@RequestBody BusPushRecord busPushRecord){
+
+        return null;
+    }
+
 
 }

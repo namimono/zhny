@@ -35,4 +35,18 @@ public interface SysInspectorDao extends Mapper<SysInspector> {
             "WHERE bd.id = #{deviceId}" +
             "</script>")
     DeviceDetailed getDeviceDetailById(@Param("deviceId") String deviceId);
+
+    /**
+     * 查询出巡检员
+     * @param ids
+     * @return List<SysInspector>
+     */
+    @Select("<script>" +
+            "select * from sys_inspector where id in " +
+            " <foreach collection=\"ids\" index=\"index\" item=\"id\" open=\"(\" separator=\",\" close=\")\"> " +
+            "   #{id} " +
+            "  </foreach> " +
+            "</script>")
+    List<SysInspector> listSysInspectorByIds(@Param("ids") List<String> ids);
+
 }

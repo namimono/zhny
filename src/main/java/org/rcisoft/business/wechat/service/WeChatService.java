@@ -3,6 +3,7 @@ package org.rcisoft.business.wechat.service;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.business.wechat.entity.DeviceDetailed;
 import org.rcisoft.entity.BusInspection;
+import org.rcisoft.entity.BusPushRecord;
 import org.rcisoft.entity.SysInspector;
 
 /**
@@ -38,6 +39,13 @@ public interface WeChatService {
      * @return Integer
      */
     Integer saveInspection(BusInspection busInspection);
+
+    /**
+     * 发送微信消息
+     * @param busPushRecord
+     * @return Integer
+     */
+    Integer sendMessageToWechat(BusPushRecord busPushRecord);
 
 
 
