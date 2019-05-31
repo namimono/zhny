@@ -5,17 +5,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.base.redis.RedisService;
-import org.rcisoft.business.monitor.intercept.dao.BusProjectParamDao;
-import org.rcisoft.business.monitor.intercept.dao.DeviceDetailDao;
 import org.rcisoft.business.monitor.intercept.dao.DeviceParamDao;
 import org.rcisoft.business.monitor.intercept.entity.*;
 import org.rcisoft.business.monitor.intercept.service.BusProjectService;
-import org.rcisoft.dao.BusProjectDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +29,10 @@ public class BusProjectServiceImpl implements BusProjectService {
     private RedisService redisService;
     @Autowired
     private DeviceParamDao deviceParamDao;
+    @Value("${location.url}")
+    private String url;
+    @Value("${location.device}")
+    private String device;
 
     @Override
     public List<DeviceInfo> queryDeviceInfo(String typeFirstId, String projectId, String systemId) {
@@ -93,6 +94,9 @@ public class BusProjectServiceImpl implements BusProjectService {
         List<ParamsResult.Elec> elecList = result.getElecList();
         List<Params> paramsList = deviceParamDao.queryParamsAll(deviceId);
         result.setParamList(paramsList);
+        DeviceInfomation deviceInfomation = deviceParamDao.queryDeviceNameAndUrl(deviceId);
+        deviceInfomation.setDeviceUrl(this.url + this.device + "/" + deviceInfomation.getDeviceUrl());
+        result.setDeviceInfomation(deviceInfomation);
         paramsList.forEach(params -> {
             if (params.getEnergyType() == 2) {
                 ParamsResult.Elec elec = new ParamsResult().new Elec();

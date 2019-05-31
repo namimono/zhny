@@ -94,4 +94,10 @@ public interface DeviceParamDao extends Mapper<DeviceParam> {
             "</script>")
     @ResultType(Params.class)
     List<Params> queryParamsAll(@Param("deviceId") String deviceId);
+
+    @Select("<script>" +
+            "select d.name deviceName, p.url deviceUrl from bus_device d left join bus_device_picture p on d.device_picture_id = p.id where d.id = #{deviceId}" +
+            "</script>")
+    @ResultType(DeviceInfomation.class)
+    DeviceInfomation queryDeviceNameAndUrl(@Param("deviceId") String deviceId);
 }

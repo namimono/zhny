@@ -15,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ParamsResult {
 
+    private DeviceInfomation deviceInfomation;
+
     private List<Elec> elecList = new ArrayList<>();
 
     private List<Params> paramList = new ArrayList<>();
