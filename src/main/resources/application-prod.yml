@@ -90,6 +90,15 @@ logging:
   level:
     org.springframework.boot.autoconfigure: ERROR
 
+# 微信公众号配置信息
+wx:
+  mp:
+    configs:
+      - appId: 1111 （一个公众号的appid）
+        secret: 1111（公众号的appsecret）
+        token: 111 （接口配置里的Token值）
+        aesKey: 111 （接口配置里的EncodingAESKey值）
+
 # 路径（例子在 business--system--other 模块中）
 # 数据库表中表示路径的字段，只存一个文件名；如果需要区分项目，需要多一层文件夹（项目id作为文件夹名）
 #     如：sys_image表的url字段，存 1.jpg  or  项目id/1.jpg
