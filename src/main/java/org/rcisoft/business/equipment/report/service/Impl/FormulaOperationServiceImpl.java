@@ -238,7 +238,9 @@ public class FormulaOperationServiceImpl implements FormulaOperationService {
             dataRow.createCell(0, CellType.STRING).setCellValue(echartResult.getName());
             Double[] data = echartResult.getData();
             for (int j = 0; j < data.length; j++) {
-                dataRow.createCell(j + 1, CellType.STRING).setCellValue(data[j]);
+                if (data[j] != null) {
+                    dataRow.createCell(j + 1, CellType.STRING).setCellValue(data[j]);
+                }
             }
         }
         ExcelUtil.downloadExcel(request, response, date + "公式数据", workbook);
