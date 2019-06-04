@@ -3,8 +3,11 @@ package org.rcisoft.business.whole.home.service.Impl;
 import org.rcisoft.base.jwt.JwtTokenUtil;
 import org.rcisoft.base.redis.RedisService;
 import org.rcisoft.business.whole.home.dao.HomeDao;
+import org.rcisoft.business.whole.home.entity.HomeResult;
 import org.rcisoft.business.whole.home.entity.ProjectHome;
 import org.rcisoft.business.whole.home.service.HomeService;
+import org.rcisoft.dao.SysUserDao;
+import org.rcisoft.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,8 @@ public class HomeServiceImpl implements HomeService {
     private RedisService redisService;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private SysUserDao sysUserDao;
 
     @Value("${jwt.header}")
     private String tokenHeader;
@@ -37,8 +42,11 @@ public class HomeServiceImpl implements HomeService {
     private final static String count = "-count";
 
     @Override
-    public List<ProjectHome> queryProjectHome(HttpServletRequest request) {
+    public HomeResult queryProjectHome(HttpServletRequest request) {
         String userId = jwtTokenUtil.getClaimsFromToken(request.getHeader(tokenHeader).substring(tokenHead.length())).get("userid", String.class);
+        // 查询用户权限
+        SysUser sysUser = sysUserDao.selectByPrimaryKey(userId);
+        Integer type = sysUser.getType();
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
@@ -101,7 +109,7 @@ public class HomeServiceImpl implements HomeService {
             }
             listResult.add(pd);
         }
-        return listResult;
+        return new HomeResult(type, listResult);
     }
 
     /**
