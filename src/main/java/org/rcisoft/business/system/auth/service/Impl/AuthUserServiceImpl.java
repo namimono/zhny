@@ -3,6 +3,7 @@ package org.rcisoft.business.system.auth.service.Impl;
 import org.rcisoft.base.jwt.JwtTokenUtil;
 import org.rcisoft.business.system.auth.service.AuthService;
 import org.rcisoft.business.system.roleuser.dao.SysUserMenuDao;
+import org.rcisoft.dao.SysUserDao;
 import org.rcisoft.entity.SysMenu;
 import org.rcisoft.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @Author Minghui Xu
@@ -32,6 +31,7 @@ public class AuthUserServiceImpl implements AuthService {
     private UserDetailsService userDetailsService;
     private JwtTokenUtil jwtTokenUtil;
     private SysUserMenuDao sysUserMenuDao;
+    private SysUserDao sysUserDao;
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
@@ -40,12 +40,14 @@ public class AuthUserServiceImpl implements AuthService {
             AuthenticationManager authenticationManager,
             UserDetailsService userDetailsService,
             JwtTokenUtil jwtTokenUtil,
-            SysUserMenuDao sysUserMenuDao
+            SysUserMenuDao sysUserMenuDao,
+            SysUserDao sysUserDao
     ){
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.jwtTokenUtil = jwtTokenUtil;
         this.sysUserMenuDao = sysUserMenuDao;
+        this.sysUserDao = sysUserDao;
     }
     @Transactional
     @Override
@@ -63,13 +65,18 @@ public class AuthUserServiceImpl implements AuthService {
     }
 
     @Override
-    public String login(String username, String password) {
+    public Map<String, Object> login(String username, String password) {
         UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(username,password);
         final Authentication authentication = authenticationManager.authenticate(upToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final UserDetails userDetails = (SysUser) authentication.getPrincipal();// userDetailsService.loadUserByUsername(username);
-        final String Token = jwtTokenUtil.generateToken(userDetails);
-        return Token;
+        final String token = jwtTokenUtil.generateToken(userDetails);
+
+        SysUser sysUser = sysUserDao.selectByPrimaryKey(((SysUser) userDetails).getId());
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("token", token);
+        resultMap.put("name", sysUser.getRealName());
+        return resultMap;
     }
 
     @Override

@@ -33,8 +33,7 @@ public class AuthUserController {
     @ApiOperation(value = "用户登录",notes = "用户登录")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Result createAuthenticationToken(String username,String password)throws AuthenticationException{
-        final String token = authService.login(username,password);
-        return Result.result(1,token);
+        return Result.result(authService.login(username, password));
     }
 
     @ApiOperation(value = "用户登录刷新",notes = "用户登录刷新")
