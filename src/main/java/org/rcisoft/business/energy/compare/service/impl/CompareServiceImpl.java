@@ -59,9 +59,9 @@ public class CompareServiceImpl implements CompareService {
     @Override
     public EnergyStandardResult queryEnergyStandard(String projectId) {
         // 今年颜色
-        String colorThisYear = "#f2033b";
+        String colorThisYear = "#908ec5";
         // 去年颜色
-        String colorLastYear = "#5de3e1";
+        String colorLastYear = "#91bbec";
         // 查询标准用量
         List<EnergyStandard> standardList = energyStandardDao.queryEnergyStandard(projectId);
         // 查询今年水电气用量
@@ -69,16 +69,6 @@ public class CompareServiceImpl implements CompareService {
         EnergyAndCount energyThisYear = compareDao.queryEnergyAndCount(projectId, year);
         // 查询去年水电气用量
         EnergyAndCount energyLastYear = compareDao.queryEnergyAndCount(projectId, year - 1);
-        //非空判断
-        if(standardList.size()==0){
-            return null;
-        }
-        if(energyThisYear.getGas()==null || energyThisYear.getWater()==null ||energyThisYear.getElec()==null){
-            return  null;
-        }
-        if(energyLastYear.getGas()==null || energyLastYear.getWater()==null ||energyLastYear.getElec()==null){
-            return  null;
-        }
         // 将结果放入最后的返回值中
         EnergyStandardResult result = new EnergyStandardResult();
         // 先放入标准值
