@@ -31,7 +31,6 @@ public class AuthUserServiceImpl implements AuthService {
     private UserDetailsService userDetailsService;
     private JwtTokenUtil jwtTokenUtil;
     private SysUserMenuDao sysUserMenuDao;
-    private SysUserDao sysUserDao;
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
@@ -40,14 +39,12 @@ public class AuthUserServiceImpl implements AuthService {
             AuthenticationManager authenticationManager,
             UserDetailsService userDetailsService,
             JwtTokenUtil jwtTokenUtil,
-            SysUserMenuDao sysUserMenuDao,
-            SysUserDao sysUserDao
+            SysUserMenuDao sysUserMenuDao
     ){
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.jwtTokenUtil = jwtTokenUtil;
         this.sysUserMenuDao = sysUserMenuDao;
-        this.sysUserDao = sysUserDao;
     }
     @Transactional
     @Override
@@ -72,10 +69,9 @@ public class AuthUserServiceImpl implements AuthService {
         final UserDetails userDetails = (SysUser) authentication.getPrincipal();// userDetailsService.loadUserByUsername(username);
         final String token = jwtTokenUtil.generateToken(userDetails);
 
-        SysUser sysUser = sysUserDao.selectByPrimaryKey(((SysUser) userDetails).getId());
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("token", token);
-        resultMap.put("name", sysUser.getRealName());
+        resultMap.put("name", ((SysUser) userDetails).getRealName());
         return resultMap;
     }
 
