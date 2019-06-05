@@ -16,22 +16,9 @@ import java.util.List;
 @Repository
 public interface BusTemperatureDao extends Mapper<BusTemperature> {
 
-    /**
-     * 根据城市code查询时间段内的整点温度信息
-     */
-    @Select("SELECT * FROM bus_temperature WHERE create_time BETWEEN #{beginTime} AND #{endTime}\n" +
-            "AND RIGHT(create_time,5)='00:00' AND coding = #{code};")
-    @ResultType(BusTemperature.class)
-    List<BusTemperature> queryTemperature(@Param("beginTime") String beginTime
-            ,@Param("endTime") String endTime,@Param("code") String code);
-
     @Select("SELECT create_time, temperature FROM bus_temperature WHERE date_format(create_time, \"%Y-%m-%d\") = #{time} " +
-            "AND RIGHT(create_time,5)='00:00' AND coding = #{coding} order by create_time asc")
+            "AND coding = #{coding} order by create_time asc")
     @ResultType(BusTemperature.class)
     List<BusTemperature> queryTemp(@Param("time") String time, @Param("coding") String coding);
 
-    @Select("SELECT create_time, temperature FROM bus_temperature WHERE date_format(create_time, \"%Y-%m-%d\") = #{time} " +
-            "AND RIGHT(create_time,5)='00:00' AND coding = #{coding} order by create_time asc")
-    @ResultType(BusTemperature.class)
-    List<BusTemperature> queryTempDate(@Param("time") String time, @Param("coding") String coding);
 }
