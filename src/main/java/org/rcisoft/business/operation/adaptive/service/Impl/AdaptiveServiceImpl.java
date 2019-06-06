@@ -164,7 +164,7 @@ public class AdaptiveServiceImpl implements AdaptiveService {
         String code = busProjectDao.queryCityCode(projectId);
         String time = climateParam.getTime();
         // 查询当天的实际温度
-        List<BusTemperature> temperatureList = busTemperatureDao.queryTempDate(time, code);
+        List<BusTemperature> temperatureList = busTemperatureDao.queryTemp(time, code);
         /** 最优温度 */
         BigDecimal[] tempResult = new BigDecimal[24];
         temperatureList.forEach(busTemperature -> {

@@ -37,10 +37,10 @@ public class CompareServiceImpl implements CompareService {
         // 参数
         CompareParam c = new CompareParam(year, month, null, projectId);
         // 查询本月
-        EnergyStatistics dayEnergy = energyStatisticsDao.queryEnergyDayAndMon(c);
+        EnergyStatistics monEnergy = energyStatisticsDao.queryEnergyDayAndMon(c);
         c.setDay(day);
         // 查询当日
-        EnergyStatistics monEnergy = energyStatisticsDao.queryEnergyDayAndMon(c);
+        EnergyStatistics dayEnergy = energyStatisticsDao.queryEnergyDayAndMon(c);
         // 返回值
         EnergyDayAndMon result = new EnergyDayAndMon();
         if (dayEnergy != null) {
@@ -154,7 +154,7 @@ public class CompareServiceImpl implements CompareService {
         // 超标颜色(红色)
         String colorExcess = "#f2033b";
         Integer countThisYear = e.getCount();
-        if (countThisYear != 0) {
+        if (countThisYear != 0 && standardSuggest.size() > 0) {
             BigDecimal count = new BigDecimal(countThisYear);
             // 水，这里可能还需要乘上一个系数，待确定
             BigDecimal water = e.getWater().divide(count, 2, BigDecimal.ROUND_HALF_UP);
