@@ -148,7 +148,7 @@ public class ZhnyUtils {
     public static Date getDayStartTime(Date date) {
         Calendar dayStart = Calendar.getInstance();
         dayStart.setTime(date);
-        dayStart.set(Calendar.HOUR, 0);
+        dayStart.set(Calendar.HOUR_OF_DAY, 0);
         dayStart.set(Calendar.MINUTE, 0);
         dayStart.set(Calendar.SECOND, 0);
         dayStart.set(Calendar.MILLISECOND, 0);
@@ -164,7 +164,7 @@ public class ZhnyUtils {
     public static Date getDayEndTime(Date date) {
         Calendar dayEnd = Calendar.getInstance();
         dayEnd.setTime(date);
-        dayEnd.set(Calendar.HOUR, 23);
+        dayEnd.set(Calendar.HOUR_OF_DAY, 23);
         dayEnd.set(Calendar.MINUTE, 59);
         dayEnd.set(Calendar.SECOND, 59);
         dayEnd.set(Calendar.MILLISECOND, 999);

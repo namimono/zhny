@@ -64,9 +64,9 @@ public class BasicDataController {
     }
 
     @ApiOperation(value="上传基准碳排放量模板", notes="上传基准碳排放量模板")
-    @PostMapping(value = "/fileUpload")
-    public String upload(@RequestParam("file") MultipartFile file) {
-        return basicDataServiceImpl.upload(file);
+    @PostMapping(value = "/fileUpload/{projectId}")
+    public String upload(@RequestParam("file") MultipartFile file,@PathVariable("projectId") String projectId) {
+        return basicDataServiceImpl.upload(file,projectId);
     }
 
     @ApiOperation(value="下载基准碳排放量模板", notes="下载基准碳排放量模板")

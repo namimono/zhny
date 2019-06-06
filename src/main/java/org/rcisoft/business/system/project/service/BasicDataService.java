@@ -49,7 +49,7 @@ public interface BasicDataService {
     /**
      * 上传基准碳排放量模板
      */
-    String upload(MultipartFile file);
+    String upload(MultipartFile file,String projectId);
 
     /**
      * 下载基准碳排放量模板

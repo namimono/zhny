@@ -47,9 +47,11 @@ public class EmissionServiceImpl implements EmissionService {
         day = calendar.get(Calendar.DAY_OF_MONTH);
         p.setDay(day);
         result.setYestodayCarbon(this.isNull(emissionDao.queryCarbonDay(p)));
+
         // 日同比
-        calendar.setTime(today);// 重置日期为今天
-        calendar.add(Calendar.MONTH, -1);
+        // 重置日期为今天
+        calendar.setTime(today);
+        calendar.add(Calendar.YEAR, -1);
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH) + 1;
         day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -59,9 +61,10 @@ public class EmissionServiceImpl implements EmissionService {
         result.setDayCompareCarbon(this.isNull(emissionDao.queryCarbonDay(p)));
         // 月同比
         result.setMonthCompareCarbon(this.isNull(emissionDao.queryCarbonMonth(p)));
+
         // 日环比
         calendar.setTime(today);// 重置日期为今天
-        calendar.add(Calendar.YEAR, -1);
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH) + 1;
         day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -69,8 +72,18 @@ public class EmissionServiceImpl implements EmissionService {
         p.setMonth(month);
         p.setDay(day);
         result.setDayRingCarbon(this.isNull(emissionDao.queryCarbonDay(p)));
+
         // 月环比
+        calendar.setTime(today);// 重置日期为今天
+        calendar.add(Calendar.MONTH, -1);
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH) + 1;
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        p.setYear(year);
+        p.setMonth(month);
+        p.setDay(day);
         result.setMonthRingCarbon(this.isNull(emissionDao.queryCarbonMonth(p)));
+
         // 日同比 百分比
         result.setDayComparePercent(this.percent(result.getTodayCarbon(), result.getDayCompareCarbon()));
         // 日环比 百分比

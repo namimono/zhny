@@ -2,6 +2,7 @@ package org.rcisoft.dao;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.rcisoft.entity.EnergyPlanningRecord;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
@@ -28,4 +29,18 @@ public interface EnergyPlanningRecordDao extends Mapper<EnergyPlanningRecord> {
             " #{item.createTime}, #{item.startTime}, #{item.endTime}) " +
             "</foreach></script>")
     Integer saveListEnergyPlanningRecord(@Param("energyPlanningRecordList") List<EnergyPlanningRecord> energyPlanningRecordList);
+
+    /**
+     * 根据项目与时间查出计划编制信息
+     * @param projectId
+     * @param createData
+     * @return List<EnergyPlanningRecord>
+     */
+    @Select("<script>" +
+            "SELECT * FROM energy_planning_record WHERE project_id = #{projectId} AND create_time = #{createData} " +
+            "</script>")
+    List<EnergyPlanningRecord> listEnergyPlanningRecordDaoByProIdAndData(@Param("projectId") String projectId, @Param("createData") String createData);
+
+
+
 }

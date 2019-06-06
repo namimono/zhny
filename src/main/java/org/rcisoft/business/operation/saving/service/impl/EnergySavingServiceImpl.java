@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -29,10 +30,8 @@ public class EnergySavingServiceImpl implements EnergySavingService {
     public List<PlanCostAndRealCost> listRunningEnergyCost(String projectId) {
 
         //查出这个项目今天所有的计划能耗
-        EnergyPlanningRecord useEnergyPlanningRecord = new EnergyPlanningRecord();
-        useEnergyPlanningRecord.setProjectId(projectId);
-        useEnergyPlanningRecord.setCreateTime(new Date());
-        List<EnergyPlanningRecord> energyPlanningRecordList = energyPlanningRecordDao.select(useEnergyPlanningRecord);
+        List<EnergyPlanningRecord> energyPlanningRecordList = energyPlanningRecordDao.listEnergyPlanningRecordDaoByProIdAndData(
+                projectId, new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 
         //查出这个项目今天的实际能耗
         EnergyStatistics useEnergyStatistics = new EnergyStatistics();
@@ -75,8 +74,8 @@ public class EnergySavingServiceImpl implements EnergySavingService {
                         //算出这个计划编制在这个小时内运行了多久
                         //如果这段计划的结束时间大于等于这个小时的时间，则证明这一个小时都在计划内
                         if (energyPlanningRecord.getEndTime().getTime() >= dayStartTime + timeFlag) {
-                            planCost.add(energyPlanningRecord.getMoneyElec());
-                            planCost.add(energyPlanningRecord.getMoneyGas());
+                            planCost = planCost.add(energyPlanningRecord.getMoneyElec());
+                            planCost = planCost.add(energyPlanningRecord.getMoneyGas());
                         } else {//如果这段计划的结束时间小于这个小时的时间，则证明这一个小时只有某一段时间在计划内，需要计算
                             //计算出相差了多少小时
                             long diffHour = (energyPlanningRecord.getEndTime().getTime() - dayStartTime) / timeFlag;
@@ -93,8 +92,8 @@ public class EnergySavingServiceImpl implements EnergySavingService {
                 List<EnergyStatistics> list = energyStatisticsListGroup.get(hour);
                 if (null != list){
                     for (EnergyStatistics energyStatistics : list){
-                        realCost.add(energyStatistics.getMoneyElec());
-                        realCost.add(energyStatistics.getMoneyGas());
+                        realCost = realCost.add(energyStatistics.getMoneyElec());
+                        realCost = realCost.add(energyStatistics.getMoneyGas());
                     }
                 }
             }
