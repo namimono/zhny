@@ -167,7 +167,7 @@ public class IndoorServiceImpl implements IndoorService {
                             Date day = bt.getCreateTime();
                             int hour = Integer.parseInt(f.format(day));
                             sum = bt.getTemperature();
-                            outside[hour-1] = sum;
+                            outside[hour] = sum;
                         }
                     }else{
                         List<BusTemperature> listHumi = indoorDao.queryHumidityHours(coding);
@@ -175,7 +175,7 @@ public class IndoorServiceImpl implements IndoorService {
                             Date day = bt.getCreateTime();
                             int hour = Integer.parseInt(f.format(day));
                             sum = new BigDecimal(bt.getHumidity());
-                            outside[hour-1] = sum;
+                            outside[hour] = sum;
                         }
                     }
                 }

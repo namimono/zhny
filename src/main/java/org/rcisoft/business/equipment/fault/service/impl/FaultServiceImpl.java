@@ -38,13 +38,15 @@ public class FaultServiceImpl implements FaultService {
 
     @Override
     public int[] queryFaultCount(String projectId, String deviceTypeId, Integer year, Integer month) {
-        // 当月天数
-        int date = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
+        //获得指定月份有多少天
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MONTH,month-1);
+        int date = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         // 返回值
         int[] result = new int[date];
         List<FaultCountResult> list = faultDao.queryFaultCount(projectId, deviceTypeId, year + "-" + month);
         list.forEach(faultCountResult -> {
-            result[faultCountResult.getTime()] = faultCountResult.getCount();
+            result[faultCountResult.getTime()-1] = faultCountResult.getCount();
         });
         return result;
     }

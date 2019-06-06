@@ -98,20 +98,22 @@ public class CompareServiceImpl implements CompareService {
             case 3:
                 column = "energy_gas";
                 break;
+            default:
+                break;
         }
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month - 1, 1);
-//        int year = calendar.get(Calendar.YEAR);
-//        int month = calendar.get(Calendar.MONTH) + 1;
         // 查询当月
         List<DayAndEnergy> energyList = compareDao.queryEnergyCompare(projcetId, year, month, column);
         // 查询环比 or 同比 月
         switch (compareType) {
             case 1:// 同比
-                calendar.add(Calendar.MONTH, -1);
+                calendar.add(Calendar.YEAR, -1);
                 break;
             case 2:// 环比
-                calendar.add(Calendar.YEAR, -1);
+                calendar.add(Calendar.MONTH, -1);
+                break;
+            default:
                 break;
         }
         year = calendar.get(Calendar.YEAR);
@@ -142,13 +144,14 @@ public class CompareServiceImpl implements CompareService {
 
     /**
      * 放入实际值，判断颜色
-     * @param e 用量
-     * @param standardSuggest 建议标准
+     *
+     * @param e                用量
+     * @param standardSuggest  建议标准
      * @param standardIndustry 行业标准
-     * @param standardCountry 国家标准
-     * @param colorList 颜色返回值
-     * @param energyList 用量返回值
-     * @param color 当前正常显示的颜色
+     * @param standardCountry  国家标准
+     * @param colorList        颜色返回值
+     * @param energyList       用量返回值
+     * @param color            当前正常显示的颜色
      */
     private void setValueAndColor(EnergyAndCount e, List<BigDecimal> standardSuggest, List<BigDecimal> standardIndustry, List<BigDecimal> standardCountry, List<String> colorList, List<BigDecimal> energyList, String color) {
         // 超标颜色(红色)

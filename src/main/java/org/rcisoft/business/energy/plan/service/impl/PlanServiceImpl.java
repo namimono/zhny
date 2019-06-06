@@ -134,12 +134,12 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public PlanResult queryPlanMonth(String projectId, Integer year, Integer month) {
         // 参数
-        Calendar calendar = Calendar.getInstance();
         String time = year + "-" + month;
         PlanParam p = new PlanParam(projectId, year, month, null, time);
-        // 每月天数
-        int date = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        if (date == 28) {date = 29;} // 2月按照29天算，避免空指针
+        //获得指定月份有多少天
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MONTH,month-1);
+        int date = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         // 返回值
         PlanResult result = new PlanResult();
         List<BigDecimal> resultRealList = result.getRealList();
