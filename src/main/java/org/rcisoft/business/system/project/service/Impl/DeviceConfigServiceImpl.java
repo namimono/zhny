@@ -98,7 +98,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
         busDevice.setQrcodeUrl(id+".JPG");
         try {
             //生成二维码
-            QRCodeUtils.createQRCodeFile(id,path+qrcodeImgPath,id);
+            QRCodeUtils.createQRCodeFile(id,path+qrcodeImgPath+"/"+busDevice.getProjectId(),id);
         } catch (WriterException e) {
             e.printStackTrace();
         } catch (IOException e) {
