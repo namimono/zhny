@@ -3,6 +3,7 @@ package org.rcisoft.business.system.project.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
+import org.rcisoft.business.system.project.entity.BatchParams;
 import org.rcisoft.business.system.project.entity.ParamFirstContainSecond;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.rcisoft.entity.BusDevice;
@@ -136,9 +137,9 @@ public class DeviceConfigController {
     }
 
     @ApiOperation(value="批量增删改一二级参数信息", notes="批量增删改一二级参数信息")
-    @PostMapping("/batchOperationParams/{paramFirstIds}/{paramSecondIds}")
-    public Result batchOperationParams(@RequestBody List<ParamFirstContainSecond> list,@PathVariable String paramFirstIds,@PathVariable String paramSecondIds){
-        return Result.serviceResult(deviceConfigServiceImpl.batchOperationParams(list,paramFirstIds,paramSecondIds));
+    @PostMapping("/batchOperationParams")
+    public Result batchOperationParams(@RequestBody BatchParams batchParams){
+        return deviceConfigServiceImpl.batchOperationParams(batchParams);
     }
 
     @ApiOperation(value="新增厂家信息", notes="新增厂家信息")
