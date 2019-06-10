@@ -1,18 +1,15 @@
 package org.rcisoft.business.management.distribution.service.Impl;
 
-import org.apache.ibatis.annotations.Param;
-import org.rcisoft.business.management.distribution.dao.energyDistributionDao;
-import org.rcisoft.business.management.distribution.entity.EnergyDistribution;
+import org.apache.commons.lang3.StringUtils;
+import org.rcisoft.business.management.distribution.dao.EnergyDistributionDao;
+import org.rcisoft.business.management.distribution.entity.MoneyCost;
+import org.rcisoft.business.management.distribution.entity.ProjectInfomation;
 import org.rcisoft.business.management.distribution.service.energyDistributionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author Minghui Xu
@@ -22,42 +19,46 @@ import java.util.Map;
 @Service
 public class energyDistributionServiceImpl implements energyDistributionService {
     @Autowired
-    energyDistributionDao energyDistributionDao;
+    EnergyDistributionDao energyDistributionDao;
 
     /**
      * 能耗分布计算
-     * @param timeYear
-     * @param Month
+     * @param year
+     * @param month
      * @return
      */
     @Override
-    public Map<String,Object> queryEnergyDistributed(int timeYear,String Month) {
-    	Map<String,Object> resultMap = new HashMap();
-        EnergyDistribution energyDistribution = new EnergyDistribution();
-        Calendar cal = Calendar.getInstance();
-        List buildingType = new ArrayList<>(); 
-        List<EnergyDistribution> list = energyDistributionDao.queryEnergyDistributed(timeYear,Month);
-        for(EnergyDistribution ed:list) {
-            //计算水气电所有费用总和
-            BigDecimal sum = ed.getSumElec().add(ed.getSumGas()).add(ed.getSumWater());
-            //计算能耗水平
-            BigDecimal energyNum = sum.divide(ed.getBuildingArea(), 2, BigDecimal.ROUND_HALF_UP);
-            ed.setEnergyNum(energyNum);
-            buildingType.add(ed.getBuildingType());
-            try{
-                //截取年份存入年份字段
-                Calendar c = Calendar.getInstance();
-                c.setTime(ed.getEquipmentAge());
-                ed.setEquipmentYear(c.get(Calendar.YEAR));
-                c.setTime(ed.getBuildingAge());
-                ed.setBuildingYear(c.get(Calendar.YEAR));
-            }catch(Exception e ){
-                e.getStackTrace();
-            }
-        }
-        resultMap.put("baiduMap",list);
-        resultMap.put("buildingType", buildingType);
-        System.out.println(list);
-        return resultMap;
+    public List<ProjectInfomation> queryEnergyDistributed(int year, int month) {
+        Calendar calendar = Calendar.getInstance();
+        // 查询所有线上并且接受数据的项目
+        List<ProjectInfomation> projectList = energyDistributionDao.queryProjectInfo();
+        List<MoneyCost> costList = energyDistributionDao.queryProjectMoney(year, month);
+
+        projectList.forEach(projectInfomation -> {
+            String id = projectInfomation.getId();
+
+            Date buildingAge = projectInfomation.getBuildingAge();
+            calendar.setTime(buildingAge);
+            projectInfomation.setBuildingAgeYear(calendar.get(Calendar.YEAR));
+
+            Date equipmentAge = projectInfomation.getEquipmentAge();
+            calendar.setTime(equipmentAge);
+            projectInfomation.setEquipmentAgeYear(calendar.get(Calendar.YEAR));
+
+            BigDecimal buildingArea = projectInfomation.getBuildingArea();
+            costList.forEach(moneyCost -> {
+                if (StringUtils.equals(moneyCost.getProjectId(), id)) {
+                    BigDecimal moneyWater = moneyCost.getMoneyWater();
+                    BigDecimal moneyElec = moneyCost.getMoneyElec();
+                    BigDecimal moneyGas = moneyCost.getMoneyGas();
+                    if (buildingArea.compareTo(new BigDecimal(0)) != 0) {
+                        BigDecimal divide = moneyWater.add(moneyElec).add(moneyGas).divide(buildingArea, 2, BigDecimal.ROUND_HALF_UP);
+                        projectInfomation.setEnergy(divide);
+                    }
+                }
+            });
+        });
+
+        return projectList;
     }
 }

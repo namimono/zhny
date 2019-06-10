@@ -3,10 +3,12 @@ package org.rcisoft.business.system.project.service.Impl;
 import com.google.zxing.WriterException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.rcisoft.base.result.Result;
 import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.base.util.QRCodeUtils;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.dao.DeviceConfigDao;
+import org.rcisoft.business.system.project.entity.BatchParams;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
 import org.rcisoft.business.system.project.entity.ParamFirstContainSecond;
 import org.rcisoft.business.system.project.entity.ParamResult;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 import tk.mybatis.mapper.entity.Example;
 
@@ -369,79 +372,79 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
      */
     @Transactional(rollbackFor=Exception.class)
     @Override
-    public ServiceResult batchOperationParams(List<ParamFirstContainSecond> list,String paramFirstIds,String paramSecondIds){
-
-        //判断新增一级参数信息是否重复
-        for (ParamFirstContainSecond paramFirstContainSecond : list){
-            if (paramFirstContainSecond.getBusParamFirst().getId() == null || "".equals(paramFirstContainSecond.getBusParamFirst().getId())){
-                int flag = deviceConfigDao.queryRepeatNum(paramFirstContainSecond.getBusParamFirst().getName(),paramFirstContainSecond.getBusParamFirst().getCoding(),paramFirstContainSecond.getBusParamFirst().getProjectId(),paramFirstContainSecond.getBusParamFirst().getDeviceId());
-                if(flag > 0){
-                    return new ServiceResult(flag,"error");
+    public Result batchOperationParams(BatchParams batchParams){
+        // 操作结果
+        int result = 0;
+        // 获取参数
+        List<ParamFirstContainSecond> batchList = batchParams.getBatchList();
+        String paramFirstIds = batchParams.getParamFirstIds();
+        String paramSecondIds = batchParams.getParamSecondIds();
+        // 1.删除一级二级
+        if (StringUtils.isNotEmpty(paramFirstIds)) {
+            String[] split = paramFirstIds.split(",");
+            for (String paramFirstId : split) {
+                result += busParamFirstDao.deleteByPrimaryKey(paramFirstId);
+            }
+        }
+        if (StringUtils.isNotEmpty(paramSecondIds)) {
+            String[] split = paramSecondIds.split(",");
+            for (String paramSecondId : split) {
+                result += busParamSecondDao.deleteByPrimaryKey(paramSecondId);
+            }
+        }
+        // 保存or修改数据
+        if (batchList.size() > 0) {
+            List<BusParamFirst> addFirstList = new ArrayList<>();
+            List<BusParamFirst> updateFirstList = new ArrayList<>();
+            List<BusParamSecond> addSecondList = new ArrayList<>();
+            List<BusParamSecond> updateSecondList = new ArrayList<>();
+            // 循环数据
+            for (ParamFirstContainSecond paramFirstContainSecond : batchList) {
+                String firstId = UuidUtil.create32();
+                BusParamFirst busParamFirst = paramFirstContainSecond.getBusParamFirst();
+                // 固定参数不需要添加一级
+                if (busParamFirst.getSourceId() != 4) {
+                    if (StringUtils.isEmpty(busParamFirst.getId())) {
+                        // id为空，新增
+                        busParamFirst.setId(firstId);
+                        addFirstList.add(busParamFirst);
+                    } else {
+                        // 不为空，更新
+                        updateFirstList.add(busParamFirst);
+                    }
                 }
-            }
-        }
-
-        int sum = 0;
-        //批量删除
-        String[] firstIds = paramFirstIds.split(",");
-        String[] secondIds = paramSecondIds.split(",");
-        if (!"0".equals(firstIds[0])){
-            for (String firstId : firstIds) {
-                sum += this.deleteParamFirst(firstId);
-            }
-        }
-        if (!"0".equals(secondIds[0])){
-            for (String secondId : secondIds) {
-                sum += this.deleteParamSecond(secondId);
-            }
-        }
-        //批量修改或新增一二级参数
-        List<BusParamFirst> addParamFirstList = new ArrayList<>();
-        List<BusParamSecond> addParamSecondList = new ArrayList<>();
-        List<BusParamFirst> updateParamFirstList = new ArrayList<>();
-        List<BusParamSecond> updateParamSecondList = new ArrayList<>();
-        if(list.size() > 0){
-            list.forEach(paramFirstContainSecond -> {
-                if (paramFirstContainSecond.getBusParamFirst().getId() == null || "".equals(paramFirstContainSecond.getBusParamFirst().getId())){
-                    String id = UuidUtil.create32();
-                    paramFirstContainSecond.getBusParamFirst().setId(id);
-                    addParamFirstList.add(paramFirstContainSecond.getBusParamFirst());
-                    //循环添加二级参数id和其一级参数id字段信息
-                    paramFirstContainSecond.getSecondary().forEach(busParamSecond -> {
+                List<BusParamSecond> secondary = paramFirstContainSecond.getSecondary();
+                for (BusParamSecond busParamSecond : secondary) {
+                    if (StringUtils.isEmpty(busParamSecond.getId())) {
                         busParamSecond.setId(UuidUtil.create32());
-                        if (busParamSecond.getSourceId() != 4) {
-                            busParamSecond.setParamFirstId(id);
-                        }
-                        addParamSecondList.add(busParamSecond);
-                    });
-                }else {
-                    paramFirstContainSecond.getSecondary().forEach(busParamSecond -> {
-                        if (busParamSecond.getId() == null || "".equals(busParamSecond.getId())){
-                            busParamSecond.setId(UuidUtil.create32());
-                            addParamSecondList.add(busParamSecond);
-                        }else {
-                            updateParamSecondList.add(busParamSecond);
-                        }
-                    });
-                    updateParamFirstList.add(paramFirstContainSecond.getBusParamFirst());
+                        busParamSecond.setParamFirstId(firstId);
+                        addSecondList.add(busParamSecond);
+                    } else {
+                        updateSecondList.add(busParamSecond);
+                    }
                 }
-            });
+            }
+            if (addFirstList.size() > 0) {
+                result += busParamFirstDao.insertListUseAllCols(addFirstList);
+            }
+            if (updateFirstList.size() > 0) {
+                result += deviceConfigDao.updateAllParamFirst(updateFirstList);
+            }
+            if (addSecondList.size() > 0) {
+                result += busParamSecondDao.insertListUseAllCols(addSecondList);
+            }
+            if (updateSecondList.size() > 0) {
+                result += deviceConfigDao.updateAllParamSecond(updateSecondList);
+            }
         }
-        //执行批量更新操作
-        if(updateParamFirstList.size() > 0){
-            sum += updateAllParamFirst(updateParamFirstList);
+        // 返回值
+        String message = "";
+        if (result > 0) {
+            message = "参数配置成功";
+        } else {
+            message = "参数配置无变化";
         }
-        if (updateParamSecondList.size() > 0){
-            sum += updateAllParamSecond(updateParamSecondList);
-        }
-        //执行批量新增操作
-        if(addParamFirstList.size() > 0){
-            sum += busParamFirstDao.insertListUseAllCols(addParamFirstList);
-        }
-        if (addParamSecondList.size() > 0){
-            sum += busParamSecondDao.insertListUseAllCols(addParamSecondList);
-        }
-        return new ServiceResult(sum,"success");
+        return new Result(result, message, null);
     }
 
     /**
