@@ -400,11 +400,13 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
             List<BusParamSecond> updateSecondList = new ArrayList<>();
             // 循环数据
             for (ParamFirstContainSecond paramFirstContainSecond : batchList) {
+                String firstId = UuidUtil.create32();
                 BusParamFirst busParamFirst = paramFirstContainSecond.getBusParamFirst();
                 // 固定参数不需要添加一级
                 if (busParamFirst.getSourceId() != 4) {
                     if (StringUtils.isEmpty(busParamFirst.getId())) {
                         // id为空，新增
+                        busParamFirst.setId(firstId);
                         addFirstList.add(busParamFirst);
                     } else {
                         // 不为空，更新
@@ -414,6 +416,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
                 List<BusParamSecond> secondary = paramFirstContainSecond.getSecondary();
                 for (BusParamSecond busParamSecond : secondary) {
                     if (StringUtils.isEmpty(busParamSecond.getId())) {
+                        busParamSecond.setId(UuidUtil.create32());
+                        busParamSecond.setParamFirstId(firstId);
                         addSecondList.add(busParamSecond);
                     } else {
                         updateSecondList.add(busParamSecond);
