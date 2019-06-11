@@ -58,6 +58,8 @@ public class HomeServiceImpl implements HomeService {
         List<ProjectHome> projectDetail = homeDao.queryProjectDetail(userId);
         for(ProjectHome pd:projectDetail){
             String Id = pd.getId();
+            // 给碳排放量赋空值
+            pd.setCarbon(new BigDecimal(0));
             for(Map es:energyStatics){
                 if (es.get("proId").equals(Id)){
                     pd.setMoneyGas((BigDecimal) es.get("moneyGas"));
