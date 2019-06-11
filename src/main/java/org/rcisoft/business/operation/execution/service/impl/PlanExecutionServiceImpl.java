@@ -18,7 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
 import static org.rcisoft.base.util.ZhnyUtils.getDayEndTime;
 import static org.rcisoft.base.util.ZhnyUtils.getDayStartTime;
@@ -43,6 +46,10 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
     private BusParamFirstDao busParamFirstDao;
     @Autowired
     private BusParamSecondDao busParamSecondDao;
+    @Autowired
+    private EnergyPlanningRecordDao energyPlanningRecordDao;
+    @Autowired
+    private EnergyStatisticsDao energyStatisticsDao;
 
 
     @Override
@@ -57,7 +64,7 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
         List<EnergyPlanningDevice> energyPlanningDeviceList = energyPlanningDeviceDao.select(energyPlanningDevice);
 
         //如果当天有进行计划编制的设备，则进行处理
-        if (energyPlanningDeviceList.size() > 0){
+        if (energyPlanningDeviceList.size() > 0) {
             //查出所有一级参数信息
             List<BusParamFirst> busParamFirstList = busParamFirstDao.selectAll();
             //查出所有二级参数信息
@@ -66,13 +73,13 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
             //项目当天的所有参数原始信息，10分钟一次
             List<SysData> sysDataList = sysDataDao.listSysDataByProIdAndDate(conditionDto);
             Long time = 600000L;
-            Map<Long,String> statusMap = ZhnyUtils.groupSysDataByTime(conditionDto.getDate(),sysDataList,time);
+            Map<Long, String> statusMap = ZhnyUtils.groupSysDataByTime(conditionDto.getDate(), sysDataList, time);
 
             //查出项目当天的计划编制信息
             List<DevicePlanningFromDb> devicePlanningFromDbList = devicePlanningRepository.listDevicePlanningFromDb(conditionDto);
 
             //对计划编制设备进行遍历，按设备进行区分处理
-            for (EnergyPlanningDevice device : energyPlanningDeviceList){
+            for (EnergyPlanningDevice device : energyPlanningDeviceList) {
                 //每个设备的公共信息
                 PlanningDeviceInformation resultPlanningDeviceInformation = new PlanningDeviceInformation();
                 resultPlanningDeviceInformation.setDeviceId(device.getDeviceId());
@@ -84,13 +91,13 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
                 if (devicePlanningFromDbList.size() > 0) {
 
                     //把得到的计划编制信息按照设备进行分组
-                    Map<Object, List> groupDevicePlanningFromDb = ZhnyUtils.groupListByName(devicePlanningFromDbList,"deviceId");
+                    Map<Object, List> groupDevicePlanningFromDb = ZhnyUtils.groupListByName(devicePlanningFromDbList, "deviceId");
 
                     //拿到某个设备的计划编制信息
                     List<DevicePlanningFromDb> devicePlanning = groupDevicePlanningFromDb.get(device.getDeviceId());
 
                     //如果这个设备存在计划编制信息，则处理
-                    if (null != devicePlanning && devicePlanning.size() >0){
+                    if (null != devicePlanning && devicePlanning.size() > 0) {
 
                         //得到这个设备的第一个主参数一级参数Id,二级Id(一个设备中的这些值都相同，且一定存在)
                         String mainFirstId = devicePlanning.get(0).getMainFirstId();
@@ -100,11 +107,11 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
                         String mainSecondId2 = devicePlanning.get(0).getMainSecondId2();
 
                         //这个设备的第一个主参数的以及参数Code,二级参数code
-                        String mainFirstCode = getFirstCode(busParamFirstList,mainFirstId);
-                        String mainSecondCode = getSecondCode(busParamSecondList,mainSecondId);
+                        String mainFirstCode = getFirstCode(busParamFirstList, mainFirstId);
+                        String mainSecondCode = getSecondCode(busParamSecondList, mainSecondId);
                         //这个设备的第二个主参数的以及参数Code,二级参数code
-                        String mainFirstCode2 = getFirstCode(busParamFirstList,mainFirstId2);
-                        String mainSecondCode2 = getSecondCode(busParamSecondList,mainSecondId2);
+                        String mainFirstCode2 = getFirstCode(busParamFirstList, mainFirstId2);
+                        String mainSecondCode2 = getSecondCode(busParamSecondList, mainSecondId2);
 
                         //封装设备的公共信息
                         resultPlanningDeviceInformation.setDeviceName(devicePlanning.get(0).getDeviceName());
@@ -114,13 +121,13 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
                         //当天结束时间
                         long dayEndTime = getDayEndTime(conditionDto.getDate()).getTime();
                         //1天24小时按照10分钟一次对这个设备的数据进行处理
-                        for (long dayStartTime = getDayStartTime(conditionDto.getDate()).getTime(); dayStartTime<=dayEndTime; dayStartTime+=600000){
+                        for (long dayStartTime = getDayStartTime(conditionDto.getDate()).getTime(); dayStartTime <= dayEndTime; dayStartTime += 600000) {
                             //每个设备每10分钟的详细信息
                             DeviceRecordInformation deviceRecordInformation = new DeviceRecordInformation();
 
                             for (DevicePlanningFromDb devicePlanningFromDb : devicePlanning) {
                                 //当前时间在项目的某个计划编制的时间段内
-                                if (dayStartTime >= devicePlanningFromDb.getStartTime().getTime() && dayStartTime < devicePlanningFromDb.getEndTime().getTime()){
+                                if (dayStartTime >= devicePlanningFromDb.getStartTime().getTime() && dayStartTime < devicePlanningFromDb.getEndTime().getTime()) {
                                     //每10分钟进行一次数据封装
                                     deviceRecordInformation.setMainValue(devicePlanningFromDb.getMainValue());
                                     deviceRecordInformation.setMainValue2(devicePlanningFromDb.getMainValue2());
@@ -129,14 +136,15 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
                                     //处理状态
                                     //拿到这个设备当前时间段的原始数据
                                     String dataStr = statusMap.get(dayStartTime);
-                                    if (null != dataStr && !"".equals(dataStr)){
+                                    if (null != dataStr && !"".equals(dataStr)) {
                                         JSONObject dataJson = JSON.parseObject(dataStr);
                                         //第一个主参数的值
                                         String mainParamValue = getParamValue(dataJson, mainFirstCode, mainSecondCode);
                                         //第一个主参数的状态
                                         Integer mainParamStatus = getParamStatus(dataJson, mainFirstCode);
                                         //第二个主参数的值
-                                        String mainParamValue2 = getParamValue(dataJson, mainFirstCode2, mainSecondCode2);;
+                                        String mainParamValue2 = getParamValue(dataJson, mainFirstCode2, mainSecondCode2);
+                                        ;
                                         //第二个主参数的状态
                                         Integer mainParamStatus2 = getParamStatus(dataJson, mainFirstCode2);
                                         deviceRecordInformation.setStatus(getStatus(devicePlanningFromDb, mainParamValue, mainParamStatus, mainParamValue2, mainParamStatus2));
@@ -147,7 +155,7 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
                             //将封装好的数据放回待返回的数据中
                             resultDeviceRecordInformationList.add(deviceRecordInformation);
                         }
-                    }else {//如果这个设备没有计划编制记录，则特殊处理，拿到设备名称
+                    } else {//如果这个设备没有计划编制记录，则特殊处理，拿到设备名称
                         //得到项目下设备的名称
                         BusDevice busDevice = new BusDevice();
                         busDevice.setProjectId(conditionDto.getProId());
@@ -175,27 +183,56 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
 
     @Override
     public MoneySum getMoneySum(ConditionDto conditionDto) {
-        return planExecutionRepository.getMoneySum(conditionDto);
+
+        //查出这个项目指定天数的实际能耗
+        EnergyStatistics useEnergyStatistics = new EnergyStatistics();
+        useEnergyStatistics.setProjectId(conditionDto.getProId());
+        //得到当前的年 月 日
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(conditionDto.getDate());
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH) + 1;
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        useEnergyStatistics.setTimeYear(year);
+        useEnergyStatistics.setTimeMonth(month);
+        useEnergyStatistics.setTimeDay(day);
+        List<EnergyStatistics> energyStatisticsList = energyStatisticsDao.select(useEnergyStatistics);
+
+        if (energyStatisticsList.size() > 0) {
+            BigDecimal sumMoneyElec = new BigDecimal(0);
+            BigDecimal sumMoneyGas = new BigDecimal(0);
+            //遍历所有实际费用获得总费用
+            for (EnergyStatistics energyStatistics : energyStatisticsList){
+                sumMoneyElec = sumMoneyElec.add(energyStatistics.getMoneyElec());
+                sumMoneyGas = sumMoneyGas.add(energyStatistics.getMoneyGas());
+            }
+            MoneySum moneySum = new MoneySum();
+            moneySum.setSumMoneyElec(sumMoneyElec);
+            moneySum.setSumMoneyGas(sumMoneyGas);
+            return moneySum;
+        }
+        return null;
     }
 
 
     /**
      * 得到参数状态
+     *
      * @author GaoLiWei
      * @date 10:16 2019/3/22
      **/
-    private Integer getStatus(DevicePlanningFromDb devicePlanningFromDb, String mainParamValue, Integer mainParamStatus, String mainParamValue2, Integer mainParamStatus2){
+    private Integer getStatus(DevicePlanningFromDb devicePlanningFromDb, String mainParamValue, Integer mainParamStatus, String mainParamValue2, Integer mainParamStatus2) {
         //第一个主参数是否存在
         boolean mainFirstFlag = null != mainParamValue && !"".equals(mainParamValue);
         //第二个主参数是否存在
         boolean mainSecondFlag = null != mainParamValue2 && !"".equals(mainParamValue2);
 
         //只有第一个主参数存在
-        if (mainFirstFlag && !mainSecondFlag){
+        if (mainFirstFlag && !mainSecondFlag) {
             //判断参数的状态是否为1，如果是1，则进行参数值对比，如果不是1，则直接返回3
-            if (mainParamStatus == 1){
+            if (mainParamStatus == 1) {
                 //如果原始数据参数值与当前计划参数值相等,则返回1
-                if (new BigDecimal(mainParamValue).compareTo(devicePlanningFromDb.getMainValue()) == 0){
+                if (new BigDecimal(mainParamValue).compareTo(devicePlanningFromDb.getMainValue()) == 0) {
                     return 1;
                 }
                 //如果原始数据参数值与当前计划参数值不相等,则返回2
@@ -207,11 +244,11 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
         }
 
         //两个主参数都存在
-        if (mainFirstFlag && mainSecondFlag){
+        if (mainFirstFlag && mainSecondFlag) {
             //如果两个主参数的状态都是1，则进行参数值对比
-            if (mainParamStatus ==1 && mainParamStatus2 == 1){
+            if (mainParamStatus == 1 && mainParamStatus2 == 1) {
                 //如果两个主参数的参数值都与计划参数值相同，则返回1
-                if (new BigDecimal(mainParamValue).compareTo(devicePlanningFromDb.getMainValue()) == 0 && new BigDecimal(mainParamValue2).compareTo(devicePlanningFromDb.getMainValue2()) == 0){
+                if (new BigDecimal(mainParamValue).compareTo(devicePlanningFromDb.getMainValue()) == 0 && new BigDecimal(mainParamValue2).compareTo(devicePlanningFromDb.getMainValue2()) == 0) {
                     return 1;
                 }
                 //如果两个主参数的参数值都与计划参数值任意一个不同，则返回2
@@ -225,12 +262,13 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
 
     /**
      * 根据一级参数参数Code，二级参数Code,得到参数值
+     *
      * @author GaoLiWei
      * @date 10:16 2019/3/22
      **/
-    private String getParamValue(JSONObject dataJson, String paramFirstCode, String paramSecondCode){
-        if (null != paramFirstCode && !"".equals(paramFirstCode) && null != paramSecondCode && !"".equals(paramSecondCode)){
-           return String.valueOf(dataJson.getJSONObject(paramFirstCode).getJSONObject("REG_VAL").get(paramSecondCode));
+    private String getParamValue(JSONObject dataJson, String paramFirstCode, String paramSecondCode) {
+        if (null != paramFirstCode && !"".equals(paramFirstCode) && null != paramSecondCode && !"".equals(paramSecondCode)) {
+            return String.valueOf(dataJson.getJSONObject(paramFirstCode).getJSONObject("REG_VAL").get(paramSecondCode));
         }
         return null;
     }
@@ -238,11 +276,12 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
 
     /**
      * 根据一级参数参数Code,得到参数状态
+     *
      * @author GaoLiWei
      * @date 10:16 2019/3/22
      **/
-    private Integer getParamStatus(JSONObject dataJson, String paramFirstCode){
-        if (null != paramFirstCode && !"".equals(paramFirstCode) ){
+    private Integer getParamStatus(JSONObject dataJson, String paramFirstCode) {
+        if (null != paramFirstCode && !"".equals(paramFirstCode)) {
             return (Integer) dataJson.getJSONObject(paramFirstCode).get("status");
         }
         return null;
@@ -250,14 +289,15 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
 
     /**
      * 根据一级参数Id,查出以及参数code
+     *
      * @author GaoLiWei
      * @date 9:34 2019/3/22
      **/
-    private String getFirstCode(List<BusParamFirst> paramFirstList, String firstParamId){
+    private String getFirstCode(List<BusParamFirst> paramFirstList, String firstParamId) {
 
-        if (paramFirstList.size() > 0 && null != firstParamId && !"".equals(firstParamId)){
-            for (BusParamFirst busParamFirst : paramFirstList){
-                if (firstParamId.equals(busParamFirst.getId())){
+        if (paramFirstList.size() > 0 && null != firstParamId && !"".equals(firstParamId)) {
+            for (BusParamFirst busParamFirst : paramFirstList) {
+                if (firstParamId.equals(busParamFirst.getId())) {
                     return busParamFirst.getCoding();
                 }
             }
@@ -267,13 +307,14 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
 
     /**
      * 根据二级参数Id,查出以及参数code
+     *
      * @author GaoLiWei
      * @date 9:34 2019/3/22
      **/
-    private String getSecondCode(List<BusParamSecond> busParamSecondList, String secondParamId){
-        if (busParamSecondList.size() > 0 && null != secondParamId && !"".equals(secondParamId)){
-            for (BusParamSecond busParamSecond : busParamSecondList){
-                if (secondParamId.equals(busParamSecond.getId())){
+    private String getSecondCode(List<BusParamSecond> busParamSecondList, String secondParamId) {
+        if (busParamSecondList.size() > 0 && null != secondParamId && !"".equals(secondParamId)) {
+            for (BusParamSecond busParamSecond : busParamSecondList) {
+                if (secondParamId.equals(busParamSecond.getId())) {
                     return busParamSecond.getCoding();
                 }
             }
