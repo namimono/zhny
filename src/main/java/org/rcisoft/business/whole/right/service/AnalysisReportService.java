@@ -19,6 +19,6 @@ import java.util.List;
 public interface AnalysisReportService {
     List<BusReport> queryAnalysisReport(int year);
     ServiceResult uploadAnalysisReport(MultipartFile file,String proId,int year,int month);
-    String downloadAnalysisReport(HttpServletRequest request, HttpServletResponse response, String id, int year, int month) throws Exception;
+    void downloadAnalysisReport(HttpServletRequest request, HttpServletResponse response, String id, int year, int month);
     Integer deleteAnalysisReport(String id);
 }

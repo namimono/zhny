@@ -20,7 +20,7 @@ public interface AnalysisReportDao extends Mapper<BusReport> {
      * 查询分析报告表列表
      * @return
      */
-    @Select("<script>select * from bus_report where time_year = #{year}</script>")
+    @Select("<script>select * from bus_report where time_year = #{year} order by time_month asc</script>")
     List<BusReport> queryAnalysisReport(int year);
 
     /**
