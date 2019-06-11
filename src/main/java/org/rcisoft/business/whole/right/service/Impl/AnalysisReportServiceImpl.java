@@ -36,6 +36,8 @@ public class AnalysisReportServiceImpl implements AnalysisReportService {
     private String path;
     @Value("${location.analysisReport}")
     private String analysisReport;
+    @Value("${location.url}")
+    private String url;
 
     @Autowired
     private AnalysisReportDao analysisReportDao;
@@ -43,7 +45,11 @@ public class AnalysisReportServiceImpl implements AnalysisReportService {
 
     @Override
     public List<BusReport> queryAnalysisReport(int year) {
-        return analysisReportDao.queryAnalysisReport(year);
+        List<BusReport> list = analysisReportDao.queryAnalysisReport(year);
+        list.forEach(busReport -> {
+            busReport.setUrl(this.url + this.analysisReport + "/" + year + "/" + busReport.getUrl());
+        });
+        return list;
     }
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
@@ -71,25 +77,17 @@ public class AnalysisReportServiceImpl implements AnalysisReportService {
     }
 
     @Override
-    public String downloadAnalysisReport(HttpServletRequest request, HttpServletResponse response, String proId, int year, int month) throws Exception {
+    public void downloadAnalysisReport(HttpServletRequest request, HttpServletResponse response, String proId, int year, int month) {
         String fileName = analysisReportDao.queryFileName(year, month);
         String filePath = path + analysisReport + "/" + year + "/" + fileName;
-        System.out.println(filePath);
-        File file = new File(filePath);
-        response.reset();
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("multipart/form-data");
-        response.setHeader("Content-Disposition",
-                "attachment;fileName="+URLEncoder.encode(fileName, "UTF-8"));
-        int index=0;
-        InputStream input=new FileInputStream(file);
-        OutputStream out = response.getOutputStream();
-        byte[] buff =new byte[1024];
-        while((index= input.read(buff))!= -1){
-            out.write(buff, 0, index);
-            out.flush();
+
+        try (OutputStream outputStream = response.getOutputStream()) {
+            byte[] bytes = FileUtils.readFileToByteArray(new File(filePath));
+            response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(fileName, "UTF-8"));
+            outputStream.write(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return null;
     }
 
     @Override

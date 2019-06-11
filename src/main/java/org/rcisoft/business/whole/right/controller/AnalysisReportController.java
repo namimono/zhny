@@ -35,13 +35,13 @@ public class AnalysisReportController extends HttpServletController {
 
     @ApiOperation(value = "下载报告文件",notes = "下载报告文件")
     @GetMapping("downloadAnalysisReport/{proId}/{year}/{month}")
-    public void downloadAnalysisReport(@PathVariable String proId,@PathVariable int year,@PathVariable int month) throws Exception {
+    public void downloadAnalysisReport(@PathVariable String proId,@PathVariable int year,@PathVariable int month) {
         analysisReportService.downloadAnalysisReport(request,response,proId,year,month);
     }
 
     @ApiOperation(value = "删除报告文件",notes = "删除报告文件")
     @DeleteMapping("deleteAnalysisReport/{id}")
-    public void deteleAnalysisReport(@PathVariable String id){
-        analysisReportService.deleteAnalysisReport(id);
+    public Result deteleAnalysisReport(@PathVariable String id){
+        return Result.result(analysisReportService.deleteAnalysisReport(id), "删除报告成功", "删除报告失败", null);
     }
 }
