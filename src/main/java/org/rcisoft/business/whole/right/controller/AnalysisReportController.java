@@ -33,8 +33,8 @@ public class AnalysisReportController extends HttpServletController {
 
     @ApiOperation(value = "上传报告文件",notes = "上传报告文件")
     @PostMapping("uploadAnalysisReport")
-    public ServiceResult uploadAnalysisReport(@RequestParam MultipartFile file,@RequestParam String proId, @RequestParam int year, @RequestParam int month){
-        return analysisReportService.uploadAnalysisReport(file,proId,year,month);
+    public Result uploadAnalysisReport(@RequestParam MultipartFile file,@RequestParam String proId, @RequestParam int year, @RequestParam int month){
+        return Result.serviceResult(analysisReportService.uploadAnalysisReport(file,proId,year,month));
     }
 
     @ApiOperation(value = "下载报告文件",notes = "下载报告文件")
