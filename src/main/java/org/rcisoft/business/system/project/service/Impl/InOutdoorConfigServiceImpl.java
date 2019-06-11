@@ -13,7 +13,6 @@ import org.rcisoft.entity.BusIndoorParam;
 import org.rcisoft.entity.BusOutdoor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
@@ -138,15 +137,15 @@ public class InOutdoorConfigServiceImpl implements InOutdoorConfigService {
     @Override
     public int updateOutdoorInfo(List<BusOutdoor> busOutdoorList){
         if (busOutdoorList.size() > 0) {
-            String deviceId = busOutdoorList.get(0).getDeviceId();
-            Example example = new Example(BusIndoorParam.class);
-            Example.Criteria criteria = example.createCriteria();
-            criteria.andEqualTo("deviceId", deviceId);
-            busOutdoorDao.deleteByExample(example);
-
+            for (BusOutdoor busOutdoor : busOutdoorList){
+                String deviceId = busOutdoor.getDeviceId();
+                Example example = new Example(BusIndoorParam.class);
+                Example.Criteria criteria = example.createCriteria();
+                criteria.andEqualTo("deviceId", deviceId);
+                busOutdoorDao.deleteByExample(example);
+            }
             busOutdoorList.forEach(busOutdoor -> busOutdoor.setId(UuidUtil.create32()));
-            busOutdoorDao.insertListUseAllCols(busOutdoorList);
-            return inOutDoorConfigDao.updateAllOutdoorInfo(busOutdoorList);
+            return busOutdoorDao.insertListUseAllCols(busOutdoorList);
         }else {
             return 0;
         }

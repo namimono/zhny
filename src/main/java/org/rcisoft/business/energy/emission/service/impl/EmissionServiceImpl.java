@@ -97,21 +97,27 @@ public class EmissionServiceImpl implements EmissionService {
 
     @Override
     public List<BigDecimal> queryEmissionStatistics(EmissionParam emissionParam) {
+        // 查询的结果集
+        List<EmissionStatisticsResult> list = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         // 默认是24小时的返回值
         int size = 24;
         // 如果天数是null，需要查询日期的统计，重置list的大小
         Integer day = emissionParam.getDay();
         if (day == null) {
+            calendar.set(Calendar.MONTH,emissionParam.getMonth()-1);
             size = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+            list = emissionDao.queryEmissionStatisticsMonth(emissionParam);
+        }else{
+            list = emissionDao.queryEmissionStatisticsDay(emissionParam);
         }
         // 返回的结果集
         List<BigDecimal> resultList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             resultList.add(new BigDecimal(0));
         }
-        // 查询的结果集
-        List<EmissionStatisticsResult> list = emissionDao.queryEmissionStatisticsDay(emissionParam);
+
+
         list.forEach(e -> {
             Integer time = e.getTime();
             // 日期统计，从1开始

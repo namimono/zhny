@@ -17,6 +17,7 @@ import org.rcisoft.entity.EnergyPrice;
 import org.rcisoft.entity.EnergyStandard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 import tk.mybatis.mapper.entity.Example;
@@ -114,7 +115,8 @@ public class BasicDataServiceImpl implements BasicDataService {
      * 上传基准碳排放量模板
      */
     @Override
-    public String upload(MultipartFile file,String projectId) {
+    @Transactional(rollbackFor = Exception.class)
+    public String upload(MultipartFile file, String projectId) {
 
         //要保存到数据库中的数据
         List<EnergyCarbonPlan> saveEnergyCarbonPlanList = new ArrayList<>();
@@ -132,37 +134,46 @@ public class BasicDataServiceImpl implements BasicDataService {
             if (sheetNum > 0) {
                 //获得第一个sheet
                 Sheet sheet = workbook.getSheetAt(0);
-                //获得一共多少行
-                int rowNum = sheet.getLastRowNum();
+                //要计算的行数
+                int rowNum = 31;
                 for (int i = 0; i <= rowNum; i++) {
                     //获得当前行的数据
                     Row row = sheet.getRow(i);
                     //如果当前行数据为空或者是第一行，则进行下一行
-                    if (null == row || i == 0){
+                    if (i == 0 || null == row) {
                         continue;
                     }
                     //获得一共多少列
                     int cellNum = row.getLastCellNum();
-                    for (int j = 0; j<= cellNum; j++){
+                    for (int j = 0; j < cellNum; j++) {
                         //获得当前行的当前列
                         Cell cell = row.getCell(j);
                         //如果当前行的当前列位空或者是第一列，则进行下一列
-                        if (null == cell || j ==0){
+                        if (0.0 == cell.getNumericCellValue() || j == 0) {
                             continue;
                         }
                         EnergyCarbonPlan energyCarbonPlan = new EnergyCarbonPlan();
                         energyCarbonPlan.setId(UuidUtil.create32());
                         energyCarbonPlan.setProjectId(projectId);
-                        energyCarbonPlan.setTimeMonth(i);
-                        energyCarbonPlan.setTimeDay(j);
+                        energyCarbonPlan.setTimeMonth(j);
+                        energyCarbonPlan.setTimeDay(i);
                         energyCarbonPlan.setCarbon(new BigDecimal(cell.getNumericCellValue()));
                         saveEnergyCarbonPlanList.add(energyCarbonPlan);
                     }
                 }
-                int flag = energyCarbonPlanDao.saveEnergyCarbonPlan(saveEnergyCarbonPlanList);
-                if (flag >0){
-                    return "设置成功";
+
+                if (saveEnergyCarbonPlanList.size() > 0){
+                    //删除原来的
+                    EnergyCarbonPlan delEnergyCarbonPlan = new EnergyCarbonPlan();
+                    delEnergyCarbonPlan.setProjectId(projectId);
+                    energyCarbonPlanDao.delete(delEnergyCarbonPlan);
+
+                    int flag = energyCarbonPlanDao.saveEnergyCarbonPlan(saveEnergyCarbonPlanList);
+                    if (flag > 0) {
+                        return "上传成功";
+                    }
                 }
+
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -65,7 +65,7 @@ public class OtherConfigServiceImpl implements OtherConfigService {
         List<BusParamSecond> paramSecondList = otherConfigDao.queryParamsSecondByDevId(deviceId);
         //设置要导出的文件的名字
         String fileName = deviceName + "模板";
-        String[] header1 = {"设备型号", deviceName,deviceId};
+        String[] header1 = {"设备型号", deviceName, deviceId};
         String[] header2 = {"参数", "二级参数名称", "二级参数编码", "来源", "类型"};
         String[] header3 = {"主参数", " ", "其他参数"};
         String[] header4 = {"参数1值", "参数2值", "参数3值", "参数4值", "功率（kw）", "用气速率（m3/h）", "电费用", "气费用"};
@@ -175,10 +175,10 @@ public class OtherConfigServiceImpl implements OtherConfigService {
             Sheet sheet = wb.getSheetAt(0);
             //获得第一行
             Row firstRow = sheet.getRow(0);
-            if (null != firstRow){
+            if (null != firstRow) {
                 //获得要上传的文件中的设备ID
                 String devId = firstRow.getCell(2).getStringCellValue();
-                if (!deviceId.equals(devId)){
+                if (!deviceId.equals(devId)) {
                     return 0;
                 }
             }
@@ -245,19 +245,22 @@ public class OtherConfigServiceImpl implements OtherConfigService {
             }
 
             wb.close();
+            if (paramLibraryList.size() > 0) {
+                Example example = new Example(EnergyParamLibrary.class);
+                Example.Criteria criteria = example.createCriteria();
+                criteria.andEqualTo("projectId", projectId);
+                criteria.andEqualTo("deviceId", deviceId);
+                energyParamLibraryDao.deleteByExample(example);
+                return energyParamLibraryDao.insertListUseAllCols(paramLibraryList);
+            } else {
+                return 0;
+            }
 
-            Example example = new Example(EnergyParamLibrary.class);
-            Example.Criteria criteria = example.createCriteria();
-            criteria.andEqualTo("projectId", projectId);
-            criteria.andEqualTo("deviceId", deviceId);
-            energyParamLibraryDao.deleteByExample(example);
-            return energyParamLibraryDao.insertListUseAllCols(paramLibraryList);
 
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
-
 
 
     }
