@@ -4,14 +4,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.controller.HttpServletController;
 import org.rcisoft.base.result.Result;
-import org.rcisoft.base.result.ServiceResult;
-import org.rcisoft.business.whole.right.dao.AnalysisReportDao;
 import org.rcisoft.business.whole.right.service.AnalysisReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.UnsupportedEncodingException;
 
 /**
  * @Author Minghui Xu
@@ -44,8 +40,8 @@ public class AnalysisReportController extends HttpServletController {
     }
 
     @ApiOperation(value = "删除报告文件",notes = "删除报告文件")
-    @DeleteMapping("deteleAnalysisReport/{Id}}")
-    public void deteleAnalysisReport(@PathVariable String Id){
-        analysisReportService.deleteAnalysisReport(Id);
+    @DeleteMapping("deleteAnalysisReport/{id}")
+    public void deteleAnalysisReport(@PathVariable String id){
+        analysisReportService.deleteAnalysisReport(id);
     }
 }
