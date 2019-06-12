@@ -68,18 +68,18 @@ public class AnalysisReportServiceImpl implements AnalysisReportService {
         // 新的文件名
         String fileName = month + suffix;
         try {
-            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(path + analysisReport + "/" + year + "/" + fileName ));
+            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(path + analysisReport + "/" + proId + "/" + year + "/" + fileName ));
             result = analysisReportDao.insert(new BusReport(UuidUtil.create32(), proId,now, year, month, fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new ServiceResult(result, path + analysisReport + "/" + year + "/" + fileName);
+        return new ServiceResult(result, path + analysisReport + "/" + proId + "/" + year + "/" + fileName);
     }
 
     @Override
     public void downloadAnalysisReport(HttpServletRequest request, HttpServletResponse response, String proId, int year, int month) {
         String fileName = analysisReportDao.queryFileName(year, month);
-        String filePath = path + analysisReport + "/" + year + "/" + fileName;
+        String filePath = path + analysisReport + "/" + proId + "/" + year + "/" + fileName;
 
         try (OutputStream outputStream = response.getOutputStream()) {
             byte[] bytes = FileUtils.readFileToByteArray(new File(filePath));
