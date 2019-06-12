@@ -1,5 +1,6 @@
 package org.rcisoft.business.common.dao;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
@@ -97,4 +98,72 @@ public interface CommonDao {
     @ResultType(SecondParam.class)
     List<SecondParam> querySecondParam(@Param("projectId") String projectId, @Param("systemId") String systemId);
 
+    /**
+     * 根据设备id删除相关表信息
+     * @param deviceId
+     * @return
+     */
+    @Delete("<script>" +
+            "delete from bus_indoor_param where device_id = #{deviceId};" +
+            "delete from bus_outdoor where device_id = #{deviceId};" +
+            "delete from bus_title_param where device_id = #{deviceId};" +
+            "delete from bus_variable where device_id = #{deviceId};" +
+            "delete from energy_param_library where device_id = #{deviceId};" +
+            "delete from energy_planning_cost where device_id = #{deviceId};" +
+            "delete from energy_planing_record where device_id = #{deviceId};" +
+            "delete from energy_planing_device where device_id = #{deviceId};" +
+            "</script>")
+    int deleteParamByDeviceId(@Param("deviceId") String deviceId);
+
+    /**
+     * 根据一级参数id删除相关表
+     * @param paramFirstIds
+     * @return
+     */
+    @Delete("<script>" +
+            "<foreach item=\"item\" collection=\"array\">" +
+            "delete from bus_indoor_param where param_first_id = #{item};" +
+            "delete from bus_outdoor where param_first_id = #{item};" +
+            "delete from bus_title_param where param_first_id = #{item};" +
+            "delete from bus_variable where param_first_id = #{item};" +
+            "</foreach>" +
+            "</script>")
+    int deleteParamByFirstId(String[] paramFirstIds);
+
+    /**
+     * 根据二级参数id删除相关表
+     * @param paramSecondIds
+     * @return
+     */
+    @Delete("<script>" +
+            "<foreach item=\"item\" collection=\"array\">" +
+            "delete from bus_indoor_param where param_second_id = #{item};" +
+            "delete from bus_outdoor where param_second_id = #{item};" +
+            "delete from bus_title_param where param_second_id = #{item};" +
+            "</foreach>" +
+            "</script>")
+    int deleteParamBySecondId(String[] paramSecondIds);
+
+    /**
+     * 删除公式表相关数据
+     * @param paramFirstIds
+     * @return
+     */
+    @Delete("<script>" +
+            "<foreach item=\"item\" collection=\"array\">" +
+            "delete from bus_formula " +
+            "where id = (select formula from bus_variable where " +
+            "param_first_id = #{item});" +
+            "</foreach>" +
+            "</script>")
+    int deleteFormulaByFirstId(String[] paramFirstIds);
+
+    @Delete("<script>" +
+            "<foreach item=\"item\" collection=\"array\">" +
+            "delete from bus_formula " +
+            "where id = (select formula from bus_variable where " +
+            "param_second_id = #{item});" +
+            "</foreach>" +
+            "</script>")
+    int deleteFormulaBySecondId(String[] paramSecondIds);
 }

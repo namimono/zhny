@@ -27,25 +27,6 @@ public class CommonServiceImpl implements CommonService {
     @Autowired
     SysSystemDao sysSystemDao;
 
-    @Autowired
-    BusIndoorParamDao busIndoorParamDao;
-    @Autowired
-    BusOutdoorDao busOutdoorDao;
-    @Autowired
-    BusTitleParamDao busTitleParamDao;
-    @Autowired
-    BusVariableDao busVariableDao;
-    @Autowired
-    BusFormulaDao busFormulaDao;
-    @Autowired
-    EnergyParamLibraryDao energyParamLibraryDao;
-    @Autowired
-    EnergyPlanningCostDao energyPlanningCostDao;
-    @Autowired
-    EnergyPlanningRecordDao energyPlanningRecordDao;
-    @Autowired
-    EnergyPlanningDeviceDao energyPlanningDeviceDao;
-
     @Override
     public List<BusDeviceType> queryDeviceType(String projectId, String systemId) {
         return commonDao.queryDeviceType(projectId,systemId);
@@ -111,75 +92,36 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    public Integer deleteFirstAndSecondTable(String paramFirstId, String paramSecondId, String deviceId) {
+    public Integer deleteFirstAndSecondTable(String paramFirstIds, String paramSecondIds, String deviceId) {
         Integer result = 0;
+        // 删除公式表
+        String[] firstArray = null;
+        String[] secondArray = null;
+        if (StringUtils.isNotEmpty(paramFirstIds)) {
+            firstArray = paramFirstIds.split(",");
+        }
+        if (StringUtils.isNotEmpty(paramSecondIds)) {
+            secondArray = paramSecondIds.split(",");
+        }
+
+        if (firstArray != null) {
+            result += commonDao.deleteFormulaByFirstId(firstArray);
+        }
+        if (secondArray != null) {
+            result += commonDao.deleteFormulaBySecondId(secondArray);
+        }
         if (StringUtils.isNotEmpty(deviceId)) {
-            // 根据设备id删除
-            result += busIndoorParamDao.deleteByExample(this.setCondition(BusIndoorParam.class, deviceId, null, null));
-            result += busOutdoorDao.deleteByExample(this.setCondition(BusOutdoor.class, deviceId, null, null));
-            result += busTitleParamDao.deleteByExample(this.setCondition(BusTitleParam.class, deviceId, null, null));
-            result += busVariableDao.deleteByExample(this.setCondition(BusVariable.class, deviceId, null, null));
-            result += energyParamLibraryDao.deleteByExample(this.setCondition(EnergyParamLibrary.class, deviceId, null, null));
-            result += energyPlanningCostDao.deleteByExample(this.setCondition(EnergyPlanningCost.class, deviceId, null, null));
-            result += energyPlanningRecordDao.deleteByExample(this.setCondition(EnergyPlanningRecord.class, deviceId, null, null));
-            result += energyPlanningDeviceDao.deleteByExample(this.setCondition(EnergyPlanningDevice.class, deviceId, null, null));
-        }
-//        else {
-//            if (StringUtils.isNotEmpty(paramFirstId)) {
-//                String[] p1Array = paramFirstId.split(",");
-//                for (String firstId : p1Array) {
-//                    result += busIndoorParamDao.deleteByExample(this.setCondition(BusIndoorParam.class, null, firstId, null));
-//                    result += busOutdoorDao.deleteByExample(this.setCondition(BusOutdoor.class, null, firstId, null));
-//                    result += busTitleParamDao.deleteByExample(this.setCondition(BusTitleParam.class, null, firstId, null));
-//                    result += busVariableDao.deleteByExample(this.setCondition(BusVariable.class, null, firstId, null));
-//                    result += energyParamLibraryDao.deleteByExample(this.setCondition(EnergyParamLibrary.class, null, firstId, null));
-//                    result += energyPlanningCostDao.deleteByExample(this.setCondition(EnergyPlanningCost.class, null, firstId, null));
-//                    result += energyPlanningRecordDao.deleteByExample(this.setCondition(EnergyPlanningRecord.class, null, firstId, null));
-//                    result += energyPlanningDeviceDao.deleteByExample(this.setCondition(EnergyPlanningDevice.class, null, firstId, null));
-//                }
-//            }
-//            if (StringUtils.isNotEmpty(paramSecondId)) {
-//                String[] p2Array = paramSecondId.split(",");
-//                for (String secondId : p2Array) {
-//                    result += busIndoorParamDao.deleteByExample(this.setCondition(BusIndoorParam.class, null, null, secondId));
-//                    result += busOutdoorDao.deleteByExample(this.setCondition(BusOutdoor.class, null, null, secondId));
-//                    result += busTitleParamDao.deleteByExample(this.setCondition(BusTitleParam.class, null, null, secondId));
-//                    result += busVariableDao.deleteByExample(this.setCondition(BusVariable.class, null, null, secondId));
-//                    result += energyParamLibraryDao.deleteByExample(this.setCondition(EnergyParamLibrary.class, null, null, secondId));
-//                    result += energyPlanningCostDao.deleteByExample(this.setCondition(EnergyPlanningCost.class, null, null, secondId));
-//                    result += energyPlanningRecordDao.deleteByExample(this.setCondition(EnergyPlanningRecord.class, null, null, secondId));
-//                    result += energyPlanningDeviceDao.deleteByExample(this.setCondition(EnergyPlanningDevice.class, null, null, secondId));
-//                }
-//            }
-//        }
-        if (StringUtils.isNotEmpty(paramFirstId)) {
-            String[] p1Array = paramFirstId.split(",");
-            for (String firstId : p1Array) {
-                result += busFormulaDao.deleteFormula(firstId, null);
+            // 设备id不为空的时候
+            result += commonDao.deleteParamByDeviceId(deviceId);
+        } else {
+            if (firstArray != null) {
+                result += commonDao.deleteParamByFirstId(firstArray);
             }
-        }
-        if (StringUtils.isNotEmpty(paramSecondId)) {
-            String[] p2Array = paramSecondId.split(",");
-            for (String secondId : p2Array) {
-                result += busFormulaDao.deleteFormula(null, secondId);
+            if (secondArray != null) {
+                result += commonDao.deleteParamBySecondId(secondArray);
             }
         }
         return result;
-    }
-    
-    private Example setCondition(Class clazz, String deviceId, String paramFirstId, String paramSecondId) {
-        Example example = new Example(clazz);
-        Example.Criteria criteria = example.createCriteria();
-        if (deviceId != null) {
-            criteria.andEqualTo("deviceId", deviceId);
-        }
-        if (paramFirstId != null) {
-            criteria.andEqualTo("paramFirstId", paramFirstId);
-        }
-        if (paramSecondId != null) {
-            criteria.andEqualTo("paramSecondId", paramSecondId);
-        }
-        return example;
     }
     
 }
