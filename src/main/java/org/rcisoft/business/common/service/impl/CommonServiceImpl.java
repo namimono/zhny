@@ -6,10 +6,11 @@ import org.rcisoft.business.common.entity.DeviceParam;
 import org.rcisoft.business.common.entity.FirstParam;
 import org.rcisoft.business.common.entity.SecondParam;
 import org.rcisoft.business.common.service.CommonService;
-import org.rcisoft.dao.SysSystemDao;
+import org.rcisoft.dao.*;
 import org.rcisoft.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,4 +90,38 @@ public class CommonServiceImpl implements CommonService {
         });
         return deviceList;
     }
+
+    @Override
+    public Integer deleteFirstAndSecondTable(String paramFirstIds, String paramSecondIds, String deviceId) {
+        Integer result = 0;
+        // 删除公式表
+        String[] firstArray = null;
+        String[] secondArray = null;
+        if (StringUtils.isNotEmpty(paramFirstIds)) {
+            firstArray = paramFirstIds.split(",");
+        }
+        if (StringUtils.isNotEmpty(paramSecondIds)) {
+            secondArray = paramSecondIds.split(",");
+        }
+
+        if (firstArray != null) {
+            result += commonDao.deleteFormulaByFirstId(firstArray);
+        }
+        if (secondArray != null) {
+            result += commonDao.deleteFormulaBySecondId(secondArray);
+        }
+        if (StringUtils.isNotEmpty(deviceId)) {
+            // 设备id不为空的时候
+            result += commonDao.deleteParamByDeviceId(deviceId);
+        } else {
+            if (firstArray != null) {
+                result += commonDao.deleteParamByFirstId(firstArray);
+            }
+            if (secondArray != null) {
+                result += commonDao.deleteParamBySecondId(secondArray);
+            }
+        }
+        return result;
+    }
+    
 }

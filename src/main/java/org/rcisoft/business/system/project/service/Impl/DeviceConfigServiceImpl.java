@@ -7,6 +7,7 @@ import org.rcisoft.base.result.Result;
 import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.base.util.QRCodeUtils;
 import org.rcisoft.base.util.UuidUtil;
+import org.rcisoft.business.common.service.CommonService;
 import org.rcisoft.business.system.project.dao.DeviceConfigDao;
 import org.rcisoft.business.system.project.entity.BatchParams;
 import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
@@ -19,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 import tk.mybatis.mapper.entity.Example;
 
@@ -50,6 +50,9 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
      */
     @Value("${location.qrcode}")
     String qrcodeImgPath;
+
+    @Autowired
+    private CommonService commonServiceImpl;
 
     @Autowired
     private BusDeviceDao busDeviceDao;
@@ -379,6 +382,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
         List<ParamFirstContainSecond> batchList = batchParams.getBatchList();
         String paramFirstIds = batchParams.getParamFirstIds();
         String paramSecondIds = batchParams.getParamSecondIds();
+        String deviceId = batchParams.getDeviceId();
         // 1.删除一级二级
         if (StringUtils.isNotEmpty(paramFirstIds)) {
             String[] split = paramFirstIds.split(",");
@@ -392,6 +396,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
                 result += busParamSecondDao.deleteByPrimaryKey(paramSecondId);
             }
         }
+        // 删除其他一二级相关的表
+        commonServiceImpl.deleteFirstAndSecondTable(paramFirstIds, paramSecondIds, deviceId);
         // 保存or修改数据
         if (batchList.size() > 0) {
             List<BusParamFirst> addFirstList = new ArrayList<>();
@@ -400,12 +406,13 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
             List<BusParamSecond> updateSecondList = new ArrayList<>();
             // 循环数据
             for (ParamFirstContainSecond paramFirstContainSecond : batchList) {
-                String firstId = UuidUtil.create32();
                 BusParamFirst busParamFirst = paramFirstContainSecond.getBusParamFirst();
+                String firstId = busParamFirst.getId();
                 // 固定参数不需要添加一级
                 if (busParamFirst.getSourceId() != 4) {
-                    if (StringUtils.isEmpty(busParamFirst.getId())) {
+                    if (StringUtils.isEmpty(firstId)) {
                         // id为空，新增
+                        firstId = UuidUtil.create32();
                         busParamFirst.setId(firstId);
                         addFirstList.add(busParamFirst);
                     } else {
@@ -417,8 +424,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
                 for (BusParamSecond busParamSecond : secondary) {
                     if (StringUtils.isEmpty(busParamSecond.getId())) {
                         busParamSecond.setId(UuidUtil.create32());
-                        busParamSecond.setParamFirstId(firstId);
                         addSecondList.add(busParamSecond);
+                        busParamSecond.setParamFirstId(firstId);
                     } else {
                         updateSecondList.add(busParamSecond);
                     }

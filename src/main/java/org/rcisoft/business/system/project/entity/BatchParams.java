@@ -18,4 +18,6 @@ public class BatchParams {
 
     private String paramSecondIds;
 
+    private String deviceId;
+
 }

@@ -57,4 +57,13 @@ public interface CommonService {
      */
     List<DeviceParam> queryDeviceAndParam(String projectId, String systemId);
 
+    /**
+     * 删除一二级参数相关表的记录
+     * @param paramFirstIds
+     * @param paramSecondIds
+     * @param deviceId
+     * @return
+     */
+    Integer deleteFirstAndSecondTable(String paramFirstIds, String paramSecondIds, String deviceId);
+
 }

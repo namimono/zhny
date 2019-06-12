@@ -36,7 +36,7 @@ public class energyDistributionServiceImpl implements energyDistributionService 
 
         projectList.forEach(projectInfomation -> {
             String id = projectInfomation.getId();
-
+            projectInfomation.setEnergy(new BigDecimal(0));
             Date buildingAge = projectInfomation.getBuildingAge();
             calendar.setTime(buildingAge);
             projectInfomation.setBuildingAgeYear(calendar.get(Calendar.YEAR));

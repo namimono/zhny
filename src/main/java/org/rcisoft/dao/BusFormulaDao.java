@@ -1,5 +1,6 @@
 package org.rcisoft.dao;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
@@ -29,4 +30,17 @@ public interface BusFormulaDao extends Mapper<BusFormula> {
     @Select("SELECT * FROM bus_formula WHERE id IN (${formulaIds});")
     @ResultType(BusFormula.class)
     List<BusFormula> queryFormulaById(@Param("formulaIds") String formulaIds);
+
+    /**
+     * 删除
+     * @param paramFirstId
+     * @param paramSecondId
+     * @return
+     */
+    @Delete("<script>delete from bus_formula " +
+            "where id = (select formula from bus_variable where " +
+            "<if test=\"paramFirstId != null\">param_first_id = #{paramFirstId}</if>" +
+            "<if test=\"paramSecondId != null\">param_second_id = #{paramSecondId}</if>" +
+            ")</script>")
+    int deleteFormula(@Param("paramFirstId") String paramFirstId, @Param("paramSecondId") String paramSecondId);
 }
