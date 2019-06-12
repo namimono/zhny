@@ -475,8 +475,9 @@ public class ProjConfigServiceImpl implements ProjConfigService {
                 }
                 redisService.set(busProject.getId(),busProject.getPhones());
             });
-
-            for(String phoneIdList : repeatList){
+            //去重
+            List<String> newList=new ArrayList<>(new HashSet(repeatList));
+            for(String phoneIdList : newList){
                 // 把网关ID存到redis中
                 redisService.setList(PHONE_ID_KEY, phoneIdList);
             }

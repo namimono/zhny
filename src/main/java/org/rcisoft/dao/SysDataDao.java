@@ -8,6 +8,7 @@ import org.rcisoft.entity.SysData;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,6 +26,15 @@ public interface SysDataDao extends Mapper<SysData> {
     @Select("<script>SELECT * FROM sys_data WHERE project_id = #{conditionDto.proId} \n" +
             "AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_FORMAT(#{conditionDto.date},'%Y-%m-%d')  </script>")
     List<SysData> listSysDataByProIdAndDate(@Param("conditionDto") ConditionDto conditionDto);
+
+    /**
+     * 查询某个项目这个月的数据
+     * @param projectId
+     * @param month
+     * @return List<SysData>
+     */
+    @Select("<script>SELECT * FROM sys_data WHERE project_id = #{projectId} AND DATE_FORMAT(create_time,'%Y-%m') = DATE_FORMAT(#{month},'%Y-%m') </script>")
+    List<SysData> listSysDataByProIdAndMonth(@Param("projectId") String projectId, @Param("month") Date month);
 
      /**
      * 根据时间段和项目ID查询数据
