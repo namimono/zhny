@@ -5,6 +5,7 @@ import org.rcisoft.business.system.roleuser.entity.ProjectName;
 import org.rcisoft.business.system.roleuser.entity.RolePermissionFirst;
 import org.rcisoft.entity.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -125,7 +126,7 @@ public interface SysUserMenuService {
      * @param sysUser
      * @return
      */
-    Integer changePassword(SysUser sysUser);
+    Integer changePassword(HttpServletRequest request, SysUser sysUser);
 
 
     /**

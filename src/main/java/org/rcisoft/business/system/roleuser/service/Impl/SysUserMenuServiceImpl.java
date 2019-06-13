@@ -1,5 +1,6 @@
 package org.rcisoft.business.system.roleuser.service.Impl;
 
+import io.jsonwebtoken.Claims;
 import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.base.jwt.JwtTokenUtil;
 import org.rcisoft.base.util.UuidUtil;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +38,8 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
 
     @Value("${password.default}")
     private String password;
-
+    @Value("${jwt.header}")
+    private String tokenHeader;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -323,7 +326,11 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
     }
 
     @Override
-    public Integer changePassword(SysUser sysUser) {
+    public Integer changePassword(HttpServletRequest request, SysUser sysUser) {
+        String token = request.getHeader(tokenHeader);
+        token = token.substring(tokenHead.length());
+        Claims claims = jwtTokenUtil.getClaimsFromToken(token);
+        sysUser.setId((String) claims.get("userid"));
         sysUser.setPassword(new BCryptPasswordEncoder().encode(sysUser.getPassword()));
         return sysUserDao.updateByPrimaryKeySelective(sysUser);
     }
