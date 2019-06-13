@@ -1,5 +1,6 @@
 package org.rcisoft.business.system.roleuser.service.Impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.base.jwt.JwtTokenUtil;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.base.util.ZhnyUtils;
@@ -277,6 +278,11 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
 
     @Override
     public Integer updateInspector(SysInspector sysInspector) {
+        String password = sysInspector.getPassword();
+        if (StringUtils.isNotEmpty(password)) {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            sysInspector.setPassword(encoder.encode(password));
+        }
         return sysInspectorDao.updateByPrimaryKeySelective(sysInspector);
     }
 
