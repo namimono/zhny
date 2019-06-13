@@ -326,13 +326,22 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
     }
 
     @Override
-    public Integer changePassword(HttpServletRequest request, SysUser sysUser) {
+    public Integer changePassword(HttpServletRequest request, String oldPass, String newPass) {
         String token = request.getHeader(tokenHeader);
         token = token.substring(tokenHead.length());
         Claims claims = jwtTokenUtil.getClaimsFromToken(token);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        SysUser sysUser = new SysUser();
         sysUser.setId((String) claims.get("userid"));
-        sysUser.setPassword(new BCryptPasswordEncoder().encode(sysUser.getPassword()));
-        return sysUserDao.updateByPrimaryKeySelective(sysUser);
+        sysUser.setPassword(encoder.encode(oldPass));
+        // 旧密码是否正确
+        int exist = sysUserDao.selectCount(sysUser);
+        if (exist > 0) {
+            sysUser.setPassword(new BCryptPasswordEncoder().encode(sysUser.getPassword()));
+            return sysUserDao.updateByPrimaryKeySelective(sysUser);
+        } else {
+            return 0;
+        }
     }
 
     @Override

@@ -123,10 +123,11 @@ public interface SysUserMenuService {
 
     /**
      * 修改密码
-     * @param sysUser
+     * @param oldPass
+     * @param newPass
      * @return
      */
-    Integer changePassword(HttpServletRequest request, SysUser sysUser);
+    Integer changePassword(HttpServletRequest request, String oldPass, String newPass);
 
 
     /**
