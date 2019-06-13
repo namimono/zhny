@@ -34,7 +34,7 @@ public class OtherConfigController {
     @ApiOperation(value="导入参数库模板数据", notes="导入参数库模板数据")
     @PostMapping("/importData")
     public Result importData(MultipartFile file, String deviceId, String projectId){
-       return Result.result(otherConfigServiceImpl.importData(file,deviceId,projectId),"导入成功","导入失败");
+       return otherConfigServiceImpl.importData(file,deviceId,projectId);
     }
 
     @ApiOperation(value="增加自定义标题信息", notes="增加自定义标题信息")

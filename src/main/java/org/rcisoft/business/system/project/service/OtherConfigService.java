@@ -1,9 +1,10 @@
 package org.rcisoft.business.system.project.service;
 
-import org.rcisoft.business.system.project.entity.DeviceBriefInfo;
+import org.rcisoft.base.result.Result;
 import org.rcisoft.business.system.project.entity.TitleAndSysName;
 import org.rcisoft.business.system.project.entity.TitleParamAndParam;
-import org.rcisoft.entity.*;
+import org.rcisoft.entity.BusTitle;
+import org.rcisoft.entity.BusTitleParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +25,7 @@ public interface OtherConfigService {
     /**
      * 导入参数库模板数据
      */
-    int importData(MultipartFile file, String deviceId, String projectId);
+    Result importData(MultipartFile file, String deviceId, String projectId);
 
     /**
      * 增加自定义标题信息

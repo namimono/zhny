@@ -53,7 +53,7 @@ public interface DevicePlanningRepository {
      * @return
      */
     @Select("<script>SELECT bps.`name` AS devParamName, bps.first_sign  FROM " +
-            " bus_param_second bps  WHERE bps.device_id = #{conditionDto.devId} AND  bps.first_sign in (1,2,3.4) </script>")
+            " bus_param_second bps  WHERE bps.device_id = #{conditionDto.devId} AND  bps.first_sign in (1,2,3,4) </script>")
     List<DeviceNameAndSeq> listDeviceParamNameAndSeqByDevId(@Param("conditionDto") ConditionDto conditionDto);
 
     /**

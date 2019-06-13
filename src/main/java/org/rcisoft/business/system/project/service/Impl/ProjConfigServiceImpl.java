@@ -344,7 +344,13 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      */
     @Override
     public int deleteBuildType(BusBuilding busBuilding){
-        return busBuildingDao.deleteByPrimaryKey(busBuilding);
+        BusProject busProject = new BusProject();
+        busProject.setBuildingId(busBuilding.getId());
+        List<BusProject> busProjectList = busProjectDao.select(busProject);
+        if (busProjectList.size() == 0){
+            return busBuildingDao.deleteByPrimaryKey(busBuilding.getId());
+        }
+        return 0;
     }
 
     /**
@@ -369,7 +375,13 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      */
     @Override
     public int deleteBuildZone(BusBuildingZone busBuildingZone){
-        return busBuildingZoneDao.deleteByPrimaryKey(busBuildingZone);
+        BusProject busProject = new BusProject();
+        busProject.setBuildingZoneId(busBuildingZone.getId());
+        List<BusProject> busProjectList = busProjectDao.select(busProject);
+        if (busProjectList.size() == 0){
+            return busBuildingZoneDao.deleteByPrimaryKey(busBuildingZone.getId());
+        }
+        return 0;
     }
 
     /**
@@ -419,6 +431,18 @@ public class ProjConfigServiceImpl implements ProjConfigService {
      */
     @Override
     public int deleteSysSystem(String systemId){
+        List<BusProject> busProjectList = busProjectDao.selectAll();
+        for (BusProject busProject : busProjectList){
+            String systemIds = busProject.getSystemIds();
+            if (null != systemIds){
+                String[] split = systemIds.split(",");
+                for (String s : split){
+                    if (s.equals(systemId)){
+                        return 0;
+                    }
+                }
+            }
+        }
         return sysSystemDao.deleteByPrimaryKey(systemId);
     }
 

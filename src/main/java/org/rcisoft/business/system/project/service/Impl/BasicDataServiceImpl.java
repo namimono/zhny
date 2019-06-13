@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.rcisoft.base.result.Result;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.dao.BasicDataDao;
 import org.rcisoft.business.system.project.service.BasicDataService;
@@ -116,13 +117,13 @@ public class BasicDataServiceImpl implements BasicDataService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String upload(MultipartFile file, String projectId) {
+    public Result upload(MultipartFile file, String projectId) {
 
         //要保存到数据库中的数据
         List<EnergyCarbonPlan> saveEnergyCarbonPlanList = new ArrayList<>();
 
         if (file.isEmpty()) {
-            return "文件为空";
+            return Result.result(0,"文件为空");
         }
 
         Workbook workbook = null;
@@ -170,17 +171,16 @@ public class BasicDataServiceImpl implements BasicDataService {
 
                     int flag = energyCarbonPlanDao.saveEnergyCarbonPlan(saveEnergyCarbonPlanList);
                     if (flag > 0) {
-                        return "上传成功";
+                        return Result.result(1,"上传成功");
                     }
                 }
 
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "请上传指定格式文件";
+            return Result.result(0,"请上传指定格式文件");
         }
-
-        return "请上传指定格式文件";
+        return Result.result(0,"请填写数据后上传");
     }
 
     /**

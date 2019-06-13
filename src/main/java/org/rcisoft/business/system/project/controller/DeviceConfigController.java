@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.rcisoft.base.result.Result;
 import org.rcisoft.business.system.project.entity.BatchParams;
-import org.rcisoft.business.system.project.entity.ParamFirstContainSecond;
 import org.rcisoft.business.system.project.service.DeviceConfigService;
 import org.rcisoft.entity.BusDevice;
 import org.rcisoft.entity.BusDeviceType;
@@ -12,8 +11,6 @@ import org.rcisoft.entity.BusFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 /**
  * Create by 土豆儿
@@ -151,7 +148,7 @@ public class DeviceConfigController {
     @ApiOperation(value="删除厂家信息", notes="删除厂家信息")
     @DeleteMapping("/deleteFactory/{factoryId}")
     public Result deleteFactory(@PathVariable String factoryId){
-        return Result.result(deviceConfigServiceImpl.deleteFactory(factoryId),"删除厂家信息成功","删除厂家信息失败");
+        return Result.result(deviceConfigServiceImpl.deleteFactory(factoryId),"删除厂家信息成功","删除厂家信息失败，请确保没有设备与该厂家信息关联");
     }
 
     @ApiOperation(value="修改厂家信息", notes="修改厂家信息")
@@ -175,7 +172,7 @@ public class DeviceConfigController {
     @ApiOperation(value="删除设备类型", notes="删除设备类型")
     @DeleteMapping("/deleteDeviceType/{typeId}")
     public Result deleteDeviceType(@PathVariable String typeId){
-        return Result.result(deviceConfigServiceImpl.deleteDeviceType(typeId),"删除设备类型成功","删除设备类型失败");
+        return Result.result(deviceConfigServiceImpl.deleteDeviceType(typeId),"删除设备类型成功","删除设备类型失败，请确保没有设备与该设备类型关联");
     }
 
     @ApiOperation(value="修改设备类型", notes="修改设备类型")
@@ -199,7 +196,7 @@ public class DeviceConfigController {
     @ApiOperation(value="删除设备图片", notes="删除设备图片")
     @DeleteMapping("/deleteDevicePic/{picId}")
     public Result deleteDevicePic(@PathVariable String picId){
-        return Result.result(deviceConfigServiceImpl.deleteDevicePic(picId),"删除设备图片成功","删除设备图片失败");
+        return Result.result(deviceConfigServiceImpl.deleteDevicePic(picId),"删除设备图片成功","删除设备图片失败,请确保没有设备与该图片关联");
     }
 
     @ApiOperation(value="修改设备图片", notes="修改设备图片")

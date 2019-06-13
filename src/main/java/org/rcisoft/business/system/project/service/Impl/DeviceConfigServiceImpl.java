@@ -468,7 +468,13 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
      */
     @Override
     public int deleteFactory(String factoryId){
-        return busFactoryDao.deleteByPrimaryKey(factoryId);
+        BusDevice busDevice = new BusDevice();
+        busDevice.setFactoryId(factoryId);
+        List<BusDevice> busDeviceList = busDeviceDao.select(busDevice);
+        if (busDeviceList.size() == 0){
+            return busFactoryDao.deleteByPrimaryKey(factoryId);
+        }
+        return 0;
     }
 
     /**
@@ -501,7 +507,13 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
      */
     @Override
     public int deleteDeviceType(String typeId){
-        return busDeviceTypeDao.deleteByPrimaryKey(typeId);
+        BusDevice busDevice = new BusDevice();
+        busDevice.setDeviceTypeId(typeId);
+        List<BusDevice> busDeviceList = busDeviceDao.select(busDevice);
+        if (busDeviceList.size() == 0){
+            return busDeviceTypeDao.deleteByPrimaryKey(typeId);
+        }
+        return 0;
     }
 
     /**
@@ -558,12 +570,19 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     @Transactional(rollbackFor=Exception.class)
     @Override
     public int deleteDevicePic(String picId){
-        BusDevicePicture busDevicePicture = busDevicePictureDao.selectByPrimaryKey(picId);
-        File file = new File(path + device + "/" + busDevicePicture.getProjectId() + "/" + busDevicePicture.getUrl());
-        if (file.exists()) {
-            file.delete();
+        BusDevice busDevice = new BusDevice();
+        busDevice.setDevicePictureId(picId);
+        List<BusDevice> busDeviceList = busDeviceDao.select(busDevice);
+        if (busDeviceList.size() == 0){
+            BusDevicePicture busDevicePicture = busDevicePictureDao.selectByPrimaryKey(picId);
+            File file = new File(path + device + "/" + busDevicePicture.getProjectId() + "/" + busDevicePicture.getUrl());
+            if (file.exists()) {
+                file.delete();
+            }
+            return busDevicePictureDao.deleteByPrimaryKey(picId);
         }
-        return busDevicePictureDao.deleteByPrimaryKey(picId);
+        return 0;
+
     }
 
     /**

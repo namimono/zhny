@@ -18,10 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static org.rcisoft.base.util.ZhnyUtils.getDayEndTime;
 import static org.rcisoft.base.util.ZhnyUtils.getDayStartTime;
@@ -199,12 +197,29 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
         List<EnergyStatistics> energyStatisticsList = energyStatisticsDao.select(useEnergyStatistics);
 
         if (energyStatisticsList.size() > 0) {
+            //实际电费用
             BigDecimal sumMoneyElec = new BigDecimal(0);
+            //实际气费用
             BigDecimal sumMoneyGas = new BigDecimal(0);
-            //遍历所有实际费用获得总费用
-            for (EnergyStatistics energyStatistics : energyStatisticsList){
-                sumMoneyElec = sumMoneyElec.add(energyStatistics.getMoneyElec());
-                sumMoneyGas = sumMoneyGas.add(energyStatistics.getMoneyGas());
+
+            //查出项目当天的的计划
+            List<EnergyPlanningRecord> energyPlanningRecordList = energyPlanningRecordDao.listEnergyPlanningRecordDaoByProIdAndData(
+                    conditionDto.getProId(), new SimpleDateFormat("yyyy-MM-dd").format(conditionDto.getDate()));
+
+            //对今天的计划进行遍历，根据哪段时间有计划，计算出实际的金额
+            for (EnergyPlanningRecord energyPlanningRecord : energyPlanningRecordList) {
+
+                //获得开始时间
+                Long startTime = energyPlanningRecord.getStartTime().getTime();
+                //获得结束时间
+                Long endTime = energyPlanningRecord.getEndTime().getTime();
+
+                for (EnergyStatistics energyStatistics : energyStatisticsList){
+                    if (energyStatistics.getCreateTime().getTime() >= startTime && energyStatistics.getCreateTime().getTime() < endTime){
+                        sumMoneyElec = sumMoneyElec.add(energyStatistics.getMoneyElec());
+                        sumMoneyGas = sumMoneyGas.add(energyStatistics.getMoneyGas());
+                    }
+                }
             }
             MoneySum moneySum = new MoneySum();
             moneySum.setSumMoneyElec(sumMoneyElec);
@@ -213,6 +228,8 @@ public class PlanExecutionServiceImpl implements PlanExecutionService {
         }
         return null;
     }
+
+
 
 
     /**

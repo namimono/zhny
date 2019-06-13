@@ -1,5 +1,6 @@
 package org.rcisoft.business.system.project.service;
 
+import org.rcisoft.base.result.Result;
 import org.rcisoft.entity.EnergyPrice;
 import org.rcisoft.entity.EnergyStandard;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,7 +50,7 @@ public interface BasicDataService {
     /**
      * 上传基准碳排放量模板
      */
-    String upload(MultipartFile file,String projectId);
+    Result upload(MultipartFile file, String projectId);
 
     /**
      * 下载基准碳排放量模板

@@ -115,7 +115,7 @@ public class ProjConfigController {
     @ApiOperation(value="删除建筑类型", notes="删除建筑类型")
     @DeleteMapping("/deleteBuildType")
     public Result deleteBuildType(@RequestBody BusBuilding busBuilding){
-        return Result.result(projConfigServiceImpl.deleteBuildType(busBuilding), "删除建筑类型成功", "删除建筑类型失败");
+        return Result.result(projConfigServiceImpl.deleteBuildType(busBuilding), "删除建筑类型成功", "删除建筑类型失败，请确保没有项目与该建筑类型关联");
     }
 
     @ApiOperation(value="新增建筑分区(气候分区)", notes="新增建筑分区(气候分区)")
@@ -133,7 +133,7 @@ public class ProjConfigController {
     @ApiOperation(value="删除建筑分区(气候分区)", notes="删除建筑分区(气候分区)")
     @DeleteMapping("/deleteBuildZone")
     public Result deleteBuildZone(@RequestBody BusBuildingZone busBuildingZone){
-        return Result.result(projConfigServiceImpl.deleteBuildZone(busBuildingZone), "删除建筑分区(气候分区)成功", "删除建筑分区(气候分区)失败");
+        return Result.result(projConfigServiceImpl.deleteBuildZone(busBuildingZone), "删除建筑分区(气候分区)成功", "删除建筑分区(气候分区)失败，请确保没有项目与该建筑分区关联");
     }
 
     @ApiOperation(value="查询认定员信息", notes="查询认定员信息")
@@ -176,7 +176,7 @@ public class ProjConfigController {
     @ApiOperation(value="修改系统类型", notes="修改系统类型")
     @PutMapping("/updateSysSystem")
     public Result updateSysSystem(@RequestBody SysSystem sysSystem){
-        return Result.result(projConfigServiceImpl.updateSysSystem(sysSystem), "修改系统类型成功", "修改系统类型失败");
+        return Result.result(projConfigServiceImpl.updateSysSystem(sysSystem), "修改系统类型成功", "修改系统类型失败，请确保没有项目与该系统类型关联");
     }
     @ApiOperation(value="修改项目接收状态和在线状态", notes="修改项目接收状态和在线状态")
     @PutMapping("/updateProjectReceiveAndOnline")

@@ -4,6 +4,7 @@ import com.mysql.jdbc.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.rcisoft.base.result.Result;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.system.project.dao.OtherConfigDao;
 import org.rcisoft.business.system.project.entity.TitleAndSysName;
@@ -161,7 +162,12 @@ public class OtherConfigServiceImpl implements OtherConfigService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int importData(MultipartFile file, String deviceId, String projectId) {
+    public Result importData(MultipartFile file, String deviceId, String projectId) {
+
+        if (file.isEmpty()) {
+            return Result.result(0,"文件为空");
+        }
+
         List<EnergyParamLibrary> paramLibraryList = new ArrayList<>();
         Workbook wb = null;
         try {
@@ -179,7 +185,7 @@ public class OtherConfigServiceImpl implements OtherConfigService {
                 //获得要上传的文件中的设备ID
                 String devId = firstRow.getCell(2).getStringCellValue();
                 if (!deviceId.equals(devId)) {
-                    return 0;
+                    return Result.result(0,"请确保格式正确并且是该设备的模板");
                 }
             }
             for (int i = 8; i <= sheet.getLastRowNum(); i++) {
@@ -251,18 +257,16 @@ public class OtherConfigServiceImpl implements OtherConfigService {
                 criteria.andEqualTo("projectId", projectId);
                 criteria.andEqualTo("deviceId", deviceId);
                 energyParamLibraryDao.deleteByExample(example);
-                return energyParamLibraryDao.insertListUseAllCols(paramLibraryList);
-            } else {
-                return 0;
+                int flag = energyParamLibraryDao.insertListUseAllCols(paramLibraryList);
+                if (flag > 0){
+                    return Result.result(1,"上传成功");
+                }
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
+            return Result.result(0,"请上传指定格式文件");
         }
-
-
+        return Result.result(0,"请填写数据后上传");
     }
 
     /**

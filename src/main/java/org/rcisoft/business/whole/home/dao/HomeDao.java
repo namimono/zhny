@@ -38,6 +38,6 @@ public interface HomeDao {
      * 查询项目详细信息
      */
     @Select("<script>select bp.code AS code, bp.id as Id,bp.name as proName,bp.create_time as createTime,bp.building_local as buildingLocal,bb.name as buildingType,bp.building_area " +
-            "as buildingArea, bp.phones as phones, bp.receive as receive from bus_project bp,bus_building bb, sys_user_project_mid m where bb.id = bp.building_id and m.project_id = bp.id and m.user_id = #{userId}</script>")
+            "as buildingArea, bp.phones as phones, bp.receive as receive from bus_project bp,bus_building bb, sys_user_project_mid m where bb.id = bp.building_id and m.project_id = bp.id and m.user_id = #{userId} and online = 1</script>")
     List<ProjectHome> queryProjectDetail(@Param("userId") String userId);
 }
