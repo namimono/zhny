@@ -5,9 +5,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.base.redis.RedisService;
+import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.business.monitor.intercept.dao.DeviceParamDao;
 import org.rcisoft.business.monitor.intercept.entity.*;
 import org.rcisoft.business.monitor.intercept.service.BusProjectService;
+import org.rcisoft.dao.BusDeviceDao;
+import org.rcisoft.entity.BusDevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,8 @@ public class BusProjectServiceImpl implements BusProjectService {
     private RedisService redisService;
     @Autowired
     private DeviceParamDao deviceParamDao;
+    @Autowired
+    private BusDeviceDao busDeviceDao;
     @Value("${location.url}")
     private String url;
     @Value("${location.device}")
@@ -84,8 +89,17 @@ public class BusProjectServiceImpl implements BusProjectService {
     }
 
     @Override
-    public List<Params> queryParams(String deviceId, Integer count) {
-        return deviceParamDao.queryParams(deviceId, count);
+    public ServiceResult queryParams(String deviceId, Integer count) {
+        ServiceResult result = new ServiceResult();
+        BusDevice busDevice = new BusDevice();
+        busDevice.setId(deviceId);
+        int exist = busDeviceDao.selectCount(busDevice);
+        // 如果存在，查询参数
+        if (exist > 0) {
+            result.setObject(deviceParamDao.queryParams(deviceId, count));
+        }
+        result.setResult(exist);
+        return result;
     }
 
     @Override
