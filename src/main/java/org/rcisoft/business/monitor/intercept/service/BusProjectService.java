@@ -1,6 +1,7 @@
 package org.rcisoft.business.monitor.intercept.service;
 
 import com.alibaba.fastjson.JSONArray;
+import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.business.monitor.intercept.entity.*;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public interface BusProjectService {
      * @param count
      * @return
      */
-    List<Params> queryParams(String deviceId, Integer count);
+    ServiceResult queryParams(String deviceId, Integer count);
 
     /**
      * 查询设备下所有参数信息

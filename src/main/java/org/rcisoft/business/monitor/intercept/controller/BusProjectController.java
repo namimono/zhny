@@ -50,7 +50,7 @@ public class BusProjectController {
     @ApiOperation(value = "查询设备下部分参数信息",notes = "参数，deviceId：设备id；count：查询的数量")
     @GetMapping(value = "queryParams/{deviceId}/{count}")
     public Result queryParams(@PathVariable String deviceId, @PathVariable Integer count) {
-        return Result.result(busProjectService.queryParams(deviceId, count));
+        return Result.serviceResult(busProjectService.queryParams(deviceId, count));
     }
 
     @ApiOperation(value = "查询设备下所有参数信息",notes = "参数，deviceId：设备id")
