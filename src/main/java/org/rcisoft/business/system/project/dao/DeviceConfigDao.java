@@ -35,7 +35,6 @@ public interface DeviceConfigDao {
             "delete from energy_planning_device where device_id = #{deviceId};" +
             "delete from energy_planning_record where device_id = #{deviceId};" +
             "delete from energy_statistics where device_id = #{deviceId};" +
-            "delete from bus_device where id = #{deviceId};" +
             "</script>")
     int deleteAllByDevId(@Param("deviceId") String deviceId);
 

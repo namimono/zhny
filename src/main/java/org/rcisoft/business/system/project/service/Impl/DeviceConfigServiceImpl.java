@@ -119,7 +119,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     @Transactional
     @Override
     public int deleteDevice(String deviceId){
-        return deviceConfigDao.deleteAllByDevId(deviceId);
+        deviceConfigDao.deleteAllByDevId(deviceId);
+        return busDeviceDao.deleteByPrimaryKey(deviceId);
     }
 
     /**
@@ -383,6 +384,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
         List<ParamFirstContainSecond> batchList = batchParams.getBatchList();
         String paramFirstIds = batchParams.getParamFirstIds();
         String paramSecondIds = batchParams.getParamSecondIds();
+        String deviceId = batchParams.getDeviceId();
         // 1.删除一级二级
         if (StringUtils.isNotEmpty(paramFirstIds)) {
             String[] split = paramFirstIds.split(",");
@@ -397,7 +399,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
             }
         }
         // 删除其他一二级相关的表
-        commonServiceImpl.deleteFirstAndSecondTable(paramFirstIds, paramSecondIds);
+        commonServiceImpl.deleteFirstAndSecondTable(paramFirstIds, paramSecondIds, deviceId);
         // 保存or修改数据
         if (batchList.size() > 0) {
             List<BusParamFirst> addFirstList = new ArrayList<>();

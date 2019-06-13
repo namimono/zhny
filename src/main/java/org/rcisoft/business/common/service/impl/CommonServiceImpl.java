@@ -92,8 +92,7 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    public Integer deleteFirstAndSecondTable(String paramFirstIds, String paramSecondIds) {
-        Integer result = 0;
+    public void deleteFirstAndSecondTable(String paramFirstIds, String paramSecondIds, String deviceId) {
         String[] firstArray = null;
         String[] secondArray = null;
         if (StringUtils.isNotEmpty(paramFirstIds)) {
@@ -110,14 +109,17 @@ public class CommonServiceImpl implements CommonService {
 //        if (secondArray != null) {
 //            result += commonDao.deleteFormulaBySecondId(secondArray);
 //        }
-        if (firstArray != null) {
-            result += commonDao.deleteParamByFirstId(firstArray);
+        if (StringUtils.isNotEmpty(deviceId)) {
+            // 设备id不为空的时候
+            commonDao.deleteParamByDeviceId(deviceId);
+        } else {
+            if (firstArray != null) {
+                commonDao.deleteParamByFirstId(firstArray);
+            }
+            if (secondArray != null) {
+                commonDao.deleteParamBySecondId(secondArray);
+            }
         }
-        if (secondArray != null) {
-            result += commonDao.deleteParamBySecondId(secondArray);
-        }
-
-        return result;
     }
     
 }

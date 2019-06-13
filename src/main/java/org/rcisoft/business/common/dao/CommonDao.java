@@ -99,6 +99,19 @@ public interface CommonDao {
     List<SecondParam> querySecondParam(@Param("projectId") String projectId, @Param("systemId") String systemId);
 
     /**
+     * 根据设备id删除相关表信息
+     * @param deviceId
+     * @return
+     */
+    @Delete("<script>" +
+            "delete from energy_param_library where device_id = #{deviceId};" +
+            "delete from energy_planning_cost where device_id = #{deviceId};" +
+            "delete from energy_planning_record where device_id = #{deviceId};" +
+            "delete from energy_planning_device where device_id = #{deviceId};" +
+            "</script>")
+    int deleteParamByDeviceId(@Param("deviceId") String deviceId);
+
+    /**
      * 根据一级参数id删除相关表
      * @param paramFirstIds
      * @return

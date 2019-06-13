@@ -61,8 +61,9 @@ public interface CommonService {
      * 删除一二级参数相关表的记录
      * @param paramFirstIds
      * @param paramSecondIds
+     * @param deviceId
      * @return
      */
-    Integer deleteFirstAndSecondTable(String paramFirstIds, String paramSecondIds);
+    void deleteFirstAndSecondTable(String paramFirstIds, String paramSecondIds, String deviceId);
 
 }
