@@ -109,15 +109,17 @@ public class BusProjectServiceImpl implements BusProjectService {
         List<Params> paramsList = deviceParamDao.queryParamsAll(deviceId);
         result.setParamList(paramsList);
         DeviceInfomation deviceInfomation = deviceParamDao.queryDeviceNameAndUrl(deviceId);
-        deviceInfomation.setDeviceUrl(this.url + this.device + "/" + deviceInfomation.getDeviceUrl());
+        deviceInfomation.setDeviceUrl(this.url + this.device + "/" + deviceInfomation.getProjectId() + "/" + deviceInfomation.getDeviceUrl());
         result.setDeviceInfomation(deviceInfomation);
         paramsList.forEach(params -> {
-            if (params.getEnergyType() == 2) {
-                ParamsResult.Elec elec = new ParamsResult().new Elec();
-                elec.setElecFirstCode(params.getFirstCode());
-                elec.setElecSecondCode(params.getSecondCode());
-                elec.setElecType(params.getElecType());
-                elecList.add(elec);
+            if (params.getEnergyType() != null) {
+                if (params.getEnergyType() == 2) {
+                    ParamsResult.Elec elec = new ParamsResult().new Elec();
+                    elec.setElecFirstCode(params.getFirstCode());
+                    elec.setElecSecondCode(params.getSecondCode());
+                    elec.setElecType(params.getElecType());
+                    elecList.add(elec);
+                }
             }
         });
         return result;
