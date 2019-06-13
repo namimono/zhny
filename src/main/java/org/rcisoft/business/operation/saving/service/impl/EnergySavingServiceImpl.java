@@ -78,9 +78,9 @@ public class EnergySavingServiceImpl implements EnergySavingService {
                             planCost = planCost.add(energyPlanningRecord.getMoneyGas());
                         } else {//如果这段计划的结束时间小于这个小时的时间，则证明这一个小时只有某一段时间在计划内，需要计算
                             //计算出相差了多少小时
-                            long diffHour = (energyPlanningRecord.getEndTime().getTime() - dayStartTime) / timeFlag;
-                            planCost.add(energyPlanningRecord.getMoneyElec().multiply(new BigDecimal(diffHour)));
-                            planCost.add(energyPlanningRecord.getMoneyGas().multiply(new BigDecimal(diffHour)));
+                            double diffHour = (double) (energyPlanningRecord.getEndTime().getTime() - dayStartTime) / timeFlag;
+                            planCost = planCost.add(energyPlanningRecord.getMoneyElec().multiply(new BigDecimal(diffHour)));
+                            planCost = planCost.add(energyPlanningRecord.getMoneyGas().multiply(new BigDecimal(diffHour)));
                         }
                     }
                 }
@@ -88,10 +88,10 @@ public class EnergySavingServiceImpl implements EnergySavingService {
 
             //获得这个小时的实际金额
             BigDecimal realCost = new BigDecimal(0);
-            if (energyStatisticsList.size() > 0){
+            if (energyStatisticsList.size() > 0) {
                 List<EnergyStatistics> list = energyStatisticsListGroup.get(hour);
-                if (null != list){
-                    for (EnergyStatistics energyStatistics : list){
+                if (null != list) {
+                    for (EnergyStatistics energyStatistics : list) {
                         realCost = realCost.add(energyStatistics.getMoneyElec());
                         realCost = realCost.add(energyStatistics.getMoneyGas());
                     }

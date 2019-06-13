@@ -140,7 +140,7 @@ public class EnergyPlanningRecordServiceImpl implements EnergyPlanningRecordServ
                 //每个小时的毫秒
                 long hourMillisecond = 60*60*1000;
                 //经过了几个小时
-                long hour = useTime / hourMillisecond;
+                double hour = ((double)useTime)/hourMillisecond;
                 //这个计划编制预计消耗的电费用
                 BigDecimal moneyElec = record.getMoneyElec().multiply(new BigDecimal(hour)).setScale(2,BigDecimal.ROUND_HALF_UP);
                 //这个计划编制预计消耗的气费用
