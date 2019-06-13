@@ -64,6 +64,6 @@ public interface CommonService {
      * @param deviceId
      * @return
      */
-    Integer deleteFirstAndSecondTable(String paramFirstIds, String paramSecondIds, String deviceId);
+    void deleteFirstAndSecondTable(String paramFirstIds, String paramSecondIds, String deviceId);
 
 }

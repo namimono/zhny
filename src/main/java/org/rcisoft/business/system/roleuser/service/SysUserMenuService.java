@@ -5,6 +5,7 @@ import org.rcisoft.business.system.roleuser.entity.ProjectName;
 import org.rcisoft.business.system.roleuser.entity.RolePermissionFirst;
 import org.rcisoft.entity.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -119,6 +120,14 @@ public interface SysUserMenuService {
      * @return Integer
      */
     Integer resetPassWord(String flag, String id);
+
+    /**
+     * 修改密码
+     * @param oldPass
+     * @param newPass
+     * @return
+     */
+    Integer changePassword(HttpServletRequest request, String oldPass, String newPass);
 
 
     /**

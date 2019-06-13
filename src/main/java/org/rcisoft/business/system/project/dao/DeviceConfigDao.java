@@ -20,8 +20,22 @@ public interface DeviceConfigDao {
      * 删除设备信息（谨慎！）
      *
      */
-    @Options(statementType = StatementType.CALLABLE)
-    @Select("call delete_AllByDevId(#{deviceId})")
+    @Delete("<script>" +
+            "delete from bus_indoor_param where device_id = #{deviceId};" +
+            "delete from bus_inspection where device_id = #{deviceId};" +
+            "delete from bus_maintenance where device_id = #{deviceId};" +
+            "delete from bus_malfunction where device_id = #{deviceId};" +
+            "delete from bus_outdoor where device_id = #{deviceId};" +
+            "delete from bus_param_first where device_id = #{deviceId};" +
+            "delete from bus_param_second where device_id = #{deviceId};" +
+            "delete from bus_title_param where device_id = #{deviceId};" +
+            "delete from bus_variable where device_id = #{deviceId};" +
+            "delete from energy_param_library where device_id = #{deviceId};" +
+            "delete from energy_planning_cost where device_id = #{deviceId};" +
+            "delete from energy_planning_device where device_id = #{deviceId};" +
+            "delete from energy_planning_record where device_id = #{deviceId};" +
+            "delete from energy_statistics where device_id = #{deviceId};" +
+            "</script>")
     int deleteAllByDevId(@Param("deviceId") String deviceId);
 
     /**

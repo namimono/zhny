@@ -113,6 +113,12 @@ public class SysUserMenuController {
         return Result.result(sysUserMenuService.resetPassWord(flag,id), "重置密码成功", "重置密码失败");
     }
 
+    @ApiOperation(value = "修改密码", notes = "修改密码")
+    @PutMapping(value = "/changePassword")
+    public Result changePassword(HttpServletRequest request, @RequestParam String oldPass, @RequestParam String newPass) {
+        return Result.result(sysUserMenuService.changePassword(request, oldPass, newPass), "修改密码成功", "修改密码失败，旧密码错误");
+    }
+
     @ApiOperation(value = "分配项目时，查询所有项目名称", notes = "参数：用户id")
     @GetMapping(value = "/listProject/{id}")
     public Result listProject(@PathVariable("id") String id ) {

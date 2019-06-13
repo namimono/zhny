@@ -1,5 +1,7 @@
 package org.rcisoft.business.system.roleuser.service.Impl;
 
+import io.jsonwebtoken.Claims;
+import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.base.jwt.JwtTokenUtil;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.base.util.ZhnyUtils;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +38,8 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
 
     @Value("${password.default}")
     private String password;
-
+    @Value("${jwt.header}")
+    private String tokenHeader;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -277,6 +281,11 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
 
     @Override
     public Integer updateInspector(SysInspector sysInspector) {
+        String password = sysInspector.getPassword();
+        if (StringUtils.isNotEmpty(password)) {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            sysInspector.setPassword(encoder.encode(password));
+        }
         return sysInspectorDao.updateByPrimaryKeySelective(sysInspector);
     }
 
@@ -314,6 +323,25 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
         }
 
         return 0;
+    }
+
+    @Override
+    public Integer changePassword(HttpServletRequest request, String oldPass, String newPass) {
+        String token = request.getHeader(tokenHeader);
+        token = token.substring(tokenHead.length());
+        Claims claims = jwtTokenUtil.getClaimsFromToken(token);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        SysUser sysUser = new SysUser();
+        sysUser.setId((String) claims.get("userid"));
+        sysUser.setPassword(encoder.encode(oldPass));
+        // 旧密码是否正确
+        int exist = sysUserDao.selectCount(sysUser);
+        if (exist > 0) {
+            sysUser.setPassword(new BCryptPasswordEncoder().encode(sysUser.getPassword()));
+            return sysUserDao.updateByPrimaryKeySelective(sysUser);
+        } else {
+            return 0;
+        }
     }
 
     @Override

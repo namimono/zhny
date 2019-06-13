@@ -116,9 +116,11 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
     /**
      * 删除设备信息(谨慎!)
      */
+    @Transactional
     @Override
     public int deleteDevice(String deviceId){
-        return deviceConfigDao.deleteAllByDevId(deviceId);
+        deviceConfigDao.deleteAllByDevId(deviceId);
+        return busDeviceDao.deleteByPrimaryKey(deviceId);
     }
 
     /**

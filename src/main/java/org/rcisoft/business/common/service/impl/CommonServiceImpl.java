@@ -92,9 +92,7 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    public Integer deleteFirstAndSecondTable(String paramFirstIds, String paramSecondIds, String deviceId) {
-        Integer result = 0;
-        // 删除公式表
+    public void deleteFirstAndSecondTable(String paramFirstIds, String paramSecondIds, String deviceId) {
         String[] firstArray = null;
         String[] secondArray = null;
         if (StringUtils.isNotEmpty(paramFirstIds)) {
@@ -104,24 +102,24 @@ public class CommonServiceImpl implements CommonService {
             secondArray = paramSecondIds.split(",");
         }
 
-        if (firstArray != null) {
-            result += commonDao.deleteFormulaByFirstId(firstArray);
-        }
-        if (secondArray != null) {
-            result += commonDao.deleteFormulaBySecondId(secondArray);
-        }
+        // 删除公式表
+//        if (firstArray != null) {
+//            result += commonDao.deleteFormulaByFirstId(firstArray);
+//        }
+//        if (secondArray != null) {
+//            result += commonDao.deleteFormulaBySecondId(secondArray);
+//        }
         if (StringUtils.isNotEmpty(deviceId)) {
             // 设备id不为空的时候
-            result += commonDao.deleteParamByDeviceId(deviceId);
+            commonDao.deleteParamByDeviceId(deviceId);
         } else {
             if (firstArray != null) {
-                result += commonDao.deleteParamByFirstId(firstArray);
+                commonDao.deleteParamByFirstId(firstArray);
             }
             if (secondArray != null) {
-                result += commonDao.deleteParamBySecondId(secondArray);
+                commonDao.deleteParamBySecondId(secondArray);
             }
         }
-        return result;
     }
     
 }
