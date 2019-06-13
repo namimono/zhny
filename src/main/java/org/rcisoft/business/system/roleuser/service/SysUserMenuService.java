@@ -120,6 +120,13 @@ public interface SysUserMenuService {
      */
     Integer resetPassWord(String flag, String id);
 
+    /**
+     * 修改密码
+     * @param sysUser
+     * @return
+     */
+    Integer changePassword(SysUser sysUser);
+
 
     /**
      * 查找所有项目的名称

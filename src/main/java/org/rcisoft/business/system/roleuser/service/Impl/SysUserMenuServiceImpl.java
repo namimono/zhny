@@ -323,6 +323,12 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
     }
 
     @Override
+    public Integer changePassword(SysUser sysUser) {
+        sysUser.setPassword(new BCryptPasswordEncoder().encode(sysUser.getPassword()));
+        return sysUserDao.updateByPrimaryKeySelective(sysUser);
+    }
+
+    @Override
     public List<ProjectName> listProjectName(String id) {
         //查出所有项目
         List<ProjectName> allProjectNameList = busProjectDao.listProjectName();
