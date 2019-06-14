@@ -1,8 +1,8 @@
 server:
   servlet:
     context-path: /zhny2
-  url: 10.96.129.56
-  port: 8080
+  url: www.renew-cloud.com
+  port: 8085
   tomcat:
     max-threads: 300
     max-http-post-size: 10240000
@@ -14,9 +14,9 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
     platform: mysql
-    url: jdbc:mysql://10.96.129.56:3309/zhny-2nd-change?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+    url: jdbc:mysql://127.0.0.1:3336/zhny-2nd-change?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
     username: root
-    password: 123456
+    password: rootbdx
     druid:
       filter:
         wall:
@@ -46,7 +46,7 @@ spring:
         max-active: 1000
         min-idle: 5
         max-wait: -1
-    database: 0
+    database: 1
     password: ''
     timeout: 3600
   security:
@@ -63,7 +63,7 @@ spring:
     #mqtt密码
     password: public
     #mqtt服务器地址
-    url: tcp://10.96.129.56:1883
+    url: tcp://172.21.0.6:1883
     #连接服务器默认客户端id,可以在调用时指定
     client:
       id: mqttId
@@ -108,9 +108,9 @@ wx:
 #     如 localhost/filepath/image/1.jpg（url + 不同前缀 + 文件名）
 location:
   # 显示图片的url前缀
-  url: http://${server.url}:9000/filepath/
+  url: http://${server.url}/filepath2/
   # 存储根路径
-  path: /working/zhihui/nginx/filepath/
+  path: /zhny/filepath2/
   # 背景图文件夹
   background: background-img
   # 拓扑图节点文件夹（需要分系统）
