@@ -335,7 +335,7 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         SysUser sysUser = sysUserDao.selectByPrimaryKey(id);
         // 判断旧密码是否正确
-        if (encoder.matches(sysUser.getPassword(), encoder.encode(oldPass))) {
+        if (encoder.matches(sysUser.getPassword(), oldPass)) {
             sysUser.setPassword(encoder.encode(newPass));
             return sysUserDao.updateByPrimaryKeySelective(sysUser);
         } else {
