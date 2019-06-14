@@ -4,8 +4,10 @@ import io.jsonwebtoken.Claims;
 import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.base.jwt.JwtTokenUtil;
 import org.rcisoft.base.result.Result;
+import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.base.util.ZhnyUtils;
+import org.rcisoft.business.system.auth.service.AuthService;
 import org.rcisoft.business.system.roleuser.dao.SysUserMenuDao;
 import org.rcisoft.business.system.roleuser.entity.IdAndPassword;
 import org.rcisoft.business.system.roleuser.entity.ProjectName;
@@ -22,10 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author GaoLiwei
@@ -62,6 +61,8 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
     private BusProjectDao busProjectDao;
     @Autowired
     private SysUserProjectMidDao sysUserProjectMidDao;
+    @Autowired
+    private AuthService AuthUserServiceImpl;
 
 
     @Override
@@ -265,7 +266,7 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
 
     @Override
     public Integer updateSysUser(SysUser sysUser) {
-        sysUser.setUpdateTime(new Date());
+//        sysUser.setUpdateTime(new Date());
         return sysUserDao.updateByPrimaryKeySelective(sysUser);
     }
 
@@ -350,10 +351,10 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
     }
 
     @Override
-    public Integer changePassword(HttpServletRequest request, String oldPass, String newPass) {
+    public ServiceResult changePassword(HttpServletRequest request, String oldPass, String newPass) {
         String token = request.getHeader(tokenHeader);
-        token = token.substring(tokenHead.length());
-        Claims claims = jwtTokenUtil.getClaimsFromToken(token);
+        String oldToken = token.substring(tokenHead.length());
+        Claims claims = jwtTokenUtil.getClaimsFromToken(oldToken);
         String id = (String) claims.get("userid");
         // 旧密码是否正确
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -361,9 +362,13 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
         // 判断旧密码是否正确
         if (encoder.matches(oldPass, sysUser.getPassword())) {
             sysUser.setPassword(encoder.encode(newPass));
-            return sysUserDao.updateByPrimaryKeySelective(sysUser);
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.SECOND, -10);
+            sysUser.setUpdateTime(calendar.getTime());
+            String newToken = AuthUserServiceImpl.refresh(token);
+            return new ServiceResult(sysUserDao.updateByPrimaryKeySelective(sysUser), newToken);
         } else {
-            return 0;
+            return new ServiceResult(0, null);
         }
     }
 

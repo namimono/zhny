@@ -1,6 +1,7 @@
 package org.rcisoft.business.system.roleuser.service;
 
 import org.rcisoft.base.result.Result;
+import org.rcisoft.base.result.ServiceResult;
 import org.rcisoft.business.system.roleuser.entity.IdAndPassword;
 import org.rcisoft.business.system.roleuser.entity.ProjectName;
 import org.rcisoft.business.system.roleuser.entity.RolePermissionFirst;
@@ -128,7 +129,7 @@ public interface SysUserMenuService {
      * @param newPass
      * @return
      */
-    Integer changePassword(HttpServletRequest request, String oldPass, String newPass);
+    ServiceResult changePassword(HttpServletRequest request, String oldPass, String newPass);
 
 
     /**
