@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DeviceInfomation {
 
+    private String projectId;
+
     private String deviceName;
 
     private String deviceUrl;
