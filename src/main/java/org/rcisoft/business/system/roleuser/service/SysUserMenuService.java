@@ -1,5 +1,6 @@
 package org.rcisoft.business.system.roleuser.service;
 
+import org.rcisoft.base.result.Result;
 import org.rcisoft.business.system.roleuser.entity.IdAndPassword;
 import org.rcisoft.business.system.roleuser.entity.ProjectName;
 import org.rcisoft.business.system.roleuser.entity.RolePermissionFirst;
@@ -58,7 +59,7 @@ public interface SysUserMenuService {
      * @param sysUser
      * @return Integer
      */
-    Integer saveSysUser(SysUser sysUser);
+    Result saveSysUser(SysUser sysUser);
 
     /**
      * 编辑系统用户信息
@@ -88,7 +89,7 @@ public interface SysUserMenuService {
      * @param sysInspector
      * @return Integer
      */
-    Integer saveInspector(SysInspector sysInspector);
+    Result saveInspector(SysInspector sysInspector);
 
     /**
      * 编辑巡检员

@@ -3,6 +3,7 @@ package org.rcisoft.business.system.roleuser.service.Impl;
 import io.jsonwebtoken.Claims;
 import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.base.jwt.JwtTokenUtil;
+import org.rcisoft.base.result.Result;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.base.util.ZhnyUtils;
 import org.rcisoft.business.system.roleuser.dao.SysUserMenuDao;
@@ -243,13 +244,23 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
     }
 
     @Override
-    public Integer saveSysUser(SysUser sysUser) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        sysUser.setId(UuidUtil.create32());
-        sysUser.setCreateTime(new Date());
-        sysUser.setUpdateTime(new Date());
-        sysUser.setPassword(encoder.encode(sysUser.getPassword()));
-        return sysUserDao.insertSelective(sysUser);
+    public Result saveSysUser(SysUser sysUser) {
+        int i = 0;
+        String successMsg = "新增用户成功";
+        String errorMsg = "新增用户失败";
+        SysUser exist = sysUserDao.selectByName(sysUser.getUsername());
+        if (exist != null) {
+            i = 0;
+            errorMsg += "，用户名重复";
+        } else {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            sysUser.setId(UuidUtil.create32());
+            sysUser.setCreateTime(new Date());
+            sysUser.setUpdateTime(new Date());
+            sysUser.setPassword(encoder.encode(sysUser.getPassword()));
+            i = sysUserDao.insertSelective(sysUser);
+        }
+        return Result.result(i, successMsg, errorMsg);
     }
 
     @Override
@@ -271,12 +282,25 @@ public class SysUserMenuServiceImpl implements SysUserMenuService {
     }
 
     @Override
-    public Integer saveInspector(SysInspector sysInspector) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        sysInspector.setId(UuidUtil.create32());
-        sysInspector.setPassword(encoder.encode(sysInspector.getPassword()));
-        sysInspector.setCreateTime(new Date());
-        return sysInspectorDao.insertSelective(sysInspector);
+    public Result saveInspector(SysInspector sysInspector) {
+        int i = 0;
+        String successMsg = "新增用户成功";
+        String errorMsg = "新增用户失败";
+        Example example = new Example(SysInspector.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("name", sysInspector.getName());
+        int exist = sysInspectorDao.selectCountByExample(example);
+        if (exist > 0) {
+            i = 0;
+            errorMsg += "，用户名重复";
+        } else {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            sysInspector.setId(UuidUtil.create32());
+            sysInspector.setPassword(encoder.encode(sysInspector.getPassword()));
+            sysInspector.setCreateTime(new Date());
+            i = sysInspectorDao.insertSelective(sysInspector);
+        }
+        return Result.result(i, successMsg, errorMsg);
     }
 
     @Override

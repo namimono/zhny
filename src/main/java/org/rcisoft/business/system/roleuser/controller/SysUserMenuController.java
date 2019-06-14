@@ -59,7 +59,7 @@ public class SysUserMenuController {
     @ApiOperation(value = "新增系统用户信息（这里只包含超级管理员，管理员，业主）", notes = "参数：用户名，密码，姓名，用户类型(只能是1，2，3中的一种)，手机号，邮箱")
     @PostMapping(value = "/saveSysUser")
     public Result saveSysUser(@RequestBody SysUser sysUser) {
-        return Result.result(sysUserMenuService.saveSysUser(sysUser), "新增用户成功", "新增用户失败");
+        return sysUserMenuService.saveSysUser(sysUser);
     }
 
     @ApiOperation(value = "编辑系统用户信息（这里只包含超级管理员，管理员，业主）", notes = "参数：id,姓名，用户类型(只能是1，2，3中的一种)，手机号，邮箱")
@@ -83,7 +83,7 @@ public class SysUserMenuController {
     @ApiOperation(value = "新增巡检员", notes = "参数：姓名，用户，密码")
     @PostMapping(value = "/saveInspector")
     public Result saveInspector(@RequestBody SysInspector sysInspector) {
-        return Result.result(sysUserMenuService.saveInspector(sysInspector), "新增巡检员成功", "新增巡检员失败");
+        return sysUserMenuService.saveInspector(sysInspector);
     }
 
     @ApiOperation(value = "编辑巡检员", notes = "参数：id,姓名")
