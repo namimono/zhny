@@ -75,7 +75,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						"/**/*.js"
 				).permitAll()
 				// 对于获取token的rest api要允许匿名访问
-				.antMatchers("/login/login").permitAll()
+				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+				.antMatchers("/authUser/login").permitAll()
 				.antMatchers("/auth/**").permitAll()
 				.antMatchers("/static/**").permitAll()  //过滤 允许
 				.antMatchers("/webjars/**").permitAll()
@@ -83,15 +84,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/swagger-resources/**").permitAll()
 				.antMatchers("/api-docs/**").permitAll()
 				.antMatchers("/druid/**").permitAll()
+				.antMatchers("/other/queryTeamByType").permitAll() //允许首页访问图片接口
 				// 允许全部接口不需要token访问
-				.antMatchers("/**/**").permitAll()
+//				.antMatchers("/**/**").permitAll()
 				// 除上面外的所有请求全部需要鉴权认证
 				.anyRequest().fullyAuthenticated()
 				.and()
 					.exceptionHandling()
-					.authenticationEntryPoint(new RestAuthenticationEntryPoint())  //验证不通过的配置
-				.and()
-					.logout().logoutUrl("/login/logout").logoutSuccessUrl("/login/logout");//登出配置
+					.authenticationEntryPoint(new RestAuthenticationEntryPoint());  //验证不通过的配置
+//				.and()
+//					.logout().logoutUrl("/login/logout").logoutSuccessUrl("/login/logout");//登出配置
 		// 添加JWT filter
 		httpSecurity
 				.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
