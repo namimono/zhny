@@ -94,10 +94,10 @@ logging:
 wx:
   mp:
     configs:
-      - appId: 1111 （一个公众号的appid）
-        secret: 1111（公众号的appsecret）
-        token: 111 （接口配置里的Token值）
-        aesKey: 111 （接口配置里的EncodingAESKey值）
+      - appId: wx3f3873643c1380ac
+        secret: 4c473ce4285771f572d859f7696e370b
+        token: ruixinhuannneng2018
+        aesKey: BPhPqaGgl40uy7LuVe4SkMsqGXp9MjVeVVJMIrqTIW9
 
 # 路径（例子在 business--system--other 模块中）
 # 数据库表中表示路径的字段，只存一个文件名；如果需要区分项目，需要多一层文件夹（项目id作为文件夹名）
