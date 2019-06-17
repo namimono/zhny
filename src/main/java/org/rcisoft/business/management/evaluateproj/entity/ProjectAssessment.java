@@ -16,7 +16,10 @@ import java.util.Date;
 @AllArgsConstructor
 public class ProjectAssessment {
 
-
+	/**
+	 * id
+	 */
+	private String id;
 	/**
 	 * 项目名称
 	 */
@@ -41,6 +44,11 @@ public class ProjectAssessment {
 	 * 节能潜力
 	 */
 	private BigDecimal energyPotential;
+
+	/**
+	 * 能耗水平
+	 */
+	private BigDecimal energyCost;
 
 	/**
 	 * 项目创建时间
