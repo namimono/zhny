@@ -137,7 +137,10 @@ public class SysCityServiceImpl implements SysCityService {
                     list.add(busTemperature);
                 }
             }
-            Integer saveWeatherFlag = sysCityDao.saveWeather(list);
+            Integer saveWeatherFlag = 0;
+            if (list.size() > 0) {
+                saveWeatherFlag = sysCityDao.saveWeather(list);
+            }
             if (saveWeatherFlag != 0 ){
                 return 1;
             }
