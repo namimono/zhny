@@ -102,6 +102,10 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
         busDevice.setId(id);
         busDevice.setCreateTime(this.getNowTime());
         busDevice.setQrcodeUrl(id+".JPG");
+        // 查询排序字段
+        Integer seq = busDeviceDao.querySeq(busDevice.getProjectId(), busDevice.getSystemId());
+        seq = seq == null ? 0 : seq + 1;
+        busDevice.setSequence(seq);
         try {
             //生成二维码
             QRCodeUtils.createQRCodeFile(id,path+qrcodeImgPath+"/"+busDevice.getProjectId(),id);
@@ -143,12 +147,8 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
      * 查询设备简要信息（设备配置）
      */
     @Override
-    public List<DeviceBriefInfo> queryDeviceBriefInfo(String systemId,String projectId){
-        if ("0".equals(systemId)){
-            return busDeviceDao.queryDeviceBriefByProID(projectId);
-        }else {
-            return busDeviceDao.queryDeviceBriefInfo(systemId,projectId);
-        }
+    public List<DeviceBriefInfo> queryDeviceBriefInfo(String projectId, String systemId, String factoryId, String deviceTypeId) {
+        return busDeviceDao.queryDeviceBriefInfo(projectId, systemId, factoryId, deviceTypeId);
     }
 
     /**
@@ -644,5 +644,13 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
             busDevicePicture.setUrl(myUrl);
         });
         return busDevicePictureList;
+    }
+
+    @Override
+    public Integer reOrdered(List<BusDevice> list) {
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).setSequence(i);
+        }
+        return busDeviceDao.reOrdered(list);
     }
 }

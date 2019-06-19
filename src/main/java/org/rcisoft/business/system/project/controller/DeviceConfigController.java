@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * Create by 土豆儿
  * Time：2019/3/6 17:14
@@ -44,9 +46,9 @@ public class DeviceConfigController {
     }
 
     @ApiOperation(value="查询设备简要信息（设备配置）", notes="查询设备简要信息（设备配置）")
-    @GetMapping("/queryDeviceBriefInfo/{systemId}/{projectId}")
-    public Result queryDeviceBriefInfo(@PathVariable String systemId,@PathVariable String projectId){
-        return Result.result(deviceConfigServiceImpl.queryDeviceBriefInfo(systemId,projectId));
+    @PostMapping("/queryDeviceBriefInfo")
+    public Result queryDeviceBriefInfo(@RequestParam String projectId, @RequestParam String systemId, @RequestParam String factoryId, @RequestParam String deviceTypeId){
+        return Result.result(deviceConfigServiceImpl.queryDeviceBriefInfo(projectId, systemId, factoryId, deviceTypeId));
     }
 
     @ApiOperation(value="根据设备ID查询设备信息", notes="根据设备ID查询设备信息")
@@ -209,5 +211,11 @@ public class DeviceConfigController {
     @GetMapping("/queryDevicePic/{proId}")
     public Result queryDevicePic(@PathVariable String proId){
         return Result.result(deviceConfigServiceImpl.queryDevicePic(proId));
+    }
+
+    @ApiOperation(value="重新排序", notes="重新排序")
+    @PutMapping("/reOrdered")
+    public Result reOrdered(@RequestBody List<BusDevice> list) {
+        return Result.result(deviceConfigServiceImpl.reOrdered(list));
     }
 }

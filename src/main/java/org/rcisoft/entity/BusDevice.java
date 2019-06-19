@@ -110,4 +110,10 @@ public class BusDevice {
    	@Column(name = "auto_type" )
 	private Integer autoType;
 
+	/**
+	 * 排序字段
+	 */
+	@Column(name = "sequence" )
+   	private Integer sequence;
+
 }

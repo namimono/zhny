@@ -42,7 +42,7 @@ public interface DeviceConfigService {
     /**
      * 查询设备简要信息（设备配置）
      */
-    List<DeviceBriefInfo> queryDeviceBriefInfo(String systemId,String projectId);
+    List<DeviceBriefInfo> queryDeviceBriefInfo(String projectId, String systemId, String factoryId, String deviceTypeId);
 
     /**
      * 查询系统类型
@@ -173,5 +173,12 @@ public interface DeviceConfigService {
      * 查询设备图片
      */
     List<BusDevicePicture> queryDevicePic(String proId);
+
+    /**
+     * 设备重新排序
+     * @param list
+     * @return
+     */
+    Integer reOrdered(List<BusDevice> list);
 
 }
