@@ -646,6 +646,7 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
         return busDevicePictureList;
     }
 
+    @Transactional
     @Override
     public Integer reOrdered(List<BusDevice> list) {
         for (int i = 0; i < list.size(); i++) {
