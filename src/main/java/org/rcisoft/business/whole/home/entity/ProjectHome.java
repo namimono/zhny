@@ -51,6 +51,10 @@ public class ProjectHome {
      */
     private BigDecimal carbon;
     /**
+     * 累计节省
+     */
+    private BigDecimal energy;
+    /**
      * 水费用
      */
     private BigDecimal moneyWater;

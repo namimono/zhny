@@ -1,5 +1,6 @@
 package org.rcisoft.business.whole.home.service.Impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.rcisoft.base.jwt.JwtTokenUtil;
 import org.rcisoft.base.redis.RedisService;
 import org.rcisoft.business.whole.home.dao.HomeDao;
@@ -7,6 +8,7 @@ import org.rcisoft.business.whole.home.entity.HomeResult;
 import org.rcisoft.business.whole.home.entity.ProjectHome;
 import org.rcisoft.business.whole.home.service.HomeService;
 import org.rcisoft.dao.SysUserDao;
+import org.rcisoft.entity.EnergySaveReduction;
 import org.rcisoft.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,10 +58,12 @@ public class HomeServiceImpl implements HomeService {
         List<Map<String,Object>> carbonYear = homeDao.queryCarbonYear(year);
         List<Map<String,Object>> status = homeDao.queryStatus();
         List<ProjectHome> projectDetail = homeDao.queryProjectDetail(userId);
+        List<EnergySaveReduction> saveList = homeDao.querySave(year);
         for(ProjectHome pd:projectDetail){
             String Id = pd.getId();
             // 给碳排放量赋空值
             pd.setCarbon(new BigDecimal(0));
+            pd.setEnergy(new BigDecimal(0));
             for(Map es:energyStatics){
                 if (es.get("proId").equals(Id)){
                     pd.setMoneyGas((BigDecimal) es.get("moneyGas"));
@@ -85,6 +89,11 @@ public class HomeServiceImpl implements HomeService {
                     }else {
                         pd.setStatus(0);
                     }
+                }
+            }
+            for (EnergySaveReduction energySaveReduction : saveList) {
+                if (StringUtils.equals(energySaveReduction.getProjectId(), Id)) {
+                    pd.setEnergy(energySaveReduction.getMoney());
                 }
             }
             /** 判断通信状态 */
