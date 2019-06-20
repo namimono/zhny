@@ -55,6 +55,16 @@ public interface BasicDataService {
     /**
      * 下载基准碳排放量模板
      */
-    String downloadFile(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException;
+    String downloadFile(HttpServletRequest request, HttpServletResponse response);
+
+    /**
+     * 下载基准碳排放量模板
+     */
+    void downloadSave(HttpServletRequest request, HttpServletResponse response);
+
+    /**
+     * 上传节省模板
+     */
+    Result uploadSave(MultipartFile file, String projectId);
 
 }

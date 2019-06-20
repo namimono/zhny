@@ -1,5 +1,6 @@
 package org.rcisoft.business.system.project.service.Impl;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
@@ -12,9 +13,11 @@ import org.rcisoft.business.system.project.dao.BasicDataDao;
 import org.rcisoft.business.system.project.service.BasicDataService;
 import org.rcisoft.dao.EnergyCarbonPlanDao;
 import org.rcisoft.dao.EnergyPriceDao;
+import org.rcisoft.dao.EnergySavePlanDao;
 import org.rcisoft.dao.EnergyStandardDao;
 import org.rcisoft.entity.EnergyCarbonPlan;
 import org.rcisoft.entity.EnergyPrice;
+import org.rcisoft.entity.EnergySavePlan;
 import org.rcisoft.entity.EnergyStandard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +49,8 @@ public class BasicDataServiceImpl implements BasicDataService {
     private EnergyPriceDao energyPriceDao;
     @Autowired
     private EnergyCarbonPlanDao energyCarbonPlanDao;
+    @Autowired
+    private EnergySavePlanDao energySavePlanDao;
 
     /**
      * 新增水电气24小时单价信息
@@ -187,15 +193,14 @@ public class BasicDataServiceImpl implements BasicDataService {
      * 下载基准碳排放量模板
      */
     @Override
-    public String downloadFile(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+    public String downloadFile(HttpServletRequest request, HttpServletResponse response) {
         // 设置文件名，根据业务需要替换成要下载的文件名
         String fileName = "碳排放量.xls";
         if (fileName != null) {
             //设置文件路径
-            String realPath = "src/main/resources/excel/";
             File file = null;
             try {
-                file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "excel/碳排放量.xls");
+                file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "excel/" + fileName);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -203,7 +208,11 @@ public class BasicDataServiceImpl implements BasicDataService {
                 // 设置强制下载不打开
                 response.setContentType("application/force-download");
                 // 设置文件名
-                response.addHeader("Content-Disposition", "attachment;fileName=" + java.net.URLEncoder.encode(fileName, "UTF-8"));
+                try {
+                    response.addHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(fileName, "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 byte[] buffer = new byte[1024];
                 FileInputStream fis = null;
                 BufferedInputStream bis = null;
@@ -238,5 +247,72 @@ public class BasicDataServiceImpl implements BasicDataService {
             }
         }
         return null;
+    }
+
+    @Override
+    public void downloadSave(HttpServletRequest request, HttpServletResponse response) {
+        String fileName = "累计节省";
+        try (OutputStream outputStream = response.getOutputStream()) {
+            File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "excel/" + fileName +".xls");
+            byte[] bytes = FileUtils.readFileToByteArray(file);
+            response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(fileName, "UTF-8"));
+            outputStream.write(bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Result uploadSave(MultipartFile file, String projectId) {
+        // 待保存
+        List<EnergySavePlan> saveList = new ArrayList<>();
+        Workbook workbook = null;
+        try {
+            workbook = new HSSFWorkbook(new POIFSFileSystem(file.getInputStream()));
+            //获得sheet个数
+            int sheetNum = workbook.getNumberOfSheets();
+            //如果有sheet则继续
+            if (sheetNum > 0) {
+                //获得第一个sheet
+                Sheet sheet = workbook.getSheetAt(0);
+                //要计算的行数
+                int rowNum = 31;
+                for (int i = 0; i <= rowNum; i++) {
+                    //获得当前行的数据
+                    Row row = sheet.getRow(i);
+                    //如果当前行数据为空或者是第一行，则进行下一行
+                    if (i == 0 || null == row) {
+                        continue;
+                    }
+                    for (int j = 1; j < 13; j++) {
+                        //获得当前行的当前列
+                        Cell cell = row.getCell(j);
+                        //如果当前行的当前列位空或者是第一列，则进行下一列
+                        if (0.0 == cell.getNumericCellValue()) {
+                            continue;
+                        }
+                        EnergySavePlan energySavePlan = new EnergySavePlan(UuidUtil.create32(), projectId, j, i, new BigDecimal(cell.getNumericCellValue()));
+
+                        saveList.add(energySavePlan);
+                    }
+                }
+
+                if (saveList.size() > 0){
+                    //删除原来的
+                    EnergySavePlan energySavePlan = new EnergySavePlan();
+                    energySavePlan.setProjectId(projectId);
+                    energySavePlanDao.delete(energySavePlan);
+
+                    int flag = energySavePlanDao.batchSave(saveList);
+                    if (flag > 0) {
+                        return Result.result(1,"上传成功");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.result(0,"请上传指定格式文件");
+        }
+        return Result.result(0,"请填写数据后上传");
     }
 }

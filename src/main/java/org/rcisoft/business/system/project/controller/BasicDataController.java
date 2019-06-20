@@ -71,7 +71,19 @@ public class BasicDataController {
 
     @ApiOperation(value="下载基准碳排放量模板", notes="下载基准碳排放量模板")
     @GetMapping(value = "/fileDownload")
-    public String downloadFile(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+    public String downloadFile(HttpServletRequest request, HttpServletResponse response) {
        return basicDataServiceImpl.downloadFile(request,response);
+    }
+
+    @ApiOperation(value="下载节省模板", notes="下载节省模板")
+    @GetMapping(value = "/downloadSave")
+    public void downloadSave(HttpServletRequest request, HttpServletResponse response) {
+        basicDataServiceImpl.downloadSave(request,response);
+    }
+
+    @ApiOperation(value="上传节省模板", notes="上传节省模板")
+    @PostMapping(value = "/uploadSave/{projectId}")
+    public Result uploadSave(@RequestParam("file") MultipartFile file, @PathVariable("projectId") String projectId) {
+        return basicDataServiceImpl.uploadSave(file,projectId);
     }
 }
