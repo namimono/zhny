@@ -1,6 +1,7 @@
 package org.rcisoft.dao;
 
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.rcisoft.entity.EnergySavePlan;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,6 @@ public interface EnergySavePlanDao extends Mapper<EnergySavePlan> {
             "values(#{item.id}, #{item.projectId},#{item.timeMonth}, #{item.timeDay}, #{item.money}) " +
             "</foreach></script>")
     @ResultType(Integer.class)
-    int batchSave(List<EnergySavePlan> saveList);
+    int batchSave(@Param("saveList") List<EnergySavePlan> saveList);
 
 }
