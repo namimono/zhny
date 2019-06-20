@@ -7,6 +7,7 @@ import org.rcisoft.business.whole.head.service.SysCityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -29,8 +30,8 @@ public class SysCityController {
 
     @ApiOperation(value = "头部项目列表",notes = "头部项目列表")
     @GetMapping("queryAllProj")
-    public Result queryAllProj(){
-        return  Result.result(1,sysCityService.queryAllProj());
+    public Result queryAllProj(HttpServletRequest request){
+        return  Result.result(1,sysCityService.queryAllProj(request));
     }
 
 

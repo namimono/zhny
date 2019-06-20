@@ -3,6 +3,7 @@ package org.rcisoft.business.whole.head.service.Impl;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.rcisoft.base.jwt.JwtTokenUtil;
 import org.rcisoft.base.util.UuidUtil;
 import org.rcisoft.business.whole.head.dao.HeadDao;
 import org.rcisoft.business.whole.head.entity.CityInfo;
@@ -12,8 +13,10 @@ import org.rcisoft.entity.BusProject;
 import org.rcisoft.entity.BusTemperature;
 import org.rcisoft.entity.SysCity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -35,6 +38,13 @@ public class SysCityServiceImpl implements SysCityService {
     SysCityDao sysCityDao;
     @Autowired
     HeadDao headDao;
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
+
+    @Value("${jwt.header}")
+    private String tokenHeader;
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
 
     /**
      * 根据城市名称获取城市天气信息
@@ -151,7 +161,8 @@ public class SysCityServiceImpl implements SysCityService {
     }
 
     @Override
-    public List<BusProject> queryAllProj() {
-        return headDao.queryAllProj();
+    public List<BusProject> queryAllProj(HttpServletRequest request) {
+        String userId = jwtTokenUtil.getClaimsFromToken(request.getHeader(tokenHeader).substring(tokenHead.length())).get("userid", String.class);
+        return headDao.queryAllProj(userId);
     }
 }

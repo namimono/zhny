@@ -4,6 +4,7 @@ import org.rcisoft.entity.BusProject;
 import org.rcisoft.entity.BusTemperature;
 import org.rcisoft.entity.SysCity;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -29,5 +30,5 @@ public interface SysCityService {
      * 查询所有项目
      * @return
      */
-    List<BusProject> queryAllProj();
+    List<BusProject> queryAllProj(HttpServletRequest request);
 }
