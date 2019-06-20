@@ -36,17 +36,17 @@ public interface BusDeviceDao extends Mapper<BusDevice> {
     /**
      * 查询设备简要信息（根据系统ID）
      */
-    @Select("SELECT a.id as 'deviceId',a.name as 'deviceName',a.info,a.location,a.model," +
+    @Select("<script>SELECT a.id as 'deviceId',a.name as 'deviceName',a.info,a.location,a.model," +
             "a.install_time as 'installTime', a.system_id as 'systemId',b.name AS 'type'," +
             "c.name AS 'factoryName',d.name as 'systemName' " +
             "FROM bus_device a " +
             "LEFT JOIN (bus_device_type b,bus_factory c,sys_system d)" +
             "ON a.device_type_id = b.id AND a.factory_id = c.id AND a.system_id = d.id " +
             "where a.project_id = #{projectId} " +
-            "<if test=\"systemId != null\">and a.system_id = #{systemId} </if>" +
-            "<if test=\"factoryId != null\">and a.factory_id = #{factoryId} </if>" +
-            "<if test=\"deviceTypeId != null\">and a.device_type_id = #{deviceTypeId} </if>" +
-            "order by a.sequence desc")
+            "<if test=\"systemId != ''\">and a.system_id = #{systemId} </if>" +
+            "<if test=\"factoryId != ''\">and a.factory_id = #{factoryId} </if>" +
+            "<if test=\"deviceTypeId != ''\">and a.device_type_id = #{deviceTypeId} </if>" +
+            "order by a.sequence asc</script>")
     @ResultType(DeviceBriefInfo.class)
     List<DeviceBriefInfo> queryDeviceBriefInfo(@Param("projectId") String projectId, @Param("systemId") String systemId, @Param("factoryId") String factoryId, @Param("deviceTypeId") String deviceTypeId);
 
