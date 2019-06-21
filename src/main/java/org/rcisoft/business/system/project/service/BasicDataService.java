@@ -67,4 +67,19 @@ public interface BasicDataService {
      */
     Result uploadSave(MultipartFile file, String projectId);
 
+    /**
+     * 下载设备模板
+     * @param request
+     * @param response
+     */
+    void downloadDevice(HttpServletRequest request, HttpServletResponse response);
+
+    /**
+     * 上传设备模板
+     * @param file
+     * @param projectId
+     * @return
+     */
+    Result uploadDevice(MultipartFile file, String projectId, String systemId, String deviceId);
+
 }

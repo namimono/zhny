@@ -86,4 +86,16 @@ public class BasicDataController {
     public Result uploadSave(@RequestParam("file") MultipartFile file, @PathVariable("projectId") String projectId) {
         return basicDataServiceImpl.uploadSave(file,projectId);
     }
+
+    @ApiOperation(value="下载设备模板", notes="下载设备模板")
+    @GetMapping(value = "/downloadDevice")
+    public void downloadDevice(HttpServletRequest request, HttpServletResponse response) {
+        basicDataServiceImpl.downloadDevice(request,response);
+    }
+
+    @ApiOperation(value="上传设备模板", notes="上传设备模板")
+    @PostMapping(value = "/uploadDevice/{projectId}/{systemId}/{deviceId}")
+    public Result uploadDevice(@RequestParam("file") MultipartFile file, @PathVariable("projectId") String projectId, @PathVariable("systemId") String systemId, @PathVariable("deviceId") String deviceId) {
+        return basicDataServiceImpl.uploadDevice(file, projectId, systemId, deviceId);
+    }
 }
