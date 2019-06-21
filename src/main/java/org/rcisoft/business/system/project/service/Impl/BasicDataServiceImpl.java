@@ -362,13 +362,13 @@ public class BasicDataServiceImpl implements BasicDataService {
                     // 一级参数
                     String firstName = row.getCell(1).getStringCellValue();
                     // 参数来源，如果没有相应的来源，跳过这一条记录
-                    int source = this.sourceType(firstName);
+                    int source = this.sourceType(first);
                     if (source == 0) {
                         continue;
                     }
                     String firstCoding = row.getCell(2).getStringCellValue();
                     // 如果不等于
-                    if (!StringUtils.equals(firstCoding, checkFirstCoding)) {
+                    if (source != 4 && !StringUtils.equals(firstCoding, checkFirstCoding)) {
                         checkFirstCoding = firstCoding;
                         firstId = UuidUtil.create32();
                         // 新建一级参数
@@ -410,14 +410,16 @@ public class BasicDataServiceImpl implements BasicDataService {
                     s.setUnit(secondUnit);
                     s.setValue(new BigDecimal(secondValue));
                     s.setSequence(seq++);
-                    s.setFaultStatus(this.trueOrFalse(secondFault));
-                    s.setMinValue(new BigDecimal(secondMin));
-                    s.setMaxValue(new BigDecimal(secondMax));
-                    s.setContent(secondContent);
-                    s.setEnergyTypeId(this.energyType(secondEnergyType));
-                    s.setElecType(this.elecType(secondElecType));
-                    s.setFirstSign(this.firstSign(secondParam, secondFirst));
                     s.setShowStatus(this.trueOrFalse(secondTopo));
+                    if (source != 4) {
+                        s.setFaultStatus(this.trueOrFalse(secondFault));
+                        s.setMinValue(new BigDecimal(secondMin));
+                        s.setMaxValue(new BigDecimal(secondMax));
+                        s.setContent(secondContent);
+                        s.setEnergyTypeId(this.energyType(secondEnergyType));
+                        s.setElecType(this.elecType(secondElecType));
+                        s.setFirstSign(this.firstSign(secondParam, secondFirst));
+                    }
                     secondList.add(s);
                 } else {
                     break;

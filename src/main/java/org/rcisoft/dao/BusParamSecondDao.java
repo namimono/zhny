@@ -50,7 +50,7 @@ public interface BusParamSecondDao extends Mapper<BusParamSecond>, SpecialBatchM
     /**
      * 根据设备ID查询二级参数信息
      */
-    @Select("SELECT * FROM bus_param_second WHERE device_id = #{deviceId};")
+    @Select("SELECT * FROM bus_param_second WHERE device_id = #{deviceId} order by sequence asc")
     @ResultType(BusParamSecond.class)
     List<BusParamSecond> queryParamSecondByDevId(@Param("deviceId") String deviceId);
 

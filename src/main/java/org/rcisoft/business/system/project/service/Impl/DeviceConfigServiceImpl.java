@@ -423,7 +423,9 @@ public class DeviceConfigServiceImpl implements DeviceConfigService {
                     }
                 }
                 List<BusParamSecond> secondary = paramFirstContainSecond.getSecondary();
-                for (BusParamSecond busParamSecond : secondary) {
+                for (int i = 0; i < secondary.size(); i++) {
+                    BusParamSecond busParamSecond = secondary.get(i);
+                    busParamSecond.setSequence(i + 1);
                     if (StringUtils.isEmpty(busParamSecond.getId())) {
                         busParamSecond.setId(UuidUtil.create32());
                         addSecondList.add(busParamSecond);

@@ -5,6 +5,7 @@ import org.rcisoft.dao.EnergyParamLibraryDao;
 import org.rcisoft.entity.EnergyParamLibrary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -19,7 +20,14 @@ public class EnergyParamLibraryServiceImpl implements EnergyParamLibraryService 
 
     @Override
     public List<EnergyParamLibrary> listEnergyParamLibraryByParam(EnergyParamLibrary energyParamLibrary){
-        return energyParamLibraryDao.select(energyParamLibrary);
+        Example e = new Example(EnergyParamLibrary.class);
+        Example.Criteria c = e.createCriteria();
+        c.andEqualTo("deviceId", energyParamLibrary.getDeviceId());
+        e.setOrderByClause("main_value asc, main_value2 asc");
+        if (energyParamLibrary.getMainValue() != null) {
+            c.andEqualTo("mainValue", energyParamLibrary.getMainValue());
+        }
+        return energyParamLibraryDao.selectByExample(e);
     }
 
 }
