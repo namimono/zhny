@@ -26,6 +26,7 @@ public class EnergyPlanningCostServiceImpl implements EnergyPlanningCostService 
         EnergyPlanningCost energyPlanningCost = new EnergyPlanningCost();
         energyPlanningCost.setCreateTime(conditionDto.getDate());
         energyPlanningCost.setProjectId(conditionDto.getProId());
+        energyPlanningCost.setDeviceId(conditionDto.getDevId());
         return energyPlanningCostDao.selectOne(energyPlanningCost);
     }
 }

@@ -129,4 +129,10 @@ public class BusParamSecond {
    	@Column(name = "first_sign" )
 	private Integer firstSign;
 
+	/**
+	 * 拓扑图显示标志位
+	 */
+	@Column(name = "show_status" )
+   	private Integer showStatus;
+
 }

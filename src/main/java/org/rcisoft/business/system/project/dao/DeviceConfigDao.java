@@ -56,7 +56,7 @@ public interface DeviceConfigDao {
             "coding = #{list.coding},unit = #{list.unit},`value` = #{list.value},sequence = #{list.sequence},\n" +
             "fault_status = #{list.faultStatus},min_value = #{list.minValue},max_value = #{list.maxValue},\n" +
             "content = #{list.content},energy_type_id = #{list.energyTypeId},elec_type = #{list.elecType},\n" +
-            "first_sign = #{list.firstSign} WHERE id = #{list.id}</foreach></script>\n")
+            "first_sign = #{list.firstSign}, show_status = #{list.showStatus} WHERE id = #{list.id}</foreach></script>\n")
     int updateAllParamSecond(List<BusParamSecond> list);
 
     /**
