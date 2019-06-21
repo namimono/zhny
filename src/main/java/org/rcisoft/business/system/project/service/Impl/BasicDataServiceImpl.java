@@ -333,6 +333,13 @@ public class BasicDataServiceImpl implements BasicDataService {
     @Transactional
     @Override
     public Result uploadDevice(MultipartFile file, String projectId, String systemId, String deviceId) {
+        // 如果存在参数，禁止下载
+        BusParamFirst bf = new BusParamFirst();
+        bf.setDeviceId(deviceId);
+        int exist = busParamFirstDao.selectCount(bf);
+        if (exist > 0) {
+            return Result.result(0, null, "已经存在配置的参数，请删除后再上传", null);
+        }
         int result = 0;
         List<BusParamFirst> firstList = new ArrayList<>();
         List<BusParamSecond> secondList = new ArrayList<>();

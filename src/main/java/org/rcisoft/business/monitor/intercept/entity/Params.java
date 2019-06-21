@@ -34,4 +34,6 @@ public class Params {
 
     private Integer elecType;
 
+    private BigDecimal value;
+
 }

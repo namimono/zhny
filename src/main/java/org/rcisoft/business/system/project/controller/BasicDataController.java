@@ -94,8 +94,8 @@ public class BasicDataController {
     }
 
     @ApiOperation(value="上传设备模板", notes="上传设备模板")
-    @PostMapping(value = "/uploadDevice/{projectId}/{systemId}/{deviceId}")
-    public Result uploadDevice(@RequestParam("file") MultipartFile file, @PathVariable("projectId") String projectId, @PathVariable("systemId") String systemId, @PathVariable("deviceId") String deviceId) {
+    @PostMapping(value = "/uploadDevice")
+    public Result uploadDevice(@RequestParam("file") MultipartFile file, @RequestParam("projectId") String projectId, @RequestParam("systemId") String systemId, @RequestParam("deviceId") String deviceId) {
         return basicDataServiceImpl.uploadDevice(file, projectId, systemId, deviceId);
     }
 }

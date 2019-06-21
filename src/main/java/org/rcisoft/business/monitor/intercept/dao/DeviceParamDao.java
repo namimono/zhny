@@ -76,9 +76,9 @@ public interface DeviceParamDao extends Mapper<DeviceParam> {
     List<ParamElec> queryDeviceElec(@Param("projectId") String projectId, @Param("systemId") String systemId);
 
     @Select("<script>" +
-            "select f.coding firstCode, s.coding secondCode, s.name paramName, s.unit paramUnit from bus_param_second s " +
+            "select f.coding firstCode, s.coding secondCode, s.name paramName, s.unit paramUnit, s.`value` from bus_param_second s " +
             "left join bus_param_first f on s.param_first_id = f.id " +
-            "where s.device_id = #{deviceId} " +
+            "where s.device_id = #{deviceId} order by s.show_status desc " +
             "limit ${count}" +
             "</script>")
     @ResultType(Params.class)
@@ -87,7 +87,7 @@ public interface DeviceParamDao extends Mapper<DeviceParam> {
     @Select("<script>" +
             "select f.coding firstCode, s.coding secondCode, s.name paramName, s.unit paramUnit, " +
             "s.fault_status faultStatus, s.min_value minValue, s.max_value `maxValue`, s.content, " +
-            "s.energy_type_id energyType, s.elec_type elecType " +
+            "s.energy_type_id energyType, s.elec_type elecType, s.`value` " +
             "from bus_param_second s " +
             "left join bus_param_first f on s.param_first_id = f.id " +
             "where s.device_id = #{deviceId} " +
