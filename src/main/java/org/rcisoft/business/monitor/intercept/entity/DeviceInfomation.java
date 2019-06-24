@@ -14,4 +14,6 @@ public class DeviceInfomation {
     private String deviceName;
 
     private String deviceUrl;
+
+    private Integer receive;
 }
