@@ -53,5 +53,5 @@ public interface TopologicalService {
     /**
      * 根据图片ID查询设备信息
      */
-    List<BusDevice> queryDeviceByPicId(String picId);
+    List<BusDevice> queryDeviceByPicId(String picId, String sysId);
 }

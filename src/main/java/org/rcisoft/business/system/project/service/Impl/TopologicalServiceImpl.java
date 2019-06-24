@@ -142,7 +142,7 @@ public class TopologicalServiceImpl implements TopologicalService {
      * 根据图片ID查询设备信息
      */
     @Override
-    public List<BusDevice> queryDeviceByPicId(String picId){
-        return busTopologyNodeDao.queryDeviceByPicId(picId);
+    public List<BusDevice> queryDeviceByPicId(String picId, String sysId){
+        return busTopologyNodeDao.queryDeviceByPicId(picId, sysId);
     }
 }

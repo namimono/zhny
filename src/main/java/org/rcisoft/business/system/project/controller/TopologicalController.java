@@ -68,8 +68,8 @@ public class TopologicalController {
     }
 
     @ApiOperation(value="根据图片ID查询设备信息", notes="根据图片ID查询设备信息")
-    @GetMapping("/queryDeviceByPicId/{picId}")
-    public Result queryDeviceByPicId(@PathVariable String picId){
-        return Result.result(topologicalServiceImpl.queryDeviceByPicId(picId));
+    @GetMapping("/queryDeviceByPicId/{picId}/{sysId}")
+    public Result queryDeviceByPicId(@PathVariable String picId, @PathVariable String sysId){
+        return Result.result(topologicalServiceImpl.queryDeviceByPicId(picId, sysId));
     }
 }
