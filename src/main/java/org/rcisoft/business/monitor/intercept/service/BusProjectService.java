@@ -31,7 +31,7 @@ public interface BusProjectService {
      * @param systemId
      * @return
      */
-    List<ParamElec> queryDeviceElec(String projectId, String systemId);
+    Map<String, Object> queryDeviceElec(String projectId, String systemId);
 
     /**
      * 拓扑图，单个设备查询部分参数

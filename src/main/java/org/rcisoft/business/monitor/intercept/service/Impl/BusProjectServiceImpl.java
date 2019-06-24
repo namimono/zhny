@@ -84,8 +84,15 @@ public class BusProjectServiceImpl implements BusProjectService {
     }
 
     @Override
-    public List<ParamElec> queryDeviceElec(String projectId, String systemId) {
-        return deviceParamDao.queryDeviceElec(projectId, systemId);
+    public Map<String, Object> queryDeviceElec(String projectId, String systemId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        // 查询设备是否接收数据
+        List<BusDevice> busDevices = deviceParamDao.queryDeviceReceive(projectId, systemId);
+        // 查询表示设备用电量的参数
+        List<ParamElec> paramElecs = deviceParamDao.queryDeviceElec(projectId, systemId);
+        resultMap.put("received", busDevices);
+        resultMap.put("elec", paramElecs);
+        return resultMap;
     }
 
     @Override

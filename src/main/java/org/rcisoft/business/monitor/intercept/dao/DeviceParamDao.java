@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.rcisoft.business.monitor.intercept.entity.*;
+import org.rcisoft.entity.BusDevice;
 import org.springframework.stereotype.Repository;
 
 import tk.mybatis.mapper.common.Mapper;
@@ -100,4 +101,8 @@ public interface DeviceParamDao extends Mapper<DeviceParam> {
             "</script>")
     @ResultType(DeviceInfomation.class)
     DeviceInfomation queryDeviceNameAndUrl(@Param("deviceId") String deviceId);
+
+    @Select("<script>select id, receive from bus_device where project_id = #{projectId} and system_id = #{systemId}</script>")
+    @ResultType(BusDevice.class)
+    List<BusDevice> queryDeviceReceive(@Param("projectId") String projectId, @Param("systemId") String systemId);
 }

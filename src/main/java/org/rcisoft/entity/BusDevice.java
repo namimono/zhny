@@ -116,4 +116,10 @@ public class BusDevice {
 	@Column(name = "sequence" )
    	private Integer sequence;
 
+	/**
+	 * 是否接收网关数据，0：不接收，1：接收，默认1
+	 */
+	@Column(name = "receive" )
+	private Integer receive;
+
 }
