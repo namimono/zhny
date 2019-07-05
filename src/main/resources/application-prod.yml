@@ -106,6 +106,7 @@ wx:
 #     如：D:\zhny2\filepath\image\1.jpg(存储根路径文件夹 下的 不同前缀文件夹)
 # 读取的时候，需要将前缀拼上返回
 #     如 localhost/filepath/image/1.jpg（url + 不同前缀 + 文件名）
+
 location:
   # 显示图片的url前缀
   url: http://${server.url}/filepath2/

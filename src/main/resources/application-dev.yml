@@ -2,7 +2,7 @@ server:
   servlet:
     context-path: /zhny2
 #  url: 10.150.4.204
-  port: 8080
+  port: 8082
   tomcat:
     max-threads: 300
     max-http-post-size: 10240000
@@ -14,9 +14,9 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
     platform: mysql
-    url: jdbc:mysql://10.96.129.56:3309/zhny-2nd-change?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+    url: jdbc:mysql:///zhny-2nd-change?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
     username: root
-    password: 123456
+    password:
     druid:
       filter:
         wall:
